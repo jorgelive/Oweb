@@ -1,6 +1,6 @@
 <?php
 
-namespace Gopro\UserBundle\Admin;
+namespace Gopro\TransporteBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class AreaAdmin extends AbstractAdmin
+class ServiciooperativoAdmin extends AbstractAdmin
 {
     /**
      * @param DatagridMapper $datagridMapper
@@ -17,7 +17,8 @@ class AreaAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('nombre')
+            ->add('tiposeroperativo')
+            ->add('texto')
         ;
     }
 
@@ -28,7 +29,8 @@ class AreaAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
+            ->add('tiposeroperativo')
+            ->add('texto')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -45,7 +47,8 @@ class AreaAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('nombre')
+            ->add('tiposeroperativo')
+            ->add('texto')
         ;
     }
 
@@ -56,7 +59,9 @@ class AreaAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
-            ->add('nombre')
+            ->add('tiposeroperativo')
+            ->add('texto')
         ;
     }
+
 }

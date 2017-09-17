@@ -3,9 +3,6 @@ security:
         fos_userbundle:
             id: fos_user.user_manager
 
-    acl:
-        connection: default
-               
     encoders:
         FOS\UserBundle\Model\UserInterface: sha512
 
@@ -113,6 +110,6 @@ security:
         
 parameters:
     # ... other parameters
-    security.acl.permission.map.class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
+    # security.acl.permission.map.class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
     # optionally use a custom MaskBuilder
     #sonata.admin.security.mask.builder.class: Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder

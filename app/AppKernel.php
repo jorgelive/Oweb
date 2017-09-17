@@ -32,12 +32,9 @@ class AppKernel extends Kernel
             new APY\DataGridBundle\APYDataGridBundle(),
             new Gopro\UserBundle\GoproUserBundle(),
             new Gopro\ExcelBundle\GoproExcelBundle(),
-            new Gopro\Vipac\DbprocesoBundle\GoproVipacDbprocesoBundle(),
-            new Gopro\Vipac\ExtraBundle\GoproVipacExtraBundle(),
             new Gopro\MainBundle\GoproMainBundle(),
             new Gopro\MaestroBundle\GoproMaestroBundle(),
-            new Gopro\Vipac\ReporteBundle\GoproVipacReporteBundle(),
-            new Gopro\InventarioBundle\GoproInventarioBundle(),
+            new Gopro\TransporteBundle\GoproTransporteBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

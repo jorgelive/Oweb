@@ -6,10 +6,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table(name="mae_moneda")
+ * @ORM\Table(name="mae_estadocontable")
  * @ORM\Entity
  */
-class Moneda
+class Estadocontable
 {
     /**
      * @ORM\Id
@@ -70,7 +70,7 @@ class Moneda
      * Set nombre
      *
      * @param string $nombre
-     * @return Moneda
+     * @return Estadocontable
      */
     public function setNombre($nombre)
     {
@@ -93,7 +93,7 @@ class Moneda
      * Set codigo
      *
      * @param string $codigo
-     * @return Moneda
+     * @return Estadocontable
      */
     public function setCodigo($codigo)
     {
@@ -116,7 +116,7 @@ class Moneda
      * Set creado
      *
      * @param \DateTime $creado
-     * @return Moneda
+     * @return Estadocontable
      */
     public function setCreado($creado)
     {
@@ -139,7 +139,7 @@ class Moneda
      * Set modificado
      *
      * @param \DateTime $modificado
-     * @return Moneda
+     * @return Estadocontable
      */
     public function setModificado($modificado)
     {

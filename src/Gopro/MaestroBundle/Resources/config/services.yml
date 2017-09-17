@@ -1,0 +1,12 @@
+services:
+    gopro_maestro.admin.moneda:
+        class: Gopro\MaestroBundle\Admin\MonedaAdmin
+        arguments: [~, Gopro\MaestroBundle\Entity\Moneda, GoproMaestroBundle:MonedaAdmin ]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Maestros, label: Monedas}
+
+    gopro_maestro.admin.estadocontable:
+            class: Gopro\MaestroBundle\Admin\EstadocontableAdmin
+            arguments: [~, Gopro\MaestroBundle\Entity\Estadocontable, GoproMaestroBundle:EstadocontableAdmin ]
+            tags:
+                - {name: sonata.admin, manager_type: orm, group: Maestros, label: Estado contable}

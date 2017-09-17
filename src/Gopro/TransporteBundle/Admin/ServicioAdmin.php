@@ -1,6 +1,6 @@
 <?php
 
-namespace Gopro\UserBundle\Admin;
+namespace Gopro\TransporteBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class AreaAdmin extends AbstractAdmin
+class ServicioAdmin extends AbstractAdmin
 {
     /**
      * @param DatagridMapper $datagridMapper
@@ -17,7 +17,13 @@ class AreaAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
+            ->add('dependencia')
+            ->add('unidad')
+            ->add('conductor')
             ->add('nombre')
+            ->add('hora')
+            ->add('fecha')
+
         ;
     }
 
@@ -28,7 +34,12 @@ class AreaAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
+            ->add('dependencia')
+            ->add('unidad')
+            ->add('conductor')
             ->add('nombre')
+            ->add('hora')
+            ->add('fecha')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -45,7 +56,27 @@ class AreaAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->add('dependencia')
+            ->add('unidad')
+            ->add('conductor')
             ->add('nombre')
+            ->add('hora')
+            ->add('fecha')
+            ->add('serviciooperativos', 'sonata_type_collection', array('by_reference' => false),array(
+                    'edit' => 'inline',
+                    'inline' => 'table'
+                )
+            )
+            ->add('servicioreferencias', 'sonata_type_collection', array('by_reference' => false),array(
+                    'edit' => 'inline',
+                    'inline' => 'table'
+                )
+            )
+            ->add('serviciocontables', 'sonata_type_collection', array('by_reference' => false),array(
+                    'edit' => 'inline',
+                    'inline' => 'table'
+                )
+            )
         ;
     }
 
@@ -56,7 +87,13 @@ class AreaAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
+            ->add('dependencia')
+            ->add('unidad')
+            ->add('conductor')
             ->add('nombre')
+            ->add('hora')
+            ->add('fecha')
         ;
     }
+
 }

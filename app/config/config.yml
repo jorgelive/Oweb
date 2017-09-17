@@ -33,7 +33,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: true
-    bundles:        [ GoproMainBundle, GoproVipacDbprocesoBundle, GoproVipacExtraBundle, GoproVipacReporteBundle, GoproInventarioBundle, SonataUserBundle, FOSUserBundle]
+    bundles:        [ GoproMainBundle, SonataUserBundle, FOSUserBundle, GoproTransporteBundle]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -54,24 +54,6 @@ doctrine:
                 dbname:   %database_name%
                 user:     %database_user%
                 password: %database_password%
-                charset:  UTF8
-
-            vipac:
-                driver:   %database_driver2%
-                host:     %database_host2%
-                port:     %database_port2%
-                dbname:   %database_name2%
-                user:     %database_user2%
-                password: %database_password2%
-                charset:  WE8ISO8859P15
-
-            erp:
-                driver:   %database_driver3%
-                host:     %database_host3%
-                port:     %database_port3%
-                dbname:   %database_name3%
-                user:     %database_user3%
-                password: %database_password3%
                 charset:  UTF8
         # if using pdo_sqlite as your database driver, add the path in parameters.yml
         # e.g. database_path: %kernel.root_dir%/data/data.db3
@@ -177,19 +159,7 @@ sonata_admin:
             # display a dashboard block
             - { position: left, type: sonata.admin.block.admin_list }
     security:
-        handler: sonata.admin.security.handler.acl
-        # acl security information
-        information:
-            GUEST:    [VIEW, LIST]
-            STAFF:    [EDIT, LIST, CREATE]
-            EDITOR:   [OPERATOR, EXPORT]
-            ADMIN:    [MASTER]
-        # permissions not related to an object instance and also to be available when objects do not exist
-        # the DELETE admin permission means the user is allowed to batch delete objects
-        admin_permissions: [CREATE, LIST, DELETE, UNDELETE, EXPORT, OPERATOR, MASTER]
-        # permission related to the objects
-        object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
-
+        handler: sonata.admin.security.handler.role
 
 sonata_doctrine_orm_admin:
     # default value is null, so doctrine uses the value defined in the configuration
@@ -248,9 +218,3 @@ sonata_user:
             class:          Gopro\UserBundle\Admin\UserAdmin
             controller:     SonataAdminBundle:CRUD
             translation:    SonataUserBundle
-
-services:
-    nls.set:
-        class: Doctrine\DBAL\Event\Listeners\OracleSessionInit
-        tags:
-            - { name: doctrine.event_listener, event: postConnect, connection: vipac }

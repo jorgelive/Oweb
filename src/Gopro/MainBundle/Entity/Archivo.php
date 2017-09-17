@@ -69,6 +69,10 @@ class Archivo
      */
     public function __toString()
     {
+        if(is_null($this->getNombre())) {
+            return 'NULL';
+        }
+
         return $this->nombre;
     }
 

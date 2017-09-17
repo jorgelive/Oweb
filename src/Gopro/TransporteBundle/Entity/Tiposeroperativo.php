@@ -1,15 +1,15 @@
 <?php
-namespace Gopro\MaestroBundle\Entity;
+namespace Gopro\TransporteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table(name="mae_moneda")
+ * @ORM\Table(name="tra_tiposeroperativo")
  * @ORM\Entity
  */
-class Moneda
+class Tiposeroperativo
 {
     /**
      * @ORM\Id
@@ -70,7 +70,7 @@ class Moneda
      * Set nombre
      *
      * @param string $nombre
-     * @return Moneda
+     * @return Tiposeroperativo
      */
     public function setNombre($nombre)
     {
@@ -93,7 +93,7 @@ class Moneda
      * Set codigo
      *
      * @param string $codigo
-     * @return Moneda
+     * @return Tiposeroperativo
      */
     public function setCodigo($codigo)
     {
@@ -116,7 +116,7 @@ class Moneda
      * Set creado
      *
      * @param \DateTime $creado
-     * @return Moneda
+     * @return Tiposeroperativo
      */
     public function setCreado($creado)
     {
@@ -139,7 +139,7 @@ class Moneda
      * Set modificado
      *
      * @param \DateTime $modificado
-     * @return Moneda
+     * @return Tiposeroperativo
      */
     public function setModificado($modificado)
     {

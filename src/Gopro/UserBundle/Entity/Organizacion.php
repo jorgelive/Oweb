@@ -220,6 +220,10 @@ class Organizacion
      */
     function __toString()
     {
+        if(is_null($this->getNombre())) {
+            return 'NULL';
+        }
+
         return $this->getNombre();
     }
 }

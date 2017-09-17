@@ -1,15 +1,15 @@
 <?php
-namespace Gopro\MaestroBundle\Entity;
+namespace Gopro\TransporteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table(name="mae_moneda")
+ * @ORM\Table(name="tra_servicioreferencia")
  * @ORM\Entity
  */
-class Moneda
+class Servicioreferencia
 {
     /**
      * @ORM\Id
@@ -19,14 +19,16 @@ class Moneda
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @var \Gopro\TransporteBundle\Entity\Servicio
+     *
+     * @ORM\ManyToOne(targetEntity="Servicio", inversedBy="servicioreferencias")
      */
-    private $nombre;
+    private $servicio;
 
     /**
-     * @ORM\Column(type="string", length=3)
+     * @ORM\Column(type="string", length=100)
      */
-    private $codigo;
+    private $texto;
 
     /**
      * @var \DateTime $creado
@@ -49,17 +51,18 @@ class Moneda
      */
     public function __toString()
     {
-        if(is_null($this->getNombre())) {
+        if(is_null($this->getTexto())) {
             return 'NULL';
         }
 
-        return $this->getNombre();
+        return $this->getTexto();
     }
+
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -67,56 +70,35 @@ class Moneda
     }
 
     /**
-     * Set nombre
+     * Set texto
      *
-     * @param string $nombre
-     * @return Moneda
+     * @param string $texto
+     *
+     * @return Servicioreferencia
      */
-    public function setNombre($nombre)
+    public function setTexto($texto)
     {
-        $this->nombre = $nombre;
+        $this->texto = $texto;
 
         return $this;
     }
 
     /**
-     * Get nombre
-     *
-     * @return string 
-     */
-    public function getNombre()
-    {
-        return $this->nombre;
-    }
-
-    /**
-     * Set codigo
-     *
-     * @param string $codigo
-     * @return Moneda
-     */
-    public function setCodigo($codigo)
-    {
-        $this->codigo = $codigo;
-
-        return $this;
-    }
-
-    /**
-     * Get codigo
+     * Get texto
      *
      * @return string
      */
-    public function getCodigo()
+    public function getTexto()
     {
-        return $this->codigo;
+        return $this->texto;
     }
 
     /**
      * Set creado
      *
      * @param \DateTime $creado
-     * @return Moneda
+     *
+     * @return Servicioreferencia
      */
     public function setCreado($creado)
     {
@@ -128,7 +110,7 @@ class Moneda
     /**
      * Get creado
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreado()
     {
@@ -139,7 +121,8 @@ class Moneda
      * Set modificado
      *
      * @param \DateTime $modificado
-     * @return Moneda
+     *
+     * @return Servicioreferencia
      */
     public function setModificado($modificado)
     {
@@ -151,12 +134,34 @@ class Moneda
     /**
      * Get modificado
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getModificado()
     {
         return $this->modificado;
     }
 
+    /**
+     * Set servicio
+     *
+     * @param \Gopro\TransporteBundle\Entity\Servicio $servicio
+     *
+     * @return Servicioreferencia
+     */
+    public function setServicio(\Gopro\TransporteBundle\Entity\Servicio $servicio = null)
+    {
+        $this->servicio = $servicio;
 
+        return $this;
+    }
+
+    /**
+     * Get servicio
+     *
+     * @return \Gopro\TransporteBundle\Entity\Servicio
+     */
+    public function getServicio()
+    {
+        return $this->servicio;
+    }
 }

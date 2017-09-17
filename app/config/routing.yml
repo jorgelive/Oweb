@@ -1,13 +1,3 @@
-gopro_inventario:
-    resource: "@GoproInventarioBundle/Controller/"
-    type:     annotation
-    prefix:   /inventario
-
-gopro_vipac_reporte:
-    resource: "@GoproVipacReporteBundle/Controller/"
-    type:     annotation
-    prefix:   /reporte
-
 gopro_main:
     resource: "@GoproMainBundle/Controller/"
     type:     annotation
@@ -17,16 +7,6 @@ gopro_maestro:
     resource: "@GoproMaestroBundle/Controller/"
     type:     annotation
     prefix:   /maestro
-
-gopro_vipac_extra:
-    resource: "@GoproVipacExtraBundle/Controller/"
-    type:     annotation
-    prefix:   /extra
-
-gopro_vipac_dbproceso:
-    resource: "@GoproVipacDbprocesoBundle/Controller/"
-    type:     annotation
-    prefix:   /dbproceso
 
 sonata_user_security:
     resource: "@SonataUserBundle/Resources/config/routing/sonata_security_1.xml"

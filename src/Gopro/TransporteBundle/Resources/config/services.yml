@@ -1,0 +1,48 @@
+services:
+    gopro_transporte.admin.servicio:
+        class: Gopro\TransporteBundle\Admin\ServicioAdmin
+        arguments: [~, Gopro\TransporteBundle\Entity\Servicio, GoproTransporteBundle:ServicioAdmin ]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Transporte, label: Servicios}
+
+    gopro_transporte.admin.serviciooperativo:
+        class: Gopro\TransporteBundle\Admin\ServiciooperativoAdmin
+        arguments: [~, Gopro\TransporteBundle\Entity\Serviciooperativo, GoproTransporteBundle:ServiciooperativoAdmin ]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Transporte, label: Operativos}
+
+    gopro_transporte.admin.serviciocontable:
+        class: Gopro\TransporteBundle\Admin\ServiciocontableAdmin
+        arguments: [~, Gopro\TransporteBundle\Entity\Serviciocontable, GoproTransporteBundle:ServiciocontableAdmin ]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Transporte, label: Contables}
+
+    gopro_transporte.admin.servicioreferencia:
+        class: Gopro\TransporteBundle\Admin\ServicioreferenciaAdmin
+        arguments: [~, Gopro\TransporteBundle\Entity\Servicioreferencia, GoproTransporteBundle:ServicioreferenciaAdmin ]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Transporte, label: Referencias}
+
+    gopro_transporte.admin.conductor:
+        class: Gopro\TransporteBundle\Admin\ConductorAdmin
+        arguments: [~, Gopro\TransporteBundle\Entity\Conductor, GoproTransporteBundle:ConductorAdmin ]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Transporte, label: Conductores}
+
+    gopro_transporte.admin.unidad:
+        class: Gopro\TransporteBundle\Admin\UnidadAdmin
+        arguments: [~, Gopro\TransporteBundle\Entity\Unidad, GoproTransporteBundle:UnidadAdmin ]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Transporte, label: Unidades}
+
+    gopro_transporte.admin.tiposercontable:
+        class: Gopro\TransporteBundle\Admin\TiposercontableAdmin
+        arguments: [~, Gopro\TransporteBundle\Entity\Tiposercontable, GoproTranporteBundle:TiposercontableAdmin ]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Maestros, label: Tipo contable}
+
+    gopro_transporte.admin.tiposeroperativo:
+        class: Gopro\TransporteBundle\Admin\TiposeroperativoAdmin
+        arguments: [~, Gopro\TransporteBundle\Entity\Tiposeroperativo, GoproTransporteBundle:TiposeroperativoAdmin ]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Maestros, label: Tipo operativo}

@@ -67,6 +67,15 @@ class Dependencia
         $this->users = new ArrayCollection();
     }
 
+
+    /**
+     * @return string
+     */
+    public function getOrganizaciondependencia()
+    {
+        return sprintf("%s - %s", $this->getOrganizacion()->getNombre(), $this->getNombre());
+    }
+
     /**
      * Get id
      *
@@ -207,6 +216,10 @@ class Dependencia
      */
     function __toString()
     {
+        if(is_null($this->getNombre())) {
+            return 'NULL';
+        }
+
         return $this->getNombre();
     }
 }
