@@ -41,7 +41,7 @@ class User extends BaseUser
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Cuenta", mappedBy="user", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Cuenta", mappedBy="user", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $cuentas;
 

@@ -69,7 +69,7 @@ class Organizacion
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Dependencia", mappedBy="organizacion", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Dependencia", mappedBy="organizacion", cascade={"persist","remove"}, orphanRemoval=true)
      */
     protected $dependencias;
 

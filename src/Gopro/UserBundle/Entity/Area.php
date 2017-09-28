@@ -37,7 +37,7 @@ class Area
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="User", mappedBy="area")
+     * @ORM\OneToMany(targetEntity="User", mappedBy="area", cascade={"persist","remove"}, orphanRemoval=true)
      */
     protected $users;
 

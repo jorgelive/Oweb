@@ -51,7 +51,7 @@ class Cuentatipo
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Cuenta", mappedBy="cuentatipo", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Cuenta", mappedBy="cuentatipo", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $cuentas;
 

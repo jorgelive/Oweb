@@ -58,7 +58,7 @@ class Dependencia
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="User", mappedBy="dependencia")
+     * @ORM\OneToMany(targetEntity="User", mappedBy="dependencia", cascade={"persist","remove"}, orphanRemoval=true)
      */
     protected $users;
 

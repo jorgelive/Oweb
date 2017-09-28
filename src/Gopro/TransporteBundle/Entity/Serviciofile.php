@@ -61,7 +61,7 @@ class Serviciofile
     private $destino;
 
     /**
-     * @ORM\Column(type="string", length=250)
+     * @ORM\Column(type="text")
      */
     private $nota;
 
@@ -319,8 +319,6 @@ class Serviciofile
     {
         return $this->nota;
     }
-
-
 
     /**
      * Set numadl

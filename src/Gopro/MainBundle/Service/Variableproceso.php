@@ -10,29 +10,26 @@ class Variableproceso implements ContainerAwareInterface{
     use ContainerAwareTrait;
 
 
-    public function sanitizeString($str, $what=NULL, $with='')
+    public function sanitizeString($str, $with = '', $what = array())
     {
-        if($what === NULL)
-        {
-            $what[] = "/[\\x00-\\x20]+/";
-            $what[] = "/[']+/";
-            $what[] = "/[(]+/";
-            $what[] = "/[)]+/";
-            $what[] = "/[-]+/";
-            $what[] = "/[+]+/";
-            $what[] = "/[*]+/";
-            $what[] = "/[,]+/";
-            $what[] = "/[\/]+/";
-            $what[] = "/[\\\\]+/";
-            $what[] = "/[?]+/";
-            $with=array();
-        }
+        $what[] = "/[\\x00-\\x20]+/";
+        $what[] = "/[']+/";
+        $what[] = "/[(]+/";
+        $what[] = "/[)]+/";
+        $what[] = "/[-]+/";
+        $what[] = "/[+]+/";
+        $what[] = "/[*]+/";
+        $what[] = "/[,]+/";
+        $what[] = "/[\/]+/";
+        $what[] = "/[\\\\]+/";
+        $what[] = "/[?]+/";
 
+        $withArray = [];
         foreach ($what as $dummy):
-            $with[]='';
+            $withArray[] = $with;
         endForeach;
 
-        $proceso = trim(preg_replace($what, $with, $str));
+        $proceso = trim(preg_replace($what, $withArray, $str));
         return $proceso;
     }
 

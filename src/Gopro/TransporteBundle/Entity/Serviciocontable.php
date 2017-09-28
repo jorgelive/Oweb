@@ -83,14 +83,14 @@ class Serviciocontable
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Sercontablemensaje", mappedBy="serviciocontable", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Sercontablemensaje", mappedBy="serviciocontable", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $sercontablemensajes;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Serviciocontable", mappedBy="original")
+     * @ORM\OneToMany(targetEntity="Serviciocontable", mappedBy="original", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $dependientes;
 
