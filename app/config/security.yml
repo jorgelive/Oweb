@@ -84,26 +84,11 @@ security:
         # This config requires being logged for the whole site and having the admin role for the admin part.
         # Change these rules to adapt them to your needs
         - { path: ^/admin/, role: ROLE_ADMIN }
-        - { path: ^/dbproceso/carga, role: ROLE_ADMIN }
-        - { path: ^/dbproceso/, role: ROLE_STAFF }
+        - { path: ^/transporte/cargador/, role: ROLE_ADMIN }
+        - { path: ^/transporte/, role: ROLE_STAFF }
 
         #- { path: ^/proveedor/informacion/, ROLE_ADMIN } en annotaciones
         #- { path: ^/reporte/sentencia/, ROLE_ADMIN } en annotaciones
-
-        - { path: ^/reporte/campo, role: ROLE_ADMIN }
-        - { path: ^/reporte/tipo, role: ROLE_ADMIN }
-        - { path: ^/reporte/operador, role: ROLE_ADMIN }
-
-        - { path: ^/inventario/caracteristica, role: ROLE_ADMIN }
-        - { path: ^/inventario/componentecaracteristica, role: ROLE_ADMIN }
-        - { path: ^/inventario/componente, role: ROLE_ADMIN }
-        - { path: ^/inventario/componenteestado, role: ROLE_ADMIN }
-        - { path: ^/inventario/componentetipo, role: ROLE_ADMIN }
-        - { path: ^/inventario/item, role: ROLE_ADMIN }
-        - { path: ^/inventario/itemtipo, role: ROLE_ADMIN }
-        - { path: ^/inventario/servicio, role: ROLE_ADMIN }
-        - { path: ^/inventario/servicioestado, role: ROLE_ADMIN }
-        - { path: ^/inventario/serviciotipo, role: ROLE_ADMIN }
 
         - { path: ^/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
 

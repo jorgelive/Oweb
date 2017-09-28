@@ -18,7 +18,8 @@ class OrganizacionAdmin extends Admin
         $datagridMapper
             ->add('id')
             ->add('nombre')
-            ->add('ruc')
+            ->add('razonsocial')
+            ->add('numerodocumento')
             ->add('email')
             ->add('direccion')
         ;
@@ -32,7 +33,8 @@ class OrganizacionAdmin extends Admin
         $listMapper
             ->add('id')
             ->add('nombre')
-            ->add('ruc')
+            ->add('razonsocial')
+            ->add('numerodocumento')
             ->add('email')
             ->add('direccion')
             ->add('_action', 'actions', array(
@@ -52,10 +54,12 @@ class OrganizacionAdmin extends Admin
     {
         $formMapper
             ->add('nombre')
-            ->add('ruc')
+            ->add('razonsocial')
+            ->add('numerodocumento')
             ->add('email')
             ->add('direccion')
             ->add('dependencias', 'sonata_type_model', array(
+                'property' => 'organizaciondependencia',
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true
@@ -74,19 +78,20 @@ class OrganizacionAdmin extends Admin
         $showMapper
             ->add('id')
             ->add('nombre')
-            ->add('ruc')
+            ->add('numerodocuento')
             ->add('email')
             ->add('direccion')
         ;
     }
 
+    /*
     public function prePersist($organizacion)
     {
         $this->preUpdate($organizacion,true);
     }
 
 
-    public function preUpdate($organizacion,$agregar=false)
+    public function preUpdate($organizacion, $agregar=false)
     {
         $organizacion->setDependencias($organizacion->getDependencias());
         foreach($organizacion->getDependencias() as $dependencia){
@@ -105,4 +110,6 @@ class OrganizacionAdmin extends Admin
         }
 
     }
+
+    */
 }

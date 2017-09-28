@@ -65,9 +65,9 @@ class Servicio
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Servicioreferencia", mappedBy="servicio", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Serviciofile", mappedBy="servicio", cascade={"persist","remove"}, orphanRemoval=true)
      */
-    private $servicioreferencias;
+    private $serviciofiles;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -93,7 +93,7 @@ class Servicio
     private $modificado;
 
     public function __construct() {
-        $this->servicioreferencias = new ArrayCollection();
+        $this->serviciofiles = new ArrayCollection();
         $this->serviciocontables = new ArrayCollection();
     }
 
@@ -315,39 +315,39 @@ class Servicio
     }
 
     /**
-     * Add servicioreferencia
+     * Add serviciofile
      *
-     * @param \Gopro\TransporteBundle\Entity\Servicioreferencia $servicioreferencia
+     * @param \Gopro\TransporteBundle\Entity\Serviciofile $serviciofile
      *
      * @return Servicio
      */
-    public function addServicioreferencia(\Gopro\TransporteBundle\Entity\Servicioreferencia $servicioreferencia)
+    public function addServiciofile(\Gopro\TransporteBundle\Entity\Serviciofile $serviciofile)
     {
-        $servicioreferencia->setServicio($this);
+        $serviciofile->setServicio($this);
 
-        $this->servicioreferencias[] = $servicioreferencia;
+        $this->serviciofiles[] = $serviciofile;
 
         return $this;
     }
 
     /**
-     * Remove servicioreferencia
+     * Remove serviciofile
      *
-     * @param \Gopro\TransporteBundle\Entity\Servicioreferencia $servicioreferencia
+     * @param \Gopro\TransporteBundle\Entity\Serviciofile $serviciofile
      */
-    public function removeServicioreferencia(\Gopro\TransporteBundle\Entity\Servicioreferencia $servicioreferencia)
+    public function removeServiciofile(\Gopro\TransporteBundle\Entity\Serviciofile $serviciofile)
     {
-        $this->servicioreferencias->removeElement($servicioreferencia);
+        $this->serviciofiles->removeElement($serviciofile);
     }
 
     /**
-     * Get servicioreferencias
+     * Get serviciofiles
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getServicioreferencias()
+    public function getServiciofiles()
     {
-        return $this->servicioreferencias;
+        return $this->serviciofiles;
     }
 
     /**

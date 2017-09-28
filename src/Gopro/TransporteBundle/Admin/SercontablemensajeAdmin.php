@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class ServicioreferenciaAdmin extends AbstractAdmin
+class SercontablemensajeAdmin extends AbstractAdmin
 {
     /**
      * @param DatagridMapper $datagridMapper
@@ -17,7 +17,8 @@ class ServicioreferenciaAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('texto')
+            ->add('clave')
+            ->add('contenido')
         ;
     }
 
@@ -28,7 +29,8 @@ class ServicioreferenciaAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('texto')
+            ->add('clave')
+            ->add('contenido')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -45,7 +47,8 @@ class ServicioreferenciaAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('texto')
+            ->add('clave')
+            ->add('contenido')
         ;
     }
 
@@ -56,7 +59,8 @@ class ServicioreferenciaAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
-            ->add('texto')
+            ->add('clave')
+            ->add('contenido')
         ;
     }
 

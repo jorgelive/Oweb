@@ -29,6 +29,26 @@ class Tiposercontable
     private $codigo;
 
     /**
+     * @ORM\Column(type="string", length=3)
+     */
+    private $codigoexterno;
+
+    /**
+     * @ORM\Column(type="string", length=5)
+     */
+    private $serie;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $correlativo;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $esnotacredito;
+
+    /**
      * @var \DateTime $creado
      *
      * @Gedmo\Timestampable(on="create")
@@ -159,4 +179,100 @@ class Tiposercontable
     }
 
 
+
+    /**
+     * Set serie
+     *
+     * @param string $serie
+     *
+     * @return Tiposercontable
+     */
+    public function setSerie($serie)
+    {
+        $this->serie = $serie;
+
+        return $this;
+    }
+
+    /**
+     * Get serie
+     *
+     * @return string
+     */
+    public function getSerie()
+    {
+        return $this->serie;
+    }
+
+    /**
+     * Set correlativo
+     *
+     * @param integer $correlativo
+     *
+     * @return Tiposercontable
+     */
+    public function setCorrelativo($correlativo)
+    {
+        $this->correlativo = $correlativo;
+
+        return $this;
+    }
+
+    /**
+     * Get correlativo
+     *
+     * @return integer
+     */
+    public function getCorrelativo()
+    {
+        return $this->correlativo;
+    }
+
+    /**
+     * Set codigoexterno
+     *
+     * @param string $codigoexterno
+     *
+     * @return Tiposercontable
+     */
+    public function setCodigoexterno($codigoexterno)
+    {
+        $this->codigoexterno = $codigoexterno;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoexterno
+     *
+     * @return string
+     */
+    public function getCodigoexterno()
+    {
+        return $this->codigoexterno;
+    }
+
+    /**
+     * Set esnotacredito
+     *
+     * @param boolean $esnotacredito
+     *
+     * @return Tiposercontable
+     */
+    public function setEsnotacredito($esnotacredito)
+    {
+        $this->esnotacredito = $esnotacredito;
+
+        return $this;
+    }
+
+    /**
+     * Get ennotacredito
+     *
+     * @return boolean
+     */
+    public function getEsnotacredito()
+    {
+        return $this->esnotacredito;
+    }
 }

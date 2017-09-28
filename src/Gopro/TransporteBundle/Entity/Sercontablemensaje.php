@@ -6,10 +6,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table(name="tra_servicioreferencia")
+ * @ORM\Table(name="tra_sercontablemensaje")
  * @ORM\Entity
  */
-class Servicioreferencia
+class Sercontablemensaje
 {
     /**
      * @ORM\Id
@@ -19,16 +19,21 @@ class Servicioreferencia
     private $id;
 
     /**
-     * @var \Gopro\TransporteBundle\Entity\Servicio
-     *
-     * @ORM\ManyToOne(targetEntity="Servicio", inversedBy="servicioreferencias")
+     * @ORM\Column(type="string", length=50)
      */
-    private $servicio;
+    private $clave;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="text")
      */
-    private $texto;
+    private $contenido;
+
+    /**
+     * @var \Gopro\TransporteBundle\Entity\Serviciocontable
+     *
+     * @ORM\ManyToOne(targetEntity="Serviciocontable", inversedBy="sercontablemensajes")
+     */
+    private $serviciocontable;
 
     /**
      * @var \DateTime $creado
@@ -46,17 +51,16 @@ class Servicioreferencia
      */
     private $modificado;
 
+
     /**
      * @return string
      */
     public function __toString()
     {
-        if(is_null($this->getTexto())) {
-            return 'NULL';
-        }
-
-        return $this->getTexto();
+        return sprintf('%s : %s', $this->getClave(), $this->getContenido());
     }
+
+
 
 
     /**
@@ -70,27 +74,51 @@ class Servicioreferencia
     }
 
     /**
-     * Set texto
+     * Set clave
      *
-     * @param string $texto
+     * @param string $clave
      *
-     * @return Servicioreferencia
+     * @return Sercontablemensaje
      */
-    public function setTexto($texto)
+    public function setClave($clave)
     {
-        $this->texto = $texto;
+        $this->clave = $clave;
 
         return $this;
     }
 
     /**
-     * Get texto
+     * Get clave
      *
      * @return string
      */
-    public function getTexto()
+    public function getClave()
     {
-        return $this->texto;
+        return $this->clave;
+    }
+
+    /**
+     * Set contenido
+     *
+     * @param string $contenido
+     *
+     * @return Sercontablemensaje
+     */
+    public function setContenido($contenido)
+    {
+        $this->contenido = $contenido;
+
+        return $this;
+    }
+
+    /**
+     * Get contenido
+     *
+     * @return string
+     */
+    public function getContenido()
+    {
+        return $this->contenido;
     }
 
     /**
@@ -98,7 +126,7 @@ class Servicioreferencia
      *
      * @param \DateTime $creado
      *
-     * @return Servicioreferencia
+     * @return Sercontablemensaje
      */
     public function setCreado($creado)
     {
@@ -122,7 +150,7 @@ class Servicioreferencia
      *
      * @param \DateTime $modificado
      *
-     * @return Servicioreferencia
+     * @return Sercontablemensaje
      */
     public function setModificado($modificado)
     {
@@ -142,26 +170,26 @@ class Servicioreferencia
     }
 
     /**
-     * Set servicio
+     * Set serviciocontable
      *
-     * @param \Gopro\TransporteBundle\Entity\Servicio $servicio
+     * @param \Gopro\TransporteBundle\Entity\Serviciocontable $serviciocontable
      *
-     * @return Servicioreferencia
+     * @return Sercontablemensaje
      */
-    public function setServicio(\Gopro\TransporteBundle\Entity\Servicio $servicio = null)
+    public function setServiciocontable(\Gopro\TransporteBundle\Entity\Serviciocontable $serviciocontable = null)
     {
-        $this->servicio = $servicio;
+        $this->serviciocontable = $serviciocontable;
 
         return $this;
     }
 
     /**
-     * Get servicio
+     * Get serviciocontable
      *
-     * @return \Gopro\TransporteBundle\Entity\Servicio
+     * @return \Gopro\TransporteBundle\Entity\Serviciocontable
      */
-    public function getServicio()
+    public function getServiciocontable()
     {
-        return $this->servicio;
+        return $this->serviciocontable;
     }
 }

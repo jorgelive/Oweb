@@ -317,17 +317,23 @@ class Archivoexcel implements ContainerAwareInterface
                         foreach ($value as $key => $parteValor):
 
                             if (trim(str_replace(chr(194) . chr(160), "", $parteValor)) != '' || empty($this->getDescartarBlanco())) {
-                                if (isset($this->columnaSpecs[$columnName[$key]]['tipo']) && $this->columnaSpecs[$columnName[$key]]['tipo'] == 'exceldate') {
-                                    $parteValor = $this->container->get('gopro_main_variableproceso')->exceldate($parteValor);
-                                }
-                                if (isset($this->columnaSpecs[$columnName[$key]]['tipo']) && $this->columnaSpecs[$columnName[$key]]['tipo'] == 'file' && $key == 1) {
-                                    $parteValor = str_pad($parteValor, 10, 0, STR_PAD_LEFT);
-                                }
+
                                 if (!empty($this->getTrimEspacios())) {
                                     $parteValor = trim(str_replace(chr(194) . chr(160), "", $parteValor));
                                 }
+
+                                if (isset($this->columnaSpecs[$columnName[$key]]['tipo'])){
+                                    if ($this->columnaSpecs[$columnName[$key]]['tipo'] == 'file' && $key == 1) {
+                                        $parteValor = str_pad($parteValor, 10, 0, STR_PAD_LEFT);
+                                    }elseif($this->columnaSpecs[$columnName[$key]]['tipo'] == 'exceldate') {
+                                        $parteValor = $this->container->get('gopro_main_variableproceso')->exceldate($parteValor);
+                                    }elseif($this->columnaSpecs[$columnName[$key]]['tipo'] == 'exceltime') {
+                                        $parteValor = $this->container->get('gopro_main_variableproceso')->exceltime($parteValor);
+                                    }
+                                }
                                 $existentesRaw[$fila][$this->columnaSpecs[$columnName[$key]]['nombre']] = str_replace(chr(194) . chr(160), "", $parteValor);
                             }
+
                         endforeach;
                     } else {
                         if (trim(str_replace(chr(194) . chr(160), "", $value)) != '' || empty($this->getDescartarBlanco())) {

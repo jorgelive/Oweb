@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 class ServiciocontableAdmin extends AbstractAdmin
 {
@@ -26,8 +27,9 @@ class ServiciocontableAdmin extends AbstractAdmin
             ->add('total')
             ->add('serie')
             ->add('documento')
-            ->add('serieasociado')
-            ->add('documentoasociado')
+            ->add('fechaemision')
+            ->add('url')
+            ->add('original')
         ;
     }
 
@@ -47,13 +49,17 @@ class ServiciocontableAdmin extends AbstractAdmin
             ->add('total')
             ->add('serie')
             ->add('documento')
-            ->add('serieasociado')
-            ->add('documentoasociado')
+            ->add('fechaemision')
+            ->add('url')
+            ->add('original')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
                     'edit' => array(),
                     'delete' => array(),
+                    'facturar' => array(
+                        'template' => 'GoproTransporteBundle:ServiciocontableAdmin:list__action_facturar.html.twig'
+                    )
                 )
             ))
         ;
@@ -72,10 +78,7 @@ class ServiciocontableAdmin extends AbstractAdmin
             ->add('neto')
             ->add('impuesto')
             ->add('total')
-            ->add('serie')
-            ->add('documento')
-            ->add('serieasociado')
-            ->add('documentoasociado')
+            ->add('original')
         ;
     }
 
@@ -95,9 +98,16 @@ class ServiciocontableAdmin extends AbstractAdmin
             ->add('total')
             ->add('serie')
             ->add('documento')
-            ->add('serieasociado')
-            ->add('documentoasociado')
+            ->add('fechaemision')
+            ->add('url')
+            ->add('original')
+            ->add('sercontablemensajes')
         ;
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('facturar', $this->getRouterIdParameter() . '/facturar');
     }
 
 }

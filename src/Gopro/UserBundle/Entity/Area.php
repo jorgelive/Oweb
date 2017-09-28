@@ -60,7 +60,7 @@ class Area
      * Set nombre
      *
      * @param string $nombre
-     * @return Dependencia
+     * @return Area
      */
     public function setNombre($nombre)
     {
@@ -83,11 +83,13 @@ class Area
      * Add users
      *
      * @param \Gopro\UserBundle\Entity\User $users
-     * @return Dependencia
+     * @return Area
      */
-    public function addUser(\Gopro\UserBundle\Entity\User $users)
+    public function addUser(\Gopro\UserBundle\Entity\User $user)
     {
-        $this->users[] = $users;
+        $user->setArea($this);
+
+        $this->users[] = $user;
 
         return $this;
     }

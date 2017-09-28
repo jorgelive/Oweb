@@ -4,6 +4,7 @@ namespace Gopro\TransporteBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Table(name="tra_unidad")
@@ -73,7 +74,7 @@ class Unidad
      */
     public function __construct()
     {
-        $this->servicios = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->servicios = new ArrayCollection();
     }
 
     /**
@@ -191,6 +192,8 @@ class Unidad
      */
     public function addServicio(\Gopro\TransporteBundle\Entity\Servicio $servicio)
     {
+        $servicio->setUnidad($this);
+
         $this->servicios[] = $servicio;
 
         return $this;

@@ -34,12 +34,12 @@ class ServicioAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
+            ->add('fecha')
             ->add('dependencia')
             ->add('unidad')
             ->add('conductor')
             ->add('nombre')
             ->add('hora')
-            ->add('fecha')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -56,7 +56,7 @@ class ServicioAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('dependencia')
+            ->add('dependencia', null, array('property' => 'organizaciondependencia'))
             ->add('unidad')
             ->add('conductor')
             ->add('nombre')
@@ -67,7 +67,7 @@ class ServicioAdmin extends AbstractAdmin
                     'inline' => 'table'
                 )
             )
-            ->add('servicioreferencias', 'sonata_type_collection', array('by_reference' => false),array(
+            ->add('serviciofiles', 'sonata_type_collection', array('by_reference' => false),array(
                     'edit' => 'inline',
                     'inline' => 'table'
                 )

@@ -79,6 +79,45 @@ class Variableproceso implements ContainerAwareInterface{
         return null;
     }
 
+    public function exceltime($variable, $tipo='from')
+    {
+        if(empty($variable)){
+            return $variable;
+        }
+        if($tipo=='from'){
+
+            if((!is_numeric($variable) && strpos($variable, ':') > 0) || $variable >= 1 ){
+                $variable = str_replace(':', '', $variable);
+                if(strlen($variable) == 4){
+                    $variable = $variable . '00';
+                }
+                if(strlen($variable) != 6){
+                    return $variable;
+                }else{
+                    return(date('H:i:s', strtotime(substr($variable, 0, 2) . ':' . substr($variable, 2, 2) . ':' . substr($variable, 4, 2))));
+                }
+            }elseif(is_numeric($variable)){
+                $variable = $variable * 24;
+
+                $hora = intval($variable);
+                $variable = ($variable - $hora) * 60;
+                $minuto = intval($variable);
+
+                $segundo = intval(($variable - $minuto) * 60);
+                return date('H:i:s', strtotime($hora . ':' . $minuto . ':' . $segundo));
+            }else{
+                return $variable;
+            }
+
+        }else{
+            $variable = str_replace(':', '', $variable);
+            if(strlen($variable) != 6 || !is_numeric($variable)){
+                return $variable;
+            }
+            return (substr($variable, 0, 2) / 24) + (substr($variable, 2, 2) / 1440) + (substr($variable, 4, 2) / 86400);
+        }
+    }
+
     public function exceldate($variable,$tipo='from')
     {
         if(empty($variable)){
@@ -87,7 +126,6 @@ class Variableproceso implements ContainerAwareInterface{
         if($tipo=='from'){
 
             if(!is_numeric($variable) && (strpos($variable, '-') > 0 || strpos($variable, '/') > 0)){
-
                 return date('Y-m-d', strtotime(str_replace('/', '-', $variable)));
             }elseif(is_numeric($variable)){
                 return date('Y-m-d', mktime(0,0,0,1,$variable-1,1900));

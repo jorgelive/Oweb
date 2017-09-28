@@ -19,6 +19,7 @@ class MonedaAdmin extends AbstractAdmin
             ->add('id')
             ->add('nombre')
             ->add('codigo')
+            ->add('codigoexterno')
         ;
     }
 
@@ -31,6 +32,7 @@ class MonedaAdmin extends AbstractAdmin
             ->add('id')
             ->add('nombre')
             ->add('codigo')
+            ->add('codigoexterno')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -49,6 +51,7 @@ class MonedaAdmin extends AbstractAdmin
         $formMapper
             ->add('nombre')
             ->add('codigo')
+            ->add('codigoexterno')
         ;
     }
 

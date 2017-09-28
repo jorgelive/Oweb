@@ -50,6 +50,11 @@ class ArchivoController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isValid()||$request->isXMLHttpRequest()) {
+            if(is_null($this->getUser())){
+                return new JsonResponse([
+                    'mensaje'=>['exito'=>'no','titulo'=>'Error','texto'=>'El usuario no ha ingresado.'],
+                ]);
+            }
             $entity->setUser($this->getUser());
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);

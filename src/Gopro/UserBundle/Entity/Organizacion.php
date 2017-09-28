@@ -37,10 +37,18 @@ class Organizacion
     /**
      * @var string
      *
+     * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank
+     */
+    private $razonsocial;
+
+    /**
+     * @var string
+     *
      * @Assert\NotBlank
      * @ORM\Column(type="string", length=11, unique=true)
      */
-    private $ruc;
+    private $numerodocumento;
 
     /**
      * @var string
@@ -104,26 +112,26 @@ class Organizacion
     }
 
     /**
-     * Set ruc
+     * Set numerodocumento
      *
-     * @param string $ruc
+     * @param string $numerodocumento
      * @return Organizacion
      */
-    public function setRuc($ruc)
+    public function setNumerodocumento($numerodocumento)
     {
-        $this->ruc = $ruc;
+        $this->numerodocumento = $numerodocumento;
 
         return $this;
     }
 
     /**
-     * Get ruc
+     * Get numerodocumento
      *
      * @return string 
      */
-    public function getRuc()
+    public function getNumerodocumento()
     {
-        return $this->ruc;
+        return $this->numerodocumento;
     }
 
     /**
@@ -175,12 +183,14 @@ class Organizacion
     /**
      * Add dependencias
      *
-     * @param \Gopro\UserBundle\Entity\Dependencia $dependencias
+     * @param \Gopro\UserBundle\Entity\Dependencia $dependencia
      * @return Organizacion
      */
-    public function addDependencia(\Gopro\UserBundle\Entity\Dependencia $dependencias)
+    public function addDependencia(\Gopro\UserBundle\Entity\Dependencia $dependencia)
     {
-        $this->dependencias[] = $dependencias;
+        $dependencia->setOrganizacion($this);
+
+        $this->dependencias[] = $dependencia;
 
         return $this;
     }
@@ -225,5 +235,29 @@ class Organizacion
         }
 
         return $this->getNombre();
+    }
+
+    /**
+     * Set razonsocial
+     *
+     * @param string $razonsocial
+     *
+     * @return Organizacion
+     */
+    public function setRazonsocial($razonsocial)
+    {
+        $this->razonsocial = $razonsocial;
+
+        return $this;
+    }
+
+    /**
+     * Get razonsocial
+     *
+     * @return string
+     */
+    public function getRazonsocial()
+    {
+        return $this->razonsocial;
     }
 }

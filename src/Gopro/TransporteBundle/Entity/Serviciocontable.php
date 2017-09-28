@@ -2,6 +2,7 @@
 namespace Gopro\TransporteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -38,17 +39,17 @@ class Serviciocontable
     private $moneda;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
     private $neto;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
     private $impuesto;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
     private $total;
 
@@ -70,14 +71,35 @@ class Serviciocontable
     private $documento;
 
     /**
-     * @ORM\Column(type="string", length=6, nullable=true)
+     * @ORM\Column(type="date", nullable=true)
      */
-    private $serieasociado;
+    private $fechaemision;
 
     /**
-     * @ORM\Column(type="string", length=10, nullable=true)
+     * @ORM\Column(type="string", length=150, nullable=true)
      */
-    private $documentoasociado;
+    private $url;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Sercontablemensaje", mappedBy="serviciocontable", cascade={"persist", "remove"})
+     */
+    private $sercontablemensajes;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Serviciocontable", mappedBy="original")
+     */
+    private $dependientes;
+
+    /**
+     * @var \Gopro\TransporteBundle\Entity\Serviciocontable
+     *
+     * @ORM\ManyToOne(targetEntity="Serviciocontable", inversedBy="dependientes")
+     */
+    private $original;
 
     /**
      * @var \Gopro\MaestroBundle\Entity\Estadocontable
@@ -85,6 +107,8 @@ class Serviciocontable
      * @ORM\ManyToOne(targetEntity="Gopro\MaestroBundle\Entity\Estadocontable")
      */
     private $estadocontable;
+
+
 
     /**
      * @var \DateTime $creado
@@ -102,16 +126,28 @@ class Serviciocontable
      */
     private $modificado;
 
+    public function __construct()
+    {
+        $this->dependientes = new ArrayCollection();
+        $this->sercontablemensajes = new ArrayCollection();
+    }
+
     /**
      * @return string
      */
     public function __toString()
     {
-        if(is_null($this->getDescripcion())) {
-            return 'NULL';
+        if(!empty($this->getDocumento()) && !empty($this->getSerie())){
+            return sprintf('%s-%s-%s', $this->getTiposercontable()->getCodigo(), $this->getSerie() , str_pad($this->getDocumento(), 5, "0", STR_PAD_LEFT));
+        }elseif(!empty($this->getServicio())
+            && !empty($this->getServicio()->getDependencia())
+            && !empty($this->getServicio()->getDependencia()->getOrganizaciondependencia()
+            )
+        ){
+            return sprintf('%s-%s-%s', $this->getTiposercontable()->getCodigo(), $this->getServicio()->getDependencia()->getOrganizaciondependencia() , $this->getDescripcion());
+        }else{
+            return '';
         }
-
-        return $this->getDescripcion();
     }
 
 
@@ -270,54 +306,6 @@ class Serviciocontable
     }
 
     /**
-     * Set serieasociado
-     *
-     * @param string $serieasociado
-     *
-     * @return Serviciocontable
-     */
-    public function setSerieasociado($serieasociado)
-    {
-        $this->serieasociado = $serieasociado;
-
-        return $this;
-    }
-
-    /**
-     * Get serieasociado
-     *
-     * @return string
-     */
-    public function getSerieasociado()
-    {
-        return $this->serieasociado;
-    }
-
-    /**
-     * Set documentoasociado
-     *
-     * @param string $documentoasociado
-     *
-     * @return Serviciocontable
-     */
-    public function setDocumentoasociado($documentoasociado)
-    {
-        $this->documentoasociado = $documentoasociado;
-
-        return $this;
-    }
-
-    /**
-     * Get documentoasociado
-     *
-     * @return string
-     */
-    public function getDocumentoasociado()
-    {
-        return $this->documentoasociado;
-    }
-
-    /**
      * Set creado
      *
      * @param \DateTime $creado
@@ -459,5 +447,150 @@ class Serviciocontable
     public function getEstadocontable()
     {
         return $this->estadocontable;
+    }
+
+    /**
+     * Set fechaemision
+     *
+     * @param \DateTime $fechaemision
+     *
+     * @return Serviciocontable
+     */
+    public function setFechaemision($fechaemision)
+    {
+        $this->fechaemision = $fechaemision;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaemision
+     *
+     * @return \DateTime
+     */
+    public function getFechaemision()
+    {
+        return $this->fechaemision;
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     *
+     * @return Serviciocontable
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * Add dependiente
+     *
+     * @param \Gopro\TransporteBundle\Entity\Serviciocontable $dependiente
+     *
+     * @return Serviciocontable
+     */
+    public function addDependiente(\Gopro\TransporteBundle\Entity\Serviciocontable $dependiente)
+    {
+        $dependiente->setOriginal($this);
+
+        $this->dependientes[] = $dependiente;
+
+        return $this;
+    }
+
+    /**
+     * Remove dependiente
+     *
+     * @param \Gopro\TransporteBundle\Entity\Serviciocontable $dependiente
+     */
+    public function removeDependiente(\Gopro\TransporteBundle\Entity\Serviciocontable $dependiente)
+    {
+        $this->dependientes->removeElement($dependiente);
+    }
+
+    /**
+     * Get dependientes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDependientes()
+    {
+        return $this->dependientes;
+    }
+
+    /**
+     * Set original
+     *
+     * @param \Gopro\TransporteBundle\Entity\Serviciocontable $original
+     *
+     * @return Serviciocontable
+     */
+    public function setOriginal(\Gopro\TransporteBundle\Entity\Serviciocontable $original = null)
+    {
+        $this->original = $original;
+
+        return $this;
+    }
+
+    /**
+     * Get original
+     *
+     * @return \Gopro\TransporteBundle\Entity\Serviciocontable
+     */
+    public function getOriginal()
+    {
+        return $this->original;
+    }
+
+
+    /**
+     * Add sercontablemensaje
+     *
+     * @param \Gopro\TransporteBundle\Entity\Sercontablemensaje $sercontablemensaje
+     *
+     * @return Serviciocontable
+     */
+    public function addSercontablemensaje(\Gopro\TransporteBundle\Entity\Sercontablemensaje $sercontablemensaje)
+    {
+        $sercontablemensaje->setServiciocontable($this);
+
+        $this->sercontablemensajes[] = $sercontablemensaje;
+
+        return $this;
+    }
+
+    /**
+     * Remove sercontablemensaje
+     *
+     * @param \Gopro\TransporteBundle\Entity\Sercontablemensaje $sercontablemensaje
+     */
+    public function removeSercontablemensaje(\Gopro\TransporteBundle\Entity\Sercontablemensaje $sercontablemensaje)
+    {
+        $this->sercontablemensajes->removeElement($sercontablemensaje);
+    }
+
+    /**
+     * Get sercontablemensajes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSercontablemensajes()
+    {
+        return $this->sercontablemensajes;
     }
 }

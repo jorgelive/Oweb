@@ -181,12 +181,14 @@ class Dependencia
     /**
      * Add users
      *
-     * @param \Gopro\UserBundle\Entity\User $users
+     * @param \Gopro\UserBundle\Entity\User $user
      * @return Dependencia
      */
-    public function addUser(\Gopro\UserBundle\Entity\User $users)
+    public function addUser(\Gopro\UserBundle\Entity\User $user)
     {
-        $this->users[] = $users;
+        $user->setDependencia($this);
+
+        $this->users[] = $user;
 
         return $this;
     }

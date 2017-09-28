@@ -2,6 +2,7 @@
 namespace Gopro\MaestroBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -29,6 +30,18 @@ class Moneda
     private $codigo;
 
     /**
+     * @ORM\Column(type="string", length=3)
+     */
+    private $codigoexterno;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Tipocambio", mappedBy="moneda")
+     */
+    protected $tipocambios;
+
+    /**
      * @var \DateTime $creado
      *
      * @Gedmo\Timestampable(on="create")
@@ -43,6 +56,11 @@ class Moneda
      * @ORM\Column(type="datetime")
      */
     private $modificado;
+
+    public function __construct()
+    {
+        $this->tipocambios = new ArrayCollection();
+    }
 
     /**
      * @return string
@@ -159,4 +177,62 @@ class Moneda
     }
 
 
+
+    /**
+     * Set codigoexterno
+     *
+     * @param string $codigoexterno
+     *
+     * @return Moneda
+     */
+    public function setCodigoexterno($codigoexterno)
+    {
+        $this->codigoexterno = $codigoexterno;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoexterno
+     *
+     * @return string
+     */
+    public function getCodigoexterno()
+    {
+        return $this->codigoexterno;
+    }
+
+    /**
+     * Add tipocambio
+     *
+     * @param \Gopro\MaestroBundle\Entity\Tipocambio $tipocambio
+     *
+     * @return Moneda
+     */
+    public function addTipocambio(\Gopro\MaestroBundle\Entity\Tipocambio $tipocambio)
+    {
+        $this->tipocambios[] = $tipocambio;
+
+        return $this;
+    }
+
+    /**
+     * Remove tipocambio
+     *
+     * @param \Gopro\MaestroBundle\Entity\Tipocambio $tipocambio
+     */
+    public function removeTipocambio(\Gopro\MaestroBundle\Entity\Tipocambio $tipocambio)
+    {
+        $this->tipocambios->removeElement($tipocambio);
+    }
+
+    /**
+     * Get tipocambios
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTipocambios()
+    {
+        return $this->tipocambios;
+    }
 }

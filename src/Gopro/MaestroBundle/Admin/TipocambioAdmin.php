@@ -1,6 +1,6 @@
 <?php
 
-namespace Gopro\TransporteBundle\Admin;
+namespace Gopro\MaestroBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class TiposercontableAdmin extends AbstractAdmin
+class TipocambioAdmin extends AbstractAdmin
 {
     /**
      * @param DatagridMapper $datagridMapper
@@ -17,12 +17,11 @@ class TiposercontableAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('nombre')
-            ->add('codigo')
-            ->add('codigoexterno')
-            ->add('serie')
-            ->add('correlativo')
-            ->add('esnotacredito')
+            ->add('fecha')
+            ->add('moneda')
+            ->add('compra')
+            ->add('venta')
+
         ;
     }
 
@@ -33,12 +32,10 @@ class TiposercontableAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
-            ->add('codigo')
-            ->add('codigoexterno')
-            ->add('serie')
-            ->add('correlativo')
-            ->add('esnotacredito')
+            ->add('fecha')
+            ->add('moneda')
+            ->add('compra')
+            ->add('venta')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -55,12 +52,10 @@ class TiposercontableAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('nombre')
-            ->add('codigo')
-            ->add('codigoexterno')
-            ->add('serie')
-            ->add('correlativo')
-            ->add('esnotacredito')
+            ->add('fecha')
+            ->add('moneda')
+            ->add('compra')
+            ->add('venta')
         ;
     }
 
@@ -71,12 +66,10 @@ class TiposercontableAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
-            ->add('nombre')
-            ->add('codigo')
-            ->add('codigoexterno')
-            ->add('serie')
-            ->add('correlativo')
-            ->add('esnotacredito')
+            ->add('fecha')
+            ->add('moneda')
+            ->add('compra')
+            ->add('venta')
         ;
     }
 

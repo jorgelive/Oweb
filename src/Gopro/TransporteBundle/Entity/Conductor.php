@@ -224,6 +224,8 @@ class Conductor
      */
     public function addServicio(\Gopro\TransporteBundle\Entity\Servicio $servicio)
     {
+        $servicio->setConductor($this);
+
         $this->servicios[] = $servicio;
 
         return $this;

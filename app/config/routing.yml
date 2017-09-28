@@ -8,6 +8,11 @@ gopro_maestro:
     type:     annotation
     prefix:   /maestro
 
+gopro_transporte:
+    resource: "@GoproTransporteBundle/Controller/"
+    type:     annotation
+    prefix:   /transporte
+
 sonata_user_security:
     resource: "@SonataUserBundle/Resources/config/routing/sonata_security_1.xml"
 

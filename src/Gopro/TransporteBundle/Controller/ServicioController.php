@@ -36,6 +36,7 @@ class ServicioController extends BaseController
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new Servicio entity.
      *
@@ -75,12 +76,12 @@ class ServicioController extends BaseController
     }
 
     /**
-    * Creates a form to create a Servicio entity.
-    *
-    * @param Servicio $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to create a Servicio entity.
+     *
+     * @param Servicio $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createCreateForm(Servicio $entity)
     {
         $form = $this->createForm(new ServicioType(), $entity, array(
@@ -164,12 +165,12 @@ class ServicioController extends BaseController
     }
 
     /**
-    * Creates a form to edit a Servicio entity.
-    *
-    * @param Servicio $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a Servicio entity.
+     *
+     * @param Servicio $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Servicio $entity)
     {
         $form = $this->createForm(new ServicioType(), $entity, array(
@@ -181,6 +182,7 @@ class ServicioController extends BaseController
 
         return $form;
     }
+
     /**
      * Edits an existing Servicio entity.
      *
@@ -214,6 +216,7 @@ class ServicioController extends BaseController
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Servicio entity.
      *

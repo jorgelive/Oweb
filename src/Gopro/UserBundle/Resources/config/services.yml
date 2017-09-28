@@ -1,31 +1,31 @@
 services:
     gopro_user.admin.organizacion:
         class: Gopro\UserBundle\Admin\OrganizacionAdmin
-        arguments: [~, Gopro\UserBundle\Entity\Organizacion, GoproUserBundle:OrganizacionAdmin]
+        arguments: [~, Gopro\UserBundle\Entity\Organizacion, ~]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Organizacion, label: Organizaciones}
 
     gopro_user.admin.dependencia:
         class: Gopro\UserBundle\Admin\DependenciaAdmin
-        arguments: [~, Gopro\UserBundle\Entity\Dependencia, GoproUserBundle:DependenciaAdmin]
+        arguments: [~, Gopro\UserBundle\Entity\Dependencia, ~]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Organizacion, label: Dependencias}
 
     gopro_user.admin.area:
         class: Gopro\UserBundle\Admin\AreaAdmin
-        arguments: [~, Gopro\UserBundle\Entity\Area, GoproUserBundle:AreaAdmin]
+        arguments: [~, Gopro\UserBundle\Entity\Area, ~]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Organizacion, label: Areas}
 
     gopro_user.admin.cuenta:
             class: Gopro\UserBundle\Admin\CuentaAdmin
-            arguments: [~, Gopro\UserBundle\Entity\Cuenta, GoproUserBundle:CuentaAdmin]
+            arguments: [~, Gopro\UserBundle\Entity\Cuenta, ~]
             tags:
                 - {name: sonata.admin, manager_type: orm, group: 'Cuentas de usuario', label: 'Cuenta de usuario'}
 
     gopro_user.admin.cuentatipo:
                 class: Gopro\UserBundle\Admin\CuentatipoAdmin
-                arguments: [~, Gopro\UserBundle\Entity\Cuentatipo, GoproUserBundle:CuentatipoAdmin]
+                arguments: [~, Gopro\UserBundle\Entity\Cuentatipo, ~]
                 tags:
                     - {name: sonata.admin, manager_type: orm, group: 'Cuentas de usuario', label: "Tipos de cuentas"}
 

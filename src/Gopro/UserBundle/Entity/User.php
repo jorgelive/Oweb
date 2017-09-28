@@ -123,12 +123,14 @@ class User extends BaseUser
     /**
      * Add cuenta
      *
-     * @param \Gopro\UserBundle\Entity\Cuenta $cuentas
+     * @param \Gopro\UserBundle\Entity\Cuenta $cuenta
      * @return User
      */
-    public function addCuenta(\Gopro\UserBundle\Entity\Cuenta $cuentas)
+    public function addCuenta(\Gopro\UserBundle\Entity\Cuenta $cuenta)
     {
-        $this->cuentas[] = $cuentas;
+        $cuenta->setUser($this);
+
+        $this->cuentas[] = $cuenta;
 
         return $this;
     }

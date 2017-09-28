@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class TiposercontableAdmin extends AbstractAdmin
+class ServiciofileAdmin extends AbstractAdmin
 {
     /**
      * @param DatagridMapper $datagridMapper
@@ -17,12 +17,14 @@ class TiposercontableAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
+            ->add('hora')
             ->add('nombre')
             ->add('codigo')
-            ->add('codigoexterno')
-            ->add('serie')
-            ->add('correlativo')
-            ->add('esnotacredito')
+            ->add('numadl')
+            ->add('numchd')
+            ->add('origen')
+            ->add('destino')
+            ->add('nota')
         ;
     }
 
@@ -33,12 +35,14 @@ class TiposercontableAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
+            ->add('hora')
             ->add('nombre')
             ->add('codigo')
-            ->add('codigoexterno')
-            ->add('serie')
-            ->add('correlativo')
-            ->add('esnotacredito')
+            ->add('numadl')
+            ->add('numchd')
+            ->add('origen')
+            ->add('destino')
+            ->add('nota')
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -55,12 +59,14 @@ class TiposercontableAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->add('hora')
             ->add('nombre')
             ->add('codigo')
-            ->add('codigoexterno')
-            ->add('serie')
-            ->add('correlativo')
-            ->add('esnotacredito')
+            ->add('numadl')
+            ->add('numchd')
+            ->add('origen')
+            ->add('destino')
+            ->add('nota')
         ;
     }
 
@@ -71,12 +77,14 @@ class TiposercontableAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
+            ->add('hora')
             ->add('nombre')
             ->add('codigo')
-            ->add('codigoexterno')
-            ->add('serie')
-            ->add('correlativo')
-            ->add('esnotacredito')
+            ->add('numadl')
+            ->add('numchd')
+            ->add('origen')
+            ->add('destino')
+            ->add('nota')
         ;
     }
 
