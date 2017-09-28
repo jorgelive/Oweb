@@ -15,10 +15,10 @@ class ServiciocontableAdminController extends CRUDController
     {
         $fechaEmision = new \DateTime();
 
-        $ruta = $this->getParameter('facturacion_ruta_prueba');
-        $token = $this->getParameter('facturacion_token_prueba');
-        //$ruta = $this->getParameter('facturacion_ruta_produccion');
-        //$token = $this->getParameter('facturacion_token_produccion');
+        //$ruta = $this->getParameter('facturacion_ruta_prueba');
+        //$token = $this->getParameter('facturacion_token_prueba');
+        $ruta = $this->getParameter('facturacion_ruta_produccion');
+        $token = $this->getParameter('facturacion_token_produccion');
 
         $em = $this->getDoctrine()->getManager();
 

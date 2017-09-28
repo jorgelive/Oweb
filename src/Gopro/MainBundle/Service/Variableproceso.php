@@ -12,6 +12,9 @@ class Variableproceso implements ContainerAwareInterface{
 
     public function sanitizeString($str, $with = '', $what = array())
     {
+        if(!is_array($what)){
+            $what = [$what];
+        }
         $what[] = "/[\\x00-\\x20]+/";
         $what[] = "/[']+/";
         $what[] = "/[(]+/";

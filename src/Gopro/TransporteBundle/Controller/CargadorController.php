@@ -93,10 +93,11 @@ class CargadorController extends BaseController
                 $j = 0;
             }
 
-            if (isset($linea['dependenciaServicio']) || !empty($linea['dependeciaServicio'])
-                && isset($linea['fechaServicio']) || !empty($linea['fechaServicio'])
-                && isset($linea['horaServicio']) || !empty($linea['horaServicio'])
-                && isset($linea['nombreServicio']) || !empty($linea['nombreServicio'])
+            if (
+                (isset($linea['dependenciaServicio']) || !empty($linea['dependeciaServicio']))
+                && (isset($linea['fechaServicio']) || !empty($linea['fechaServicio']))
+                && (isset($linea['horaServicio']) || !empty($linea['horaServicio']))
+                && (isset($linea['nombreServicio']) || !empty($linea['nombreServicio']))
 
             ) {
                 if(!isset($i)){
