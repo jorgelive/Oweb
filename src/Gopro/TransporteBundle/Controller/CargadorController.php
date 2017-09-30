@@ -110,15 +110,18 @@ class CargadorController extends BaseController
                 }
 
                 $j = 0;
+
                 $preproceso[$i]['dependencia'] = $linea['dependenciaServicio'];
                 $preproceso[$i]['fecha'] = $linea['fechaServicio'];
                 $preproceso[$i]['hora'] = $linea['horaServicio'];
                 if (!isset($linea['horafinServicio']) || empty($linea['horafinServicio'])) {
-                    $preproceso[$i]['horafin'] = date('H:i:s', strtotime($linea['horaServicio']) + 60 * 60);
+                     $linea['horafinServicio'] = date('H:i:s', strtotime($linea['horaServicio']) + 60 * 60);
                 }
                 if (!isset($linea['fechafinServicio']) || empty($linea['fechafinServicio'])) {
-                    $preproceso[$i]['fechafin'] = $linea['fechaServicio'];
+                    $linea['fechafinServicio'] = $linea['fechaServicio'];
                 }
+                $preproceso[$i]['horafin'] = $linea['horafinServicio'];
+                $preproceso[$i]['fechafin'] = $linea['fechafinServicio'];
                 $preproceso[$i]['nombre'] = $linea['nombreServicio'];
                 if (isset($linea['unidadServicio'])) {
                     $preproceso[$i]['unidad'] = $linea['unidadServicio'];
@@ -195,6 +198,7 @@ class CargadorController extends BaseController
             $preproceso[$i]['excelRowNumber'] = $linea['excelRowNumber'];
 
         endforeach;
+
         if (empty($preproceso)) {
             $this->setMensajes('No se preproceso ningun elemento');
             return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $this->getMensajes());

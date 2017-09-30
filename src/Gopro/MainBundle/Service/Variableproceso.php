@@ -97,13 +97,13 @@ class Variableproceso implements ContainerAwareInterface{
                     return(date('H:i:s', strtotime(substr($variable, 0, 2) . ':' . substr($variable, 2, 2) . ':' . substr($variable, 4, 2))));
                 }
             }elseif(is_numeric($variable)){
+
                 $variable = $variable * 24;
+                $hora = round($variable, 0);
+                $variable = ($variable - intval($variable)) * 60;
+                $minuto = intval($variable, 0);
+                $segundo = round(($variable - intval($variable)) * 60, 0);
 
-                $hora = intval($variable);
-                $variable = ($variable - $hora) * 60;
-                $minuto = intval($variable);
-
-                $segundo = intval(($variable - $minuto) * 60);
                 return date('H:i:s', strtotime($hora . ':' . $minuto . ':' . $segundo));
             }else{
                 return $variable;
