@@ -23,6 +23,9 @@ use Gopro\MaestroBundle\Entity\Moneda;
  */
 class CargadorController extends BaseController
 {
+
+    protected $igv = 18;
+
     /**
      * @Route("/genericoprograma/{archivoEjecutar}", name="gopro_transporte_cargador_genericoprograma", defaults={"archivoEjecutar" = null})
      * @Template()
@@ -48,6 +51,8 @@ class CargadorController extends BaseController
         $columnaspecs[] = array('nombre' => 'dependenciaServicio');
         $columnaspecs[] = array('nombre' => 'fechaServicio', 'tipo' => 'exceldate');
         $columnaspecs[] = array('nombre' => 'horaServicio', 'tipo' => 'exceltime');
+        $columnaspecs[] = array('nombre' => 'horafinServicio', 'tipo' => 'exceltime');
+        $columnaspecs[] = array('nombre' => 'fechafinServicio', 'tipo' => 'exceldate');
         $columnaspecs[] = array('nombre' => 'nombreServicio');
         $columnaspecs[] = array('nombre' => 'unidadServicio');
         $columnaspecs[] = array('nombre' => 'conductorServicio');
@@ -64,8 +69,6 @@ class CargadorController extends BaseController
         $columnaspecs[] = array('nombre' => 'notaOperativo');
         $columnaspecs[] = array('nombre' => 'tiposercontableContable');
         $columnaspecs[] = array('nombre' => 'monedaContable');
-        $columnaspecs[] = array('nombre' => 'netoContable');
-        $columnaspecs[] = array('nombre' => 'impuestoContable');
         $columnaspecs[] = array('nombre' => 'totalContable');
         $columnaspecs[] = array('nombre' => 'descripcionContable');
 
@@ -110,6 +113,12 @@ class CargadorController extends BaseController
                 $preproceso[$i]['dependencia'] = $linea['dependenciaServicio'];
                 $preproceso[$i]['fecha'] = $linea['fechaServicio'];
                 $preproceso[$i]['hora'] = $linea['horaServicio'];
+                if (isset($linea['horafinServicio'])) {
+                    $preproceso[$i]['horafin'] = $linea['horafinServicio'];
+                }
+                if (isset($linea['fechafinServicio'])) {
+                    $preproceso[$i]['fechafin'] = $linea['fechafinServicio'];
+                }
                 $preproceso[$i]['nombre'] = $linea['nombreServicio'];
                 if (isset($linea['unidadServicio'])) {
                     $preproceso[$i]['unidad'] = $linea['unidadServicio'];
@@ -168,15 +177,17 @@ class CargadorController extends BaseController
 
             if (isset($linea['tiposercontableContable'])
                 && isset($linea['monedaContable'])
-                && isset($linea['netoContable'])
-                && isset($linea['impuestoContable'])
                 && isset($linea['totalContable'])
                 && isset($linea['descripcionContable'])
             ) {
+                $igv = $this->igv;
+                if($linea['tiposercontableContable'] <= 0){
+                    $igv = 0;
+                }
                 $preproceso[$i]['servicioContable']['tiposercontable'] = $linea['tiposercontableContable'];
                 $preproceso[$i]['servicioContable']['moneda'] = $linea['monedaContable'];
-                $preproceso[$i]['servicioContable']['neto'] = $linea['netoContable'];
-                $preproceso[$i]['servicioContable']['impuesto'] = $linea['impuestoContable'];
+                $preproceso[$i]['servicioContable']['neto'] = round($linea['totalContable'] / (1 +  $igv / 100), 2);
+                $preproceso[$i]['servicioContable']['impuesto'] = round($linea['totalContable'] - $preproceso[$i]['servicioContable']['neto'], 2) ;
                 $preproceso[$i]['servicioContable']['total'] = $linea['totalContable'];
                 $preproceso[$i]['servicioContable']['descripcion'] = $linea['descripcionContable'];
             }
@@ -208,6 +219,12 @@ class CargadorController extends BaseController
             $servicio->setDependencia($em->getReference('Gopro\UserBundle\Entity\Dependencia', $linea['dependencia']));
             $servicio->setFecha(\DateTime::createFromFormat('Y-m-d', $linea['fecha']));
             $servicio->setHora(\DateTime::createFromFormat('H:i:s', $linea['hora']));
+            if(isset($linea['horafin'])){
+                $servicio->setHorafin(\DateTime::createFromFormat('H:i:s', $linea['horafin']));
+            }
+            if(isset($linea['fechafin'])){
+                $servicio->setFechafin(\DateTime::createFromFormat('Y-m-d', $linea['fechafin']));
+            }
             $servicio->setNombre($linea['nombre']);
             if(isset($linea['unidad'])){
                 $servicio->setUnidad($em->getReference('Gopro\TransporteBundle\Entity\Unidad', $linea['unidad']));

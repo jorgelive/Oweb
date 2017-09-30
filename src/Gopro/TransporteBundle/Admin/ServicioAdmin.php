@@ -44,6 +44,13 @@ class ServicioAdmin extends AbstractAdmin
             ->add('hora', 'datetime', [
                 'format' => 'H:i'
             ])
+            ->add('horafin', 'datetime', [
+                'format' => 'H:i',
+                'label' => 'Hora fin'
+            ])
+            ->add('fechafin',  null, [
+                'label' => 'Fecha fin'
+            ])
             ->add('dependencia.organizacion', null, [
                 'route' => ['name' => 'show'],
                 'label' => 'Cliente'
@@ -73,7 +80,8 @@ class ServicioAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('dependencia', null, [
-                'property' => 'organizaciondependencia'
+                'property' => 'organizaciondependencia',
+                'label' => 'cliente'
             ])
             ->add('fecha', 'sonata_type_date_picker', [
                 'dp_use_current' => true,
@@ -81,6 +89,15 @@ class ServicioAdmin extends AbstractAdmin
                 'format'=> 'yyyy/MM/dd'
             ])
             ->add('hora')
+            ->add('horafin', null, [
+                'label' => 'Hora fin'
+            ])
+            ->add('fechafin', 'sonata_type_date_picker', [
+                'label' => 'Fecha fin',
+                'dp_use_current' => true,
+                'dp_show_today' => true,
+                'format'=> 'yyyy/MM/dd'
+            ])
             ->add('unidad')
             ->add('conductor')
             ->add('nombre')
@@ -116,11 +133,19 @@ class ServicioAdmin extends AbstractAdmin
         $showMapper
             ->add('id')
             ->add('dependencia.organizacion', null, [
-                'route' => ['name' => 'show']
+                'route' => ['name' => 'show'],
+                'label' => 'Cliente'
             ])
             ->add('fecha')
             ->add('hora', 'datetime', [
                 'format' => 'H:i'
+            ])
+            ->add('horafin', 'datetime', [
+                'label' => 'Hora fin',
+                'format' => 'H:i'
+            ])
+            ->add('fechafin', null, [
+                'label' => 'Fecha fin'
             ])
             ->add('unidad', null, [
                 'route' => ['name' => 'show']

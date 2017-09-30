@@ -53,6 +53,11 @@ class Servicio
     private $nombre;
 
     /**
+     * @ORM\Column(type="date", length=100)
+     */
+    private $fecha;
+
+    /**
      * @ORM\Column(type="time")
      */
     private $hora;
@@ -60,7 +65,12 @@ class Servicio
     /**
      * @ORM\Column(type="date", length=100)
      */
-    private $fecha;
+    private $fechafin;
+
+    /**
+     * @ORM\Column(type="time")
+     */
+    private $horafin;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -108,9 +118,6 @@ class Servicio
 
         return $this->getNombre();
     }
-
-
-
 
     /**
      * Get id
@@ -420,5 +427,61 @@ class Servicio
     public function getServiciooperativos()
     {
         return $this->serviciooperativos;
+    }
+
+    /**
+     * Set fechafin
+     *
+     * @param \DateTime $fechafin
+     *
+     * @return Servicio
+     */
+    public function setFechafin($fechafin)
+    {
+        if(empty($fechafin)){
+            $fechafin = $this->fecha;
+        }
+        $this->fechafin = $fechafin;
+
+        return $this;
+    }
+
+    /**
+     * Get fechafin
+     *
+     * @return \DateTime
+     */
+    public function getFechafin()
+    {
+        return $this->fechafin;
+    }
+
+    /**
+     * Set horafin
+     *
+     * @param \DateTime $horafin
+     *
+     * @return Servicio
+     */
+    public function setHorafin($horafin)
+    {
+        if(empty($horafin)){
+            $horafin = clone $this->hora;
+            $horafin->add(new \DateInterval('PT1H'));
+        }
+
+        $this->horafin = $horafin;
+
+        return $this;
+    }
+
+    /**
+     * Get horafin
+     *
+     * @return \DateTime
+     */
+    public function getHorafin()
+    {
+        return $this->horafin;
     }
 }
