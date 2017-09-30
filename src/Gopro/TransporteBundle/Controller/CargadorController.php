@@ -113,11 +113,11 @@ class CargadorController extends BaseController
                 $preproceso[$i]['dependencia'] = $linea['dependenciaServicio'];
                 $preproceso[$i]['fecha'] = $linea['fechaServicio'];
                 $preproceso[$i]['hora'] = $linea['horaServicio'];
-                if (isset($linea['horafinServicio'])) {
-                    $preproceso[$i]['horafin'] = $linea['horafinServicio'];
+                if (!isset($linea['horafinServicio']) || empty($linea['horafinServicio'])) {
+                    $preproceso[$i]['horafin'] = date('H:i:s', strtotime($linea['horaServicio']) + 60 * 60);
                 }
-                if (isset($linea['fechafinServicio'])) {
-                    $preproceso[$i]['fechafin'] = $linea['fechafinServicio'];
+                if (!isset($linea['fechafinServicio']) || empty($linea['fechafinServicio'])) {
+                    $preproceso[$i]['fechafin'] = $linea['fechaServicio'];
                 }
                 $preproceso[$i]['nombre'] = $linea['nombreServicio'];
                 if (isset($linea['unidadServicio'])) {
