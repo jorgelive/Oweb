@@ -18,6 +18,19 @@ class ServiciocontableAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
+            ->add('servicio.nombre', null, [
+                'label' => 'Servicio'
+            ])
+            ->add('servicio.fecha', 'doctrine_orm_datetime', [
+                'label' => 'Fecha servicio',
+                'field_type'=>'sonata_type_date_picker',
+                'field_options'=> [
+                    'dp_use_current' => true,
+                    'dp_show_today' => true,
+                    'format'=> 'yyyy/MM/dd'
+                ]
+
+            ])
             ->add('estadocontable', null, [
                 'label' => 'Estado'
             ])
@@ -28,13 +41,17 @@ class ServiciocontableAdmin extends AbstractAdmin
                 'label' => 'Descripción'
             ])
             ->add('moneda')
-            ->add('neto')
-            ->add('impuesto')
             ->add('total')
             ->add('serie')
             ->add('documento')
-            ->add('fechaemision', null, [
-                'label' => 'Fecha emisión'
+            ->add('fechaemision', 'doctrine_orm_datetime', [
+                'label' => 'Fecha emisión',
+                'field_type'=>'sonata_type_date_picker',
+                'field_options'=> [
+                    'dp_use_current' => true,
+                    'dp_show_today' => true,
+                    'format'=> 'yyyy/MM/dd'
+                ]
             ])
             ->add('url')
             ->add('original')

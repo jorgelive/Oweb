@@ -17,7 +17,14 @@ class ServicioAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('fecha')
+            ->add('fecha', 'doctrine_orm_datetime', [
+                'field_type'=>'sonata_type_date_picker',
+                'field_options'=> [
+                    'dp_use_current' => true,
+                    'dp_show_today' => true,
+                    'format'=> 'yyyy/MM/dd'
+                ]
+            ])
             ->add('dependencia.organizacion', null, [
                 'route' => ['name' => 'show']
             ])
@@ -34,7 +41,9 @@ class ServicioAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('fecha')
-            ->add('hora')
+            ->add('hora', 'datetime', [
+                'format' => 'H:i'
+            ])
             ->add('dependencia.organizacion', null, [
                 'route' => ['name' => 'show'],
                 'label' => 'Cliente'
@@ -66,8 +75,12 @@ class ServicioAdmin extends AbstractAdmin
             ->add('dependencia', null, [
                 'property' => 'organizaciondependencia'
             ])
+            ->add('fecha', 'sonata_type_date_picker', [
+                'dp_use_current' => true,
+                'dp_show_today' => true,
+                'format'=> 'yyyy/MM/dd'
+            ])
             ->add('hora')
-            ->add('fecha')
             ->add('unidad')
             ->add('conductor')
             ->add('nombre')
@@ -105,8 +118,10 @@ class ServicioAdmin extends AbstractAdmin
             ->add('dependencia.organizacion', null, [
                 'route' => ['name' => 'show']
             ])
-            ->add('hora')
             ->add('fecha')
+            ->add('hora', 'datetime', [
+                'format' => 'H:i'
+            ])
             ->add('unidad', null, [
                 'route' => ['name' => 'show']
             ])
