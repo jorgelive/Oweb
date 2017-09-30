@@ -39,13 +39,13 @@ class TiposercontableAdmin extends AbstractAdmin
             ->add('serie')
             ->add('correlativo')
             ->add('esnotacredito')
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    'show' => array(),
-                    'edit' => array(),
-                    'delete' => array(),
-                )
-            ))
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'show' => [],
+                    'edit' => [],
+                    'delete' => [],
+                ]
+            ])
         ;
     }
 

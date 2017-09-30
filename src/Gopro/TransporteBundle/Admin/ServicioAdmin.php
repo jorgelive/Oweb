@@ -17,13 +17,13 @@ class ServicioAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('dependencia')
+            ->add('fecha')
+            ->add('dependencia.organizacion', null, [
+                'route' => ['name' => 'show']
+            ])
             ->add('unidad')
             ->add('conductor')
             ->add('nombre')
-            ->add('hora')
-            ->add('fecha')
-
         ;
     }
 
@@ -33,20 +33,27 @@ class ServicioAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
             ->add('fecha')
-            ->add('dependencia')
-            ->add('unidad')
-            ->add('conductor')
-            ->add('nombre')
             ->add('hora')
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    'show' => array(),
-                    'edit' => array(),
-                    'delete' => array(),
-                )
-            ))
+            ->add('dependencia.organizacion', null, [
+                'route' => ['name' => 'show'],
+                'label' => 'Cliente'
+            ])
+            ->add('unidad', null, [
+                'associated_property' => 'abreviatura',
+                'route' => ['name' => 'show']
+            ])
+            ->add('conductor', null, [
+                'route' => ['name' => 'show']
+            ])
+            ->add('nombre')
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'show' => [],
+                    'edit' => [],
+                    'delete' => [],
+                ]
+            ])
         ;
     }
 
@@ -56,27 +63,35 @@ class ServicioAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('dependencia', null, array('property' => 'organizaciondependencia'))
+            ->add('dependencia', null, [
+                'property' => 'organizaciondependencia'
+            ])
+            ->add('hora')
+            ->add('fecha')
             ->add('unidad')
             ->add('conductor')
             ->add('nombre')
-            ->add('hora')
-            ->add('fecha')
-            ->add('serviciooperativos', 'sonata_type_collection', array('by_reference' => false),array(
-                    'edit' => 'inline',
-                    'inline' => 'table'
-                )
-            )
-            ->add('serviciofiles', 'sonata_type_collection', array('by_reference' => false),array(
-                    'edit' => 'inline',
-                    'inline' => 'table'
-                )
-            )
-            ->add('serviciocontables', 'sonata_type_collection', array('by_reference' => false),array(
-                    'edit' => 'inline',
-                    'inline' => 'table'
-                )
-            )
+            ->add('serviciooperativos', 'sonata_type_collection',[
+                'by_reference' => false,
+                'label' => 'Operativo'
+            ], [
+                'edit' => 'inline',
+                'inline' => 'table',
+            ])
+            ->add('serviciofiles', 'sonata_type_collection', [
+                'by_reference' => false,
+                'label' => 'Files'
+            ], [
+                'edit' => 'inline',
+                'inline' => 'table'
+            ])
+            ->add('serviciocontables', 'sonata_type_collection', [
+                'by_reference' => false,
+                'label' => 'Facturación'
+            ], [
+                'edit' => 'inline',
+                'inline' => 'table'
+            ])
         ;
     }
 
@@ -87,12 +102,29 @@ class ServicioAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
-            ->add('dependencia')
-            ->add('unidad')
-            ->add('conductor')
-            ->add('nombre')
+            ->add('dependencia.organizacion', null, [
+                'route' => ['name' => 'show']
+            ])
             ->add('hora')
             ->add('fecha')
+            ->add('unidad', null, [
+                'route' => ['name' => 'show']
+            ])
+            ->add('conductor', null, [
+                'route' => ['name' => 'show']
+            ])
+            ->add('nombre')
+            ->end()
+            ->with('Informacion Operativa')
+            ->add('serviciooperativos', 'collection', [
+                'template' => 'GoproTransporteBundle:ServicioAdmin:show_serviciooperativo_collection.html.twig'
+            ])
+            ->end()
+            ->with('Files')
+            ->add('serviciofiles', 'collection', [
+                'template' => 'GoproTransporteBundle:ServicioAdmin:show_serviciofile_collection.html.twig'
+            ])
+            ->end()
         ;
     }
 

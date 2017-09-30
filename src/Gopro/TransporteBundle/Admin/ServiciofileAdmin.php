@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 class ServiciofileAdmin extends AbstractAdmin
 {
+
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -43,13 +44,13 @@ class ServiciofileAdmin extends AbstractAdmin
             ->add('origen')
             ->add('destino')
             ->add('nota')
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    'show' => array(),
-                    'edit' => array(),
-                    'delete' => array(),
-                )
-            ))
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'show' => [],
+                    'edit' => [],
+                    'delete' => [],
+                ]
+            ])
         ;
     }
 

@@ -18,16 +18,24 @@ class ServiciocontableAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('estadocontable')
-            ->add('tiposercontable')
-            ->add('descripcion')
+            ->add('estadocontable', null, [
+                'label' => 'Estado'
+            ])
+            ->add('tiposercontable', null, [
+                'label' => 'Tipo'
+            ])
+            ->add('descripcion', null, [
+                'label' => 'Descripción'
+            ])
             ->add('moneda')
             ->add('neto')
             ->add('impuesto')
             ->add('total')
             ->add('serie')
             ->add('documento')
-            ->add('fechaemision')
+            ->add('fechaemision', null, [
+                'label' => 'Fecha emisión'
+            ])
             ->add('url')
             ->add('original')
         ;
@@ -39,29 +47,40 @@ class ServiciocontableAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('id')
-            ->add('estadocontable')
-            ->add('tiposercontable')
-            ->add('descripcion')
-            ->add('moneda')
-            ->add('neto')
-            ->add('impuesto')
+            ->add('servicio', null, [
+                'route' => ['name' => 'show']
+            ])
+            ->add('servicio.fecha', null, [
+                'label' => 'Fecha servicio'
+            ])
+            ->add('estadocontable', null, [
+                'label' => 'Estado',
+                'route' => ['name' => 'show']
+            ])
+            ->add('tiposercontable', null, [
+                'label' => 'Tipo',
+                'route' => ['name' => 'show']
+            ])
+            ->add('moneda', null, [
+                'route' => ['name' => 'show']
+            ])
             ->add('total')
             ->add('serie')
             ->add('documento')
-            ->add('fechaemision')
-            ->add('url')
+            ->add('fechaemision', null, [
+                'label' => 'Fecha emisión'
+            ])
             ->add('original')
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    'show' => array(),
-                    'edit' => array(),
-                    'delete' => array(),
-                    'facturar' => array(
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'show' => [],
+                    'edit' => [],
+                    'delete' => [],
+                    'facturar' => [
                         'template' => 'GoproTransporteBundle:ServiciocontableAdmin:list__action_facturar.html.twig'
-                    )
-                )
-            ))
+                    ]
+                ]
+            ])
         ;
     }
 
@@ -71,9 +90,15 @@ class ServiciocontableAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('estadocontable')
-            ->add('tiposercontable')
-            ->add('descripcion')
+            ->add('estadocontable', null, [
+                'label' => 'Estado'
+            ])
+            ->add('tiposercontable', null, [
+                'label' => 'Tipo'
+            ])
+            ->add('descripcion', null, [
+                'label' => 'Descripción'
+            ])
             ->add('moneda')
             ->add('neto')
             ->add('impuesto')
@@ -89,19 +114,43 @@ class ServiciocontableAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
-            ->add('estadocontable')
-            ->add('tiposercontable')
-            ->add('descripcion')
-            ->add('moneda')
+            ->add('servicio', null, [
+                'route' => ['name' => 'show']
+            ])
+            ->add('servicio.id', null, [
+                'label' => 'Identificador de servicio',
+            ])
+            ->add('servicio.fecha', null, [
+                'label' => 'Fecha servicio',
+                'route' => ['name' => 'show']
+            ])
+            ->add('estadocontable', null, [
+                'label' => 'Estado',
+                'route' => ['name' => 'show']
+            ])
+            ->add('tiposercontable', null, [
+                'label' => 'Tipo',
+                'route' => ['name' => 'show']
+            ])
+            ->add('descripcion', null, [
+                'label' => 'Descripción'
+            ])
+            ->add('moneda', null, [
+                'route' => ['name' => 'show']
+            ])
             ->add('neto')
             ->add('impuesto')
             ->add('total')
             ->add('serie')
             ->add('documento')
-            ->add('fechaemision')
+            ->add('fechaemision', null, [
+                'label' => 'Fecha emisión'
+            ])
             ->add('url')
             ->add('original')
-            ->add('sercontablemensajes')
+            ->add('sercontablemensajes', null, [
+                'label' => 'Mensajes'
+            ])
         ;
     }
 

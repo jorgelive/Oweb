@@ -31,17 +31,19 @@ class DependenciaAdmin extends Admin
     {
         $listMapper
             ->add('id')
-            ->add('organizacion')
+            ->add('organizacion', null, [
+                'route' => ['name' => 'show']
+            ])
             ->add('nombre')
             ->add('email')
             ->add('direccion')
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    'show' => array(),
-                    'edit' => array(),
-                    'delete' => array(),
-                )
-            ))
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'show' => [],
+                    'edit' => [],
+                    'delete' => [],
+                ]
+            ])
         ;
     }
 
@@ -51,11 +53,11 @@ class DependenciaAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('organizacion', 'sonata_type_model', array(
-                'required' => false,
+            ->add('organizacion', 'sonata_type_model', [
+                'required' => true,
                 'expanded' => true,
                 'multiple' => false
-            ))
+            ])
             ->add('nombre')
             ->add('email')
             ->add('direccion')
@@ -69,7 +71,9 @@ class DependenciaAdmin extends Admin
     {
         $showMapper
             ->add('id')
-            ->add('organizacion')
+            ->add('organizacion', null, [
+                'route' => ['name' => 'show']
+            ])
             ->add('nombre')
             ->add('email')
             ->add('direccion')

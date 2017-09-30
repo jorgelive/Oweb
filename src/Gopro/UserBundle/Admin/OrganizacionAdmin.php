@@ -37,13 +37,13 @@ class OrganizacionAdmin extends Admin
             ->add('numerodocumento')
             ->add('email')
             ->add('direccion')
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    'show' => array(),
-                    'edit' => array(),
-                    'delete' => array(),
-                )
-            ))
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'show' => [],
+                    'edit' => [],
+                    'delete' => [],
+                ]
+            ])
         ;
     }
 
@@ -58,15 +58,16 @@ class OrganizacionAdmin extends Admin
             ->add('numerodocumento')
             ->add('email')
             ->add('direccion')
-            ->add('dependencias', 'sonata_type_model', array(
+            ->add('dependencias', 'sonata_type_model', [
                 'property' => 'organizaciondependencia',
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true
-            ),
-                array(
+            ],
+                [
                     'allow_delete' => true
-                ))
+                ]
+            )
         ;
     }
 

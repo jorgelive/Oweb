@@ -31,13 +31,13 @@ class TiposeroperativoAdmin extends AbstractAdmin
             ->add('id')
             ->add('nombre')
             ->add('codigo')
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    'show' => array(),
-                    'edit' => array(),
-                    'delete' => array(),
-                )
-            ))
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'show' => [],
+                    'edit' => [],
+                    'delete' => [],
+                ]
+            ])
         ;
     }
 

@@ -35,13 +35,13 @@ class ConductorAdmin extends AbstractAdmin
             ->add('apellido')
             ->add('licencia')
             ->add('abreviatura')
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    'show' => array(),
-                    'edit' => array(),
-                    'delete' => array(),
-                )
-            ))
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'show' => [],
+                    'edit' => [],
+                    'delete' => [],
+                ]
+            ])
         ;
     }
 

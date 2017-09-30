@@ -33,13 +33,13 @@ class UnidadAdmin extends AbstractAdmin
             ->add('nombre')
             ->add('placa')
             ->add('abreviatura')
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    'show' => array(),
-                    'edit' => array(),
-                    'delete' => array(),
-                )
-            ))
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'show' => [],
+                    'edit' => [],
+                    'delete' => [],
+                ]
+            ])
         ;
     }
 
