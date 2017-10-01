@@ -1,17 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>{% block title %}Bienvenidos! - VWeb{% endblock title %}</title>
 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     {% block stylesheets %}
-        {% stylesheets filter='css_url_rewrite' '@GoproMainBundle/Resources/public/css/*' '@GoproMainBundle/Resources/public/css/jquery.ui.vipac/*' %}
+        {% stylesheets filter='css_url_rewrite' '@bootstrap_css' '@GoproMainBundle/Resources/public/css/*' '@GoproMainBundle/Resources/public/css/jquery.ui.vipac/*' %}
             <link rel="stylesheet" href="{{ asset_url }}" rel="stylesheet" media="screen"/>
         {% endstylesheets %}
 
     {% endblock stylesheets%}
 
     {% block javascripts %}
-        {% javascripts '@GoproMainBundle/Resources/public/js/inicio/*' %}
+        {% javascripts '@jquery' '@bootstrap_js''@GoproMainBundle/Resources/public/js/inicio/*' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
     {% endblock javascripts %}
