@@ -30,7 +30,9 @@
         "apy/datagrid-bundle": "dev-master",
         "oro/doctrine-extensions": "dev-master",
         "nelmio/api-doc-bundle": "~2.6",
-        "friendsofsymfony/rest-bundle": "~2.2"
+        "friendsofsymfony/rest-bundle": "~2.2",
+        "twitter/bootstrap": "3.*",
+        "components/jquery": "1.11.1"
 
     },
     "scripts": {
