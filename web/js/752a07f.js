@@ -31,23 +31,6 @@ $(function () {
     $('a.boton').button();
 });
 $(function () {
-    if (!Modernizr.inputtypes.date) {
-        $(".datePicker-0--1").datepicker({
-            changeMonth: true,
-            changeYear: true,
-            dateFormat: 'yy-mm-dd ',
-            yearRange: "-0:+1"
-        });
-        $(".datePicker-80-18").datepicker({
-            changeMonth: true,
-            changeYear: true,
-            dateFormat: 'yy-mm-dd ',
-            yearRange: "-80:-18"
-        });
-
-    }
-});
-$(function () {
     $("#deleteForm").submit(function(event){
         if (!confirm("Esta seguro que desea eliminar?"))
         {
@@ -56,15 +39,6 @@ $(function () {
         }
     });
 });
-$(document).ready(function()
-{
-    $(':input[readonly]').each(function(){
-        $(this)
-            .hide()
-            .parent().append('<span class="hiddenPlaceholder">' + $(this).find(":selected").text() + '</span>')
-    });
-});
-
 $(function () {
     $('div#sidebar ul li a').button({
             icons: {
