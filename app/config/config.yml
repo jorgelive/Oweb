@@ -33,7 +33,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: true
-    bundles:        [ GoproMainBundle, SonataUserBundle, FOSUserBundle, GoproTransporteBundle]
+    bundles:        [GoproUserBundle, GoproMainBundle, SonataUserBundle, FOSUserBundle, GoproTransporteBundle]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

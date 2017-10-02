@@ -27,7 +27,6 @@
         "stof/doctrine-extensions-bundle": "dev-master",
         "fkr/cssurlrewrite-bundle": "*",
         "jms/security-extra-bundle": "dev-master",
-        "apy/datagrid-bundle": "dev-master",
         "oro/doctrine-extensions": "dev-master",
         "nelmio/api-doc-bundle": "~2.6",
         "friendsofsymfony/rest-bundle": "~2.2",

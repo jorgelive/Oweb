@@ -17,7 +17,7 @@ use Gopro\MaestroBundle\Entity\Moneda;
 
 
 /**
- * Proceso controller.
+ * Cargador controller.
  *
  * @Route("/cargador")
  */

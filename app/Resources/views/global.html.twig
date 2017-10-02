@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{% block title %}Bienvenidos! - VWeb{% endblock title %}</title>
+    <title>{% block title %}Bienvenidos! - OWeb{% endblock title %}</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     {% block stylesheets %}
-        {% stylesheets filter='css_url_rewrite' '@bootstrap_css' '@GoproMainBundle/Resources/public/css/*' '@GoproMainBundle/Resources/public/css/jquery.ui.vipac/*' %}
-            <link rel="stylesheet" href="{{ asset_url }}" rel="stylesheet" media="screen"/>
+        {% stylesheets filter='css_url_rewrite' '@bootstrap_css' '@GoproMainBundle/Resources/public/css/*' %}
+            <link type="text/css" rel="stylesheet" href="{{ asset_url }}" media="screen"/>
         {% endstylesheets %}
 
     {% endblock stylesheets%}
@@ -22,9 +22,10 @@
 </head>
 <body>
 {% block body %}
-<div id="viewPort">
-    <div id="header">
-        <div id='titulo'><h1>{% block titulo %}{% endblock titulo %}</h1></div>
+<div class="container">
+    <div class="jumbotron" id="header">
+        {% block header %}
+        <div id='titulo'><h2>{% block titulo %}{% endblock titulo %}</h2></div>
         <div id="loginStatus">
 
             {% if  is_granted("IS_AUTHENTICATED_REMEMBERED") %}
@@ -37,22 +38,40 @@
                 <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
             {% endif %}
         </div>
+        {% endblock header %}
     </div>
 
     <div id="sessionFlash">
-    {% for type, messages in app.session.flashBag.all %}
-        {% for message in messages %}
-            <div class="{{ type }}">
-                {{ message|trans({}, 'FOSUserBundle') }}
-            </div>
-        {% endfor %}
-    {% endfor %}
-    </div>
-    <div id='sidebar'>{% block sidebar %}
-            {{ render(controller('GoproMainBundle:Default:sidebar')) }}
-    {% endblock sidebar %}</div>
+        {% block sesionflash %}
+            {% for type, messages in app.session.flashBag.all %}
+                {% for message in messages %}
+                    {% if type == 'error' %}
+                        <div class="alert alert-danger">
+                            {{ message}}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success">
+                            {{ message }}
+                        </div>
+                    {% endif %}
 
-    <div id="container">{% block container %}{% endblock container %}</div>
+                {% endfor %}
+            {% endfor %}
+        {% endblock sesionflash %}
+    </div>
+
+    <div id='navigation'>
+        {% block navigation %}
+            {{ render(controller('GoproMainBundle:Default:navigation')) }}
+        {% endblock navigation %}
+    </div>
+
+    <br />
+
+    <div id="mainContent">
+        {% block maincontent %}
+        {% endblock maincontent %}
+    </div>
 {% endblock body %}
 {% block javascriptsfinal %}
     <script id="plantillaHighlight" type="text/x-tmpl">

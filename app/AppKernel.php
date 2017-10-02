@@ -29,7 +29,6 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new Fkr\CssURLRewriteBundle\FkrCssURLRewriteBundle(),
-            new APY\DataGridBundle\APYDataGridBundle(),
             new Gopro\UserBundle\GoproUserBundle(),
             new Gopro\ExcelBundle\GoproExcelBundle(),
             new Gopro\MainBundle\GoproMainBundle(),

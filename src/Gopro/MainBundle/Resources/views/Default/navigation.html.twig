@@ -1,0 +1,16 @@
+<div class="btn-group btn-group-lg">
+    {% for item in items %}
+        {% if item.route is defined %}
+            <a class="btn btn-primary" href="{{ path(item.route) }}">
+                {{ item.nombre }}
+            </a>
+        {% elseif kenny.url %}
+            <a class="btn btn-primary" href="http://{{ item.url }}">
+                {{ item.nombre }}
+            </a>
+        {% else %}
+
+        {% endif %}
+    {% endfor %}
+</div>
+

@@ -1,7 +1,7 @@
 {% extends 'GoproMainBundle::layout.html.twig' %}
 {% block title %}Actualizar archivo{% endblock title %}
 {% block titulo %}Actualizar archivo{% endblock titulo %}
-{% block content %}
+{% block maincontent %}
     {{ form(edit_form) }}
     <ul class="registroAcciones">
         <li>
@@ -11,4 +11,4 @@
         </li>
         <li>{{ form(delete_form) }}</li>
     </ul>
-{% endblock content %}
+{% endblock maincontent %}

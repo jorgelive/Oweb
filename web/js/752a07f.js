@@ -27,10 +27,6 @@ $(document).ready(function()
 });
 
 $(function () {
-    $('button').button();
-    $('a.boton').button();
-});
-$(function () {
     $("#deleteForm").submit(function(event){
         if (!confirm("Esta seguro que desea eliminar?"))
         {
@@ -38,15 +34,4 @@ $(function () {
             return;
         }
     });
-});
-$(function () {
-    $('div#sidebar ul li a').button({
-            icons: {
-                primary: 'ui-icon ui-icon-play'
-            }
-        }
-    );
-    if($('div#sidebar').css('display')=='none'){
-        $('div#container').width('100%');
-    }
 });
