@@ -134,7 +134,7 @@ class ServiciocontableAdminController extends CRUDController
         $solicitud['tabla_personalizada_codigo'] = '';
         $solicitud['formato_de_pdf'] = '';
         $solicitud['items'][0]['unidad_de_medida'] = 'ZZ';
-        $solicitud['items'][0]['codigo'] = $this->container->get('gopro_main_variableproceso')->sanitizeString($object->getServicio()->getNombre(), '_', '[\s+]' );
+        $solicitud['items'][0]['codigo'] = $this->container->get('gopro_main.variableproceso')->sanitizeString($object->getServicio()->getNombre(), '_', '[\s+]' );
         $filesString = '';
         if($object->getServicio()->getServiciofiles()){
             $filesArray = $object->getServicio()->getServiciofiles()->toArray();

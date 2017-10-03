@@ -316,9 +316,9 @@ class Archivoexcel implements ContainerAwareInterface
                                     if ($this->columnaSpecs[$columnName[$key]]['tipo'] == 'file' && $key == 1) {
                                         $parteValor = str_pad($parteValor, 10, 0, STR_PAD_LEFT);
                                     }elseif($this->columnaSpecs[$columnName[$key]]['tipo'] == 'exceldate') {
-                                        $parteValor = $this->container->get('gopro_main_variableproceso')->exceldate($parteValor);
+                                        $parteValor = $this->container->get('gopro_main.variableproceso')->exceldate($parteValor);
                                     }elseif($this->columnaSpecs[$columnName[$key]]['tipo'] == 'exceltime') {
-                                        $parteValor = $this->container->get('gopro_main_variableproceso')->exceltime($parteValor);
+                                        $parteValor = $this->container->get('gopro_main.variableproceso')->exceltime($parteValor);
                                     }
                                 }
                                 $existentesRaw[$fila][$this->columnaSpecs[$columnName[$key]]['nombre']] = str_replace(chr(194) . chr(160), "", $parteValor);
@@ -582,7 +582,7 @@ class Archivoexcel implements ContainerAwareInterface
 
     public function setFila($fila, $posicion)
     {
-        if (empty($this->getHoja()) || empty($fila) || !is_array($fila) || $this->container->get('gopro_main_variableproceso')->is_multi_array($fila) || empty($posicion)) {
+        if (empty($this->getHoja()) || empty($fila) || !is_array($fila) || $this->container->get('gopro_main.variableproceso')->is_multi_array($fila) || empty($posicion)) {
             $this->variableproceso->setMensajes('El formato de fila no es correcto.', 'error');
             return $this;
         }
@@ -617,7 +617,7 @@ class Archivoexcel implements ContainerAwareInterface
 
     public function setTabla($tabla, $posicion)
     {
-        if (empty($this->getHoja()) || empty($tabla) || !is_array($tabla) || !$this->container->get('gopro_main_variableproceso')->is_multi_array($tabla) || empty($posicion)) {
+        if (empty($this->getHoja()) || empty($tabla) || !is_array($tabla) || !$this->container->get('gopro_main.variableproceso')->is_multi_array($tabla) || empty($posicion)) {
             $this->variableproceso->setMensajes('El formato de tabla no es correcto.', 'error');
             return $this;
         }
@@ -650,7 +650,7 @@ class Archivoexcel implements ContainerAwareInterface
     public function setFormatoColumna($formatoColumna)
     {
 
-        if (empty($this->getHoja()) || empty($formatoColumna) || !$this->container->get('gopro_main_variableproceso')->is_multi_array($formatoColumna)) {
+        if (empty($this->getHoja()) || empty($formatoColumna) || !$this->container->get('gopro_main.variableproceso')->is_multi_array($formatoColumna)) {
             $this->variableproceso->setMensajes('El formato de columna no es correcto.', 'error');
             return $this;
         }
@@ -747,7 +747,7 @@ class Archivoexcel implements ContainerAwareInterface
         if ($tipo == 'response') {
             $response = $this->container->get('phpexcel')->createStreamedResponse($writer);
             $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
-            $response->headers->set('Content-Disposition', 'attachment;filename=' . $this->container->get('gopro_main_variableproceso')->sanitizeString($this->getNombre() . '.' . $this->getTipo()));
+            $response->headers->set('Content-Disposition', 'attachment;filename=' . $this->container->get('gopro_main.variableproceso')->sanitizeString($this->getNombre() . '.' . $this->getTipo()));
             $response->headers->set('Pragma', 'public');
             $response->headers->set('Cache-Control', 'max-age=1');
             return $response;
