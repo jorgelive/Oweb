@@ -17,8 +17,9 @@ class ConductorAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('nombre')
-            ->add('apellido')
+            ->add('user', null, [
+                'label'=>'Nombre',
+            ])
             ->add('licencia')
             ->add('abreviatura')
         ;
@@ -31,8 +32,9 @@ class ConductorAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
-            ->add('apellido')
+            ->add('user.fullname', null, [
+                'label'=>'Nombre'
+            ])
             ->add('licencia')
             ->add('abreviatura')
             ->add('_action', 'actions', [
@@ -51,8 +53,11 @@ class ConductorAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('nombre')
-            ->add('apellido')
+            ->add('user', null, [
+                'required' => true,
+                'property' => 'fullname',
+                'label' => 'Nombre'
+            ])
             ->add('licencia')
             ->add('abreviatura')
         ;
@@ -65,8 +70,9 @@ class ConductorAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
-            ->add('nombre')
-            ->add('apellido')
+            ->add('user.fullname', null, [
+                'label'=>'Nombre'
+            ])
             ->add('licencia')
             ->add('abreviatura')
         ;

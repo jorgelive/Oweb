@@ -19,16 +19,6 @@ class Conductor
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $nombre;
-
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $apellido;
-
-    /**
      * @ORM\Column(type="string", length=15)
      */
     private $licencia;
@@ -61,16 +51,24 @@ class Conductor
      */
     private $servicios;
 
+
+    /**
+     * @var \Gopro\UserBundle\Entity\User
+     *
+     * @ORM\OneToOne(targetEntity="Gopro\UserBundle\Entity\User", inversedBy="conductor")
+     */
+    private $user;
+
     /**
      * @return string
      */
     public function __toString()
     {
-        if(is_null($this->getNombre()) || is_null($this->getApellido())) {
-            return 'NULL';
+        if(is_null($this->getUser()) || is_null($this->getUser()->getFullname())) {
+            return sprintf("Id: %s.", $this->getId());
         }
 
-        return sprintf("%s %s", $this->getNombre(), $this->getApellido());
+        return sprintf("%s", $this->getUser()->getFullname());
     }
 
 
@@ -95,53 +93,6 @@ class Conductor
         return $this->id;
     }
 
-    /**
-     * Set nombre
-     *
-     * @param string $nombre
-     *
-     * @return Conductor
-     */
-    public function setNombre($nombre)
-    {
-        $this->nombre = $nombre;
-
-        return $this;
-    }
-
-    /**
-     * Get nombre
-     *
-     * @return string
-     */
-    public function getNombre()
-    {
-        return $this->nombre;
-    }
-
-    /**
-     * Set apellido
-     *
-     * @param string $apellido
-     *
-     * @return Conductor
-     */
-    public function setApellido($apellido)
-    {
-        $this->apellido = $apellido;
-
-        return $this;
-    }
-
-    /**
-     * Get apellido
-     *
-     * @return string
-     */
-    public function getApellido()
-    {
-        return $this->apellido;
-    }
 
     /**
      * Set licencia
@@ -273,5 +224,29 @@ class Conductor
     public function getAbreviatura()
     {
         return $this->abreviatura;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Gopro\UserBundle\Entity\User $user
+     *
+     * @return Conductor
+     */
+    public function setUser(\Gopro\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+    
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Gopro\UserBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

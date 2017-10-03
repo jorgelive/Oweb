@@ -62,7 +62,7 @@ class Tipocambio
     public function __toString()
     {
         if(is_null($this->getFecha())) {
-            return 'NULL';
+            return sprintf("Id: %s.", $this->getId());
         }
 
         return $this->getFecha()->format('Y-m-d');

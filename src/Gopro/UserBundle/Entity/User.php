@@ -45,6 +45,13 @@ class User extends BaseUser
      */
     private $cuentas;
 
+    /**
+     * @var \Gopro\TransporteBundle\Entity\Conductor
+     *
+     * @ORM\OneToOne(targetEntity="Gopro\TransporteBundle\Entity\Conductor", mappedBy="user")
+     */
+    private $conductor;
+
     public function __construct() {
 
         parent::__construct();
@@ -157,4 +164,28 @@ class User extends BaseUser
 
 
 
+
+    /**
+     * Set conductor
+     *
+     * @param \Gopro\TransporteBundle\Entity\Conductor $conductor
+     *
+     * @return User
+     */
+    public function setConductor(\Gopro\TransporteBundle\Entity\Conductor $conductor = null)
+    {
+        $this->conductor = $conductor;
+    
+        return $this;
+    }
+
+    /**
+     * Get conductor
+     *
+     * @return \Gopro\TransporteBundle\Entity\Conductor
+     */
+    public function getConductor()
+    {
+        return $this->conductor;
+    }
 }
