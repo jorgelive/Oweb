@@ -1,20 +1,17 @@
-parameters:
-    archivoexcel.class:  Gopro\MainBundle\Service\Archivoexcel
-    archivozip.class:  Gopro\MainBundle\Service\Archivozip
-    variableproceso.class:  Gopro\MainBundle\Service\Variableproceso
-
 services:
-    gopro_main_archivozip:
-        class: %archivozip.class%
+    gopro_main.archivozip:
+        class: Gopro\MainBundle\Service\Archivozip
         calls:
             - [ setContainer,[ @service_container ] ]
-        scope: prototype
-    gopro_main_archivoexcel:
-        class: %archivoexcel.class%
+            - [ setVariableproceso,[ @gopro_main.variableproceso ] ]
+        shared: false
+    gopro_main.archivoexcel:
+        class: Gopro\MainBundle\Service\Archivoexcel
         calls:
             - [ setContainer,[ @service_container ] ]
-        scope: prototype
-    gopro_main_variableproceso:
-        class: %variableproceso.class%
+            - [ setVariableproceso,[ @gopro_main.variableproceso ] ]
+        shared: false
+    gopro_main.variableproceso:
+        class: Gopro\MainBundle\Service\Variableproceso
         calls:
             - [ setContainer,[ @service_container ] ]

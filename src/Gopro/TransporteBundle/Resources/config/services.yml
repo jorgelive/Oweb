@@ -1,4 +1,5 @@
 services:
+
     gopro_transporte.admin.servicio:
         class: Gopro\TransporteBundle\Admin\ServicioAdmin
         arguments: [~, Gopro\TransporteBundle\Entity\Servicio, ~ ]

@@ -2,7 +2,6 @@
 
 namespace Gopro\TransporteBundle\Controller;
 
-use Gopro\MainBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -10,13 +9,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Gopro\TransporteBundle\Entity\Servicio;
 use Gopro\TransporteBundle\Form\ServicioType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Servicio controller.
  *
  * @Route("/servicio")
  */
-class ServicioController extends BaseController
+class ServicioController extends Controller
 {
 
     /**

@@ -14,6 +14,7 @@ use Gopro\TransporteBundle\Entity\Serviciooperativo;
 use Gopro\TransporteBundle\Entity\Serviciofile;
 use Gopro\TransporteBundle\Entity\Serviciocontable;
 use Gopro\MaestroBundle\Entity\Moneda;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 
 /**
@@ -21,7 +22,7 @@ use Gopro\MaestroBundle\Entity\Moneda;
  *
  * @Route("/cargador")
  */
-class CargadorController extends BaseController
+class CargadorController extends Controller
 {
 
     protected $igv = 18;
@@ -32,6 +33,7 @@ class CargadorController extends BaseController
      */
     public function genericoprogramaAction(Request $request, $archivoEjecutar)
     {
+        $variables = $this->get('gopro_main.variableproceso');
         $operacion = 'transporte_cargador_genericoprograma';
         $repositorio = $this->getDoctrine()->getRepository('GoproMainBundle:Archivo');
         $archivosAlmacenados = $repositorio->findBy(array('user' => $this->getUser(), 'operacion' => $operacion), array('creado' => 'DESC'));
@@ -43,8 +45,8 @@ class CargadorController extends BaseController
         $formulario->handleRequest($request);
 
         if (empty($archivoEjecutar)) {
-            $this->setMensajes('No se ha definido ningun archivo');
-            return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $this->getMensajes());
+            $variables->setMensajes('Seleccione el archivo a procesar.', 'info');
+            return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
         }
 
         $tablaSpecs = array('filasDescartar' => 1);
@@ -73,7 +75,7 @@ class CargadorController extends BaseController
         $columnaspecs[] = array('nombre' => 'descripcionContable');
 
 
-        $archivoInfo = $this->get('gopro_main_archivoexcel')
+        $archivoInfo = $this->get('gopro_main.archivoexcel')
             ->setArchivoBase($repositorio, $archivoEjecutar, $operacion)
             ->setArchivo()
             ->setSkipRows(1)
@@ -81,11 +83,8 @@ class CargadorController extends BaseController
             ->setDescartarBlanco(true)
             ->setTrimEspacios(true);
         if (!$archivoInfo->parseExcel()) {
-            $this->setMensajes($archivoInfo->getMensajes());
-            $this->setMensajes('El archivo no se puede procesar');
-            return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $this->getMensajes());
-        } else {
-            $this->setMensajes($archivoInfo->getMensajes());
+            $variables->setMensajes('El archivo no se puede procesar.', 'error');
+            return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
         }
 
         $preproceso = [];
@@ -133,20 +132,20 @@ class CargadorController extends BaseController
 
             } else{
                 if(!isset($i)){
-                    $this->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no pertenece a ningun servicio.');
+                    $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no pertenece a ningun servicio.', 'error');
                     continue;
                 }
                 $j++;
             }
 
             if (!isset($linea['horaFile']) || !isset($linea['nombreFile']) || !isset($linea['codigoFile']) || !isset($linea['numadlFile']) || !isset($linea['origenFile']) || !isset($linea['destinoFile'])){
-                $this->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no tiene los datos de file completos.');
+                $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no tiene los datos de file completos.', 'error');
                 unset($preproceso[$i]);
                 continue;
             }
 
             if(!isset($preproceso[$i]['dependencia'])){
-                $this->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no pertenece a ningun servicio.');
+                $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no pertenece a ningun servicio.', 'error');
                 continue;
             }
 
@@ -200,14 +199,14 @@ class CargadorController extends BaseController
         endforeach;
 
         if (empty($preproceso)) {
-            $this->setMensajes('No se preproceso ningun elemento');
-            return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $this->getMensajes());
+            $variables->setMensajes('No se preproceso ningun elemento', 'error');
+            return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
         }
 
         $this->cargarBaseDeDatos ($preproceso);
 
-        $this->setMensajes('Se ha ejecutado la carga');
-        return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $this->getMensajes());
+        $variables->setMensajes('Se ha ejecutado la carga.', 'success');
+        return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
 
     }
 

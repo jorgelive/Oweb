@@ -2,7 +2,6 @@
 
 namespace Gopro\MaestroBundle\Controller;
 
-use Gopro\MainBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -10,13 +9,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Gopro\MaestroBundle\Entity\Moneda;
 use Gopro\MaestroBundle\Form\MonedaType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Moneda controller.
  *
  * @Route("/moneda")
  */
-class MonedaController extends BaseController
+class MonedaController extends Controller
 {
 
     /**

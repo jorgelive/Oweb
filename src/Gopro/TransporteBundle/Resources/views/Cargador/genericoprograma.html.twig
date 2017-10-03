@@ -1,6 +1,30 @@
 {% extends 'GoproTransporteBundle::layout.html.twig' %}
 {% block title %}Cargador de Servicios{% endblock title %}
 {% block titulo %}Cargador de Servicios{% endblock titulo %}
+
+{% block sesionflash %}
+
+    {% for mensaje in mensajes %}
+
+        {% if mensaje.tipo == 'error' %}
+            <div class="alert alert-danger">
+                {{ mensaje.contenido}}
+            </div>
+        {% elseif mensaje.tipo == 'success' %}
+            <div class="alert alert-success">
+                {{ mensaje.contenido }}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                {{ mensaje.contenido }}
+            </div>
+
+        {% endif %}
+
+
+    {% endfor %}
+{% endblock sesionflash %}
+
 {% block maincontent %}
 
     <div id="archivo">
@@ -37,16 +61,6 @@
         </table>
     </div>
 
-    {% if mensajes|default %}
-        <div id="mensajes">
-            <h1>Mensajes del proceso</h1>
-            <ul class="listaMensajes">
-                {% for mensaje in mensajes %}
-                    <li>{{ mensaje }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
 {% endblock maincontent %}
 
 

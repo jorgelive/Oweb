@@ -2,7 +2,6 @@
 
 namespace Gopro\MainBundle\Controller;
 
-use Gopro\MainBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -10,13 +9,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Gopro\MainBundle\Entity\Archivo;
 use Gopro\MainBundle\Form\ArchivoType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Archivo controller.
  *
  * @Route("/archivo")
  */
-class ArchivoController extends BaseController
+class ArchivoController extends Controller
 {
 
     /**

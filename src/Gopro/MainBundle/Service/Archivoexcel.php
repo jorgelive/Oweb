@@ -2,6 +2,7 @@
 
 namespace Gopro\MainBundle\Service;
 
+use Gopro\MainBundle\DependencyInjection\VariableprocesoTrait;
 use \Symfony\Component\Filesystem\Filesystem;
 use \Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use \Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -11,9 +12,9 @@ class Archivoexcel implements ContainerAwareInterface
 {
 
     use ContainerAwareTrait;
+    use VariableprocesoTrait;
 //general
 
-    private $mensajes = array();
     private $archivoBase;
     private $proceso;
     private $archivo;
@@ -45,16 +46,6 @@ class Archivoexcel implements ContainerAwareInterface
     private $nombre;
     private $tipo;
 
-    public function getMensajes()
-    {
-        return $this->mensajes;
-    }
-
-    private function setMensajes($mensaje)
-    {
-        $this->mensajes[] = $mensaje;
-        return $this;
-    }
 
     public function getArchivoBase()
     {
@@ -81,20 +72,19 @@ class Archivoexcel implements ContainerAwareInterface
 
     public function setArchivoBase($repositorio, $id, $funcionArchivo)
     {
-
         if (empty($repositorio) || empty($id) || empty($funcionArchivo)) {
-            $this->setMensajes('Los parametros del archivo base no son válidos');
+            $this->variableproceso->setMensajes('Los parametros del archivo base no son válidos.', 'error');
             return $this;
         }
         $archivoAlmacenado = $repositorio->find($id);
         if (empty($archivoAlmacenado) || $archivoAlmacenado->getOperacion() != $funcionArchivo || !is_object($archivoAlmacenado)) {
-            $this->setMensajes('El archivo no existe en la base de datos o es inválido');
+            $this->variableproceso->setMensajes('El archivo no existe en la base de datos o es inválido.', 'error');
             return $this;
         }
         $fs = new Filesystem();
 
         if (!$fs->exists($archivoAlmacenado->getAbsolutePath())) {
-            $this->setMensajes('El archivo no existe en la ruta');
+            $this->variableproceso->setMensajes('El archivo no existe en la ruta.', 'error');
             return $this;
         }
         $this->archivoBase = $archivoAlmacenado;
@@ -184,12 +174,12 @@ class Archivoexcel implements ContainerAwareInterface
     {
 
         if (empty($this->archivo)) {
-            $this->setMensajes('El archivo no pudo ser puesto en memoria');
+            $this->variableproceso->setMensajes('El archivo no pudo ser puesto en memoria.', 'error');
             return false;
         }
 
         if ($this->parsed == 'si') {
-            $this->setMensajes('El archivo ya fue procesado anteriormente');
+            $this->variableproceso->setMensajes('El archivo ya fue procesado anteriormente.', 'info');
             return true;
         }
         $this->parsed = 'si';
@@ -360,7 +350,7 @@ class Archivoexcel implements ContainerAwareInterface
         }
 
         if (empty($existentesRaw)) {
-            $this->setMensajes('La lectura del archivo no obtuvo resultados');
+            $this->variableproceso->setMensajes('La lectura del archivo no obtuvo resultados.', 'error');
             return false;
         }
 
@@ -415,9 +405,7 @@ class Archivoexcel implements ContainerAwareInterface
             $this->setExistentesDescartados($existentesDescartados);
         }
 
-        if(isset($noGroup) && $noGroup === true){
-            $this->setMensajes('No se asigno ninguna llave, los agrupamientos y las variables indizadas no estan disponibles');
-        }else{
+        if(!isset($noGroup) || $noGroup === true){
             $this->setExistentesIndizados($existentesIndizados);
             $this->setExistentesIndizadosMulti($existentesIndizadosMulti);
             $this->setExistentesIndizadosKp($existentesIndizadosKp);
@@ -430,7 +418,6 @@ class Archivoexcel implements ContainerAwareInterface
                 $this->setExistentesCustomIndizadosMulti($existentesCustomIndizadosMulti);
             }
         }
-
 
         return true;
     }
@@ -596,7 +583,7 @@ class Archivoexcel implements ContainerAwareInterface
     public function setFila($fila, $posicion)
     {
         if (empty($this->getHoja()) || empty($fila) || !is_array($fila) || $this->container->get('gopro_main_variableproceso')->is_multi_array($fila) || empty($posicion)) {
-            $this->setMensajes('El formato de fila no es correcto');
+            $this->variableproceso->setMensajes('El formato de fila no es correcto.', 'error');
             return $this;
         }
         $posicionX = preg_replace("/[0-9]/", '', $posicion);
@@ -618,7 +605,7 @@ class Archivoexcel implements ContainerAwareInterface
     public function setColumna($columna, $posicion)
     {
         if (empty($this->getHoja()) || !is_array($columna) || empty($posicion)) {
-            $this->setMensajes('El formato de columna no es correcto');
+            $this->variableproceso->setMensajes('El formato de columna no es correcto.', 'error');
             return $this;
         }
         $columnArray = array_chunk($columna, 1);
@@ -631,7 +618,7 @@ class Archivoexcel implements ContainerAwareInterface
     public function setTabla($tabla, $posicion)
     {
         if (empty($this->getHoja()) || empty($tabla) || !is_array($tabla) || !$this->container->get('gopro_main_variableproceso')->is_multi_array($tabla) || empty($posicion)) {
-            $this->setMensajes('El formato de tabla no es correcto');
+            $this->variableproceso->setMensajes('El formato de tabla no es correcto.', 'error');
             return $this;
         }
         $this->getHoja()->fromArray($tabla, NULL, $posicion);
@@ -664,7 +651,7 @@ class Archivoexcel implements ContainerAwareInterface
     {
 
         if (empty($this->getHoja()) || empty($formatoColumna) || !$this->container->get('gopro_main_variableproceso')->is_multi_array($formatoColumna)) {
-            $this->setMensajes('El formato de columna no es correcto');
+            $this->variableproceso->setMensajes('El formato de columna no es correcto.', 'error');
             return $this;
         }
         $highestRow = $this->getHoja()->getHighestRow();
@@ -700,7 +687,7 @@ class Archivoexcel implements ContainerAwareInterface
     public function setAnchoColumna($anchoColumna)
     {
         if (empty($this->getHoja()) || empty($anchoColumna) || !is_array($anchoColumna)) {
-            $this->setMensajes('El ancho no tiene el formato correcto');
+            $this->variableproceso->setMensajes('El ancho no tiene el formato correcto.', 'error');
             return $this;
         }
 
@@ -738,7 +725,7 @@ class Archivoexcel implements ContainerAwareInterface
     public function setCeldas($celdas, $tipo = 'texto')
     {
         if (empty($this->getHoja()) || empty($celdas) || !is_array($celdas)) {
-            $this->setMensajes('Las celdas no tienen el formato correcto');
+            $this->variableproceso->setMensajes('Las celdas no tienen el formato correcto.', 'error');
             return $this;
         }
 
@@ -753,7 +740,7 @@ class Archivoexcel implements ContainerAwareInterface
     public function getArchivo($tipo = 'response')
     {
         if (empty($this->getTipo())) {
-            $this->setMensajes('Las celdas no tienen el formato correcto');
+            $this->variableproceso->setMensajes('Las celdas no tienen el formato correcto.', 'error');
         }
         $tipoWriter['xlsx'] = 'Excel2007';
         $writer = $this->getProceso()->createWriter($this->archivo, $tipoWriter[$this->getTipo()]);

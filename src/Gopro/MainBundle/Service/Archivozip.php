@@ -55,7 +55,7 @@ class Archivozip implements ContainerAwareInterface{
             $this->setNombre($nombre);
         }
         if(!empty($mantenerFuente)){
-            $this->mantenerFuente($mantenerFuente);
+            $this->setMantenerFuente($mantenerFuente);
 
         }
         return $this;
@@ -63,7 +63,8 @@ class Archivozip implements ContainerAwareInterface{
 
     public function setArchivo(){
         if(empty($this->getArchivos())||empty($this->getNombre())){
-            throw $this->createNotFoundException('No estan correctamente ingresados los archivos a comprimir.');return false;
+            throw $this->createNotFoundException('No estan correctamente ingresados los archivos a comprimir.');
+            return false;
         }
         $zip = new \ZipArchive();
         $this->archivoPath = tempnam(sys_get_temp_dir(), 'zip');
