@@ -333,7 +333,10 @@ class Archivoexcel implements ContainerAwareInterface
                             $existentesDescartados[$fila][] = str_replace(chr(194) . chr(160), "", $value);
                         }
                     }
-                    $existentesRaw[$fila]['excelRowNumber'] = $fila + $startRow;
+
+                    if(isset($existentesRaw[$fila]) && count($existentesRaw[$fila]) > 0 ){
+                        $existentesRaw[$fila]['excelRowNumber'] = $fila + $startRow;
+                    }
                 }
 
             }

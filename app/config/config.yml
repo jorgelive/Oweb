@@ -164,15 +164,25 @@ fos_user:
 sonata_block:
     default_contexts: [cms]
     blocks:
+        sonata.admin.block.stats:
+            contexts:   [admin]
         sonata.admin.block.admin_list:
+            contexts:   [admin]
+        sonata.admin.block.search_result:
             contexts:   [admin]
         sonata.block.service.text:
         sonata.block.service.action:
         sonata.block.service.rss:
+        sonata.user.block.account:
+             cache: sonata.page.cache.js_async
+             #cache: sonata.page.cache.esi
+             contexts: [user]
+        sonata.user.block.menu:
+             contexts: [user]
           
 sonata_admin:
-    title:      Admin Panel
-    title_logo: /bundles/sonataadmin/logo_title.png
+    title:      Extranet
+    title_logo: /bundles/gopromain/images/logo_title.png
     templates:
         # default global templates
         layout:  SonataAdminBundle::standard_layout.html.twig
