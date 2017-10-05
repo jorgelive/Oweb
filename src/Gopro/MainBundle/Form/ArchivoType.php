@@ -31,12 +31,4 @@ class ArchivoType extends AbstractType
             'data_class' => 'Gopro\MainBundle\Entity\Archivo'
         ));
     }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'gopro_mainbundle_archivo';
-    }
 }

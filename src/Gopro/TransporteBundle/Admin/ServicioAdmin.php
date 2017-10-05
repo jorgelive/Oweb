@@ -102,8 +102,8 @@ class ServicioAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('dependencia', null, [
-                'property' => 'organizaciondependencia',
-                'label' => 'cliente'
+                'choice_label' => 'organizaciondependencia',
+                'label' => 'Cliente'
             ])
             ->add('fecha', 'sonata_type_date_picker', [
                 'dp_use_current' => true,

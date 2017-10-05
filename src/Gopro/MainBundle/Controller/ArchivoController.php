@@ -66,7 +66,7 @@ class ArchivoController extends Controller
                     'archivo'=>[
                         'id'=>$entity->getId(),
                         'nombre'=>$entity->getNombre(),
-                        'creado'=>$entity->getCreado(),
+                        'creado'=>$entity->getCreado()->format('Y-m-d H:i:s'),
                         'procesarRoute'=>$this->get('router')->generate('gopro_'.$entity->getOperacion(), array('archivoEjecutar' => $entity->getId())),
                         'borrarRoute'=>$this->get('router')->generate('gopro_main_archivo_delete', array('id' => $entity->getId())),
                     ]

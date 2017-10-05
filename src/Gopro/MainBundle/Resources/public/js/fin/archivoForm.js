@@ -1,6 +1,6 @@
 $(document).ready(function()
 {
-    var formulario=$('form[name="archivocampos"]');
+    var formulario=$('form[name="archivo"]');
     var url=formulario.attr('action');
 
     $("#cargadorArchivos").uploadFile({
@@ -9,7 +9,7 @@ $(document).ready(function()
         {
             return formulario.serializeObject();
         },
-        fileName: 'archivocampos[archivo]',
+        fileName: 'archivo[archivo]',
         multiple:false,
         showStatusAfterSuccess:false,
         dragDropStr: "<span><b>Area para arrastrar y soltar archivos</b></span>",
