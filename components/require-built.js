@@ -1,20 +1,3 @@
-var components = {
-    "packages": [
-        {
-            "name": "jquery",
-            "main": "jquery-built.js"
-        }
-    ],
-    "baseUrl": "components"
-};
-if (typeof require !== "undefined" && require.config) {
-    require.config(components);
-} else {
-    var require = components;
-}
-if (typeof exports !== "undefined" && typeof module !== "undefined") {
-    module.exports = components;
-}
 /** vim: et:ts=4:sw=4:sts=4
  * @license RequireJS 2.1.5 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
@@ -2035,6 +2018,23 @@ var requirejs, require, define;
     req(cfg);
 }(this));
 
+var components = {
+    "packages": [
+        {
+            "name": "jquery",
+            "main": "jquery-built.js"
+        }
+    ],
+    "baseUrl": "components"
+};
+if (typeof require !== "undefined" && require.config) {
+    require.config(components);
+} else {
+    var require = components;
+}
+if (typeof exports !== "undefined" && typeof module !== "undefined") {
+    module.exports = components;
+}
 define('jquery', function (require, exports, module) {
 /*!
  * jQuery JavaScript Library v1.11.1

@@ -84,7 +84,7 @@ class ServicioController extends Controller
      */
     private function createCreateForm(Servicio $entity)
     {
-        $form = $this->createForm(new ServicioType(), $entity, array(
+        $form = $this->createForm(ServicioType::class, $entity, array(
             'action' => $this->generateUrl('gopro_transporte_servicio_create'),
             'method' => 'POST',
         ));
@@ -173,7 +173,7 @@ class ServicioController extends Controller
      */
     private function createEditForm(Servicio $entity)
     {
-        $form = $this->createForm(new ServicioType(), $entity, array(
+        $form = $this->createForm(ServicioType::class, $entity, array(
             'action' => $this->generateUrl('gopro_transporte_servicio_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));

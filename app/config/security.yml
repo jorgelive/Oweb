@@ -1,7 +1,7 @@
 security:
     providers:
         fos_userbundle:
-            id: fos_user.user_manager
+            id: fos_user.user_provider.username
 
     encoders:
         FOS\UserBundle\Model\UserInterface: sha512
@@ -24,6 +24,7 @@ security:
         ROLE_OPERACIONES_JEFE:  [ROLE_OPERACIONES_USUARIO]
         ROLE_ADMIN:             [ROLE_STAFF, ROLE_ADMINISTRACION_JEFE, ROLE_OPERACIONES_JEFE, ROLE_SONATA_FOO_EDITOR, ROLE_SONATA_FOO_ADMIN]
         ROLE_SUPER_ADMIN:       [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        SONATA: [ROLE_SONATA_PAGE_ADMIN_PAGE_EDIT]
 
     # set access_strategy to unanimous, else you may have unexpected behaviors
     access_decision_manager:
