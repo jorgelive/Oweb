@@ -28,6 +28,14 @@ class ServicioAdmin extends AbstractAdmin
             )
         ), $this->datagridValues);
 
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        if(!is_null($user) && !is_null($user->getConductor())){
+            $this->datagridValues = array_merge(array(
+                'conductor' => array (
+                    'value' => $user->getConductor()->getId()
+                )
+            ), $this->datagridValues);
+        }
 
         return parent::getFilterParameters();
     }
