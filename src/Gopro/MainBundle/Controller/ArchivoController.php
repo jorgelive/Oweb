@@ -55,6 +55,7 @@ class ArchivoController extends Controller
                     'mensaje'=>['exito'=>'no','titulo'=>'Error','texto'=>'El usuario no ha ingresado.'],
                 ]);
             }
+            $entity = $form->getData();
             $entity->setUser($this->getUser());
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
