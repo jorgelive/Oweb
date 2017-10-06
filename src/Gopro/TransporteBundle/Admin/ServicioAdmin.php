@@ -91,7 +91,7 @@ class ServicioAdmin extends AbstractAdmin
                 'label' => 'Inicio',
                 'format' => 'Y/m/d H:i'
             ])
-            ->add('nombre')
+            ->addIdentifier('nombre')
             ->add('dependencia.organizacion', null, [
                 'route' => ['name' => 'show'],
                 'label' => 'Cliente'
@@ -105,7 +105,7 @@ class ServicioAdmin extends AbstractAdmin
             ])
             ->add('fechahorafin',  null, [
                 'label' => 'Fin',
-                'format' => 'Y/m/d H:i'
+                'format' => 'H:i'
             ])
              ->add('_action', 'actions', [
                 'actions' => [
@@ -127,13 +127,13 @@ class ServicioAdmin extends AbstractAdmin
                 'label' => 'Inicio',
                 'dp_use_current' => true,
                 'dp_show_today' => true,
-                'format'=> 'yyyy/MM/dd hh:mm'
+                'format'=> 'yyyy/MM/dd HH:mm'
             ])
             ->add('fechahorafin', 'sonata_type_datetime_picker', [
                 'label' => 'Fin',
                 'dp_use_current' => true,
                 'dp_show_today' => true,
-                'format'=> 'yyyy/MM/dd hh:mm'
+                'format'=> 'yyyy/MM/dd HH:mm'
             ])
             ->add('nombre')
             ->add('dependencia', null, [
