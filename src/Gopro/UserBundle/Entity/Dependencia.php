@@ -73,7 +73,22 @@ class Dependencia
      */
     public function getOrganizaciondependencia()
     {
-        return sprintf("%s - %s", $this->getOrganizacion()->getNombre(), $this->getNombre());
+        if(is_null($this->getNombre())) {
+            $nombre = sprintf("Id: %s.", $this->getId());
+        }else{
+            $nombre = $this->getNombre();
+        }
+
+        if(!is_null($this->getOrganizacion())){
+            $organizacion = $this->getOrganizacion()->getNombre();
+            if(empty($organizacion)){
+                $organizacion = sprintf("Id: %s.", $this->getOrganizacion()->getId());
+            }
+        }else{
+            $organizacion = 'No asignado no asignado';
+        }
+
+        return sprintf("%s - %s", $organizacion, $nombre);
     }
 
     /**
@@ -218,10 +233,6 @@ class Dependencia
      */
     function __toString()
     {
-        if(is_null($this->getNombre())) {
-            return sprintf("Id: %s.", $this->getId());
-        }
-
-        return $this->getNombre();
+        return $this->getOrganizaciondependencia();
     }
 }

@@ -20,7 +20,6 @@ class UserAdmin extends SonataUserAdmin
             ->tab('Varios')
                 ->with('Organización')
                     ->add('dependencia', 'sonata_type_model', [
-                        'choice_label' => 'organizaciondependencia',
                         'required' => false,
                         'expanded' => false,
                         'multiple' => false,
