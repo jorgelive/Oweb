@@ -55,7 +55,7 @@ class ConductorAdmin extends AbstractAdmin
         $formMapper
             ->add('user', null, [
                 'required' => true,
-                'property' => 'fullname',
+                'choice_label' => 'fullname',
                 'label' => 'Nombre'
             ])
             ->add('licencia')

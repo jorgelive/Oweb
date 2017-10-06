@@ -59,7 +59,6 @@ class OrganizacionAdmin extends AbstractAdmin
             ->add('email')
             ->add('direccion')
             ->add('dependencias', 'sonata_type_model', [
-                'choice_label' => 'organizaciondependencia',
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true

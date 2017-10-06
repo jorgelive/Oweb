@@ -111,14 +111,14 @@ class CargadorController extends Controller
                 $j = 0;
 
                 $preproceso[$i]['dependencia'] = $linea['dependenciaServicio'];
-                $preproceso[$i]['fechahorainicio'] = \DateTime::createFromFormat('H:i:s', $linea['fechainicioServicio'] . ' ' . $linea['horainicioServicio']);
+                $preproceso[$i]['fechahorainicio'] = \DateTime::createFromFormat('Y-m-d H:i:s', $linea['fechainicioServicio'] . ' ' . $linea['horainicioServicio']);
                 if (!isset($linea['fechafinServicio']) || empty($linea['fechafinServicio'])) {
                     $linea['fechafinServicio'] = $linea['fechainicioServicio'];
                 }
                 if (!isset($linea['horafinServicio']) || empty($linea['horafinServicio'])) {
                     $linea['horafinServicio'] = date('H:i:s', strtotime($linea['horainicioServicio']) + 60 * 60);
                 }
-                $preproceso[$i]['fechahorafin'] = \DateTime::createFromFormat('H:i:s', $linea['fechafinServicio'] . ' ' . $linea['horafinServicio']);
+                $preproceso[$i]['fechahorafin'] = \DateTime::createFromFormat('Y-m-d H:i:s', $linea['fechafinServicio'] . ' ' . $linea['horafinServicio']);
 
                 $preproceso[$i]['nombre'] = $linea['nombreServicio'];
                 if (isset($linea['unidadServicio'])) {
