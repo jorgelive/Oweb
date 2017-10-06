@@ -53,24 +53,14 @@ class Servicio
     private $nombre;
 
     /**
-     * @ORM\Column(type="date", length=100)
-     */
-    private $fecha;
+ * @ORM\Column(type="datetime")
+ */
+    private $fechahorainicio;
 
     /**
-     * @ORM\Column(type="time")
+     * @ORM\Column(type="datetime")
      */
-    private $hora;
-
-    /**
-     * @ORM\Column(type="date", length=100)
-     */
-    private $fechafin;
-
-    /**
-     * @ORM\Column(type="time")
-     */
-    private $horafin;
+    private $fechahorafin;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -151,54 +141,6 @@ class Servicio
     public function getNombre()
     {
         return $this->nombre;
-    }
-
-    /**
-     * Set hora
-     *
-     * @param \DateTime $hora
-     *
-     * @return Servicio
-     */
-    public function setHora($hora)
-    {
-        $this->hora = $hora;
-
-        return $this;
-    }
-
-    /**
-     * Get hora
-     *
-     * @return \DateTime
-     */
-    public function getHora()
-    {
-        return $this->hora;
-    }
-
-    /**
-     * Set fecha
-     *
-     * @param \DateTime $fecha
-     *
-     * @return Servicio
-     */
-    public function setFecha($fecha)
-    {
-        $this->fecha = $fecha;
-
-        return $this;
-    }
-
-    /**
-     * Get fecha
-     *
-     * @return \DateTime
-     */
-    public function getFecha()
-    {
-        return $this->fecha;
     }
 
     /**
@@ -429,59 +371,58 @@ class Servicio
         return $this->serviciooperativos;
     }
 
+
     /**
-     * Set fechafin
+     * Set fechahorainicio
      *
-     * @param \DateTime $fechafin
+     * @param \DateTime $fechahorainicio
      *
      * @return Servicio
      */
-    public function setFechafin($fechafin)
+    public function setFechahorainicio($fechahorainicio)
     {
-        if(empty($fechafin)){
-            $fechafin = $this->fecha;
-        }
-        $this->fechafin = $fechafin;
-
+        $this->fechahorainicio = $fechahorainicio;
+    
         return $this;
     }
 
     /**
-     * Get fechafin
+     * Get fechahorainicio
      *
      * @return \DateTime
      */
-    public function getFechafin()
+    public function getFechahorainicio()
     {
-        return $this->fechafin;
+        return $this->fechahorainicio;
     }
 
     /**
-     * Set horafin
+     * Set fechahorafin
      *
-     * @param \DateTime $horafin
+     * @param \DateTime $fechahorafin
      *
      * @return Servicio
      */
-    public function setHorafin($horafin)
+    public function setFechahorafin($fechahorafin)
     {
-        if(empty($horafin)){
-            $horafin = clone $this->hora;
-            $horafin->add(new \DateInterval('PT1H'));
+        if(empty($fechahorafin) && $this->fechahorainicio instanceof \DateTime){
+            $fechahorafin = clone $this->fechahorainicio;
+            $fechahorafin->add(new \DateInterval('PT1H'));
         }
 
-        $this->horafin = $horafin;
+        $this->fechahorafin = $fechahorafin;
 
         return $this;
+        
     }
 
     /**
-     * Get horafin
+     * Get fechahorafin
      *
      * @return \DateTime
      */
-    public function getHorafin()
+    public function getFechahorafin()
     {
-        return $this->horafin;
+        return $this->fechahorafin;
     }
 }

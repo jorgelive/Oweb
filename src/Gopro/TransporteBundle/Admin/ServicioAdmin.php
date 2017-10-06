@@ -9,13 +9,14 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\EqualType;
 use Sonata\CoreBundle\Form\Type\BooleanType;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class ServicioAdmin extends AbstractAdmin
 {
 
     protected $datagridValues = [
         '_sort_order' => 'ASC',
-        '_sort_by' => 'fecha',
+        '_sort_by' => 'fechahorainicio',
     ];
 
     public function getFilterParameters(){
@@ -23,7 +24,7 @@ class ServicioAdmin extends AbstractAdmin
         $fecha = new \DateTime();
 
         $this->datagridValues = array_merge(array(
-            'fecha' => array (
+            'fechahorainicio' => array (
                 'value' => $fecha->format('Y/m/d')
             )
         ), $this->datagridValues);
@@ -47,14 +48,28 @@ class ServicioAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('fecha', 'doctrine_orm_datetime', [
-                'field_type'=>'sonata_type_date_picker',
-                'field_options'=> [
-                    'dp_use_current' => true,
-                    'dp_show_today' => true,
-                    'format'=> 'yyyy/MM/dd'
-                ]
-            ])
+            ->add('fechahorainicio', 'doctrine_orm_callback',
+                array(
+                    'label' => 'Inicio',
+                    'callback' => function($queryBuilder, $alias, $field, $value) {
+                        if (!$value['value'] || !($value['value'] instanceof \DateTime)) {
+                            return;
+                        }
+                        $fechaMasUno = clone ($value['value']);
+                        $fechaMasUno->add(new \DateInterval('P1D'));
+                        $queryBuilder->andWhere("DATE($alias.fechahorainicio) >= :fechahora");
+                        $queryBuilder->andWhere("DATE($alias.fechahorainicio) < :fechahoraMasUno");
+                        $queryBuilder->setParameter('fechahora', $value['value']);
+                        $queryBuilder->setParameter('fechahoraMasUno', $fechaMasUno);
+                        return true;
+                    },
+                    'field_type'=>'sonata_type_date_picker',
+                    'field_options'=> [
+                        'dp_use_current' => true,
+                        'dp_show_today' => true,
+                        'format'=> 'yyyy/MM/dd'
+                    ]
+                ))
             ->add('dependencia.organizacion', null, [
                 'route' => ['name' => 'show']
             ])
@@ -64,23 +79,19 @@ class ServicioAdmin extends AbstractAdmin
         ;
     }
 
+
+
     /**
      * @param ListMapper $listMapper
      */
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('fecha')
-            ->add('hora', 'datetime', [
-                'format' => 'H:i'
+            ->add('fechahorainicio',  null, [
+                'label' => 'Inicio',
+                'format' => 'Y/m/d H:i'
             ])
-            ->add('horafin', 'datetime', [
-                'format' => 'H:i',
-                'label' => 'Hora fin'
-            ])
-            ->add('fechafin',  null, [
-                'label' => 'Fecha fin'
-            ])
+            ->add('nombre')
             ->add('dependencia.organizacion', null, [
                 'route' => ['name' => 'show'],
                 'label' => 'Cliente'
@@ -92,8 +103,11 @@ class ServicioAdmin extends AbstractAdmin
             ->add('conductor', null, [
                 'route' => ['name' => 'show']
             ])
-            ->add('nombre')
-            ->add('_action', 'actions', [
+            ->add('fechahorafin',  null, [
+                'label' => 'Fin',
+                'format' => 'Y/m/d H:i'
+            ])
+             ->add('_action', 'actions', [
                 'actions' => [
                     'show' => [],
                     'edit' => [],
@@ -109,29 +123,26 @@ class ServicioAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->add('fechahorainicio', 'sonata_type_datetime_picker', [
+                'label' => 'Inicio',
+                'dp_use_current' => true,
+                'dp_show_today' => true,
+                'format'=> 'yyyy/MM/dd hh:mm'
+            ])
+            ->add('fechahorafin', 'sonata_type_datetime_picker', [
+                'label' => 'Fin',
+                'dp_use_current' => true,
+                'dp_show_today' => true,
+                'format'=> 'yyyy/MM/dd hh:mm'
+            ])
+            ->add('nombre')
             ->add('dependencia', null, [
                 'choice_label' => 'organizaciondependencia',
                 'label' => 'Cliente'
             ])
-            ->add('fecha', 'sonata_type_date_picker', [
-                'dp_use_current' => true,
-                'dp_show_today' => true,
-                'format'=> 'yyyy/MM/dd'
-            ])
-            ->add('hora')
-            ->add('horafin', null, [
-                'label' => 'Hora fin'
-            ])
-            ->add('fechafin', 'sonata_type_date_picker', [
-                'label' => 'Fecha fin',
-                'dp_use_current' => true,
-                'dp_show_today' => true,
-                'format'=> 'yyyy/MM/dd'
-            ])
             ->add('unidad')
             ->add('conductor')
-            ->add('nombre')
-            ->add('serviciooperativos', 'sonata_type_collection',[
+             ->add('serviciooperativos', 'sonata_type_collection',[
                 'by_reference' => false,
                 'label' => 'Operativo'
             ], [
@@ -162,20 +173,14 @@ class ServicioAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
+            ->add('fechahorainicio',  null, [
+                'label' => 'Inicio',
+                'format' => 'Y/m/d H:i'
+            ])
+            ->add('nombre')
             ->add('dependencia.organizacion', null, [
                 'route' => ['name' => 'show'],
                 'label' => 'Cliente'
-            ])
-            ->add('fecha')
-            ->add('hora', 'datetime', [
-                'format' => 'H:i'
-            ])
-            ->add('horafin', 'datetime', [
-                'label' => 'Hora fin',
-                'format' => 'H:i'
-            ])
-            ->add('fechafin', null, [
-                'label' => 'Fecha fin'
             ])
             ->add('unidad', null, [
                 'route' => ['name' => 'show']
@@ -183,7 +188,10 @@ class ServicioAdmin extends AbstractAdmin
             ->add('conductor', null, [
                 'route' => ['name' => 'show']
             ])
-            ->add('nombre')
+            ->add('fechahorafin',  null, [
+                'label' => 'Fin',
+                'format' => 'Y/m/d H:i'
+            ])
             ->end()
             ->with('Informacion Operativa')
             ->add('serviciooperativos', 'collection', [

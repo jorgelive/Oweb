@@ -51,8 +51,8 @@ class CargadorController extends Controller
 
         $tablaSpecs = array('filasDescartar' => 1);
         $columnaspecs[] = array('nombre' => 'dependenciaServicio');
-        $columnaspecs[] = array('nombre' => 'fechaServicio', 'tipo' => 'exceldate');
-        $columnaspecs[] = array('nombre' => 'horaServicio', 'tipo' => 'exceltime');
+        $columnaspecs[] = array('nombre' => 'fechainicioServicio', 'tipo' => 'exceldate');
+        $columnaspecs[] = array('nombre' => 'horainicioServicio', 'tipo' => 'exceltime');
         $columnaspecs[] = array('nombre' => 'horafinServicio', 'tipo' => 'exceltime');
         $columnaspecs[] = array('nombre' => 'fechafinServicio', 'tipo' => 'exceldate');
         $columnaspecs[] = array('nombre' => 'nombreServicio');
@@ -73,7 +73,6 @@ class CargadorController extends Controller
         $columnaspecs[] = array('nombre' => 'monedaContable');
         $columnaspecs[] = array('nombre' => 'totalContable');
         $columnaspecs[] = array('nombre' => 'descripcionContable');
-
 
         $archivoInfo = $this->get('gopro_main.archivoexcel')
             ->setArchivoBase($repositorio, $archivoEjecutar, $operacion)
@@ -97,11 +96,12 @@ class CargadorController extends Controller
 
             if (
                 (isset($linea['dependenciaServicio']) || !empty($linea['dependeciaServicio']))
-                && (isset($linea['fechaServicio']) || !empty($linea['fechaServicio']))
-                && (isset($linea['horaServicio']) || !empty($linea['horaServicio']))
+                && (isset($linea['fechainicioServicio']) || !empty($linea['fechainicioServicio']))
+                && (isset($linea['horainicioServicio']) || !empty($linea['horainicioServicio']))
                 && (isset($linea['nombreServicio']) || !empty($linea['nombreServicio']))
 
             ) {
+
                 if(!isset($i)){
                     $i = 0;
                 }else{
@@ -111,16 +111,15 @@ class CargadorController extends Controller
                 $j = 0;
 
                 $preproceso[$i]['dependencia'] = $linea['dependenciaServicio'];
-                $preproceso[$i]['fecha'] = $linea['fechaServicio'];
-                $preproceso[$i]['hora'] = $linea['horaServicio'];
-                if (!isset($linea['horafinServicio']) || empty($linea['horafinServicio'])) {
-                     $linea['horafinServicio'] = date('H:i:s', strtotime($linea['horaServicio']) + 60 * 60);
-                }
+                $preproceso[$i]['fechahorainicio'] = \DateTime::createFromFormat('H:i:s', $linea['fechainicioServicio'] . ' ' . $linea['horainicioServicio']);
                 if (!isset($linea['fechafinServicio']) || empty($linea['fechafinServicio'])) {
-                    $linea['fechafinServicio'] = $linea['fechaServicio'];
+                    $linea['fechafinServicio'] = $linea['fechainicioServicio'];
                 }
-                $preproceso[$i]['horafin'] = $linea['horafinServicio'];
-                $preproceso[$i]['fechafin'] = $linea['fechafinServicio'];
+                if (!isset($linea['horafinServicio']) || empty($linea['horafinServicio'])) {
+                    $linea['horafinServicio'] = date('H:i:s', strtotime($linea['horainicioServicio']) + 60 * 60);
+                }
+                $preproceso[$i]['fechahorafin'] = \DateTime::createFromFormat('H:i:s', $linea['fechafinServicio'] . ' ' . $linea['horafinServicio']);
+
                 $preproceso[$i]['nombre'] = $linea['nombreServicio'];
                 if (isset($linea['unidadServicio'])) {
                     $preproceso[$i]['unidad'] = $linea['unidadServicio'];
@@ -128,7 +127,6 @@ class CargadorController extends Controller
                 if (isset($linea['conductorServicio'])) {
                     $preproceso[$i]['conductor'] = $linea['conductorServicio'];
                 }
-
             } else{
                 if(!isset($i)){
                     $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no pertenece a ningun servicio.', 'error');
@@ -218,14 +216,8 @@ class CargadorController extends Controller
             $servicio = new Servicio();
 
             $servicio->setDependencia($em->getReference('Gopro\UserBundle\Entity\Dependencia', $linea['dependencia']));
-            $servicio->setFecha(\DateTime::createFromFormat('Y-m-d', $linea['fecha']));
-            $servicio->setHora(\DateTime::createFromFormat('H:i:s', $linea['hora']));
-            if(isset($linea['horafin'])){
-                $servicio->setHorafin(\DateTime::createFromFormat('H:i:s', $linea['horafin']));
-            }
-            if(isset($linea['fechafin'])){
-                $servicio->setFechafin(\DateTime::createFromFormat('Y-m-d', $linea['fechafin']));
-            }
+            $servicio->setFechahorainicio($linea['fechahorainicio']);
+            $servicio->setFechahorafin($linea['fechahorafin']);
             $servicio->setNombre($linea['nombre']);
             if(isset($linea['unidad'])){
                 $servicio->setUnidad($em->getReference('Gopro\TransporteBundle\Entity\Unidad', $linea['unidad']));
