@@ -18,19 +18,33 @@ class ServiciocontableAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
+            ->add('servicio.dependencia', null, [
+                'label' => 'Cliente',
+            ])
             ->add('servicio.nombre', null, [
                 'label' => 'Servicio'
             ])
-            ->add('servicio.fecha', 'doctrine_orm_datetime', [
-                'label' => 'Fecha servicio',
+            ->add('servicio.fechahorainicio', 'doctrine_orm_callback', [
+                'label' => 'Fecha de servicio',
+                'callback' => function($queryBuilder, $alias, $field, $value) {
+                    if (!$value['value'] || !($value['value'] instanceof \DateTime)) {
+                        return;
+                    }
+                    $fechaMasUno = clone ($value['value']);
+                    $fechaMasUno->add(new \DateInterval('P1D'));
+                    $queryBuilder->andWhere("DATE($alias.fechahorainicio) >= :fechahora");
+                    $queryBuilder->andWhere("DATE($alias.fechahorainicio) < :fechahoraMasUno");
+                    $queryBuilder->setParameter('fechahora', $value['value']);
+                    $queryBuilder->setParameter('fechahoraMasUno', $fechaMasUno);
+                    return true;
+                },
                 'field_type'=>'sonata_type_date_picker',
                 'field_options'=> [
                     'dp_use_current' => true,
                     'dp_show_today' => true,
                     'format'=> 'yyyy/MM/dd'
                 ]
-
-            ])
+             ])
             ->add('estadocontable', null, [
                 'label' => 'Estado'
             ])
@@ -67,8 +81,13 @@ class ServiciocontableAdmin extends AbstractAdmin
             ->add('servicio', null, [
                 'route' => ['name' => 'show']
             ])
-            ->add('servicio.fecha', null, [
-                'label' => 'Fecha servicio'
+            ->add('servicio.dependencia', null, [
+                'label' => 'Cliente',
+            ])
+            ->add('servicio.fechahorainicio', null, [
+                'label' => 'Fecha servicio',
+                'format' => 'Y/m/d H:i'
+
             ])
             ->add('estadocontable', null, [
                 'label' => 'Estado',
@@ -107,6 +126,7 @@ class ServiciocontableAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->add('servicio')
             ->add('estadocontable', null, [
                 'label' => 'Estado'
             ])
@@ -131,15 +151,16 @@ class ServiciocontableAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
-            ->add('servicio', null, [
-                'route' => ['name' => 'show']
+            ->add('servicio.dependencia', null, [
+                'label' => 'Cliente',
             ])
+            ->add('servicio')
             ->add('servicio.id', null, [
                 'label' => 'Identificador de servicio',
             ])
-            ->add('servicio.fecha', null, [
+            ->add('servicio.fechahorainicio', null, [
                 'label' => 'Fecha servicio',
-                'route' => ['name' => 'show']
+                'format' => 'Y/m/d H:i'
             ])
             ->add('estadocontable', null, [
                 'label' => 'Estado',
@@ -147,7 +168,6 @@ class ServiciocontableAdmin extends AbstractAdmin
             ])
             ->add('tiposercontable', null, [
                 'label' => 'Tipo',
-                'route' => ['name' => 'show']
             ])
             ->add('descripcion', null, [
                 'label' => 'Descripción'

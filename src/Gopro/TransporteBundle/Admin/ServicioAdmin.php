@@ -48,28 +48,27 @@ class ServicioAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('fechahorainicio', 'doctrine_orm_callback',
-                array(
-                    'label' => 'Inicio',
-                    'callback' => function($queryBuilder, $alias, $field, $value) {
-                        if (!$value['value'] || !($value['value'] instanceof \DateTime)) {
-                            return;
-                        }
-                        $fechaMasUno = clone ($value['value']);
-                        $fechaMasUno->add(new \DateInterval('P1D'));
-                        $queryBuilder->andWhere("DATE($alias.fechahorainicio) >= :fechahora");
-                        $queryBuilder->andWhere("DATE($alias.fechahorainicio) < :fechahoraMasUno");
-                        $queryBuilder->setParameter('fechahora', $value['value']);
-                        $queryBuilder->setParameter('fechahoraMasUno', $fechaMasUno);
-                        return true;
-                    },
-                    'field_type'=>'sonata_type_date_picker',
-                    'field_options'=> [
-                        'dp_use_current' => true,
-                        'dp_show_today' => true,
-                        'format'=> 'yyyy/MM/dd'
-                    ]
-                ))
+            ->add('fechahorainicio', 'doctrine_orm_callback',[
+                'label' => 'Inicio',
+                'callback' => function($queryBuilder, $alias, $field, $value) {
+                    if (!$value['value'] || !($value['value'] instanceof \DateTime)) {
+                        return;
+                    }
+                    $fechaMasUno = clone ($value['value']);
+                    $fechaMasUno->add(new \DateInterval('P1D'));
+                    $queryBuilder->andWhere("DATE($alias.fechahorainicio) >= :fechahora");
+                    $queryBuilder->andWhere("DATE($alias.fechahorainicio) < :fechahoraMasUno");
+                    $queryBuilder->setParameter('fechahora', $value['value']);
+                    $queryBuilder->setParameter('fechahoraMasUno', $fechaMasUno);
+                    return true;
+                },
+                'field_type'=>'sonata_type_date_picker',
+                'field_options'=> [
+                    'dp_use_current' => true,
+                    'dp_show_today' => true,
+                    'format'=> 'yyyy/MM/dd'
+                ]
+            ])
             ->add('dependencia.organizacion', null, [
                 'route' => ['name' => 'show'],
                 'label' => 'Cliente'
