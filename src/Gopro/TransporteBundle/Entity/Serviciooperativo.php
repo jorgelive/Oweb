@@ -65,6 +65,15 @@ class Serviciooperativo
         return $this->getTexto();
     }
 
+    /**
+     * @return string
+     */
+    public function getResumen()
+    {
+        return sprintf("%s: %s.", $this->getTiposeroperativo()->getCodigo(), $this->getTexto());
+
+    }
+
 
   
 

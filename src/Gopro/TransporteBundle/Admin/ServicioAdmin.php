@@ -71,7 +71,8 @@ class ServicioAdmin extends AbstractAdmin
                     ]
                 ))
             ->add('dependencia.organizacion', null, [
-                'route' => ['name' => 'show']
+                'route' => ['name' => 'show'],
+                'label' => 'Cliente'
             ])
             ->add('unidad')
             ->add('conductor')
@@ -92,6 +93,18 @@ class ServicioAdmin extends AbstractAdmin
                 'format' => 'Y/m/d H:i'
             ])
             ->addIdentifier('nombre')
+            ->add('serviciofiles', null, [
+                'associated_property' => 'resumen',
+                'label' => 'Referencias'
+            ])
+            ->add('serviciooperativos', null, [
+                'associated_property' => 'resumen',
+                'label' => 'Info operativa'
+            ])
+            ->add('fechahorafin',  null, [
+                'label' => 'Fin',
+                'format' => 'H:i'
+            ])
             ->add('dependencia.organizacion', null, [
                 'route' => ['name' => 'show'],
                 'label' => 'Cliente'
@@ -102,10 +115,6 @@ class ServicioAdmin extends AbstractAdmin
             ])
             ->add('conductor', null, [
                 'route' => ['name' => 'show']
-            ])
-            ->add('fechahorafin',  null, [
-                'label' => 'Fin',
-                'format' => 'H:i'
             ])
              ->add('_action', 'actions', [
                 'actions' => [
@@ -123,6 +132,8 @@ class ServicioAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->tab('General')
+            ->with('Info')
             ->add('fechahorainicio', 'sonata_type_datetime_picker', [
                 'label' => 'Inicio',
                 'dp_use_current' => true,
@@ -142,20 +153,29 @@ class ServicioAdmin extends AbstractAdmin
             ])
             ->add('unidad')
             ->add('conductor')
-             ->add('serviciooperativos', 'sonata_type_collection',[
+            ->end()
+            ->with('Información Operativa')
+            ->add('serviciooperativos', 'sonata_type_collection',[
                 'by_reference' => false,
                 'label' => 'Operativo'
             ], [
                 'edit' => 'inline',
                 'inline' => 'table',
             ])
+            ->end()
+            ->end()
+            ->tab('Referencias del cliente')
+            ->with('Files')
             ->add('serviciofiles', 'sonata_type_collection', [
                 'by_reference' => false,
-                'label' => 'Files'
+                'label' => 'File'
             ], [
                 'edit' => 'inline',
-                'inline' => 'table'
+                //'inline' => 'table'
             ])
+            ->end()
+            ->end()
+            ->tab('Contable')
             ->add('serviciocontables', 'sonata_type_collection', [
                 'by_reference' => false,
                 'label' => 'Facturación'
@@ -163,6 +183,7 @@ class ServicioAdmin extends AbstractAdmin
                 'edit' => 'inline',
                 'inline' => 'table'
             ])
+            ->end()
         ;
     }
 

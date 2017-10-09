@@ -201,6 +201,16 @@ class Serviciofile
     }
 
     /**
+     * Get hora
+     *
+     * @return \string
+     */
+    public function getResumen()
+    {
+        return sprintf('%s de %s a %s', $this->hora->format('H:i'), $this->origen, $this->destino);
+    }
+
+    /**
      * Set nombre
      *
      * @param string $nombre
