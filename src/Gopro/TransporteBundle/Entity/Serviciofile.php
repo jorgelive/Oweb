@@ -207,7 +207,11 @@ class Serviciofile
      */
     public function getResumen()
     {
-        return sprintf('%s %s de %s a %s', $this->hora->format('H:i'), $this->getNombre(), $this->origen, $this->destino);
+        if($this->getNumchd() > 0){
+            return sprintf('%s %s x %s+%s de %s a %s', $this->hora->format('H:i'), $this->getNombre(), (string)$this->getNumadl(), (string)$this->getNumchd(), $this->origen, $this->destino);
+        } else{
+            return sprintf('%s %s x %s de %s a %s', $this->hora->format('H:i'), $this->getNombre(), (string)$this->getNumadl(), $this->origen, $this->destino);
+        }
     }
 
     /**
