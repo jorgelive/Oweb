@@ -110,6 +110,7 @@ class CargadorController extends Controller
 
                 $j = 0;
 
+                $preproceso[$i]['excelRowNumber'] = $linea['excelRowNumber'];
                 $preproceso[$i]['dependencia'] = $linea['dependenciaServicio'];
                 $preproceso[$i]['fechahorainicio'] = \DateTime::createFromFormat('Y-m-d H:i:s', $linea['fechainicioServicio'] . ' ' . $linea['horainicioServicio']);
                 if (!isset($linea['fechafinServicio']) || empty($linea['fechafinServicio'])) {
@@ -130,20 +131,22 @@ class CargadorController extends Controller
             } else{
                 if(!isset($i)){
                     $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no pertenece a ningun servicio.', 'error');
-                    continue;
+                    $variables->setMensajes('No se ha ejecutado la carga.', 'error');
+                    return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
                 }
                 $j++;
             }
 
             if (!isset($linea['horaFile']) || !isset($linea['nombreFile']) || !isset($linea['codigoFile']) || !isset($linea['numadlFile']) || !isset($linea['origenFile']) || !isset($linea['destinoFile'])){
                 $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no tiene los datos de file completos.', 'error');
-                unset($preproceso[$i]);
-                continue;
+                $variables->setMensajes('No se ha ejecutado la carga.', 'error');
+                return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
             }
 
             if(!isset($preproceso[$i]['dependencia'])){
-                $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no pertenece a ningun servicio.', 'error');
-                continue;
+                $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no tiene asignado el cliente.', 'error');
+                $variables->setMensajes('No se ha ejecutado la carga.', 'error');
+                return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
             }
 
             $preproceso[$i]['servicioFile'][$j]['hora'] = $linea['horaFile'];
@@ -191,26 +194,25 @@ class CargadorController extends Controller
                 $preproceso[$i]['servicioContable']['descripcion'] = $linea['descripcionContable'];
             }
 
-            $preproceso[$i]['excelRowNumber'] = $linea['excelRowNumber'];
-
         endforeach;
 
         if (empty($preproceso)) {
             $variables->setMensajes('No se preproceso ningun elemento', 'error');
+            $variables->setMensajes('No se ha ejecutado la carga.', 'error');
             return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
         }
 
         $this->cargarBaseDeDatos ($preproceso);
 
-        $variables->setMensajes('Se ha ejecutado la carga.', 'success');
         return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
 
     }
 
     private function cargarBaseDeDatos ($preproceso){
 
+        $variables = $this->get('gopro_main.variableproceso');
         $em = $this->getDoctrine()->getManager();
-
+        $cargar = true;
         foreach ($preproceso as $linea):
 
             $servicio = new Servicio();
@@ -226,7 +228,7 @@ class CargadorController extends Controller
                 $servicio->setConductor($em->getReference('Gopro\TransporteBundle\Entity\Conductor', $linea['conductor']));
             }
 
-            if (isset($linea['servicioFile'])){
+            if (isset($linea['servicioFile']) && count($linea['servicioFile']) > 0){
                 foreach ($linea['servicioFile'] as $servicioFile){
                     $servicioFileEntity = new Serviciofile();
                     $servicioFileEntity->setHora(\DateTime::createFromFormat('H:i:s', $servicioFile['hora']));
@@ -243,6 +245,9 @@ class CargadorController extends Controller
                     }
                     $servicio->addServiciofile($servicioFileEntity);
                 }
+            }else{
+                $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no tiene la informacion de referencia cliente.', 'error');
+                $cargar = false;
             }
 
             if(isset($linea['servicioContable'])){
@@ -255,6 +260,9 @@ class CargadorController extends Controller
                 $servicioContable->setTotal($linea['servicioContable']['total']);
                 $servicioContable->setDescripcion($linea['servicioContable']['descripcion']);
                 $servicio->addServiciocontable($servicioContable);
+            }else{
+                $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no tiene la informacion contable correcta.', 'error');
+                $cargar = false;
             }
 
             if(isset($linea['servicioOperativo']['transfer'])){
@@ -278,14 +286,21 @@ class CargadorController extends Controller
                 $servicioOperativoNota->setTiposeroperativo($em->getReference('Gopro\TransporteBundle\Entity\Tiposeroperativo', 3));
                 $servicioOperativoNota->setTexto($linea['servicioOperativo']['nota']);
                 $servicio->addServiciooperativo($servicioOperativoNota);
-
             }
 
             $em->persist($servicio);
 
         endforeach;
 
-        $em->flush();
+        if ($cargar === true){
+            $em->flush();
+            $variables->setMensajes('Se ha ejecutado la carga.', 'success');
+            return true;
+        }else{
+            $variables->setMensajes('No se ha ejecutado la carga.', 'error');
+            return false;
+        }
+
 
     }
 
