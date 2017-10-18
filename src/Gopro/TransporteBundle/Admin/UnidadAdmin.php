@@ -38,7 +38,8 @@ class UnidadAdmin extends AbstractAdmin
                     'show' => [],
                     'edit' => [],
                     'delete' => [],
-                ]
+                ],
+                'label' => 'Acciones'
             ])
         ;
     }

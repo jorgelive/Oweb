@@ -36,7 +36,8 @@ class TiposeroperativoAdmin extends AbstractAdmin
                     'show' => [],
                     'edit' => [],
                     'delete' => [],
-                ]
+                ],
+                'label' => 'Acciones'
             ])
         ;
     }

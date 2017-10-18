@@ -42,7 +42,8 @@ class ConductorAdmin extends AbstractAdmin
                     'show' => [],
                     'edit' => [],
                     'delete' => [],
-                ]
+                ],
+                'label' => 'Acciones'
             ])
         ;
     }

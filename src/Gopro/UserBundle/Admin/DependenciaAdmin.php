@@ -42,7 +42,8 @@ class DependenciaAdmin extends AbstractAdmin
                     'show' => [],
                     'edit' => [],
                     'delete' => [],
-                ]
+                ],
+                'label' => 'Acciones'
             ])
         ;
     }

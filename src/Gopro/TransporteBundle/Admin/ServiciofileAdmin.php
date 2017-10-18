@@ -18,11 +18,10 @@ class ServiciofileAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('hora')
             ->add('nombre')
-            ->add('codigo')
-            ->add('numadl')
-            ->add('numchd')
+            ->add('codigo', null, [
+                'label' => 'Código'
+            ])
             ->add('origen')
             ->add('destino')
             ->add('nota')
@@ -38,9 +37,15 @@ class ServiciofileAdmin extends AbstractAdmin
             ->add('id')
             ->add('hora')
             ->add('nombre')
-            ->add('codigo')
-            ->add('numadl')
-            ->add('numchd')
+            ->add('codigo', null, [
+                'label' => 'Código'
+            ])
+            ->add('numadl', null, [
+                'label' => 'Adultos'
+            ])
+            ->add('numchd', null, [
+                'label' => 'Niños'
+            ])
             ->add('origen')
             ->add('destino')
             ->add('nota')
@@ -49,7 +54,8 @@ class ServiciofileAdmin extends AbstractAdmin
                     'show' => [],
                     'edit' => [],
                     'delete' => [],
-                ]
+                ],
+                'label' => 'Acciones'
             ])
         ;
     }
@@ -62,9 +68,15 @@ class ServiciofileAdmin extends AbstractAdmin
         $formMapper
             ->add('hora')
             ->add('nombre')
-            ->add('codigo')
-            ->add('numadl')
-            ->add('numchd')
+            ->add('codigo', null, [
+                'label' => 'Código'
+            ])
+            ->add('numadl', null, [
+                'label' => 'Adultos'
+            ])
+            ->add('numchd', null, [
+                'label' => 'Niños'
+            ])
             ->add('origen')
             ->add('destino')
             ->add('nota')
@@ -80,9 +92,15 @@ class ServiciofileAdmin extends AbstractAdmin
             ->add('id')
             ->add('hora')
             ->add('nombre')
-            ->add('codigo')
-            ->add('numadl')
-            ->add('numchd')
+            ->add('codigo', null, [
+                'label' => 'Código'
+            ])
+            ->add('numadl', null, [
+                'label' => 'Adultos'
+            ])
+            ->add('numchd', null, [
+                'label' => 'Niños'
+            ])
             ->add('origen')
             ->add('destino')
             ->add('nota')

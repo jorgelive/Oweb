@@ -51,23 +51,56 @@ class ServicioAdmin extends AbstractAdmin
             ->add('fechahorainicio', 'doctrine_orm_callback',[
                 'label' => 'Inicio',
                 'callback' => function($queryBuilder, $alias, $field, $value) {
+
                     if (!$value['value'] || !($value['value'] instanceof \DateTime)) {
                         return;
                     }
                     $fechaMasUno = clone ($value['value']);
                     $fechaMasUno->add(new \DateInterval('P1D'));
-                    $queryBuilder->andWhere("DATE($alias.fechahorainicio) >= :fechahora");
-                    $queryBuilder->andWhere("DATE($alias.fechahorainicio) < :fechahoraMasUno");
-                    $queryBuilder->setParameter('fechahora', $value['value']);
-                    $queryBuilder->setParameter('fechahoraMasUno', $fechaMasUno);
-                    return true;
+
+                    if(empty($value['type'])){
+                        $queryBuilder->andWhere("DATE($alias.$field) >= :fechahora");
+                        $queryBuilder->andWhere("DATE($alias.$field) < :fechahoraMasUno");
+                        $queryBuilder->setParameter('fechahora', $value['value']);
+                        $queryBuilder->setParameter('fechahoraMasUno', $fechaMasUno);
+                        return true;
+                    } elseif($value['type'] == 1){
+                        $queryBuilder->andWhere("DATE($alias.$field) >= :fechahora");
+                        $queryBuilder->setParameter('fechahora', $value['value']);
+                        return true;
+                    } elseif($value['type'] == 2){
+                        $queryBuilder->andWhere("DATE($alias.$field) < :fechahoraMasUno");
+                        $queryBuilder->setParameter('fechahoraMasUno', $fechaMasUno);
+                        return true;
+                    } elseif($value['type'] == 3){
+                        $queryBuilder->andWhere("DATE($alias.$field) >= :fechahoraMasUno");
+                        $queryBuilder->setParameter('fechahoraMasUno', $fechaMasUno);
+                        return true;
+                    } elseif($value['type'] == 4){
+                        $queryBuilder->andWhere("DATE($alias.$field) < :fechahora");
+                        $queryBuilder->setParameter('fechahora', $value['value']);
+                        return true;
+                    }
+
+                    return;
+
                 },
                 'field_type'=>'sonata_type_date_picker',
                 'field_options'=> [
                     'dp_use_current' => true,
                     'dp_show_today' => true,
                     'format'=> 'yyyy/MM/dd'
-                ]
+                ],
+                'operator_type' => 'choice',
+                'operator_options' => array(
+                    'choices' => array(
+                        'Igual a' => 0,
+                        'Mayor o igual a' => 1,
+                        'Menor o igual a' => 2,
+                        'Mayor a' => 3,
+                        'Menor a' => 4
+                    )
+                )
             ])
             ->add('dependencia.organizacion', null, [
                 'route' => ['name' => 'show'],
@@ -120,7 +153,8 @@ class ServicioAdmin extends AbstractAdmin
                     'show' => [],
                     'edit' => [],
                     'delete' => [],
-                ]
+                ],
+                 'label' => 'Acciones'
             ])
         ;
     }

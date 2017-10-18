@@ -144,7 +144,7 @@ class ServiciocontableAdminController extends CRUDController
             }
         }
         $cantidad = 1;
-        $solicitud['items'][0]['descripcion'] = $object->getServicio()->getFecha()->format('Y-m-d') . ' ' . $object->getDescripcion() . $filesString;
+        $solicitud['items'][0]['descripcion'] = $object->getServicio()->getFechahorainicio()->format('Y-m-d') . ' ' . $object->getDescripcion() . $filesString;
         $solicitud['items'][0]['cantidad'] = $cantidad;
         $solicitud['items'][0]['valor_unitario'] = (string)$object->getNeto();
         $solicitud['items'][0]['precio_unitario'] = (string)$object->getTotal();
@@ -156,8 +156,6 @@ class ServiciocontableAdminController extends CRUDController
         $solicitud['items'][0]['anticipo_regularizacion'] = false;
         $solicitud['items'][0]['anticipo_documento_serie'] = '';
         $solicitud['items'][0]['anticipo_documento_numero'] = '';
-
-
 
         $solicitudJson = json_encode($solicitud, JSON_PRETTY_PRINT);
 

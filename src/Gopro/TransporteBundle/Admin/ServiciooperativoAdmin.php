@@ -17,8 +17,12 @@ class ServiciooperativoAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('tiposeroperativo')
-            ->add('texto')
+            ->add('tiposeroperativo', null, [
+                'label' => 'Tipo'
+            ])
+            ->add('texto', null, [
+                'label' => 'Contenido'
+            ])
         ;
     }
 
@@ -29,14 +33,19 @@ class ServiciooperativoAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('tiposeroperativo')
-            ->add('texto')
+            ->add('tiposeroperativo', null, [
+                'label' => 'Tipo'
+            ])
+            ->add('texto', null, [
+                'label' => 'Contenido'
+            ])
             ->add('_action', 'actions', [
                 'actions' => [
                     'show' => [],
                     'edit' => [],
                     'delete' => [],
-                ]
+                ],
+                'label' => 'Acciones'
             ])
         ;
     }
@@ -47,8 +56,12 @@ class ServiciooperativoAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('tiposeroperativo')
-            ->add('texto')
+            ->add('tiposeroperativo', null, [
+                'label' => 'Tipo'
+            ])
+            ->add('texto', null, [
+                'label' => 'Contenido'
+            ])
         ;
     }
 
@@ -59,8 +72,12 @@ class ServiciooperativoAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
-            ->add('tiposeroperativo')
-            ->add('texto')
+            ->add('tiposeroperativo', null, [
+                'label' => 'Tipo'
+            ])
+            ->add('texto', null, [
+                'label' => 'Contenido'
+            ])
         ;
     }
 
