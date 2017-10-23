@@ -55,6 +55,9 @@ class ServiciooperativoAdmin extends AbstractAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        if ($this->getRoot()->getClass() != 'Gopro\TransporteBundle\Entity\Servicio'){
+            $formMapper->add('servicio');
+        }
         $formMapper
             ->add('tiposeroperativo', null, [
                 'label' => 'Tipo'

@@ -204,7 +204,7 @@ class ServicioAdmin extends AbstractAdmin
                 'label' => 'File'
             ], [
                 'edit' => 'inline',
-                //'inline' => 'table'
+                'inline' => 'table'
             ])
             ->end()
             ->end()

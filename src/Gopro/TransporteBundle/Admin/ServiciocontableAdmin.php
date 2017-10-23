@@ -11,6 +11,11 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class ServiciocontableAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_sort_order' => 'ASC',
+        '_sort_by' => 'servicio.fechahorainicio',
+    ];
+
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -153,16 +158,13 @@ class ServiciocontableAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('servicio', null, [
-                'route' => ['name' => 'show']
-            ])
+            ->add('servicio')
             ->add('servicio.dependencia', null, [
                 'label' => 'Cliente',
             ])
             ->add('servicio.fechahorainicio', null, [
                 'label' => 'Fecha servicio',
                 'format' => 'Y/m/d H:i'
-
             ])
             ->add('estadocontable', null, [
                 'label' => 'Estado',
@@ -201,8 +203,10 @@ class ServiciocontableAdmin extends AbstractAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        if ($this->getRoot()->getClass() != 'Gopro\TransporteBundle\Entity\Servicio'){
+            $formMapper->add('servicio');
+        }
         $formMapper
-            ->add('servicio')
             ->add('estadocontable', null, [
                 'label' => 'Estado'
             ])
@@ -231,9 +235,6 @@ class ServiciocontableAdmin extends AbstractAdmin
                 'label' => 'Cliente',
             ])
             ->add('servicio')
-            ->add('servicio.id', null, [
-                'label' => 'Identificador de servicio',
-            ])
             ->add('servicio.fechahorainicio', null, [
                 'label' => 'Fecha servicio',
                 'format' => 'Y/m/d H:i'
@@ -244,6 +245,7 @@ class ServiciocontableAdmin extends AbstractAdmin
             ])
             ->add('tiposercontable', null, [
                 'label' => 'Tipo',
+                'route' => ['name' => 'show']
             ])
             ->add('descripcion', null, [
                 'label' => 'Descripción'

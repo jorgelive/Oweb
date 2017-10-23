@@ -35,6 +35,7 @@ class ServiciofileAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
+            ->add('servicio')
             ->add('hora')
             ->add('nombre')
             ->add('codigo', null, [
@@ -65,6 +66,9 @@ class ServiciofileAdmin extends AbstractAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        if ($this->getRoot()->getClass() != 'Gopro\TransporteBundle\Entity\Servicio'){
+            $formMapper->add('servicio');
+        }
         $formMapper
             ->add('hora')
             ->add('nombre')
@@ -90,6 +94,7 @@ class ServiciofileAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
+            ->add('servicio')
             ->add('hora')
             ->add('nombre')
             ->add('codigo', null, [
