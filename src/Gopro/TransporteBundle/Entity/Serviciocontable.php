@@ -27,7 +27,7 @@ class Serviciocontable
     private $servicio;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=250)
      */
     private $descripcion;
 

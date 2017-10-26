@@ -31,10 +31,10 @@ security:
         strategy: unanimous
 
     firewalls:
-
         # -> custom firewall for the admin area of the URL
         admin:
-            pattern:      /admin(.*)
+            pattern:            /admin(.*)
+            context:            user
             form_login:
                 provider:       fos_userbundle
                 login_path:     /admin/login
@@ -43,7 +43,8 @@ security:
                 failure_path:   null
             logout:
                 path:           /admin/logout
-            anonymous:    true
+                target:         /admin/login
+            anonymous:          true
         # -> end custom configuration
 
         # defaut login area for standard users
