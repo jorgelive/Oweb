@@ -19,7 +19,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return array('name' => 'Visitante');
+        return array('name' => is_null($this->getUser()) ? 'Visitante' : $this->getUser()->getFullName());
     }
 
     /**

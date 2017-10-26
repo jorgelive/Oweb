@@ -193,7 +193,7 @@ sonata_admin:
     title_logo: /bundles/gopromain/images/logo_title.png
     templates:
         # default global templates
-        layout:  SonataAdminBundle::standard_layout.html.twig
+        layout:  GoproMainBundle:Sonata:standard_layout.html.twig
         ajax:    SonataAdminBundle::ajax_layout.html.twig
  
         # default actions templates, should extend a global templates
@@ -211,7 +211,7 @@ sonata_admin:
 sonata_doctrine_orm_admin:
     # default value is null, so doctrine uses the value defined in the configuration
     entity_manager: ~
- 
+
     templates:
         form:
             - SonataDoctrineORMAdminBundle:Form:form_admin_fields.html.twig
