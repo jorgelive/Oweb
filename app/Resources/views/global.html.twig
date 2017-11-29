@@ -41,6 +41,14 @@
         {% endblock header %}
     </div>
 
+    <div id='navigation'>
+        {% block navigation %}
+            {{ render(controller('GoproMainBundle:Default:navigation')) }}
+        {% endblock navigation %}
+    </div>
+
+    <br />
+
     <div id="sessionFlash">
         {% block sesionflash %}
             {% for type, messages in app.session.flashBag.all %}
@@ -59,14 +67,6 @@
             {% endfor %}
         {% endblock sesionflash %}
     </div>
-
-    <div id='navigation'>
-        {% block navigation %}
-            {{ render(controller('GoproMainBundle:Default:navigation')) }}
-        {% endblock navigation %}
-    </div>
-
-    <br />
 
     <div id="mainContent">
         {% block maincontent %}

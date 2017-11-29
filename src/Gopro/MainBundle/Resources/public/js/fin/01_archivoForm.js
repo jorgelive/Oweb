@@ -21,17 +21,3 @@ $(document).ready(function()
         }
     });
 });
-$(document).ready(function()
-{
-    $(".borrarFila").borraFila();
-});
-
-$(function () {
-    $("#deleteForm").submit(function(event){
-        if (!confirm("Esta seguro que desea eliminar?"))
-        {
-            event.preventDefault();
-            return;
-        }
-    });
-});

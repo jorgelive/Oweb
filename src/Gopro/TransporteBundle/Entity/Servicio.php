@@ -144,6 +144,32 @@ class Servicio
     }
 
     /**
+     * Get resumen
+     *
+     * @return string
+     */
+    public function getResumen()
+    {
+        $nombre = $this->getNombre();
+
+        if(!empty($this->getDependencia()) && !empty($this->getDependencia()->getOrganizacion())){
+            $nombre .= sprintf(' (%s)', $this->getDependencia()->getOrganizacion()->getNombre());
+        }
+
+        $resumenArray[] = $nombre;
+
+        if(!empty($this->getUnidad())){
+            $resumenArray[] = 'U:' . $this->getUnidad()->getAbreviatura();
+        }
+
+        if(!empty($this->getConductor())){
+            $resumenArray[] = 'C:' . $this->getConductor()->getAbreviatura();
+        }
+
+        return implode(', ' , $resumenArray);
+    }
+
+    /**
      * Set creado
      *
      * @param \DateTime $creado

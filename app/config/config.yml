@@ -5,11 +5,20 @@ imports:
 
 gopro_fullcalendar:
     calendars:
+        transporte_servicio_conductor:
+            entity: 'GoproTransporteBundle:Servicio'
+            repositorymethod: 'findCalendarConductorColored'
+            parameters:
+                title: 'resumen'
+                start: 'fechahorainicio'
+                end: 'fechahorafin'
+                color: 'conductor.color'
+                url: 'id'
         transporte_servicio_unidad:
             entity: 'GoproTransporteBundle:Servicio'
             repositorymethod: 'findCalendarUnidadColored'
             parameters:
-                title: 'nombre'
+                title: 'resumen'
                 start: 'fechahorainicio'
                 end: 'fechahorafin'
                 color: 'unidad.color'

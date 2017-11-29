@@ -67,7 +67,9 @@
         ]
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "bin-dir": "bin",
+        "component-dir": "web/components"
     },
     "extra": {
         "symfony-app-dir": "app",

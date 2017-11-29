@@ -10,5 +10,5 @@
 
 {% block sonata_admin_content %}
     {{ parent() }}
-    {{ fullCalendar('transporte_servicio_unidad') }}
+    {{ fullCalendar({'Color por conductor' : 'transporte_servicio_conductor', 'Color por unidad' : 'transporte_servicio_unidad'}) }}
 {% endblock %}

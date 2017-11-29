@@ -29,26 +29,56 @@ class fullCalendarExtension extends \Twig_Extension
         );
     }
 
-    public function fullCalendar($calendar, $defaultView = 'agendaWeek', $allDaySlot = false)
-    {
+    public function generateUrl($calendar){
         $exists = $this->_router->getRouteCollection()->get('gopro_fullcalendar_event_load');
-        if (null !== $exists)
+        if (null === $exists)
         {
-            $url = $this->_router->generate('gopro_fullcalendar_event_load', ['calendar' => $calendar]);
+            return null;
         }
 
+        return $this->_router->generate('gopro_fullcalendar_event_load', ['calendar' => $calendar]);
+    }
+
+    public function fullCalendar($calendars, $defaultView = 'agendaWeek', $allDaySlot = false)
+    {
+
+        if (!is_array($calendars)){
+            $calendars = ['default' => $calendars];
+        }
+
+        foreach ($calendars as $key => $calendar){
+            $calendarsurls[$key] = $this->generateUrl($calendar);
+        }
+
+        $arrayKeys = array_keys($calendarsurls);
+        $defaultUrl = $calendarsurls[$arrayKeys[0]];
+        $calendarsurls = json_encode($calendarsurls);
+
+        $dropdown = <<<JS
+
+        var data = $calendarsurls;
+        var s = $("<select id=\"calendarSelector\" />");
+        
+        s.change(function() {
+            $('#calendar').fullCalendar('removeEventSources');
+            $('#calendar').fullCalendar('addEventSource', s.val() )
+        })
+        
+        for(var val in data) {
+            $("<option />", {text: val, value: data[val]}).appendTo(s);
+        }
+        $("#calendar").before(s);
+JS;
+        
         if($allDaySlot === true){
             $allDaySlot = 'true';
         }else{
             $allDaySlot = 'false';
         }
 
-        $script = <<<EOT
-
-<script>
-
+        $script = <<<JS
     $(document).ready(function() {
-
+        $dropdown;   
         $('#calendar').fullCalendar({
             header: {
                 left: 'prev,next today',
@@ -59,18 +89,16 @@ class fullCalendarExtension extends \Twig_Extension
             navLinks: true,
             editable: false,
             eventLimit: true,
-            events: '$url',
+            events: '$defaultUrl',
             allDaySlot: $allDaySlot,
-            locale: 'es'
+            locale: 'es',
+            nowIndicator: true
         });
     });
+    
 
-    </script>
-    <div id='calendar'></div>
-EOT;
+JS;
 
-
-
-        return $script;
+        return "<script>" . $script . "</script><div id='calendar'></div>";
     }
 }
