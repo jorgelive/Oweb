@@ -22,6 +22,7 @@ class ConductorAdmin extends AbstractAdmin
             ])
             ->add('licencia')
             ->add('abreviatura')
+            ->add('color')
         ;
     }
 
@@ -37,6 +38,7 @@ class ConductorAdmin extends AbstractAdmin
             ])
             ->add('licencia')
             ->add('abreviatura')
+            ->add('color')
             ->add('_action', 'actions', [
                 'actions' => [
                     'show' => [],
@@ -61,6 +63,7 @@ class ConductorAdmin extends AbstractAdmin
             ])
             ->add('licencia')
             ->add('abreviatura')
+            ->add('color')
         ;
     }
 
@@ -76,6 +79,7 @@ class ConductorAdmin extends AbstractAdmin
             ])
             ->add('licencia')
             ->add('abreviatura')
+            ->add('color')
         ;
     }
 

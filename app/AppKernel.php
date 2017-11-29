@@ -17,6 +17,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(), //requerido por full calendar
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
@@ -34,6 +35,7 @@ class AppKernel extends Kernel
             new Gopro\MainBundle\GoproMainBundle(),
             new Gopro\MaestroBundle\GoproMaestroBundle(),
             new Gopro\TransporteBundle\GoproTransporteBundle(),
+            new Gopro\FullcalendarBundle\GoproFullcalendarBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

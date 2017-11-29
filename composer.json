@@ -9,7 +9,8 @@
             "Gopro\\ExcelBundle\\": "src/Gopro/ExcelBundle",
             "Gopro\\MainBundle\\": "src/Gopro/MainBundle",
             "Gopro\\MaestroBundle\\": "src/Gopro/MaestroBundle",
-            "Gopro\\TransporteBundle\\": "src/Gopro/TransporteBundle"
+            "Gopro\\TransporteBundle\\": "src/Gopro/TransporteBundle",
+            "Gopro\\FullcalendarBundle\\": "src/Gopro/FullcalendarBundle"
 
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
@@ -41,7 +42,8 @@
         "nelmio/api-doc-bundle": "~2.6",
         "friendsofsymfony/rest-bundle": "~2.2",
         "twitter/bootstrap": "3.*",
-        "components/jquery": "1.11.1"
+        "components/jquery": "1.11.1",
+        "friendsofsymfony/jsrouting-bundle": "~1.1"
 
     },
     "require-dev": {

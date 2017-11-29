@@ -17,10 +17,17 @@ class DependenciaAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('organizacion')
+            ->add('organizacion', null, [
+                'label' => 'Organización'
+            ])
             ->add('nombre')
-            ->add('email')
-            ->add('direccion')
+            ->add('email', null, [
+                'label' => 'E-mail'
+            ])
+            ->add('direccion', null, [
+                'label' => 'Dirección'
+            ])
+            ->add('color')
         ;
     }
 
@@ -32,11 +39,17 @@ class DependenciaAdmin extends AbstractAdmin
         $listMapper
             ->add('id')
             ->add('organizacion', null, [
-                'route' => ['name' => 'show']
+                'route' => ['name' => 'show'],
+                'label' => 'Organización'
             ])
             ->add('nombre')
-            ->add('email')
-            ->add('direccion')
+            ->add('email', null, [
+                'label' => 'E-mail'
+            ])
+            ->add('direccion', null, [
+                'label' => 'Dirección'
+            ])
+            ->add('color')
             ->add('_action', 'actions', [
                 'actions' => [
                     'show' => [],
@@ -57,11 +70,17 @@ class DependenciaAdmin extends AbstractAdmin
             ->add('organizacion', 'sonata_type_model', [
                 'required' => true,
                 'expanded' => true,
-                'multiple' => false
+                'multiple' => false,
+                'label' => 'Organización'
             ])
             ->add('nombre')
-            ->add('email')
-            ->add('direccion')
+            ->add('email', null, [
+                'label' => 'E-mail'
+            ])
+            ->add('direccion', null, [
+                'label' => 'Dirección'
+            ])
+            ->add('color')
         ;
     }
 
@@ -73,11 +92,17 @@ class DependenciaAdmin extends AbstractAdmin
         $showMapper
             ->add('id')
             ->add('organizacion', null, [
-                'route' => ['name' => 'show']
+                'route' => ['name' => 'show'],
+                'label' => 'Organización'
             ])
             ->add('nombre')
-            ->add('email')
-            ->add('direccion')
+            ->add('email', null, [
+                'label' => 'E-mail'
+            ])
+            ->add('direccion', null, [
+                'label' => 'Dirección'
+            ])
+            ->add('color')
         ;
     }
 }

@@ -20,6 +20,7 @@ class UnidadAdmin extends AbstractAdmin
             ->add('nombre')
             ->add('placa')
             ->add('abreviatura')
+            ->add('color')
         ;
     }
 
@@ -33,6 +34,7 @@ class UnidadAdmin extends AbstractAdmin
             ->add('nombre')
             ->add('placa')
             ->add('abreviatura')
+            ->add('color')
             ->add('_action', 'actions', [
                 'actions' => [
                     'show' => [],
@@ -53,6 +55,7 @@ class UnidadAdmin extends AbstractAdmin
             ->add('nombre')
             ->add('placa')
             ->add('abreviatura')
+            ->add('color')
         ;
     }
 
@@ -66,6 +69,7 @@ class UnidadAdmin extends AbstractAdmin
             ->add('nombre')
             ->add('placa')
             ->add('abreviatura')
+            ->add('color')
         ;
     }
 

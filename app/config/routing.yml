@@ -13,6 +13,11 @@ gopro_transporte:
     type:     annotation
     prefix:   /transporte
 
+gopro_fullcalendar:
+    resource: "@GoproFullcalendarBundle/Controller/"
+    type:     annotation
+    prefix:   /fullcalendar
+
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
@@ -44,6 +49,9 @@ sonata_user_admin_security:
 sonata_user_admin_resetting:
     resource: '@SonataUserBundle/Resources/config/routing/admin_resetting.xml'
     prefix: /admin/resetting
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
 admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'

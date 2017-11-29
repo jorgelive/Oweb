@@ -5,6 +5,8 @@ services:
         arguments: [~, Gopro\TransporteBundle\Entity\Servicio, ~ ]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Transporte, label: Servicios}
+        calls:
+            - [ setTemplate, [list, GoproTransporteBundle:ServicioAdmin:list.html.twig]]
 
     gopro_transporte.admin.serviciooperativo:
         class: Gopro\TransporteBundle\Admin\ServiciooperativoAdmin

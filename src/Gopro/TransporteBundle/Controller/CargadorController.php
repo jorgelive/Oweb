@@ -13,7 +13,6 @@ use Gopro\TransporteBundle\Entity\Servicio;
 use Gopro\TransporteBundle\Entity\Serviciooperativo;
 use Gopro\TransporteBundle\Entity\Serviciofile;
 use Gopro\TransporteBundle\Entity\Serviciocontable;
-use Gopro\MaestroBundle\Entity\Moneda;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 

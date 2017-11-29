@@ -3,6 +3,18 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
 
+gopro_fullcalendar:
+    calendars:
+        transporte_servicio_unidad:
+            entity: 'GoproTransporteBundle:Servicio'
+            repositorymethod: 'findCalendarUnidadColored'
+            parameters:
+                title: 'nombre'
+                start: 'fechahorainicio'
+                end: 'fechahorafin'
+                color: 'unidad.color'
+                url: 'id'
+
 framework:
     #esi:             ~
     #translator:      { fallback: %locale% }
@@ -256,6 +268,7 @@ stof_doctrine_extensions:
         default:
             tree: true
             timestampable: true
+            translatable: true
 
 sonata_user:
     class:                  # Entity Classes

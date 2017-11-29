@@ -1,0 +1,14 @@
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block sonata_admin_content %}
+    {{ parent() }}
+    {{ fullCalendar('transporte_servicio_unidad') }}
+{% endblock %}

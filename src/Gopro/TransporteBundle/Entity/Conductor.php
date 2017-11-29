@@ -29,6 +29,11 @@ class Conductor
     private $abreviatura;
 
     /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $color;
+
+    /**
      * @var \DateTime $creado
      *
      * @Gedmo\Timestampable(on="create")
@@ -248,5 +253,29 @@ class Conductor
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set color
+     *
+     * @param string $color
+     *
+     * @return Conductor
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+    
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
     }
 }

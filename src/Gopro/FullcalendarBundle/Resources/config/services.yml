@@ -1,0 +1,12 @@
+services:
+    gopro.fullcalendar.eventsfinder:
+        class:  Gopro\FullcalendarBundle\Services\Eventsfinder
+        shared: false
+        arguments: ["@doctrine", "@service_container"]
+    gopro.fullcalendar.twig_extension:
+        class:  Gopro\FullcalendarBundle\Twig\fullCalendarExtension
+        public: false
+        arguments: ['@router']
+        tags:
+            - { name: twig.extension }
+

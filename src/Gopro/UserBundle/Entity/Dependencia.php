@@ -49,6 +49,11 @@ class Dependencia
     private $direccion;
 
     /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $color;
+
+    /**
      * @var \Gopro\UserBundle\Entity\Organizacion
      *
      * @ORM\ManyToOne(targetEntity="Organizacion", inversedBy="dependencias")
@@ -234,5 +239,29 @@ class Dependencia
     function __toString()
     {
         return $this->getOrganizaciondependencia();
+    }
+
+    /**
+     * Set color
+     *
+     * @param string $color
+     *
+     * @return Dependencia
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+    
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
     }
 }

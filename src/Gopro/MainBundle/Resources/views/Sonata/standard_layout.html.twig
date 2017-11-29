@@ -1,5 +1,18 @@
 {% extends 'SonataAdminBundle::standard_layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/goprofullcalendar/css/fullcalendar.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/goprofullcalendar/css/fullcalendar.print.min.css') }}" rel="stylesheet" media="print">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/goprofullcalendar/js/fullcalendar.min.js') }}"></script>
+    <script src="{{ asset('bundles/goprofullcalendar/js/locale-all.js') }}"></script>
+    <script src="{{ asset('bundles/goprofullcalendar/js/gcal.nin.js') }}"></script>
+{% endblock %}
+
 {% block side_bar_after_nav %}
     <p class="text-center"><a href="{{ path('gopro_main') }}">Inicio</a></p>
 {% endblock %}

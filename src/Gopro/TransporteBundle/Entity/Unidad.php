@@ -35,6 +35,11 @@ class Unidad
     private $abreviatura;
 
     /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $color;
+
+    /**
      * @var \DateTime $creado
      *
      * @Gedmo\Timestampable(on="create")
@@ -241,5 +246,29 @@ class Unidad
     public function getAbreviatura()
     {
         return $this->abreviatura;
+    }
+
+    /**
+     * Set color
+     *
+     * @param string $color
+     *
+     * @return Unidad
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+    
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
     }
 }

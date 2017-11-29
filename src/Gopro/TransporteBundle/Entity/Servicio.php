@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Table(name="tra_servicio")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Gopro\TransporteBundle\Repository\ServicioRepository")
  */
 class Servicio
 {
@@ -382,7 +382,7 @@ class Servicio
     public function setFechahorainicio($fechahorainicio)
     {
         $this->fechahorainicio = $fechahorainicio;
-    
+
         return $this;
     }
 
@@ -413,7 +413,7 @@ class Servicio
         $this->fechahorafin = $fechahorafin;
 
         return $this;
-        
+
     }
 
     /**
