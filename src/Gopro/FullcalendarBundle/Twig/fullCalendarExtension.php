@@ -29,12 +29,18 @@ class fullCalendarExtension extends \Twig_Extension
         );
     }
 
-    public function fullCalendar($calendar, $defaultView = 'agendaWeek')
+    public function fullCalendar($calendar, $defaultView = 'agendaWeek', $allDaySlot = false)
     {
         $exists = $this->_router->getRouteCollection()->get('gopro_fullcalendar_event_load');
         if (null !== $exists)
         {
             $url = $this->_router->generate('gopro_fullcalendar_event_load', ['calendar' => $calendar]);
+        }
+
+        if($allDaySlot === true){
+            $allDaySlot = 'true';
+        }else{
+            $allDaySlot = 'false';
         }
 
         $script = <<<EOT
@@ -53,7 +59,9 @@ class fullCalendarExtension extends \Twig_Extension
             navLinks: true,
             editable: false,
             eventLimit: true,
-            events: '$url'
+            events: '$url',
+            allDaySlot: $allDaySlot,
+            locale: 'es'
         });
     });
 

@@ -14,5 +14,8 @@
 {% endblock %}
 
 {% block side_bar_after_nav %}
-    <p class="text-center"><a href="{{ path('gopro_main') }}">Inicio</a></p>
+    <div class="btn-group btn-group-justified">
+        <a class="btn btn-primary btn-md" href="{{ path('gopro_main') }}">Inicio</a>
+        <a class="btn btn-primary btn-md" href="{{ path('gopro_transporte_cargador_genericoprograma') }}">Cargador</a>
+    </div>
 {% endblock %}
