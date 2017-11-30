@@ -57,7 +57,7 @@ class fullCalendarExtension extends \Twig_Extension
         $dropdown = <<<JS
 
         var data = $calendarsurls;
-        var s = $("<select id=\"calendarSelector\" />");
+        var s = $("<select style=\"margin-top: 10px; margin-left: 10px;\" id=\"calendarSelector\" />");
         
         s.change(function() {
             $('#calendar').fullCalendar('removeEventSources');
@@ -99,6 +99,6 @@ JS;
 
 JS;
 
-        return "<script>" . $script . "</script><div id='calendar'></div>";
+        return "<script>" . $script . "</script><div class='box box-primary'><div id='calendar'></div></div>";
     }
 }
