@@ -102,9 +102,9 @@ class Serviciocontable
     private $original;
 
     /**
-     * @var \Gopro\MaestroBundle\Entity\Estadocontable
+     * @var \Gopro\TransporteBundle\Entity\Estadocontable
      *
-     * @ORM\ManyToOne(targetEntity="Gopro\MaestroBundle\Entity\Estadocontable")
+     * @ORM\ManyToOne(targetEntity="Estadocontable")
      */
     private $estadocontable;
 
@@ -428,11 +428,11 @@ class Serviciocontable
     /**
      * Set estadocontable
      *
-     * @param \Gopro\MaestroBundle\Entity\Estadocontable $estadocontable
+     * @param \Gopro\TransporteBundle\Entity\Estadocontable $estadocontable
      *
      * @return Serviciocontable
      */
-    public function setEstadocontable(\Gopro\MaestroBundle\Entity\Estadocontable $estadocontable = null)
+    public function setEstadocontable(\Gopro\TransporteBundle\Entity\Estadocontable $estadocontable = null)
     {
         $this->estadocontable = $estadocontable;
 
@@ -442,7 +442,7 @@ class Serviciocontable
     /**
      * Get estadocontable
      *
-     * @return \Gopro\MaestroBundle\Entity\Estadocontable
+     * @return \Gopro\TransporteBundle\Entity\Estadocontable
      */
     public function getEstadocontable()
     {

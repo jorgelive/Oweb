@@ -209,7 +209,7 @@ class ServiciocontableAdminController extends CRUDController
             }
         }
         $object->setFechaemision($fechaEmision);
-        $object->setEstadocontable($em->getReference('Gopro\MaestroBundle\Entity\Estadocontable', 3));
+        $object->setEstadocontable($em->getReference('Gopro\TransporteBundle\Entity\Estadocontable', 3));
 
         $this->admin->update($object);
 
@@ -243,10 +243,6 @@ class ServiciocontableAdminController extends CRUDController
 
 
 */
-
-
-
-
 
     }
 

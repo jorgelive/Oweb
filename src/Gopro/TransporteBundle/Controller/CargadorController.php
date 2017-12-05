@@ -251,7 +251,7 @@ class CargadorController extends Controller
 
             if(isset($linea['servicioContable'])){
                 $servicioContable = new Serviciocontable();
-                $servicioContable->setEstadocontable($em->getReference('Gopro\MaestroBundle\Entity\Estadocontable', 1));
+                $servicioContable->setEstadocontable($em->getReference('Gopro\TransporteBundle\Entity\Estadocontable', 1));
                 $servicioContable->setTiposercontable($em->getReference('Gopro\TransporteBundle\Entity\Tiposercontable', $linea['servicioContable']['tiposercontable']));
                 $servicioContable->setMoneda($em->getReference('Gopro\MaestroBundle\Entity\Moneda', $linea['servicioContable']['moneda']));
                 $servicioContable->setNeto($linea['servicioContable']['neto']);

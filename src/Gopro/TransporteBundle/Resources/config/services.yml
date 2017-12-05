@@ -50,6 +50,12 @@ services:
         tags:
             - {name: sonata.admin, manager_type: orm, group: Maestros, label: Tipo contable}
 
+    gopro_transporte.admin.estadocontable:
+        class: Gopro\TransporteBundle\Admin\EstadocontableAdmin
+        arguments: [~, Gopro\TransporteBundle\Entity\Estadocontable, ~]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Maestros, label: Estado contable}
+
     gopro_transporte.admin.tiposeroperativo:
         class: Gopro\TransporteBundle\Admin\TiposeroperativoAdmin
         arguments: [~, Gopro\TransporteBundle\Entity\Tiposeroperativo, ~ ]

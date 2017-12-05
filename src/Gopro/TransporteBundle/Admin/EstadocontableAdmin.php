@@ -1,6 +1,6 @@
 <?php
 
-namespace Gopro\MaestroBundle\Admin;
+namespace Gopro\TransporteBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
