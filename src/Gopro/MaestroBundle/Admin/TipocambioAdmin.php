@@ -36,13 +36,13 @@ class TipocambioAdmin extends AbstractAdmin
             ->add('moneda')
             ->add('compra')
             ->add('venta')
-            ->add('_action', 'actions', [
+            ->add('_action', null, [
+                'label' => 'Acciones',
                 'actions' => [
                     'show' => [],
                     'edit' => [],
-                    'delete' => [],
-                ],
-                'label' => 'Acciones'
+                    'delete' => []
+                ]
             ])
         ;
     }
@@ -53,7 +53,12 @@ class TipocambioAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('fecha')
+            ->add('fecha', 'sonata_type_date_picker', [
+                'label' => 'Fecha',
+                'dp_use_current' => true,
+                'dp_show_today' => true,
+                'format'=> 'yyyy/MM/dd'
+            ])
             ->add('moneda')
             ->add('compra')
             ->add('venta')

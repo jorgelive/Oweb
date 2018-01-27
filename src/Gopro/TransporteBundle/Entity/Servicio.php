@@ -23,6 +23,7 @@ class Servicio
      * @var \Gopro\UserBundle\Entity\Dependencia
      *
      * @ORM\ManyToOne(targetEntity="Gopro\UserBundle\Entity\Dependencia")
+     * @ORM\JoinColumn(name="dependencia_id", referencedColumnName="id", nullable=false)
      */
     protected $dependencia;
 
@@ -30,6 +31,7 @@ class Servicio
      * @var \Gopro\TransporteBundle\Entity\Unidad
      *
      * @ORM\ManyToOne(targetEntity="Unidad", inversedBy="servicios")
+     * @ORM\JoinColumn(name="unidad_id", referencedColumnName="id", nullable=false)
      */
     protected $unidad;
 
@@ -37,6 +39,7 @@ class Servicio
      * @var \Gopro\TransporteBundle\Entity\Conductor
      *
      * @ORM\ManyToOne(targetEntity="Conductor", inversedBy="servicios")
+     * @ORM\JoinColumn(name="conductor_id", referencedColumnName="id", nullable=false)
      */
     protected $conductor;
 
@@ -102,11 +105,7 @@ class Servicio
      */
     public function __toString()
     {
-        if(is_null($this->getNombre())) {
-            return sprintf("Id: %s.", $this->getId());
-        }
-
-        return $this->getNombre();
+        return $this->getNombre() ?? sprintf("Id: %s.", $this->getId()) ?? '';
     }
 
     /**

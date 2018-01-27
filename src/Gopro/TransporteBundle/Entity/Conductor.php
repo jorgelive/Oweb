@@ -56,7 +56,6 @@ class Conductor
      */
     private $servicios;
 
-
     /**
      * @var \Gopro\UserBundle\Entity\User
      *

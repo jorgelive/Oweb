@@ -1,4 +1,5 @@
 /web/bundles/
+/web/components/
 /web/carga/*
 !/web/carga/archivos/.gitkeep
 /web/js/

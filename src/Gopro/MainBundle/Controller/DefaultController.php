@@ -29,7 +29,6 @@ class DefaultController extends Controller
     public function navigationAction()
     {
         $items=array(
-            //array('nombre'=>'Generador de firmas','route'=>'gopro_vipac_extra_firma'),
             array('nombre'=>'Inicio','route'=>'gopro_main'),
             array('nombre'=>'Admin','route'=>'sonata_admin_dashboard'),
             array('nombre'=>'Servicios','route'=>'admin_gopro_transporte_servicio_list'),

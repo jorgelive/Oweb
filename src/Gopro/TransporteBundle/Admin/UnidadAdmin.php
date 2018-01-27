@@ -56,6 +56,13 @@ class UnidadAdmin extends AbstractAdmin
             ->add('placa')
             ->add('abreviatura')
             ->add('color')
+            ->add('unidadbitacoras', 'sonata_type_collection', [
+                'by_reference' => false,
+                'label' => 'Bitacoras'
+            ], [
+                'edit' => 'inline',
+                'inline' => 'table'
+            ])
         ;
     }
 

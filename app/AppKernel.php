@@ -24,18 +24,20 @@ class AppKernel extends Kernel
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
             new Sonata\UserBundle\SonataUserBundle(),
             new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
-            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new Sonata\TranslationBundle\SonataTranslationBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(), //requerido por translationbundle
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new JMS\AopBundle\JMSAopBundle(),
-            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
-            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new Fkr\CssURLRewriteBundle\FkrCssURLRewriteBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(), //requerido por paginacion de ajaxdropdown
             new Gopro\UserBundle\GoproUserBundle(),
             new Gopro\ExcelBundle\GoproExcelBundle(),
             new Gopro\MainBundle\GoproMainBundle(),
+            new Gopro\SonataBundle\GoproSonataBundle(),
             new Gopro\MaestroBundle\GoproMaestroBundle(),
             new Gopro\TransporteBundle\GoproTransporteBundle(),
-            new Gopro\FullcalendarBundle\GoproFullcalendarBundle()
+            new Gopro\FullcalendarBundle\GoproFullcalendarBundle(),
+            new Gopro\CotizacionBundle\GoproCotizacionBundle(),
+            new Gopro\ServicioBundle\GoproServicioBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

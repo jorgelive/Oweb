@@ -57,6 +57,7 @@ class Dependencia
      * @var \Gopro\UserBundle\Entity\Organizacion
      *
      * @ORM\ManyToOne(targetEntity="Organizacion", inversedBy="dependencias")
+     * @ORM\JoinColumn(name="organizacion_id", referencedColumnName="id", nullable=false)
      */
     protected $organizacion;
 
@@ -236,7 +237,7 @@ class Dependencia
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return $this->getOrganizaciondependencia();
     }

@@ -3,6 +3,7 @@ services:
         class:  Gopro\FullcalendarBundle\Services\Eventsfinder
         shared: false
         arguments: ["@doctrine", "@service_container"]
+        public: true
     gopro.fullcalendar.twig_extension:
         class:  Gopro\FullcalendarBundle\Twig\fullCalendarExtension
         public: false

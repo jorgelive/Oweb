@@ -1,12 +1,57 @@
 services:
+
+    gopro_maestro.admin.sexo:
+        class: Gopro\MaestroBundle\Admin\SexoAdmin
+        arguments: [~, Gopro\MaestroBundle\Entity\Sexo, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Maestros, label: Sexo}
+        public: true
+
+    gopro_maestro.admin.tipodocumento:
+        class: Gopro\MaestroBundle\Admin\TipodocumentoAdmin
+        arguments: [~, Gopro\MaestroBundle\Entity\Tipodocumento, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Maestros, label: Tipo de documento}
+        public: true
+
     gopro_maestro.admin.moneda:
         class: Gopro\MaestroBundle\Admin\MonedaAdmin
-        arguments: [~, Gopro\MaestroBundle\Entity\Moneda, ~]
+        arguments: [~, Gopro\MaestroBundle\Entity\Moneda, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Maestros, label: Monedas}
+        public: true
 
     gopro_maestro.admin.tipocambio:
-            class: Gopro\MaestroBundle\Admin\TipocambioAdmin
-            arguments: [~, Gopro\MaestroBundle\Entity\Tipocambio, ~]
-            tags:
-                - {name: sonata.admin, manager_type: orm, group: Maestros, label: Tipo de cambio}
+        class: Gopro\MaestroBundle\Admin\TipocambioAdmin
+        arguments: [~, Gopro\MaestroBundle\Entity\Tipocambio, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Maestros, label: Tipo de cambio}
+        public: true
+
+    gopro_maestro.admin.pais:
+        class: Gopro\MaestroBundle\Admin\PaisAdmin
+        arguments: [~, Gopro\MaestroBundle\Entity\Pais, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Maestros, label: Pais }
+        public: true
+
+    gopro_maestro.admin.idioma:
+        class: Gopro\MaestroBundle\Admin\IdiomaAdmin
+        arguments: [~, Gopro\MaestroBundle\Entity\Idioma, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Maestros, label: Idioma }
+        public: true
+
+    gopro_maestro.admin.tipopax:
+        class: Gopro\MaestroBundle\Admin\TipopaxAdmin
+        arguments: [~, Gopro\MaestroBundle\Entity\Tipopax, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Cotizacion Maestro, label: Tipo pax }
+        public: true
+
+    gopro_maestro.admin.categoriatour:
+        class: Gopro\MaestroBundle\Admin\CategoriatourAdmin
+        arguments: [~, Gopro\MaestroBundle\Entity\Categoriatour, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Cotizacion Maestro, label: Categoria de tour }
+        public: true

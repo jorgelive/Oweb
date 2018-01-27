@@ -59,6 +59,7 @@ security:
         - { path: ^/css/, role: IS_AUTHENTICATED_ANONYMOUSLY }
         
         # URL of FOSUserBundle which need to be available to anonymous users
+        - { path: ^/admin/gopro/cotizacion/cotizacion/\d/resumen$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }

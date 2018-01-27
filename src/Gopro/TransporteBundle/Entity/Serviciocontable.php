@@ -23,6 +23,7 @@ class Serviciocontable
      * @var \Gopro\TransporteBundle\Entity\Servicio
      *
      * @ORM\ManyToOne(targetEntity="Servicio", inversedBy="serviciocontables")
+     * @ORM\JoinColumn(name="servicio_id", referencedColumnName="id", nullable=false)
      */
     private $servicio;
 
@@ -35,6 +36,7 @@ class Serviciocontable
      * @var \Gopro\MaestroBundle\Entity\Moneda
      *
      * @ORM\ManyToOne(targetEntity="Gopro\MaestroBundle\Entity\Moneda")
+     * @ORM\JoinColumn(name="moneda_id", referencedColumnName="id", nullable=false)
      */
     private $moneda;
 
@@ -57,6 +59,7 @@ class Serviciocontable
      * @var \Gopro\TransporteBundle\Entity\Tiposercontable
      *
      * @ORM\ManyToOne(targetEntity="Tiposercontable")
+     * @ORM\JoinColumn(name="tiposercontable_id", referencedColumnName="id", nullable=false)
      */
     private $tiposercontable;
 
@@ -105,6 +108,7 @@ class Serviciocontable
      * @var \Gopro\TransporteBundle\Entity\Estadocontable
      *
      * @ORM\ManyToOne(targetEntity="Estadocontable")
+     * @ORM\JoinColumn(name="estadocontable_id", referencedColumnName="id", nullable=false)
      */
     private $estadocontable;
 

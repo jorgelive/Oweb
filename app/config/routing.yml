@@ -1,7 +1,17 @@
+gopro_servicio:
+    resource: "@GoproServicioBundle/Controller/"
+    type:     annotation
+    prefix:   /servicio
+
 gopro_main:
     resource: "@GoproMainBundle/Controller/"
     type:     annotation
     prefix:   /
+
+gopro_cotizacion:
+    resource: "@GoproCotizacionBundle/Controller/"
+    type:     annotation
+    prefix:   /cotizacion
 
 gopro_maestro:
     resource: "@GoproMaestroBundle/Controller/"

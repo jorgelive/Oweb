@@ -1,0 +1,88 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/goprofullcalendar/css/fullcalendar.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/goprofullcalendar/css/fullcalendar.print.min.css') }}" rel="stylesheet" media="print">
+
+    {% stylesheets
+        '@SonataTranslationBundle/Resources/public/css/sonata-translation.css'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+    <style type="text/css">
+        .fc-toolbar h2 {font-size: 20px; padding-top: 10px;}
+        .select2-results__option.loading-results,
+        .select2-results__option.select2-results__option--load-more {
+            display: none;
+        }
+        .select2-container--bootstrap .select2-selection--single .select2-selection__rendered{ padding-top: 3px;}
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {% block sonata_javascript_config %}
+        <script>
+            window.SONATA_CONFIG = {
+                CONFIRM_EXIT: {% if sonata_admin.adminPool.getOption('confirm_exit') %}true{% else %}false{% endif %},
+                USE_SELECT2: {% if sonata_admin.adminPool.getOption('use_select2') %}true{% else %}false{% endif %},
+                USE_ICHECK: {% if sonata_admin.adminPool.getOption('use_icheck') %}true{% else %}false{% endif %},
+                USE_STICKYFORMS: {% if sonata_admin.adminPool.getOption('use_stickyforms') %}true{% else %}false{% endif %}
+            };
+            window.SONATA_TRANSLATIONS = {
+                CONFIRM_EXIT: '{{ 'confirm_exit'|trans({}, 'SonataAdminBundle')|escape('js') }}'
+            };
+
+            // http://getbootstrap.com/getting-started/#support-ie10-width
+            if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                var msViewportStyle = document.createElement('style');
+                msViewportStyle.appendChild(document.createTextNode('@-ms-viewport{width:auto!important}'));
+                document.querySelector('head').appendChild(msViewportStyle);
+            }
+        </script>
+    {% endblock %}
+
+    {% block sonata_javascript_pool %}
+        {% for javascript in sonata_admin.adminPool.getOption('javascripts', []) %}
+            <script src="{{ asset(javascript) }}"></script>
+        {% endfor %}
+    {% endblock %}
+
+    {% set locale = app.request.locale %}
+    {# localize moment #}
+    {% if locale[:2] != 'en' %}
+        <script src="{{ asset(
+            'bundles/sonatacore/vendor/moment/locale/' ~
+            locale|lower|replace({'_':'-'}) ~
+            '.js'
+        ) }}"></script>
+    {% endif %}
+
+    {# localize select2 #}
+    {% if sonata_admin.adminPool.getOption('use_select2') %}
+        {% if locale == 'pt' %}{% set locale = 'pt_PT' %}{% endif %}
+
+        {# omit default EN locale #}
+        {% if locale[:2] != 'en' %}
+            <script src="{{ asset('bundles/goprosonata/vendor/select2/i18n/' ~ locale|replace({'_':'-'}) ~ '.js') }}"></script>
+        {% endif %}
+    {% endif %}
+
+    <script type="text/javascript">
+        $.fn.select2.defaults.set("theme", "bootstrap");
+        $.fn.select2.defaults.set('language', 'es');
+        $.fn.select2.defaults.set("placeholder", "");
+    </script>
+
+    <script src="{{ asset('bundles/goprofullcalendar/js/fullcalendar.min.js') }}"></script>
+    <script src="{{ asset('bundles/goprofullcalendar/js/locale-all.js') }}"></script>
+    <script src="{{ asset('bundles/goprofullcalendar/js/gcal.min.js') }}"></script>
+{% endblock %}
+
+{% block side_bar_after_nav %}
+    <div class="btn-group btn-group-justified">
+        <a class="btn btn-primary btn-md" href="{{ path('gopro_main') }}">Inicio</a>
+        <a class="btn btn-primary btn-md" href="{{ path('gopro_transporte_cargador_genericoprograma') }}">Cargador</a>
+    </div>
+{% endblock %}

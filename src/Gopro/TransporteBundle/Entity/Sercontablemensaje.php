@@ -32,6 +32,7 @@ class Sercontablemensaje
      * @var \Gopro\TransporteBundle\Entity\Serviciocontable
      *
      * @ORM\ManyToOne(targetEntity="Serviciocontable", inversedBy="sercontablemensajes")
+     * @ORM\JoinColumn(name="serviciocontable_id", referencedColumnName="id", nullable=false)
      */
     private $serviciocontable;
 

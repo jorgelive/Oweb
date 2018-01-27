@@ -1,0 +1,71 @@
+services:
+    gopro_cotizacion.resumen:
+        class:  Gopro\CotizacionBundle\Service\Resumen
+        calls:
+          - [ setDoctrine,[ "@doctrine" ] ]
+        public: true
+
+    gopro_cotizacion.admin.file:
+        class: Gopro\CotizacionBundle\Admin\FileAdmin
+        arguments: [~, Gopro\CotizacionBundle\Entity\File, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Cotizacion, label: Files}
+        calls:
+            - [ setTemplate, [edit, GoproCotizacionBundle:FileAdmin:edit.html.twig]]
+        public: true
+
+    gopro_cotizacion.admin.estadocotizacion:
+        class: Gopro\CotizacionBundle\Admin\EstadocotizacionAdmin
+        arguments: [~, Gopro\CotizacionBundle\Entity\Estadocotizacion, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Cotizacion Maestro, label: Estado de cotizacion }
+        public: true
+
+    gopro_cotizacion.admin.filepasajero:
+        class: Gopro\CotizacionBundle\Admin\FilepasajeroAdmin
+        arguments: [~, Gopro\CotizacionBundle\Entity\Filepasajero, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false, group: Cotizacion, label: Name List }
+        public: true
+
+    gopro_cotizacion.admin.cotizacion:
+        class: Gopro\CotizacionBundle\Admin\CotizacionAdmin
+        arguments: [~, Gopro\CotizacionBundle\Entity\Cotizacion, GoproCotizacionBundle:CotizacionAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Cotizacion, label: Cotizaciones }
+        public: true
+
+    gopro_cotizacion.admin.cotservicio:
+        class: Gopro\CotizacionBundle\Admin\CotservicioAdmin
+        arguments: [~, Gopro\CotizacionBundle\Entity\Cotservicio, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false, group: Cotizacion, label: Servicios }
+        public: true
+
+    gopro_cotizacion.admin.cotcomponente:
+        class: Gopro\CotizacionBundle\Admin\CotcomponenteAdmin
+        arguments: [~, Gopro\CotizacionBundle\Entity\Cotcomponente, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false, group: Cotizacion, label: Componentes }
+        public: true
+
+    gopro_cotizacion.admin.cottarifa:
+        class: Gopro\CotizacionBundle\Admin\CottarifaAdmin
+        arguments: [~, Gopro\CotizacionBundle\Entity\Cottarifa, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false, group: Cotizacion, label: Tarifa }
+        public: true
+
+    gopro_cotizacion.admin.tipofiledocumento:
+        class: Gopro\CotizacionBundle\Admin\TipofiledocumentoAdmin
+        arguments: [~, Gopro\CotizacionBundle\Entity\Tipofiledocumento, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Cotizacion Maestro, label: Tipo de documento }
+        public: true
+
+    gopro_cotizacion.admin.filedocumento:
+            class: Gopro\CotizacionBundle\Admin\FiledocumentoAdmin
+            arguments: [~, Gopro\CotizacionBundle\Entity\Filedocumento, SonataAdminBundle:CRUD]
+            tags:
+                - { name: sonata.admin, manager_type: orm, group: Cotizacion, label: Documento }
+            public: true

@@ -1,3 +1,4 @@
 services:
     phpexcel:
-      class: Gopro\ExcelBundle\Factory
+        class: Gopro\ExcelBundle\Factory
+        public: true

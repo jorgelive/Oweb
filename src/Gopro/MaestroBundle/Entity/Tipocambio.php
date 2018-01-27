@@ -22,21 +22,28 @@ class Tipocambio
      * @var \Gopro\MaestroBundle\Entity\Moneda
      *
      * @ORM\ManyToOne(targetEntity="Moneda", inversedBy="tipocambios")
+     * @ORM\JoinColumn(name="moneda_id", referencedColumnName="id", nullable=false)
      */
     protected $moneda;
 
     /**
-     * @ORM\Column(type="date")
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha", type="date")
      */
     private $fecha;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=3, nullable=true)
+     * @var string
+     *
+     * @ORM\Column(type="decimal", precision=10, scale=3)
      */
     private $compra;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=3, nullable=true)
+     * @var string
+     *
+     * @ORM\Column(type="decimal", precision=10, scale=3)
      */
     private $venta;
 

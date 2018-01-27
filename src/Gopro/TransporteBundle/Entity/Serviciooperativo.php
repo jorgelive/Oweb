@@ -22,6 +22,7 @@ class Serviciooperativo
      * @var \Gopro\TransporteBundle\Entity\Servicio
      *
      * @ORM\ManyToOne(targetEntity="Servicio", inversedBy="serviciooperativos")
+     * @ORM\JoinColumn(name="servicio_id", referencedColumnName="id", nullable=false)
      */
     private $servicio;
 
@@ -29,6 +30,7 @@ class Serviciooperativo
      * @var \Gopro\TransporteBundle\Entity\Tiposeroperativo
      *
      * @ORM\ManyToOne(targetEntity="Tiposeroperativo")
+     * @ORM\JoinColumn(name="tiposeroperativo_id", referencedColumnName="id", nullable=false)
      */
     private $tiposeroperativo;
 
@@ -58,11 +60,7 @@ class Serviciooperativo
      */
     public function __toString()
     {
-        if(is_null($this->getTexto())) {
-            return sprintf("Id: %s.", $this->getId());
-        }
-
-        return $this->getTexto();
+        return $this->getTexto() ?? sprintf("Id: %s.", $this->getId()) ?? '';
     }
 
     /**

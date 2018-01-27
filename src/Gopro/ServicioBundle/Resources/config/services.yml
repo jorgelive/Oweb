@@ -1,0 +1,57 @@
+services:
+    gopro_servicio.admin.servicio:
+        class: Gopro\ServicioBundle\Admin\ServicioAdmin
+        arguments: [~, Gopro\ServicioBundle\Entity\Servicio, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Servicio, label: Servicio }
+        public: true
+
+    gopro_servicio.admin.itinerario:
+        class: Gopro\ServicioBundle\Admin\ItinerarioAdmin
+        arguments: [~, Gopro\ServicioBundle\Entity\Itinerario, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false, group: Servicio, label: Itinerario }
+        public: true
+
+    gopro_servicio.admin.componente:
+        class: Gopro\ServicioBundle\Admin\ComponenteAdmin
+        arguments: [~, Gopro\ServicioBundle\Entity\Componente, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Servicio, label: Componente }
+        public: true
+
+    gopro_servicio.admin.tipocomponente:
+        class: Gopro\ServicioBundle\Admin\TipocomponenteAdmin
+        arguments: [~, Gopro\ServicioBundle\Entity\Tipocomponente, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Servicio Maestro, label: Tipo de componente }
+        public: true
+
+    gopro_servicio.admin.tarifa:
+        class: Gopro\ServicioBundle\Admin\TarifaAdmin
+        arguments: [~, Gopro\ServicioBundle\Entity\Tarifa, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Servicio, label: Tarifa }
+        public: true
+
+    gopro_servicio.admin.itinerariodia:
+        class: Gopro\ServicioBundle\Admin\ItinerariodiaAdmin
+        arguments: [~, Gopro\ServicioBundle\Entity\Itinerariodia, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false, group: Servicio, label: Dias de itinerario }
+        public: true
+
+    gopro_servicio.admin.itidiaarchivo:
+        class: Gopro\ServicioBundle\Admin\ItidiaarchivoAdmin
+        arguments: [~, Gopro\ServicioBundle\Entity\Itidiaarchivo, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Servicio, label: Archivos del itinerario }
+        public: true
+
+
+    gopro_servicio.admin.tipotarifa:
+        class: Gopro\ServicioBundle\Admin\TipotarifaAdmin
+        arguments: [~, Gopro\ServicioBundle\Entity\Tipotarifa, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Servicio Maestro, label: Tipo de tarifa cotizada }
+        public: true

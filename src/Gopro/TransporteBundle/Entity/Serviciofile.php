@@ -22,6 +22,7 @@ class Serviciofile
      * @var \Gopro\TransporteBundle\Entity\Servicio
      *
      * @ORM\ManyToOne(targetEntity="Servicio", inversedBy="serviciofiles")
+     * @ORM\JoinColumn(name="servicio_id", referencedColumnName="id", nullable=false)
      */
     private $servicio;
 
@@ -51,7 +52,7 @@ class Serviciofile
     private $numchd;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(type="string", length=100)
      */
     private $origen;
 
@@ -86,11 +87,7 @@ class Serviciofile
      */
     public function __toString()
     {
-        if(is_null($this->getNombre())) {
-            return sprintf("Id: %s.", $this->getId());
-        }
-
-        return $this->getNombre();
+        return $this->getNombre() ?? sprintf("Id: %s.", $this->getId()) ?? '';
     }
 
 

@@ -63,15 +63,18 @@ class Unidad
     private $servicios;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Unidadbitacora", mappedBy="unidad", cascade={"persist","remove"}, orphanRemoval=true)
+     */
+    private $unidadbitacoras;
+
+    /**
      * @return string
      */
     public function __toString()
     {
-        if(is_null($this->getNombre())) {
-            return sprintf("Id: %s.", $this->getId());
-        }
-
-        return $this->getNombre();
+        return $this->getNombre() ?? sprintf("Id: %s.", $this->getId()) ?? '';
     }
 
     /**
@@ -80,6 +83,7 @@ class Unidad
     public function __construct()
     {
         $this->servicios = new ArrayCollection();
+        $this->unidadbitacoras = new ArrayCollection();
     }
 
     /**
@@ -270,5 +274,43 @@ class Unidad
     public function getColor()
     {
         return $this->color;
+    }
+
+    /**
+     * Add unidadbitacora.
+     *
+     * @param \Gopro\TransporteBundle\Entity\Unidadbitacora $unidadbitacora
+     *
+     * @return Unidad
+     */
+    public function addUnidadbitacora(\Gopro\TransporteBundle\Entity\Unidadbitacora $unidadbitacora)
+    {
+        $unidadbitacora->setUnidad($this);
+
+        $this->unidadbitacoras[] = $unidadbitacora;
+    
+        return $this;
+    }
+
+    /**
+     * Remove unidadbitacora.
+     *
+     * @param \Gopro\TransporteBundle\Entity\Unidadbitacora $unidadbitacora
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeUnidadbitacora(\Gopro\TransporteBundle\Entity\Unidadbitacora $unidadbitacora)
+    {
+        return $this->unidadbitacoras->removeElement($unidadbitacora);
+    }
+
+    /**
+     * Get unidadbitacoras.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUnidadbitacoras()
+    {
+        return $this->unidadbitacoras;
     }
 }

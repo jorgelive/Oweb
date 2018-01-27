@@ -69,11 +69,7 @@ class Archivo
      */
     public function __toString()
     {
-        if(is_null($this->getNombre())) {
-            return sprintf("Id: %s.", $this->getId());
-        }
-
-        return $this->getNombre();
+        return $this->getNombre() ?? sprintf("Id: %s.", $this->getId()) ?? '';
     }
 
     /**
@@ -178,18 +174,18 @@ class Archivo
             return $this->getUploadDir() . '/thumb/'.$this->id.'.'.$this->extension;
 
         }else{
-            return $this->getUploadDir() . '/bundles/goprovipacmain/img/iconos/'.$this->extension.'.png';
+            return 'web/bundles/gopromain/images/iconos/'.$this->extension.'.png';
         }
     }
 
     protected function getUploadRootDir()
     {
-        return __DIR__ . '/../../../../web/' . $this->getUploadDir();
+        return __DIR__ . '/../../../../' . $this->getUploadDir();
     }
 
     protected function getUploadDir()
     {
-        return 'carga/archivos';
+        return 'web/carga/archivos';
     }
 
     /**

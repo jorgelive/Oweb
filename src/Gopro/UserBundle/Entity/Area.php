@@ -117,12 +117,8 @@ class Area
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
-        if(is_null($this->getNombre())) {
-            return sprintf("Id: %s.", $this->getId());
-        }
-
-        return $this->getNombre();
+        return $this->getNombre() ?? sprintf("Id: %s.", $this->getId()) ?? '';
     }
 }

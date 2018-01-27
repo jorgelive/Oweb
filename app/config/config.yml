@@ -2,6 +2,14 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: "@GoproCotizacionBundle/Resources/config/services.yml" }
+    - { resource: "@GoproServicioBundle/Resources/config/services.yml" }
+
+sonata_translation:
+    locales: [es, en]
+    default_locale: es
+    gedmo:
+        enabled: true
 
 gopro_fullcalendar:
     calendars:
@@ -60,7 +68,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: true
-    bundles:        [GoproUserBundle, GoproMainBundle, SonataUserBundle, FOSUserBundle, GoproTransporteBundle]
+    bundles:        [GoproUserBundle, GoproMainBundle, SonataUserBundle, FOSUserBundle, GoproTransporteBundle, GoproSonataBundle]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -208,19 +216,62 @@ sonata_block:
         sonata.user.block.menu:    # used to display the menu in profile pages
         sonata.user.block.account: # used to display menu option (login option)
         sonata.block.service.text: # used to if you plan to use Sonata user routes
+        sonata_translation.block.locale_switcher:
 
 sonata_admin:
     title:      Extranet
-    title_logo: /bundles/gopromain/images/logo_title.png
+    title_logo: /bundles/goprosonata/images/logo_title.png
     templates:
         # default global templates
-        layout:  GoproMainBundle:Sonata:standard_layout.html.twig
+        layout:  GoproSonataBundle:Admin:standard_layout.html.twig
         ajax:    SonataAdminBundle::ajax_layout.html.twig
  
         # default actions templates, should extend a global templates
         list:    SonataAdminBundle:CRUD:list.html.twig
         show:    SonataAdminBundle:CRUD:show.html.twig
-        edit:    GoproMainBundle:Sonata:edit.html.twig
+        edit:    GoproSonataBundle:Admin:edit.html.twig
+    assets:
+        stylesheets:
+            - bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css
+            - bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css
+            - bundles/sonatacore/vendor/ionicons/css/ionicons.min.css
+            - bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css
+            - bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css
+            - bundles/sonataadmin/vendor/iCheck/skins/square/blue.css
+            - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css
+            - bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css
+            - bundles/goprosonata/vendor/select2/select2.min.css
+            - bundles/goprosonata/vendor/select2-bootstrap-theme/select2-bootstrap.min.css
+            - bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css
+            - bundles/sonataadmin/css/styles.css
+            - bundles/sonataadmin/css/layout.css
+            - bundles/sonataadmin/css/tree.css
+            - bundles/sonataadmin/css/colors.css
+
+
+
+        javascripts:
+            - bundles/sonatacore/vendor/jquery/dist/jquery.min.js
+            - bundles/sonataadmin/vendor/jquery.scrollTo/jquery.scrollTo.min.js
+            - bundles/sonatacore/vendor/moment/min/moment.min.js
+            - bundles/sonataadmin/vendor/jqueryui/ui/minified/jquery-ui.min.js
+            - bundles/sonataadmin/vendor/jqueryui/ui/minified/i18n/jquery-ui-i18n.min.js
+            - bundles/sonatacore/vendor/bootstrap/dist/js/bootstrap.min.js
+            - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js
+            - bundles/sonataadmin/vendor/jquery-form/jquery.form.js
+            - bundles/sonataadmin/jquery/jquery.confirmExit.js
+            - bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/js/bootstrap-editable.min.js
+            - bundles/goprosonata/vendor/select2/select2.full.min.js
+            - bundles/sonataadmin/vendor/admin-lte/dist/js/app.min.js
+            - bundles/sonataadmin/vendor/iCheck/icheck.min.js
+            - bundles/sonataadmin/vendor/slimScroll/jquery.slimscroll.min.js
+            - bundles/sonataadmin/vendor/waypoints/lib/jquery.waypoints.min.js
+            - bundles/sonataadmin/vendor/waypoints/lib/shortcuts/sticky.min.js
+            - bundles/sonataadmin/Admin.js
+            - bundles/sonataadmin/treeview.js
+            - bundles/goprosonata/vendor/ckeditor/ckeditor.js
+            - bundles/goprosonata/vendor/bootbox/bootbox.min.js
+
     dashboard:
         blocks:
             # display a dashboard block
@@ -245,9 +296,9 @@ sonata_doctrine_orm_admin:
             list:
                 array:      SonataAdminBundle:CRUD:list_array.html.twig
                 boolean:    SonataAdminBundle:CRUD:list_boolean.html.twig
-                date:       GoproMainBundle:Sonata:list_date.html.twig
+                date:       GoproSonataBundle:Admin:list_date.html.twig
                 time:       SonataAdminBundle:CRUD:list_time.html.twig
-                datetime:   GoproMainBundle:Sonata:list_datetime.html.twig
+                datetime:   GoproSonataBundle:Admin:list_datetime.html.twig
                 text:       SonataAdminBundle:CRUD:base_list_field.html.twig
                 trans:      SonataAdminBundle:CRUD:list_trans.html.twig
                 string:     SonataAdminBundle:CRUD:base_list_field.html.twig
@@ -260,7 +311,7 @@ sonata_doctrine_orm_admin:
             show:
                 array:      SonataAdminBundle:CRUD:show_array.html.twig
                 boolean:    SonataAdminBundle:CRUD:show_boolean.html.twig
-                date:       GoproMainBundle:Sonata:show_date.html.twig
+                date:       GoproSonataBundle:Admin:show_date.html.twig
                 time:       SonataAdminBundle:CRUD:show_time.html.twig
                 datetime:   SonataAdminBundle:CRUD:show_datetime.html.twig
                 text:       SonataAdminBundle:CRUD:base_show_field.html.twig
@@ -271,8 +322,10 @@ sonata_doctrine_orm_admin:
                 integer:    SonataAdminBundle:CRUD:base_show_field.html.twig
                 decimal:    SonataAdminBundle:CRUD:base_show_field.html.twig
 
+
+
 stof_doctrine_extensions:
-    default_locale: es_PE
+    default_locale: es
     orm:
         default:
             tree: true
@@ -290,3 +343,17 @@ sonata_user:
             class:          Gopro\UserBundle\Admin\UserAdmin
             controller:     SonataAdminBundle:CRUD
             translation:    SonataUserBundle
+
+knp_paginator:
+    page_range: 5                       # number of links showed in the pagination menu (e.g: you have 10 pages, a page_range of 3, on the 5th page you'll see links to page 4, 5, 6)
+    default_options:
+        page_name: page                 # page query parameter name
+        sort_field_name: sort           # sort field query parameter name
+        sort_direction_name: direction  # sort direction query parameter name
+        distinct: true                  # ensure distinct results, useful when ORM queries are using GROUP BY statements
+        filter_field_name: filterField  # filter field query parameter name
+        filter_value_name: filterValue  # filter value query paameter name
+    template:
+        pagination: '@KnpPaginator/Pagination/sliding.html.twig'     # sliding pagination controls template
+        sortable: '@KnpPaginator/Pagination/sortable_link.html.twig' # sort link template
+        filtration: '@KnpPaginator/Pagination/filtration.html.twig'  # filters templat

@@ -1,0 +1,288 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends 'GoproSonataBundle:Admin:standard_layout.html.twig' %}
+
+{% block tab_menu %}
+    {{ knp_menu_render(admin.sidemenu(action), {
+        'currentClass' : 'active',
+        'template': sonata_admin.adminPool.getTemplate('tab_menu_template')
+    }, 'twig') }}
+{% endblock %}
+
+{% block show %}
+
+
+<div class="sonata-ba-view">
+
+    {{ sonata_block_render({ 'type': 'sonata_translation.block.locale_switcher' }, {
+        'admin': admin,
+        'object': object,
+        'locale_switcher_route': 'resumen',
+    }) }}
+
+
+    <div class="row">
+
+        <div class="col-md-12 ">
+
+
+            <div class="box box-primary">
+
+                <div class="box-header">
+                    <h4 class="box-title">
+                        {{ cotizacion.file.nombre }}
+                    </h4>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table">
+                        <tbody>
+                        <tr class="sonata-ba-view-container">
+                            <th>Cotización</th>
+                            <td>{{ cotizacion.cotizacion.nombre }}</td>
+
+                        </tr>
+                        <tr class="sonata-ba-view-container">
+                            <th>Número de pasajeros</th>
+                            <td>{{ cotizacion.cotizacion.numeropasajeros }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Comisión</th>
+                            <td>{{ cotizacion.cotizacion.comision|number_format(2, '.', '')}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs" role="tablist">
+                    {% for name, contenido in tabs %}
+                        <li{% if loop.first %} class="active"{% endif %}>
+                            <a href="#tab_{{ admin.uniqid }}_{{ loop.index }}" data-toggle="tab">
+                                <i class="fa fa-exclamation-circle has-errors hide" aria-hidden="true"></i>
+                                {{ contenido.nombre }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="tab-content">
+                    {% for name, contenido in tabs %}
+                        <div
+                                class="tab-pane fade{% if loop.first %} in active{% endif %}"
+                                id="tab_{{ admin.uniqid }}_{{ loop.index }}"
+                        >
+                            <div class="box-body  container-fluid">
+                                <div class="sonata-ba-collapsed-fields">
+                                    {% if name == 'tarifas' %}
+                                        {% for rango in contenido.rangos %}
+                                            <h4>{{ rango.tipoPaxNombre }} - {{ rango.rangoEdadNombre }} x {{ rango.cantidad }}</h4>
+                                            {% if rango.nombrePersistente is defined %}
+                                                <h5>{{ rango.nombrePersistente }}</h5>
+                                            {% endif %}
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>
+                                                        Servicio
+                                                    </th>
+                                                    <th>
+                                                        Componente
+                                                    </th>
+                                                    <th>
+                                                        Tarifa
+                                                    </th>
+                                                    <th class="text-right">
+                                                        Soles
+                                                    </th>
+                                                    <th class="text-right">
+                                                        Dolares
+                                                    </th>
+                                                    <th class="text-right">
+                                                        Venta soles
+                                                    </th>
+                                                    <th class="text-right">
+                                                        Venta dolares
+                                                    </th>
+                                                    <th>
+                                                        Tipo
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                {%  for tarifadetalle in rango.tarifa %}
+                                                <tr class="sonata-ba-view-container">
+                                                    <td>
+                                                        {{ tarifadetalle.nombreServicio }}
+                                                    </td>
+                                                    <td>
+                                                        {{ tarifadetalle.nombreComponente }}
+                                                    </td>
+                                                    <td>
+                                                        {{ tarifadetalle.nombre }}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{ tarifadetalle.montosoles }}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{ tarifadetalle.montodolares }}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{ tarifadetalle.ventasoles }}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{ tarifadetalle.ventadolares }}
+                                                    </td>
+                                                    <td>
+                                                        {{ tarifadetalle.tipoTarNombre }}
+                                                    </td>
+                                                    {% endfor %}
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>
+                                                        Tipo
+                                                    </th>
+                                                    <th class="text-right">
+                                                        Soles
+                                                    </th>
+                                                    <th class="text-right">
+                                                        Dolares
+                                                    </th>
+                                                    <th class="text-right">
+                                                        Venta soles
+                                                    </th>
+                                                    <th class="text-right">
+                                                        Venta dolares
+                                                    </th>
+
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {%  for tarifaresumen in rango.resumen %}
+                                                <tr class="sonata-ba-view-container">
+                                                    <td>
+                                                        {{ tarifaresumen.tipoTarNombre }}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{ tarifaresumen.montosoles }}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{ tarifaresumen.montodolares }}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{ tarifaresumen.ventasoles }}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{ tarifaresumen.ventadolares }}
+                                                    </td>
+                                                    {% endfor %}
+                                                </tr>
+                                                </tbody>
+
+                                            </table>
+
+                                        {% endfor %}
+
+                                    {% elseif name == 'itinerario' %}
+                                        {% for itinerario in contenido.itinerarios %}
+                                            <h3>{{ itinerario.fecha }}</h3>
+                                            {{ itinerario.descripcion|raw }}
+                                        {% endfor %}
+
+                                    {% elseif name == 'incluye' %}
+
+                                        {% if contenido.tipos is defined %}
+
+                                            {% for tipo in contenido.tipos %}
+                                                <h4>{{ tipo.titulo }}:</h4>
+                                                <ul>
+                                                    {% for componente in tipo.componentes %}
+                                                        <li>{{ componente.titulo }}
+                                                            {% if componente.tarifas is defined %}
+                                                                <ul>
+                                                                    {% for tarifa in componente.tarifas %}
+                                                                        <li>{{ tarifa.titulo }} x {{ tarifa.cantidad }}</li>
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            {% endif %}
+
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endfor %}
+
+                                        {% endif %}
+                                    {% elseif name == 'agenda' %}
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>
+                                                    Inicio
+                                                </th>
+                                                <th>
+                                                    Nombre
+                                                </th>
+                                                <th>
+                                                    Fin
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for componente in contenido.componentes if componente.fechahorainicio is not null %}
+                                                <tr>
+                                                    <td>
+                                                        {{ componente.fechahorainicio|date('Y/m/d H:i') }}
+                                                    </td>
+                                                    <td>
+                                                        {{ componente.titulo }}
+                                                    </td>
+                                                    <td>
+                                                        {{ componente.fechahorafin|date('Y/m/d H:i') }}
+                                                    </td>
+                                                </tr>
+
+
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    {% endif %}
+
+
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+    {{ sonata_block_render_event('sonata.admin.show.bottom', { 'admin': admin, 'object': object }) }}
+{% endblock %}
