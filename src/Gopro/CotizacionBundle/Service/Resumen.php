@@ -157,6 +157,7 @@ class Resumen implements ContainerAwareInterface
                                 $tempArrayTarifa['nombreServicio'] = $servicio->getServicio()->getNombre();
                                 $tempArrayTarifa['nombreComponente'] = $componente->getComponente()->getNombre();
                                 $tempArrayTarifa['tituloComponente'] = $componente->getComponente()->getTitulo();
+                                $tempArrayTarifa['prorrateado'] = $tarifa->getTarifa()->getProrrateado();
 
                                 if($tarifa->getTarifa()->getProrrateado() === true){
                                     $tempArrayTarifa['montounitario'] = number_format(
@@ -166,6 +167,7 @@ class Resumen implements ContainerAwareInterface
                                         (float)($tarifa->getMonto() * $tarifa->getCantidad() * $componente->getCantidad()
                                         ),2, '.', '');
                                     $tempArrayTarifa['cantidad'] = (int)($datosCotizacion['cotizacion']['numeropasajeros']);
+
                                 }else{
                                     $tempArrayTarifa['montounitario'] = number_format(
                                         (float)($tarifa->getMonto() * $componente->getCantidad()
@@ -407,8 +409,10 @@ class Resumen implements ContainerAwareInterface
             $temp['tarifa'] = $tarifa;
 
             $claseTarifas[] = $temp;
-            $tiposAux[] = $tipo;
 
+            if($tarifa['prorrateado'] !== true){
+                $tiposAux[] = $tipo;
+            }
         endforeach;
 
         if(count($claseTarifas) > 0){

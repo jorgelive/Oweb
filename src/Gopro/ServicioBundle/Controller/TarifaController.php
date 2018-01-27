@@ -40,6 +40,8 @@ class TarifaController extends Controller
         $content['moneda'] = $tarifa->getMoneda() ? $tarifa->getMoneda()->getId() : null;
         $content['monto'] = $tarifa->getMonto();
         $content['prorrateado'] = $tarifa->getProrrateado();
+        $content['capacidadmin'] = $tarifa->getCapacidadmin();
+        $content['capacidadmax'] = $tarifa->getCapacidadmax();
         $content['tipotarifa'] = $tarifa->getTipotarifa()->getId();
 
         $status = Response::HTTP_OK;

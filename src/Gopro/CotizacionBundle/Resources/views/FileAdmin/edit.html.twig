@@ -150,10 +150,18 @@
                                     $('select#' + monedaId).val(result.moneda).trigger('change');
                                     $('select#' + tipotarifaId).val(result.tipotarifa).trigger('change');
                                     if(result.prorrateado === true){
-                                        $('input#' + cantidadId).attr('readonly', 'readonly').removeClass('prorrateado').addClass('prorrateado').removeClass('softreadonly').addClass('softreadonly').val(1).trigger('input');
+                                        var clase;
+                                        if(result.capacidadmax === 1){
+                                            $('input#' + cantidadId).removeAttr("readonly");
+                                            clase = 'inputwarning';
+                                        }else{
+                                            $('input#' + cantidadId).attr('readonly', 'readonly');
+                                            clase = 'softreadonly';
+                                        }
+                                        $('input#' + cantidadId).removeClass('prorrateado').addClass('prorrateado').removeClass('inputwarning').removeClass('softreadonly').addClass(clase).val(1).trigger('input');
 
                                     }else{
-                                        $('input#' + cantidadId).removeClass('prorrateado').removeClass('softreadonly').removeAttr("readonly").val($('input#' + numeroPaxId).val()).trigger('input');
+                                        $('input#' + cantidadId).removeClass('prorrateado').removeClass('inputwarning').removeClass('softreadonly').removeAttr("readonly").val($('input#' + numeroPaxId).val()).trigger('input');
                                     }
                                 }
                             }}

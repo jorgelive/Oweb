@@ -100,14 +100,14 @@ class CottarifaAdmin extends AbstractAdmin
             ])
         ;
 
-        $cantidadModifier = function (FormInterface $form) {
+        $cantidadModifier = function (FormInterface $form, $clases) {
 
             $form->add(
                 'cantidad',
                 null,
                 [
                     'label' => 'Cantidad',
-                    'attr' => ['class' => 'prorrateado softreadonly']
+                    'attr' => ['class' => $clases]
                 ]
             );
         };
@@ -121,56 +121,18 @@ class CottarifaAdmin extends AbstractAdmin
                     && $event->getData()->getTarifa()
                     && $event->getData()->getTarifa()->getProrrateado() === true
                 ){
+                    if($event->getData()->getTarifa()->getCapacidadmax() == 1){
+                        $clases = 'prorrateado inputwarning';
+                    }else{
+                        $clases = 'prorrateado softreadonly';
+                    }
 
                     //var_dump($event->getData()->getComponente()->getTipocomponente()->getDependeduracion());
-                    $cantidadModifier($event->getForm());
+                    $cantidadModifier($event->getForm(), $clases);
                 }
             }
         );
 
-        /*
-
-        $formBuilder = $formMapper->getFormBuilder();
-
-        $formModifier = function (FormInterface $form, Componente $componente = null) {
-
-            $form->add(
-                'tarifa',
-                null,
-                array(
-                    'class' => 'GoproServicioBundle:Tarifa',
-                    'label' => 'Tarifa',
-                    'multiple' => false,
-                    'required' => false,
-                    'placeholder' => '',
-                    'query_builder' => function (TarifaRepository $tr) use ($componente) {
-                        return $tr
-                            ->createQueryBuilder('t')
-                            ->where('t.componente = ?1')
-                            ->setParameter(1, $componente);
-                    },
-                )
-            );
-        };
-
-        $formBuilder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($formModifier) {
-                $componente = null;
-
-                if($event->getForm()
-                    && $event->getForm()->getParent()
-                    && $event->getForm()->getParent()->getParent()
-                    && $event->getForm()->getParent()->getParent()->getData()
-                    && $event->getForm()->getParent()->getParent()->getData()->getComponente()
-                ){
-                    $componente = $event->getForm()->getParent()->getParent()->getData()->getComponente();
-                    var_dump($event->getForm()->getParent()->getParent()->getData()->getComponente());
-                }
-
-                $formModifier($event->getForm(), $componente);
-            }
-        );*/
     }
 
     /**
