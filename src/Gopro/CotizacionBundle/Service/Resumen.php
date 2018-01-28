@@ -157,7 +157,6 @@ class Resumen implements ContainerAwareInterface
                                 $tempArrayTarifa['nombreServicio'] = $servicio->getServicio()->getNombre();
                                 $tempArrayTarifa['nombreComponente'] = $componente->getComponente()->getNombre();
                                 $tempArrayTarifa['tituloComponente'] = $componente->getComponente()->getTitulo();
-                                $tempArrayTarifa['prorrateado'] = $tarifa->getTarifa()->getProrrateado();
 
                                 if($tarifa->getTarifa()->getProrrateado() === true){
                                     $tempArrayTarifa['montounitario'] = number_format(
@@ -173,7 +172,7 @@ class Resumen implements ContainerAwareInterface
                                         (float)($tarifa->getMonto() * $componente->getCantidad()
                                         ),2, '.', '');
                                     $tempArrayTarifa['montototal'] = number_format(
-                                        (float)($tarifa->getMonto() * $tarifa->getCantidad() * $componente->getCantidad()
+                                        (float)($tarifa->getMonto() * $componente->getCantidad() * $tarifa->getCantidad()
                                         ), 2, '.', '');
                                     $tempArrayTarifa['cantidad'] = $tarifa->getCantidad();
                                     //solo sumo prorrateados
@@ -192,8 +191,8 @@ class Resumen implements ContainerAwareInterface
                                     $tempArrayTarifa['montosoles'] = $tempArrayTarifa['montounitario'];
                                     $tempArrayTarifa['montodolares'] = number_format((float)($tempArrayTarifa['montounitario'] / $tipoCambio->getVenta()), 2, '.', '');
                                 }else{
-                                    $this->addFlash('sonata_flash_error', 'La aplicación solo puede utilizar Soles y dólares en las tarifas.');
-                                    return new RedirectResponse($this->admin->generateUrl('list'));
+                                    $this->mensaje = 'La aplicación solo puede utilizar Soles y dólares en las tarifas.';
+                                    return false;
                                 }
 
                                 $factorComision = 1;
@@ -248,7 +247,8 @@ class Resumen implements ContainerAwareInterface
                             $tempArrayComponente['titulo'] = $componente->getComponente()->getTitulo();
                             $tempArrayComponente['fechahorainicio'] = $componente->getFechahorainicio();
                             $tempArrayComponente['fechahorafin'] = $componente->getFechahorafin();
-                            $this->obtenerTarifasComponente($tempArrayComponente['tarifas']);
+
+                            $this->obtenerTarifasComponente($tempArrayComponente['tarifas'], $datosCotizacion['cotizacion']['numeropasajeros']);
 
                             $datosTabs['agenda']['componentes'][] = $tempArrayComponente;
 
@@ -356,7 +356,7 @@ class Resumen implements ContainerAwareInterface
     }
 
 
-    private function obtenerTarifasComponente($componente){
+    private function obtenerTarifasComponente($componente, $cantidadTotalPasajeros){
 
         $claseTarifas = [];
 
@@ -394,6 +394,7 @@ class Resumen implements ContainerAwareInterface
 
             $temp['tipo'] = $tipo;
             $temp['generarNuevo'] = false;
+
             if(array_search($temp['tipo'], $tiposAux, true) != false){
                 $temp['generarNuevo'] = true;
             }
@@ -410,13 +411,13 @@ class Resumen implements ContainerAwareInterface
 
             $claseTarifas[] = $temp;
 
-            if($tarifa['prorrateado'] !== true){
+            if($tarifa['cantidad'] == $cantidadTotalPasajeros){
                 $tiposAux[] = $tipo;
             }
         endforeach;
 
         if(count($claseTarifas) > 0){
-            $this->procesarTarifa($claseTarifas, 0);
+            $this->procesarTarifa($claseTarifas, 0, $cantidadTotalPasajeros);
             $this->resetClasificacionTarifas();
 
         }
@@ -430,11 +431,13 @@ class Resumen implements ContainerAwareInterface
         endforeach;
     }
 
-    private function procesarTarifa($claseTarifas, $ejecucion){
+    private function procesarTarifa($claseTarifas, $ejecucion, $cantidadTotalPasajeros){
 
         $ejecucion++;
 
         if(empty($this->clasificacionTarifas)){
+
+            $cantidadTemporal = 0;
             foreach ($claseTarifas as $keyClase => &$clase):
 
                 $auxClase = [];
@@ -449,47 +452,66 @@ class Resumen implements ContainerAwareInterface
                 $auxClase['rangoEdadNombre'] = $clase['rangoEdadNombre'];
                 unset($clase['tarifa']['cantidad']);
                 unset($clase['tarifa']['montototal']);
-                $auxClase['tarifa'][] = $clase['tarifa'];
-                $this->clasificacionTarifas[] = $auxClase;
 
+
+                if($cantidadTemporal > 0 && $cantidadTotalPasajeros == $clase['cantidad']){
+                    continue;
+                }
+
+                $this->clasificacionTarifas[] = $auxClase;
+                $cantidadTemporal += $clase['cantidad'];
+
+                if($cantidadTemporal >= $cantidadTotalPasajeros){
+                    break;
+                }
             endforeach;
 
-            return;
         }
 
-
         foreach ($claseTarifas as $keyClase => &$clase):
+            //los prorrateados no modifican los rangos
+            if($clase['cantidad'] < $cantidadTotalPasajeros) {
+                $voterIndex = $this->voter($clase, $cantidadTotalPasajeros);
 
-            $voterIndex = $this->voter($clase);
+                if ($voterIndex !== false) {
 
-            if($voterIndex !== false){
-
-                //paso elarray principal para adicionar elemento como esta por referencia
-                $this->modificarClasificacion($clase, $voterIndex, $clase['generarNuevo']);
-
-                if($clase['cantidad'] < 1){
-                    unset($claseTarifas[$keyClase]);
+                    //paso elarray principal para adicionar elemento como esta por referencia
+                    $this->modificarClasificacion($clase, $voterIndex, $clase['generarNuevo']);
                 }
             }
 
         endforeach;
 
+        $cantidadTarifas = count($claseTarifas);
         foreach ($claseTarifas as $keyClase => &$clase):
 
-            $voterIndex = $this->voter($clase);
+            //los prorrateados se distribuyen
+            if($clase['cantidad'] < $cantidadTotalPasajeros){
+                $voterIndex = $this->voter($clase, $cantidadTotalPasajeros);
 
-            if($voterIndex !== false){
-                $this->match($clase, $voterIndex);
+                if($voterIndex !== false){
+                    $this->match($clase, $voterIndex, $cantidadTotalPasajeros);
 
-                if($clase['cantidad'] < 1){
-                    unset($claseTarifas[$keyClase]);
+                    if($clase['cantidad'] < 1){
+                        unset($claseTarifas[$keyClase]);
+                    }
                 }
+            }else{
+                foreach ($this->clasificacionTarifas as &$clasificacionTarifa):
+
+                $clasificacionTarifa['tarifa'][] = $clase['tarifa'];
+
+                endforeach;
+
+                unset($claseTarifas[$keyClase]);
+
             }
+
 
         endforeach;
 
         if($ejecucion < 10 && count($claseTarifas) > 0){
-            $this->procesarTarifa($claseTarifas, $ejecucion);
+            $this->procesarTarifa($claseTarifas, $ejecucion, $cantidadTotalPasajeros);
         }
 
         //si despues del proceso hay tarifas muestro error
@@ -502,10 +524,11 @@ class Resumen implements ContainerAwareInterface
     }
 
     private function modificarClasificacion(&$clase, $voterIndex, $forzarNuevo = false){
-
         if($forzarNuevo === true
             || ($clase['tipoPaxId'] != $this->clasificacionTarifas[$voterIndex]['tipoPaxId'] && $clase['tipoPaxId'] != 0)
-            || ($clase['rangoEdad'] != $this->clasificacionTarifas[$voterIndex]['rangoEdad'] && $clase['rangoEdad'] != 0)){
+            || ($clase['rangoEdad'] != $this->clasificacionTarifas[$voterIndex]['rangoEdad'] && $clase['rangoEdad'] != 0))
+        {
+
             if($clase['cantidad'] == $this->clasificacionTarifas[$voterIndex]['cantidad']){
                 $this->clasificacionTarifas[$voterIndex]['rangoEdad'] = $clase['rangoEdad'];
                 $this->clasificacionTarifas[$voterIndex]['rangoEdad'] = $clase['rangoEdadNombre'];
@@ -548,14 +571,14 @@ class Resumen implements ContainerAwareInterface
 
         }else{
             //actualizamos nombres
+
             $this->clasificacionTarifas[$voterIndex]['nombre'] = $clase['nombre'];
             $this->clasificacionTarifas[$voterIndex]['titulo'] = $clase['titulo'];
         }
 
     }
 
-    private function match(&$clase, $voterIndex){
-
+    private function match(&$clase, $voterIndex, $cantidadTotalPasajeros){
         if($clase['cantidad'] == $this->clasificacionTarifas[$voterIndex]['cantidadRestante']){
             $clase['cantidad'] = 0;
             $this->clasificacionTarifas[$voterIndex]['cantidadRestante'] = 0;
@@ -563,7 +586,6 @@ class Resumen implements ContainerAwareInterface
             unset($clase['tarifa']['montototal']);
             $this->clasificacionTarifas[$voterIndex]['tarifa'][] = $clase['tarifa'];
         }elseif($clase['cantidad'] < $this->clasificacionTarifas[$voterIndex]['cantidadRestante']){
-
             $this->clasificacionTarifas[$voterIndex]['cantidadRestante'] = $this->clasificacionTarifas[$voterIndex]['cantidadRestante'] - $clase['cantidad'];
             $clase['cantidad'] = 0;
             unset($clase['tarifa']['cantidad']);
@@ -578,7 +600,7 @@ class Resumen implements ContainerAwareInterface
         }
     }
 
-    private function voter($clase){
+    private function voter($clase, $cantidadTotalPasajeros){
 
         $clasificacion = $this->clasificacionTarifas;
 
@@ -588,7 +610,7 @@ class Resumen implements ContainerAwareInterface
 
             $voter[$keyTarifa] = 0;
 
-            if($tarifaClasificada['cantidadRestante'] > 0 &&
+            if(($tarifaClasificada['cantidadRestante'] > 0) &&
                 ($clase['tipoPaxId'] == $tarifaClasificada['tipoPaxId'] ||
                     $clase['tipoPaxId'] == 0 ||
                     $tarifaClasificada['tipoPaxId'] == 0)
@@ -612,36 +634,25 @@ class Resumen implements ContainerAwareInterface
             }
 
         endforeach;
-
-        if(max($voter) > 0) {
-
-            return array_search(max($voter), $voter);
-        }else{
-
+        if(empty($voter) || max($voter) < 1){
             return false;
         }
+
+        return array_search(max($voter), $voter);
+
 
     }
 
     private function completarTipoTarifa(&$tarifa, $prorrateado){
 
-        if($prorrateado === true){
-            $tarifa['rangoEdad'] = 0;
-            $tarifa['rangoEdadNombre'] = 'Cualquier Edad';
-
+        if(!isset($tarifa['tipoPaxId'])){
             $tarifa['tipoPaxId'] = 0;
             $tarifa['tipoPaxNombre'] = 'Todos';
-
-            return;
         }
 
-        if(!isset($tarifa['edadMin']) && !isset($tarifa['edadMax'])){
+        if($prorrateado === true || (!isset($tarifa['edadMin']) && !isset($tarifa['edadMax']))){
             $tarifa['rangoEdad'] = 0;
             $tarifa['rangoEdadNombre'] = 'Cualquier Edad';
-
-            $tarifa['tipoPaxId'] = 0;
-            $tarifa['tipoPaxNombre'] = 'Todos';
-
             return;
         }
 
