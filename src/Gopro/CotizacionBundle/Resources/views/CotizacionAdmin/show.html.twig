@@ -214,7 +214,7 @@ file that was distributed with this source code.
                                                 <h4>{{ tipo.titulo }}:</h4>
                                                 <ul>
                                                     {% for componente in tipo.componentes %}
-                                                        <li>{{ componente.titulo }}
+                                                        <li>{{ componente.titulo }} {% if componente.tituloItinerario is defined %} en {{ componente.tituloItinerario }} {% endif %}
                                                             {% if componente.tarifas is defined %}
                                                                 <ul>
                                                                     {% for tarifa in componente.tarifas %}
@@ -251,7 +251,7 @@ file that was distributed with this source code.
                                                         {{ componente.fechahorainicio|date('Y/m/d H:i') }}
                                                     </td>
                                                     <td>
-                                                        {{ componente.titulo }}
+                                                        {{ componente.titulo }} {% if componente.tituloItinerario is defined %} en {{ componente.tituloItinerario }} {% endif %}
                                                     </td>
                                                     <td>
                                                         {{ componente.fechahorafin|date('Y/m/d H:i') }}
