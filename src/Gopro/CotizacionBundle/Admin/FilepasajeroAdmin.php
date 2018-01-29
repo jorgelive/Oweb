@@ -21,6 +21,9 @@ class FilepasajeroAdmin extends AbstractAdmin
             ->add('nombre')
             ->add('apellido')
             ->add('sexo')
+            ->add('pais', null, [
+                'label' => 'País'
+            ])
             ->add('tipodocumento', null, [
                 'label' => 'Tipo de documento'
             ])
@@ -43,6 +46,9 @@ class FilepasajeroAdmin extends AbstractAdmin
             ->add('nombre')
             ->add('apellido')
             ->add('sexo')
+            ->add('pais', null, [
+                'label' => 'País'
+            ])
             ->add('tipodocumento', null, [
                 'label' => 'Tipo de documento'
             ])
@@ -76,6 +82,9 @@ class FilepasajeroAdmin extends AbstractAdmin
             ->add('nombre')
             ->add('apellido')
             ->add('sexo')
+            ->add('pais', null, [
+                'label' => 'País'
+            ])
             ->add('tipodocumento', null, [
                 'label' => 'Tipo de documento'
             ])
@@ -101,6 +110,9 @@ class FilepasajeroAdmin extends AbstractAdmin
             ->add('nombre')
             ->add('apellido')
             ->add('sexo')
+            ->add('pais', null, [
+                'label' => 'País'
+            ])
             ->add('tipodocumento', null, [
                 'label' => 'Tipo de documento'
             ])
@@ -113,6 +125,4 @@ class FilepasajeroAdmin extends AbstractAdmin
 
         ;
     }
-
-
 }

@@ -66,6 +66,14 @@ class Cotizacion implements TranslatableInterface
     protected $file;
 
     /**
+     * @var \Gopro\CotizacionBundle\Entity\File
+     *
+     * @ORM\ManyToOne(targetEntity="Gopro\CotizacionBundle\Entity\Cotpolitica", inversedBy="cotizaciones")
+     * @ORM\JoinColumn(name="cotpolitica_id", referencedColumnName="id", nullable=true)
+     */
+    protected $cotpolitica;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Gopro\CotizacionBundle\Entity\Cotservicio", mappedBy="cotizacion", cascade={"persist","remove"}, orphanRemoval=true)
@@ -314,5 +322,29 @@ class Cotizacion implements TranslatableInterface
     public function getComision()
     {
         return $this->comision;
+    }
+
+    /**
+     * Set cotpolitica.
+     *
+     * @param \Gopro\CotizacionBundle\Entity\Cotpolitica|null $cotpolitica
+     *
+     * @return Cotizacion
+     */
+    public function setCotpolitica(\Gopro\CotizacionBundle\Entity\Cotpolitica $cotpolitica = null)
+    {
+        $this->cotpolitica = $cotpolitica;
+    
+        return $this;
+    }
+
+    /**
+     * Get cotpolitica.
+     *
+     * @return \Gopro\CotizacionBundle\Entity\Cotpolitica|null
+     */
+    public function getCotpolitica()
+    {
+        return $this->cotpolitica;
     }
 }

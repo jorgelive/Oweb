@@ -64,8 +64,15 @@ services:
         public: true
 
     gopro_cotizacion.admin.filedocumento:
-            class: Gopro\CotizacionBundle\Admin\FiledocumentoAdmin
-            arguments: [~, Gopro\CotizacionBundle\Entity\Filedocumento, SonataAdminBundle:CRUD]
-            tags:
-                - { name: sonata.admin, manager_type: orm, group: Cotizacion, label: Documento }
-            public: true
+        class: Gopro\CotizacionBundle\Admin\FiledocumentoAdmin
+        arguments: [~, Gopro\CotizacionBundle\Entity\Filedocumento, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Cotizacion, label: Documento }
+        public: true
+
+    gopro_cotizacion.admin.cotpolitica:
+        class: Gopro\CotizacionBundle\Admin\CotpoliticaAdmin
+        arguments: [~, Gopro\CotizacionBundle\Entity\Cotpolitica, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Cotizacion Maestro, label: Politicas }
+        public: true

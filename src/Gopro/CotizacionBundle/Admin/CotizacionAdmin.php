@@ -29,6 +29,9 @@ class CotizacionAdmin extends AbstractAdmin
             ->add('estadocotizacion', null, [
                 'label' => 'Estado'
             ])
+            ->add('cotpolitica', null, [
+                'label' => 'Política'
+            ])
         ;
     }
 
@@ -49,6 +52,9 @@ class CotizacionAdmin extends AbstractAdmin
             ->add('file')
             ->add('estadocotizacion', null, [
                 'label' => 'Estado'
+            ])
+            ->add('cotpolitica', null, [
+                'label' => 'Política'
             ])
             ->add('_action', null, [
                 'label' => 'Acciones',
@@ -84,6 +90,9 @@ class CotizacionAdmin extends AbstractAdmin
             ->add('estadocotizacion', null, [
                 'label' => 'Estado'
             ])
+            ->add('cotpolitica', null, [
+                'label' => 'Política'
+            ])
             ->add('cotservicios', 'sonata_type_collection', [
                 'by_reference' => false,
                 'label' => 'Servicios'
@@ -111,6 +120,9 @@ class CotizacionAdmin extends AbstractAdmin
             ->add('file')
             ->add('estadocotizacion', null, [
                 'label' => 'Estado'
+            ])
+            ->add('cotpolitica', null, [
+                'label' => 'Política'
             ])
 
         ;

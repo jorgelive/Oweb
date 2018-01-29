@@ -7,7 +7,7 @@ use Sonata\TranslationBundle\Model\Gedmo\AbstractPersonalTranslation;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="cot_cotizaciontranslation",
+ * @ORM\Table(name="cot_cotpoliticatranslation",
  *     uniqueConstraints={
  *     @ORM\UniqueConstraint(name="unique_idx", columns={
  *         "locale", "object_id", "field"
@@ -15,10 +15,10 @@ use Sonata\TranslationBundle\Model\Gedmo\AbstractPersonalTranslation;
  * )
  *
  */
-class CotizacionTranslation extends AbstractPersonalTranslation
+class CotpoliticaTranslation extends AbstractPersonalTranslation
 {
     /**
-     * @ORM\ManyToOne(targetEntity="Cotizacion", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="Cotpolitica", inversedBy="translations")
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $object;
