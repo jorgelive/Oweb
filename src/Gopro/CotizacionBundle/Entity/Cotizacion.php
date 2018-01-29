@@ -69,7 +69,7 @@ class Cotizacion implements TranslatableInterface
      * @var \Gopro\CotizacionBundle\Entity\File
      *
      * @ORM\ManyToOne(targetEntity="Gopro\CotizacionBundle\Entity\Cotpolitica", inversedBy="cotizaciones")
-     * @ORM\JoinColumn(name="cotpolitica_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="cotpolitica_id", referencedColumnName="id", nullable=false)
      */
     protected $cotpolitica;
 

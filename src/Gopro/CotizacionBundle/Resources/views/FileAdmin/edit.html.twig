@@ -78,13 +78,13 @@
                                     var filaOrigen;
                                     if(result.paralelo === false){
                                         filaOrigen = filaActual.prevAll().not(".splitted, .paralelo").first();
-                                        fecha = moment($("input.serviciofechafin", filaOrigen).val().substr(0, 10), 'YYYY-MM-DD').format('YYYY/MM/DD');
-                                        fecha = moment(fecha, 'YYYY-MM-DD').add(1, 'days').format('YYYY/MM/DD HH:mm');
+                                        fecha = moment($("input.serviciofechafin", filaOrigen).val().substr(0, 10), 'YYYY/MM/DD').format('YYYY/MM/DD');
+                                        fecha = moment(fecha, 'YYYY/MM/DD').add(1, 'days').format('YYYY/MM/DD HH:mm');
                                         filaActual.removeClass('paralelo');
                                         $('input#' + fechaIniciServicioId).removeClass('paralelo');
                                     }else{
                                         filaOrigen = $(this).closest('tbody').children('tr').first();
-                                        fecha = moment($("input.serviciofechafin", filaOrigen).val().substr(0, 10), 'YYYY-MM-DD').format('YYYY/MM/DD');
+                                        fecha = moment($("input.serviciofechafin", filaOrigen).val().substr(0, 10), 'YYYY/MM/DD').format('YYYY/MM/DD');
                                         filaActual.removeClass('paralelo').addClass('paralelo');
                                         $('input#' + fechaIniciServicioId).removeClass('paralelo').addClass('paralelo');
                                     }
@@ -121,7 +121,8 @@
                                 if(result.dependeduracion === true){
                                     var inicio = $('input#' + fecInicioServicioId).val().substr(0, 10);
                                     var fin = $('input#' + fecFinServicioId).val().substr(0, 10);
-                                    var dias = moment(fin, 'YYYY-MM-DD', true).diff(moment(inicio, 'YYYY-MM-DD', true), 'days');
+                                    //alert(dias)
+                                    var dias = moment(fin, 'YYYY/MM/DD', true).diff(moment(inicio, 'YYYY/MM/DD', true), 'days');
 
                                     if(dias < 1){
                                         dias = 1;

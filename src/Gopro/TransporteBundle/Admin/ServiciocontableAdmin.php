@@ -179,7 +179,9 @@ class ServiciocontableAdmin extends AbstractAdmin
             ])
             ->add('total')
             ->add('serie')
-            ->add('documento')
+            ->add('documento', null, [
+                'template' => 'GoproTransporteBundle:ServiciocontableAdmin:list_documento.html.twig'
+            ])
             ->add('fechaemision', null, [
                 'label' => 'Fecha emisión'
             ])
