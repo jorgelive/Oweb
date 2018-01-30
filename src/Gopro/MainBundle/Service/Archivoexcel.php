@@ -2,7 +2,6 @@
 
 namespace Gopro\MainBundle\Service;
 
-use Gopro\MainBundle\DependencyInjection\VariableprocesoTrait;
 use \Symfony\Component\Filesystem\Filesystem;
 use \Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use \Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -12,8 +11,21 @@ class Archivoexcel implements ContainerAwareInterface
 {
 
     use ContainerAwareTrait;
-    use VariableprocesoTrait;
-//general
+
+    /**
+     * @var Variableproceso
+     */
+    protected $variableproceso;
+
+    /**
+     * Sets the variableproceso.
+     *
+     * @param Variableproceso|null $container A ContainerInterface instance or null
+     */
+    public function setVariableproceso(Variableproceso $variableproceso = null)
+    {
+        $this->variableproceso = $variableproceso;
+    }
 
     private $archivoBase;
     private $proceso;

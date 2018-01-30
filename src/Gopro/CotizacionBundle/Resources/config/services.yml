@@ -33,6 +33,8 @@ services:
         arguments: [~, Gopro\CotizacionBundle\Entity\Cotizacion, GoproCotizacionBundle:CotizacionAdmin]
         tags:
             - { name: sonata.admin, manager_type: orm, group: Cotizacion, label: Cotizaciones }
+        calls:
+            - [ setTemplate, [edit, GoproCotizacionBundle:CotizacionAdmin:edit.html.twig]]
         public: true
 
     gopro_cotizacion.admin.cotservicio:

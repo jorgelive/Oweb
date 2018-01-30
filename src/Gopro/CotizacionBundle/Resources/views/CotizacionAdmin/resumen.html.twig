@@ -80,44 +80,7 @@ file that was distributed with this source code.
                             <div class="box-body container-fluid">
                                 <div class="sonata-ba-collapsed-fields">
                                     {% if name == 'tarifas' %}
-                                        <h4><strong>Resumen General</strong></h4>
-
-                                        <div class="box-body table-responsive no-padding">
-                                            <table class="table table-bordered table-striped sonata-ba-list">
-                                                <thead>
-                                                <tr class="sonata-ba-list-field-header">
-                                                    <th>
-                                                        Tipo
-                                                    </th>
-                                                    <th class="text-right">
-                                                        Tarifa soles
-                                                    </th>
-                                                    <th class="text-right">
-                                                        Tarifa dolares
-                                                    </th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                {%  for resumenitem in contenido.resumen %}
-                                                <tr>
-                                                    <td>
-                                                        {{ resumenitem.titulo }}
-                                                    </td>
-                                                    <td class="text-right">
-                                                        {{ resumenitem.ventasoles }}
-                                                    </td>
-                                                    <td class="text-right">
-                                                        {{ resumenitem.ventadolares }}
-                                                    </td>
-                                                    {% endfor %}
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <br />
-                                        <h4><strong>Por Tipo</strong></h4>
-
+                                        <h4><strong>Por tipo de pasajero</strong></h4>
                                         {% for rango in contenido.rangos %}
                                             <h4>{{ rango.tipoPaxNombre }} - {{ rango.rangoEdadNombre }} <strong>x {{ rango.cantidad }}</strong></h4>
                                             {% if rango.nombrePersistente is defined %}
@@ -167,7 +130,10 @@ file that was distributed with this source code.
                                     {% elseif name == 'itinerario' %}
                                         {% for itinerario in contenido.itinerarios %}
                                             <h4><strong>{{ itinerario.fecha }}</strong></h4>
-                                            {{ itinerario.descripcion|raw }}
+                                            {% for item in itinerario.fechaitems %}
+                                                <h4>{{ item.titulo }}</h4>
+                                                {{ item.descripcion|raw }}
+                                            {% endfor %}
                                         {% endfor %}
 
                                     {% elseif name == 'incluye' %}

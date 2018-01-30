@@ -11,6 +11,17 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class CotizacionAdmin extends AbstractAdmin
 {
+
+    public $vars;
+
+    public function getFormTheme()
+    {
+        return array_merge(
+            parent::getFormTheme(),
+            array('GoproCotizacionBundle:CotizacionAdmin:form_admin_fields.html.twig')
+        );
+    }
+
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -101,6 +112,11 @@ class CotizacionAdmin extends AbstractAdmin
                 'inline' => 'table'
             ])
         ;
+
+        $this->vars['cotservicios']{'serviciopath'} = 'gopro_servicio_servicio_ajaxinfo';
+        $this->vars['cotcomponentes']{'componentepath'} = 'gopro_servicio_componente_ajaxinfo';
+        $this->vars['cotservicios']{'itinerariopath'} = 'gopro_servicio_itinerario_ajaxinfo';
+        $this->vars['cottarifas']{'tarifapath'} = 'gopro_servicio_tarifa_ajaxinfo';
     }
 
     /**

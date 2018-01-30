@@ -151,7 +151,7 @@ file that was distributed with this source code.
                                             </table>
                                         </div>
                                         <br />
-                                        <h4><strong>Por Tipo</strong></h4>
+                                        <h4><strong>Por tipo de pasajero</strong></h4>
 
                                         {% for rango in contenido.rangos %}
                                             <h4>{{ rango.tipoPaxNombre }} - {{ rango.rangoEdadNombre }} <strong>x {{ rango.cantidad }}</strong></h4>
@@ -285,9 +285,14 @@ file that was distributed with this source code.
                                     {% elseif name == 'itinerario' %}
                                         {% for itinerario in contenido.itinerarios %}
                                             <h4><strong>{{ itinerario.fecha }}</strong></h4>
-                                            {{ itinerario.descripcion|raw }}
+                                            {% for item in itinerario.fechaitems %}
+                                                <h4>{{ item.titulo }}</h4>
+                                                {{ item.descripcion|raw }}
+                                                {% for archivo in item.archivos %}
+                                                    <a href="{{ archivo.webpath|raw }}"><img src="{{ archivo.thumbpath|raw }}" alt="{{ archivo.titulo }}" /></a>
+                                                {% endfor %}
+                                            {% endfor %}
                                         {% endfor %}
-
                                     {% elseif name == 'incluye' %}
 
                                         {% if contenido.tipos is defined %}

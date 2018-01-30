@@ -69,9 +69,24 @@ class Resumen implements ContainerAwareInterface
         $datosTabs['politica']['nombre'] = $cotizacion->getCotpolitica()->getTitulo();
         $datosTabs['politica']['contenido'] = $cotizacion->getCotpolitica()->getContenido();
 
+
         $datosCotizacion['file']['nombre'] = $cotizacion->getFile()->getNombre();
         $datosCotizacion['file']['pais'] = $cotizacion->getFile()->getPais()->getNombre();
         $datosCotizacion['file']['idioma'] = $cotizacion->getFile()->getIdioma()->getNombre();
+
+        if($cotizacion->getFile()->getFiledocumentos()->count() > 0) {
+            $archivosAux = [];
+            foreach ($cotizacion->getFile()->getFiledocumentos() as $documento):
+
+                $archivosAux['imagenes'] = $documento->getWebPath();     //$this->get('request')->getSchemeAndHttpHost();
+                $archivosAux['nombre'] = $documento->getNombre();
+                $archivosAux['thumb'] = $documento->getThumbPath();
+
+                $datosTabs['incluye']['archivos'][] = $archivosAux;
+            endforeach;
+        }
+
+
         $datosCotizacion['cotizacion']['tipocambiocompra'] = $tipoCambio->getCompra();
         $datosCotizacion['cotizacion']['tipocambioventa'] = $tipoCambio->getVenta();
         $datosCotizacion['cotizacion']['comision'] = $cotizacion->getComision();
@@ -79,20 +94,26 @@ class Resumen implements ContainerAwareInterface
         $datosCotizacion['cotizacion']['numeropasajeros'] = $cotizacion->getNumeropasajeros();
         $datosCotizacion['cotizacion']['estadocotizacion'] = $cotizacion->getEstadocotizacion()->getNombre();
 
-
-
         if($cotizacion->getCotservicios()->count() > 0){
             foreach ($cotizacion->getCotservicios() as $servicio):
                 $itinerarioFechaAux = [];
-                if($servicio->getItinerario()->getItinerariodias()){
-                    foreach ($servicio->getItinerario()->getItinerariodias() as $dias):
-                        $fecha = clone($servicio->getFechahorainicio())->add(new \DateInterval('P' . ($dias->getDia() - 1) . 'D'));
-                        if(!isset($datosTabs['itinerario']['itinerarios'][$fecha->format('ymd')]['descripcion'])){
-                            $datosTabs['itinerario']['itinerarios'][$fecha->format('ymd')]['descripcion'] = '';
-                        }
+                if($servicio->getItinerario()->getItinerariodias()->count() > 0){
+                    foreach ($servicio->getItinerario()->getItinerariodias() as $dia):
+
+                        $fecha = clone($servicio->getFechahorainicio())->add(new \DateInterval('P' . ($dia->getDia() - 1) . 'D'));
+
                         $datosTabs['itinerario']['itinerarios'][$fecha->format('ymd')]['fecha'] = $this->getFormatedDate(strtotime($fecha->format('Y-m-d')));
-                        $datosTabs['itinerario']['itinerarios'][$fecha->format('ymd')]['descripcion'] .= '<h4>' . $dias->getTitulo() . '</h4>' . $dias->getContenido();
-                        $itinerarioFechaAux[$fecha->format('ymd')] = $dias->getTitulo();
+                        $archivosTempArray = [];
+                        if($dia->getItidiaarchivos()->count() > 0){
+                            foreach ($dia->getItidiaarchivos() as $archivo):
+                                $archivoTemp['nombre'] = $archivo->getNombre();
+                                $archivoTemp['titulo'] = $archivo->getTitulo();
+                                $archivoTemp['thumbpath'] = $archivo->getThumbPath();
+                                $archivoTemp['webpath'] = $archivo->getWebPath();
+                                $archivosTempArray[] = $archivoTemp;
+                            endforeach;
+                        }
+                        $datosTabs['itinerario']['itinerarios'][$fecha->format('ymd')]['fechaitems'][] = ['titulo' => $dia->getTitulo(), 'descripcion' => $dia->getContenido(), 'archivos' => $archivosTempArray];
                     endforeach;
                 }
 

@@ -44,6 +44,12 @@ class FileAdmin extends AbstractAdmin
             ->add('nombre')
             ->add('pais')
             ->add('idioma')
+            ->add('filedocumentos', null, [
+                'label' => 'Documentos'
+            ])
+            ->add('cotizaciones', null, [
+                'label' => 'Cotizaciones'
+            ])
             ->add('_action', null, [
                 'label' => 'Acciones',
                 'actions' => [
@@ -80,7 +86,7 @@ class FileAdmin extends AbstractAdmin
             ])
             ->add('cotizaciones', 'sonata_type_collection', [
                 'by_reference' => false,
-                'label' => 'Cotizacion'
+                'label' => 'Cotizaciones'
             ], [
                 'edit' => 'inline',
                 'inline' => 'table'
@@ -104,6 +110,15 @@ class FileAdmin extends AbstractAdmin
             ->add('nombre')
             ->add('pais')
             ->add('idioma')
+            ->add('filepasajeros', null, [
+                'label' => 'Name List'
+            ])
+            ->add('filedocumentos', null, [
+                'label' => 'Documentos'
+            ])
+            ->add('cotizaciones', null, [
+                'label' => 'Cotizaciones'
+            ])
         ;
     }
 }

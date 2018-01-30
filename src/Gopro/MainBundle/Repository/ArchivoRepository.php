@@ -1,6 +1,6 @@
 <?php
 
-namespace Gopro\MainBundle\Entity\Repository;
+namespace Gopro\MainBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
