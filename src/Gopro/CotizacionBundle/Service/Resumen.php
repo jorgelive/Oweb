@@ -12,6 +12,7 @@ class Resumen implements ContainerAwareInterface
 
     use ContainerAwareTrait;
 
+    private $tl = 'es';
     private $doctrine;
 
     private $datosTabs;
@@ -24,10 +25,16 @@ class Resumen implements ContainerAwareInterface
 
     function setDoctrine($doctrine){
         $this->doctrine = $doctrine;
+        return $this;
     }
 
     function getDoctrine(){
         return $this->doctrine;
+    }
+
+    function setTl($tl){
+        $this->tl = $tl;
+        return $this;
     }
 
     function procesar($id)
@@ -53,11 +60,14 @@ class Resumen implements ContainerAwareInterface
         }
 
         $datosCotizacion = [];
+
         //para mostrar primero el itinerario
         $datosTabs['itinerario']['nombre'] = 'Itinerarios';
         $datosTabs['agenda']['nombre'] = 'Agenda';
         $datosTabs['incluye']['nombre'] = 'Detalle';
         $datosTabs['tarifas']['nombre'] = 'Tarifas';
+        $datosTabs['politica']['nombre'] = $cotizacion->getCotpolitica()->getTitulo();
+        $datosTabs['politica']['contenido'] = $cotizacion->getCotpolitica()->getContenido();
 
         $datosCotizacion['file']['nombre'] = $cotizacion->getFile()->getNombre();
         $datosCotizacion['file']['pais'] = $cotizacion->getFile()->getPais()->getNombre();
@@ -69,6 +79,8 @@ class Resumen implements ContainerAwareInterface
         $datosCotizacion['cotizacion']['numeropasajeros'] = $cotizacion->getNumeropasajeros();
         $datosCotizacion['cotizacion']['estadocotizacion'] = $cotizacion->getEstadocotizacion()->getNombre();
 
+
+
         if($cotizacion->getCotservicios()->count() > 0){
             foreach ($cotizacion->getCotservicios() as $servicio):
                 $itinerarioFechaAux = [];
@@ -78,7 +90,7 @@ class Resumen implements ContainerAwareInterface
                         if(!isset($datosTabs['itinerario']['itinerarios'][$fecha->format('ymd')]['descripcion'])){
                             $datosTabs['itinerario']['itinerarios'][$fecha->format('ymd')]['descripcion'] = '';
                         }
-                        $datosTabs['itinerario']['itinerarios'][$fecha->format('ymd')]['fecha'] = strftime("%A, %d de %B de %Y", strtotime($fecha->format('Y-m-d')));
+                        $datosTabs['itinerario']['itinerarios'][$fecha->format('ymd')]['fecha'] = $this->getFormatedDate(strtotime($fecha->format('Y-m-d')));
                         $datosTabs['itinerario']['itinerarios'][$fecha->format('ymd')]['descripcion'] .= '<h4>' . $dias->getTitulo() . '</h4>' . $dias->getContenido();
                         $itinerarioFechaAux[$fecha->format('ymd')] = $dias->getTitulo();
                     endforeach;
@@ -291,7 +303,7 @@ class Resumen implements ContainerAwareInterface
         if(!empty($this->clasificacionTarifas)){
             $this->resumenTarifas();
             $datosTabs['tarifas']['rangos'] = $this->clasificacionTarifas;
-            $datosCotizacion['resumendeClasificado'] = $this->resumendeClasificado;
+            $datosTabs['tarifas']['resumen'] = $this->resumendeClasificado;
         }
 
         $this->datosTabs = $datosTabs;
@@ -319,28 +331,41 @@ class Resumen implements ContainerAwareInterface
                 $clase['resumen'][$tarifa['tipoTarId']]['tipoTarNombre'] = $tarifa['tipoTarNombre'];
                 $clase['resumen'][$tarifa['tipoTarId']]['tipoTarTitulo'] = $tarifa['tipoTarTitulo'];
 
-                $this->resumendeClasificado[$tarifa['tipoTarNombre']] = $tarifa['tipoTarNombre'];
-                $this->resumendeClasificado[$tarifa['tipoTarTitulo']] = $tarifa['tipoTarTitulo'];
+                $this->resumendeClasificado[$tarifa['tipoTarId']]['nombre'] = $tarifa['tipoTarNombre'];
+                $this->resumendeClasificado[$tarifa['tipoTarId']]['titulo'] = $tarifa['tipoTarTitulo'];
 
                 if(!isset($this->resumendeClasificado[$tarifa['tipoTarId']]['montosoles'])){
                     $this->resumendeClasificado[$tarifa['tipoTarId']]['montosoles'] = 0;
                 }
                 $this->resumendeClasificado[$tarifa['tipoTarId']]['montosoles'] += $tarifa['montosoles'] * $clase['cantidad'];
+                $this->resumendeClasificado[$tarifa['tipoTarId']]['montosoles'] = number_format((float)$this->resumendeClasificado[$tarifa['tipoTarId']]['montosoles'], '2', '.', '');
 
                 if(!isset($this->resumendeClasificado[$tarifa['tipoTarId']]['montodolares'])){
                     $this->resumendeClasificado[$tarifa['tipoTarId']]['montodolares'] = 0;
                 }
                 $this->resumendeClasificado[$tarifa['tipoTarId']]['montodolares'] += $tarifa['montodolares'] * $clase['cantidad'];
+                $this->resumendeClasificado[$tarifa['tipoTarId']]['montodolares'] = number_format((float)$this->resumendeClasificado[$tarifa['tipoTarId']]['montodolares'], '2', '.', '');
+
 
                 if(!isset($this->resumendeClasificado[$tarifa['tipoTarId']]['ventasoles'])){
                     $this->resumendeClasificado[$tarifa['tipoTarId']]['ventasoles'] = 0;
                 }
                 $this->resumendeClasificado[$tarifa['tipoTarId']]['ventasoles'] += $tarifa['ventasoles'] * $clase['cantidad'];
+                $this->resumendeClasificado[$tarifa['tipoTarId']]['ventasoles'] = number_format((float)$this->resumendeClasificado[$tarifa['tipoTarId']]['ventasoles'], '2', '.', '');
 
                 if(!isset($this->resumendeClasificado[$tarifa['tipoTarId']]['ventadolares'])){
                     $this->resumendeClasificado[$tarifa['tipoTarId']]['ventadolares'] = 0;
                 }
                 $this->resumendeClasificado[$tarifa['tipoTarId']]['ventadolares'] += $tarifa['ventadolares'] * $clase['cantidad'];
+                $this->resumendeClasificado[$tarifa['tipoTarId']]['ventadolares'] = number_format((float)$this->resumendeClasificado[$tarifa['tipoTarId']]['ventadolares'], '2', '.', '');
+
+                //se sobreescribe hasta el final del bucle
+                $this->resumendeClasificado[$tarifa['tipoTarId']]['gananciasoles'] = $this->resumendeClasificado[$tarifa['tipoTarId']]['ventasoles'] - $this->resumendeClasificado[$tarifa['tipoTarId']]['montosoles'];
+                $this->resumendeClasificado[$tarifa['tipoTarId']]['gananciasoles'] = number_format((float)$this->resumendeClasificado[$tarifa['tipoTarId']]['gananciasoles'], '2', '.', '');
+
+                $this->resumendeClasificado[$tarifa['tipoTarId']]['gananciadolares'] = $this->resumendeClasificado[$tarifa['tipoTarId']]['ventadolares'] - $this->resumendeClasificado[$tarifa['tipoTarId']]['montodolares'];
+                $this->resumendeClasificado[$tarifa['tipoTarId']]['gananciadolares'] = number_format((float)$this->resumendeClasificado[$tarifa['tipoTarId']]['gananciadolares'], '2', '.', '');
+
 
                 if(!isset($clase['resumen'][$tarifa['tipoTarId']]['montosoles'])){
                     $clase['resumen'][$tarifa['tipoTarId']]['montosoles'] = 0;
@@ -361,7 +386,12 @@ class Resumen implements ContainerAwareInterface
                     $clase['resumen'][$tarifa['tipoTarId']]['ventadolares'] = 0;
                 }
                 $clase['resumen'][$tarifa['tipoTarId']]['ventadolares'] += $tarifa['ventadolares'];
+
+
+
             endforeach;
+
+
 
         endforeach;
     }
@@ -696,6 +726,33 @@ class Resumen implements ContainerAwareInterface
         return;
     }
 
+    public function getFormatedDate($FechaStamp)
+    {
 
+        if($this->tl != 'es' && $this->tl != 'en'){
+            $this->tl = 'es';
+        }
+
+        $ano = date('Y',$FechaStamp);
+        $mes = date('n',$FechaStamp);
+        $dia = date('d',$FechaStamp);
+        $diasemana = date('w',$FechaStamp);
+
+        if($this->tl == 'es'){
+            $diassemanaN = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            $mesesN = [1 => 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+            return $diassemanaN[$diasemana] . ', ' . $dia . ' de ' . $mesesN[$mes] . ' de ' . $ano . '.';
+        }elseif($this->tl == 'en'){
+            $diassemanaN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            $mesesN = [1 => 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+            return $diassemanaN[$diasemana] . ' ' . $mesesN[$mes] . ' ' . $dia . ', ' . $ano . '.';
+
+        }else{
+            return 'Formato de fecha no soportado aun.';
+        }
+
+    }
 
 }

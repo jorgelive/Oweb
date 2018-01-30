@@ -19,7 +19,6 @@ class CotizacionAdminController extends CRUDController
     public function showAction($id = null, Request $request = null)
     {
 
-        $request = $this->getRequest();
         $id = $request->get($this->admin->getIdParameter());
 
         $object = $this->admin->getObject($id);
@@ -38,7 +37,7 @@ class CotizacionAdminController extends CRUDController
         $this->admin->setSubject($object);
 
 
-        if($this->container->get('gopro_cotizacion.resumen')->procesar($object->getId())){
+        if($this->container->get('gopro_cotizacion.resumen')->setTl($request->get('tl'))->procesar($object->getId())){
             return $this->renderWithExtraParams('GoproCotizacionBundle:CotizacionAdmin:show.html.twig',
                 ['cotizacion' => $this->container->get('gopro_cotizacion.resumen')->getDatosCotizacion(),
                     'tabs' => $this->container->get('gopro_cotizacion.resumen')->getDatosTabs(),
@@ -74,7 +73,7 @@ class CotizacionAdminController extends CRUDController
 
         $this->admin->setSubject($object);
 
-        if($this->container->get('gopro_cotizacion.resumen')->procesar($object->getId())){
+        if($this->container->get('gopro_cotizacion.resumen')->setTl($request->get('tl'))->procesar($object->getId())){
             return $this->renderWithExtraParams('GoproCotizacionBundle:CotizacionAdmin:resumen.html.twig',
                 ['cotizacion' => $this->container->get('gopro_cotizacion.resumen')->getDatosCotizacion(),
                     'tabs' => $this->container->get('gopro_cotizacion.resumen')->getDatosTabs(),
