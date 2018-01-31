@@ -16,8 +16,12 @@ trait ArchivoTrait
 {
 
 
+    private $temp;
+
+    private $tempThumb;
+
     /**
-     * @Assert\File(maxSize="6000000")
+     * @Assert\File(maxSize = "2M")
      */
     private $archivo;
 
@@ -29,11 +33,17 @@ trait ArchivoTrait
     public function setArchivo(UploadedFile $archivo = null)
     {
         $this->archivo = $archivo;
-        if (is_file($this->getAbsolutePath())) {
-            $this->temp = $this->getAbsolutePath();
-        } else {
-            $this->extension = 'initial';
+
+        if (is_file($this->getInternalFullPath())) {
+            $this->temp = $this->getInternalFullPath();
         }
+
+        if (is_file($this->getInternalFullThumbPath())) {
+            $this->tempThumb = $this->getInternalFullThumbPath();
+        }
+
+        $this->extension = 'initial';
+
     }
 
     /**
@@ -46,16 +56,15 @@ trait ArchivoTrait
         return $this->archivo;
     }
 
-    private $temp;
-
     /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
     public function preUpload()
     {
-        if (null !== $this->getArchivo()) {
-            !empty($this->getArchivo()->guessExtension()) ? $this->extension = $this->getArchivo()->guessExtension() : $this->extension = $this->getArchivo()->getClientOriginalExtension();
+        if (null !== $this->getArchivo() || $this->archivo ) {
+            //$this->extension = $this->getArchivo()->guessExtension();
+            $this->extension = $this->getArchivo()->getClientOriginalExtension();
             if(!$this->getNombre()){
                 $this->nombre = preg_replace('/\.[^.]*$/', '', $this->getArchivo()->getClientOriginalName());
             }
@@ -68,20 +77,43 @@ trait ArchivoTrait
      */
     public function upload()
     {
-        if (null === $this->getArchivo()) {
+        if ($this->getArchivo() === null) {
             return;
         }
-        if (isset($this->temp)) {
+        if (!empty($this->temp)){
             unlink($this->temp);
             $this->temp = null;
         }
+        if (!empty($this->tempThumb)){
+            unlink($this->tempThumb);
+            $this->tempThumb = null;
+        }
 
-        $this->getArchivo()->move(
-            $this->getUploadRootDir(),
-            $this->id.'.'.$this->extension
-        );
+        $imageTypes = ['image/jpeg'];
 
+        if(in_array($this->getArchivo()->getMimeType(), $imageTypes )){
+
+        }
+        //debe ir antes ta que la imagen sera movida
+        $this->generarThumb($this->getArchivo()->getPathname());
+        $this->getArchivo()->move($this->getInternalFullDir(), $this->id . '.' . $this->extension);
         $this->setArchivo(null);
+    }
+
+
+    public function generarThumb($image){
+        // Create Imagick object
+        $im = new \Imagick();
+        $im->readImage($image); //Read the file
+
+        $im->resizeImage( 200 , 200 , \Imagick::FILTER_LANCZOS, 1, TRUE);
+
+        if(!is_dir($this->getInternalFullThumbDir())){
+            mkdir($this->getInternalFullThumbDir(), 0755, true);
+        }
+        //return $im->writeImages('C:\wamp\temp', true);
+        return $im->writeImages($this->getInternalFullThumbPath(), true);
+
     }
 
     /**
@@ -89,7 +121,10 @@ trait ArchivoTrait
      */
     public function storeFilenameForRemove()
     {
-        $this->temp = $this->getAbsolutePath();
+        $this->temp = $this->getInternalFullPath();
+        if(!empty($this->getInternalFullThumbPath())){
+            $this->tempThumb = $this->getInternalFullThumbPath();
+        }
     }
 
     /**
@@ -97,44 +132,78 @@ trait ArchivoTrait
      */
     public function removeUpload()
     {
-        if (isset($this->temp)) {
+        if (!empty($this->temp)) {
             unlink($this->temp);
+        }
+        if (!empty($this->tempThumb)) {
+            unlink($this->tempThumb);
         }
     }
 
-    public function getAbsolutePath()
+    protected function getInternalFullDir()
     {
-        return null === $this->extension
-            ? null
-            : $this->getUploadRootDir().'/'.$this->id.'.'.$this->extension;
+        return __DIR__ . '/../../../../web' . $this->getWebDir();
+    }
+
+    public function getInternalFullPath()
+    {
+        if($this->extension === null){
+            return null;
+        }
+
+        return $this->getInternalFullDir() . '/' . $this->id . '.' . $this->extension;
     }
 
     public function getWebPath()
     {
-        return null === $this->extension
-            ? null
-            : $this->getUploadDir() . '/'.$this->id.'.'.$this->extension;
-    }
-
-    public function getThumbPath()
-    {
-        if($this->extension===null){
+        if($this->extension === null){
             return null;
         }
-        if(in_array($this->extension,['jpg','jpeg','png',''])){
-            return $this->getUploadDir() . '/thumb/'.$this->id.'.'.$this->extension;
+        return $this->getWebDir() . '/' . $this->id . '.' . $this->extension;
+    }
 
+    public function getInternalFullThumbPath()
+    {
+        if($this->extension === null || empty($this->getInternalFullThumbDir())){
+            return null;
+        }
+        var_dump($this->extension);
+        return $this->getInternalFullThumbDir() . '/' . $this->id . '.' . $this->extension;
+    }
+
+    protected function getInternalFullThumbDir()
+    {
+        if(in_array($this->extension, ['jpg', 'jpeg', 'png', ''])){
+
+            return __DIR__ . '/../../../../web' . $this->getWebThumbDir();
+        }
+        return null;
+    }
+
+    public function getWebThumbPath()
+    {
+        if($this->extension === null){
+            return null;
+        }
+        if(in_array($this->extension, ['jpg', 'jpeg', 'png', ''])){
+            return $this->getWebThumbDir() . '/thumb/' . $this->id . '.' . $this->extension;
         }else{
-            return '/bundles/gopromain/images/iconos/'.$this->extension.'.png';
+            return $this->getWebThumbDir() . '/' . $this->extension . '.png';
         }
     }
 
-    protected function getUploadRootDir()
+    public function getWebThumbDir()
     {
-        return __DIR__ . '/../../../../web' . $this->getUploadDir();
+        if(in_array($this->extension, ['jpg', 'jpeg', 'png', ''])){
+            return $this->getWebDir() . '/thumb';
+        }else{
+            return '/bundles/gopromain/images/iconos';
+        }
+
     }
 
-    protected function getUploadDir()
+
+    protected function getWebDir()
     {
         return $this->path;
     }

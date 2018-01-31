@@ -80,7 +80,7 @@ class Resumen implements ContainerAwareInterface
 
                 $archivosAux['imagenes'] = $documento->getWebPath();     //$this->get('request')->getSchemeAndHttpHost();
                 $archivosAux['nombre'] = $documento->getNombre();
-                $archivosAux['thumb'] = $documento->getThumbPath();
+                $archivosAux['thumb'] = $documento->getWebThumbPath();
 
                 $datosTabs['incluye']['archivos'][] = $archivosAux;
             endforeach;
@@ -101,19 +101,20 @@ class Resumen implements ContainerAwareInterface
                     foreach ($servicio->getItinerario()->getItinerariodias() as $dia):
 
                         $fecha = clone($servicio->getFechahorainicio())->add(new \DateInterval('P' . ($dia->getDia() - 1) . 'D'));
-
+                        $itinerarioFechaAux[$fecha->format('ymd')] = $dia->getTitulo();
                         $datosTabs['itinerario']['itinerarios'][$fecha->format('ymd')]['fecha'] = $this->getFormatedDate(strtotime($fecha->format('Y-m-d')));
                         $archivosTempArray = [];
                         if($dia->getItidiaarchivos()->count() > 0){
                             foreach ($dia->getItidiaarchivos() as $archivo):
                                 $archivoTemp['nombre'] = $archivo->getNombre();
                                 $archivoTemp['titulo'] = $archivo->getTitulo();
-                                $archivoTemp['thumbpath'] = $archivo->getThumbPath();
+                                $archivoTemp['thumbpath'] = $archivo->getWebThumbPath();
                                 $archivoTemp['webpath'] = $archivo->getWebPath();
                                 $archivosTempArray[] = $archivoTemp;
                             endforeach;
                         }
                         $datosTabs['itinerario']['itinerarios'][$fecha->format('ymd')]['fechaitems'][] = ['titulo' => $dia->getTitulo(), 'descripcion' => $dia->getContenido(), 'archivos' => $archivosTempArray];
+
                     endforeach;
                 }
 
@@ -407,13 +408,7 @@ class Resumen implements ContainerAwareInterface
                     $clase['resumen'][$tarifa['tipoTarId']]['ventadolares'] = 0;
                 }
                 $clase['resumen'][$tarifa['tipoTarId']]['ventadolares'] += $tarifa['ventadolares'];
-
-
-
             endforeach;
-
-
-
         endforeach;
     }
 

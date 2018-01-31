@@ -36,7 +36,6 @@ class CotizacionAdminController extends CRUDController
 
         $this->admin->setSubject($object);
 
-
         if($this->container->get('gopro_cotizacion.resumen')->setTl($request->get('tl'))->procesar($object->getId())){
             return $this->renderWithExtraParams('GoproCotizacionBundle:CotizacionAdmin:show.html.twig',
                 ['cotizacion' => $this->container->get('gopro_cotizacion.resumen')->getDatosCotizacion(),
@@ -47,7 +46,9 @@ class CotizacionAdminController extends CRUDController
 
                 ], null);
         }else{
-            throw new NotFoundHttpException($this->container->get('gopro_cotizacion.resumen')->getMensaje());
+            $this->addFlash('sonata_flash_error', $this->container->get('gopro_cotizacion.resumen')->getMensaje());
+            return new RedirectResponse($this->admin->generateUrl('list'));
+
         }
 
     }
@@ -83,7 +84,8 @@ class CotizacionAdminController extends CRUDController
 
                 ], null);
         }else{
-            throw new NotFoundHttpException($this->container->get('gopro_cotizacion.resumen')->getMensaje());
+            $this->addFlash('sonata_flash_error', $this->container->get('gopro_cotizacion.resumen')->getMensaje());
+            return new RedirectResponse($this->admin->generateUrl('list'));
         }
     }
 }
