@@ -80,9 +80,10 @@ class Resumen implements ContainerAwareInterface
 
                 $archivosAux['imagenes'] = $documento->getWebPath();     //$this->get('request')->getSchemeAndHttpHost();
                 $archivosAux['nombre'] = $documento->getNombre();
-                $archivosAux['thumb'] = $documento->getWebThumbPath();
+                $archivosAux['thumbpath'] = $documento->getWebThumbPath();
+                $archivosAux['webpath'] = $documento->getWebPath();
 
-                $datosTabs['incluye']['archivos'][] = $archivosAux;
+                $datosCotizacion['archivos'][] = $archivosAux;
             endforeach;
         }
 
@@ -411,7 +412,6 @@ class Resumen implements ContainerAwareInterface
             endforeach;
         endforeach;
     }
-
 
     private function obtenerTarifasComponente($componente, $cantidadTotalPasajeros){
 

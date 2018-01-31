@@ -59,6 +59,34 @@ file that was distributed with this source code.
                 </div>
             </div>
 
+            {% if cotizacion.archivos > 0 %}
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <h5 class="box-title">
+                            Documentos
+                        </h5>
+                    </div>
+                    <div class="box-body no-padding">
+                        <div class="container-fluid">
+                            <div class="row">
+                                {% for archivo in cotizacion.archivos %}
+                                    <div class="col-xs-4 col-md-2">
+                                        <div class="thumbnail">
+                                            <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}" data-toggle="lightbox">
+                                                <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.thumbpath|raw }}" alt="{{ archivo.nombre }}" style="width:100%">
+                                                <div class="caption">
+                                                    <p>{{ archivo.nombre }}</p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs" role="tablist">
                     {% for name, contenido in tabs %}
@@ -133,6 +161,23 @@ file that was distributed with this source code.
                                             {% for item in itinerario.fechaitems %}
                                                 <h4>{{ item.titulo }}</h4>
                                                 {{ item.descripcion|raw }}
+                                                <div class="container-fluid">
+                                                <div class="row">
+                                                    {% for archivo in item.archivos %}
+                                                        <div class="col-xs-4 col-md-2">
+                                                            <div class="thumbnail">
+                                                                <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}" data-toggle="lightbox">
+                                                                    <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.thumbpath|raw }}" alt="{{ archivo.titulo }}" style="width:100%">
+                                                                    <div class="caption">
+                                                                        <p>{{ archivo.titulo }}</p>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                                </div>
+
                                             {% endfor %}
                                         {% endfor %}
 

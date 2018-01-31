@@ -247,8 +247,7 @@ sonata_admin:
             - bundles/sonataadmin/css/layout.css
             - bundles/sonataadmin/css/tree.css
             - bundles/sonataadmin/css/colors.css
-
-
+            - bundles/goprosonata/vendor/ekko-lightbox/ekko-lightbox.css
 
         javascripts:
             - bundles/sonatacore/vendor/jquery/dist/jquery.min.js
@@ -271,6 +270,7 @@ sonata_admin:
             - bundles/sonataadmin/treeview.js
             - bundles/goprosonata/vendor/ckeditor/ckeditor.js
             - bundles/goprosonata/vendor/bootbox/bootbox.min.js
+            - bundles/goprosonata/vendor/ekko-lightbox/ekko-lightbox.min.js
 
     dashboard:
         blocks:

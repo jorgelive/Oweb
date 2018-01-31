@@ -167,7 +167,6 @@ trait ArchivoTrait
         if($this->extension === null || empty($this->getInternalFullThumbDir())){
             return null;
         }
-        var_dump($this->extension);
         return $this->getInternalFullThumbDir() . '/' . $this->id . '.' . $this->extension;
     }
 
@@ -185,19 +184,36 @@ trait ArchivoTrait
         if($this->extension === null){
             return null;
         }
-        if(in_array($this->extension, ['jpg', 'jpeg', 'png', ''])){
-            return $this->getWebThumbDir() . '/thumb/' . $this->id . '.' . $this->extension;
+        if(in_array($this->extension, ['jpg', 'jpeg', 'png'])){
+            return $this->getWebThumbDir() . '/' . $this->id . '.' . $this->extension;
         }else{
-            return $this->getWebThumbDir() . '/' . $this->extension . '.png';
+            return $this->getWebThumbDir() . '/' . $this->getIcon($this->extension) . '.png';
         }
+    }
+
+    public function getIcon($extension){
+        $tipos['image'] = ['tiff', 'tif', 'gif'];
+        $tipos['word'] = ['doc', 'docx', 'rtf'];
+        $tipos['text'] = ['txt'];
+        $tipos['pdf'] = ['pdf'];
+        $tipos['excel'] = ['xls', 'xlsx'];
+        $tipos['powerpoint'] = ['ppt', 'pptx', 'ppsx', 'pps'];
+
+        foreach($tipos as $key => $tipo):
+            if(in_array($extension, $tipo)){
+                return $key;
+            }
+        endforeach;
+
+        return 'developer';
     }
 
     public function getWebThumbDir()
     {
-        if(in_array($this->extension, ['jpg', 'jpeg', 'png', ''])){
+        if(in_array($this->extension, ['jpg', 'jpeg', 'png'])){
             return $this->getWebDir() . '/thumb';
         }else{
-            return '/bundles/gopromain/images/iconos';
+            return '/bundles/gopromain/images/icons';
         }
 
     }
