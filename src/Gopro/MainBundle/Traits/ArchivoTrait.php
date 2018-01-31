@@ -21,9 +21,70 @@ trait ArchivoTrait
     private $tempThumb;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nombre;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    private $extension;
+
+    /**
      * @Assert\File(maxSize = "2M")
      */
     private $archivo;
+
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set extension
+     *
+     * @param string $extension
+     */
+    public function setExtension($extension)
+    {
+        $this->extension = $extension;
+
+        return $this;
+    }
+
+    /**
+     * Get extension
+     *
+     * @return string
+     */
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+
+    public function getInModal(){
+        if(in_array($this->getExtension(), ['jpg', 'jpeg', 'png', 'txt'])){
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Sets archivo.
@@ -89,13 +150,13 @@ trait ArchivoTrait
             $this->tempThumb = null;
         }
 
-        $imageTypes = ['image/jpeg'];
+        $imageTypes = ['image/jpeg', 'image/png'];
 
         if(in_array($this->getArchivo()->getMimeType(), $imageTypes )){
-
+            //debe ir antes ta que la imagen sera movida
+            $this->generarThumb($this->getArchivo()->getPathname());
         }
-        //debe ir antes ta que la imagen sera movida
-        $this->generarThumb($this->getArchivo()->getPathname());
+
         $this->getArchivo()->move($this->getInternalFullDir(), $this->id . '.' . $this->extension);
         $this->setArchivo(null);
     }
@@ -172,7 +233,7 @@ trait ArchivoTrait
 
     protected function getInternalFullThumbDir()
     {
-        if(in_array($this->extension, ['jpg', 'jpeg', 'png', ''])){
+        if(in_array($this->extension, ['jpg', 'jpeg', 'png'])){
 
             return __DIR__ . '/../../../../web' . $this->getWebThumbDir();
         }

@@ -36,20 +36,10 @@ class Itidiaarchivo implements TranslatableInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $nombre;
-
-    /**
      * @Gedmo\Translatable
      * @ORM\Column(type="string", length=255)
      */
     private $titulo;
-
-    /**
-     * @ORM\Column(type="string", length=30, nullable=true)
-     */
-    private $extension;
 
     /**
      * @var \Gopro\ServicioBundle\Entity\Itinerariodia
@@ -92,52 +82,6 @@ class Itidiaarchivo implements TranslatableInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set nombre
-     *
-     * @param string $nombre
-     * @return Itidiaarchivo
-     */
-    public function setNombre($nombre)
-    {
-        $this->nombre = $nombre;
-
-        return $this;
-    }
-
-    /**
-     * Get nombre
-     *
-     * @return string
-     */
-    public function getNombre()
-    {
-        return $this->nombre;
-    }
-
-    /**
-     * Set extension
-     *
-     * @param string $extension
-     * @return Itidiaarchivo
-     */
-    public function setExtension($extension)
-    {
-        $this->extension = $extension;
-
-        return $this;
-    }
-
-    /**
-     * Get extension
-     *
-     * @return string
-     */
-    public function getExtension()
-    {
-        return $this->extension;
     }
 
     /**

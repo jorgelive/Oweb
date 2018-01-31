@@ -95,7 +95,7 @@ class Archivoexcel implements ContainerAwareInterface
         }
         $fs = new Filesystem();
 
-        if (!$fs->exists($archivoAlmacenado->getAbsolutePath())) {
+        if (!$fs->exists($archivoAlmacenado->getInternalFullPath())) {
             $this->variableproceso->setMensajes('El archivo no existe en la ruta.', 'error');
             return $this;
         }
@@ -107,7 +107,7 @@ class Archivoexcel implements ContainerAwareInterface
     {
         $this->proceso = $this->container->get('phpexcel');
         if (!empty($this->getArchivoBase())) {
-            $this->archivo = $this->getProceso()->createPHPExcelObject($this->getArchivoBase()->getAbsolutePath());
+            $this->archivo = $this->getProceso()->createPHPExcelObject($this->getArchivoBase()->getInternalFullPath());
         } else {
             $this->archivo = $this->getProceso()->createPHPExcelObject();
         }

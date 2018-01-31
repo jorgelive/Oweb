@@ -82,6 +82,7 @@ class Resumen implements ContainerAwareInterface
                 $archivosAux['nombre'] = $documento->getNombre();
                 $archivosAux['thumbpath'] = $documento->getWebThumbPath();
                 $archivosAux['webpath'] = $documento->getWebPath();
+                $archivosAux['inmodal'] = $documento->getInModal();
 
                 $datosCotizacion['archivos'][] = $archivosAux;
             endforeach;
@@ -111,6 +112,7 @@ class Resumen implements ContainerAwareInterface
                                 $archivoTemp['titulo'] = $archivo->getTitulo();
                                 $archivoTemp['thumbpath'] = $archivo->getWebThumbPath();
                                 $archivoTemp['webpath'] = $archivo->getWebPath();
+                                $archivoTemp['inmodal'] = $archivo->getInModal();
                                 $archivosTempArray[] = $archivoTemp;
                             endforeach;
                         }

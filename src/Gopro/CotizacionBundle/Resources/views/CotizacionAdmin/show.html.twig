@@ -76,7 +76,7 @@ file that was distributed with this source code.
                                 {% for archivo in cotizacion.archivos %}
                                     <div class="col-xs-4 col-md-2">
                                         <div class="thumbnail">
-                                            <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}" data-toggle="lightbox">
+                                            <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}"{% if archivo.inmodal == true %} data-toggle="lightbox"{% else %} target="_blank" {% endif %}>
                                                 <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.thumbpath|raw }}" alt="{{ archivo.nombre }}" style="width:100%">
                                                 <div class="caption">
                                                     <p>{{ archivo.nombre }}</p>
@@ -316,7 +316,9 @@ file that was distributed with this source code.
                                                 <h4>{{ item.titulo }}</h4>
                                                 {{ item.descripcion|raw }}
                                                 {% for archivo in item.archivos %}
-                                                    <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}" data-toggle="lightbox"><img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.thumbpath|raw }}" alt="{{ archivo.titulo }}" /></a>
+                                                    <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}"{% if archivo.inmodal == true %} data-toggle="lightbox"{% else %} target="_blank" {% endif %}>
+                                                        <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.thumbpath|raw }}" alt="{{ archivo.titulo }}" />
+                                                    </a>
                                                 {% endfor %}
                                             {% endfor %}
                                         {% endfor %}

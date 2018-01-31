@@ -28,16 +28,6 @@ class Archivo
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nombre;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $extension;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $operacion;
 
     /**
@@ -80,52 +70,6 @@ class Archivo
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set nombre
-     *
-     * @param string $nombre
-     * @return Archivo
-     */
-    public function setNombre($nombre)
-    {
-        $this->nombre = $nombre;
-
-        return $this;
-    }
-
-    /**
-     * Get nombre
-     *
-     * @return string 
-     */
-    public function getNombre()
-    {
-        return $this->nombre;
-    }
-
-    /**
-     * Set extension
-     *
-     * @param string $extension
-     * @return Archivo
-     */
-    public function setExtension($extension)
-    {
-        $this->extension = $extension;
-
-        return $this;
-    }
-
-    /**
-     * Get extension
-     *
-     * @return string
-     */
-    public function getExtension()
-    {
-        return $this->extension;
     }
 
     /**

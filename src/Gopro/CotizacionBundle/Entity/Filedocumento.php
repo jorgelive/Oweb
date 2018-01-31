@@ -30,16 +30,6 @@ class Filedocumento
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $nombre;
-
-    /**
-     * @ORM\Column(type="string", length=30, nullable=true)
-     */
-    private $extension;
-
-    /**
      * @var \Gopro\CotizacionBundle\Entity\Tipofiledocumento
      *
      * @ORM\ManyToOne(targetEntity="Gopro\CotizacionBundle\Entity\Tipofiledocumento")
@@ -87,52 +77,6 @@ class Filedocumento
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set nombre
-     *
-     * @param string $nombre
-     * @return Filedocumento
-     */
-    public function setNombre($nombre)
-    {
-        $this->nombre = $nombre;
-
-        return $this;
-    }
-
-    /**
-     * Get nombre
-     *
-     * @return string
-     */
-    public function getNombre()
-    {
-        return $this->nombre;
-    }
-
-    /**
-     * Set extension
-     *
-     * @param string $extension
-     * @return Filedocumento
-     */
-    public function setExtension($extension)
-    {
-        $this->extension = $extension;
-
-        return $this;
-    }
-
-    /**
-     * Get extension
-     *
-     * @return string
-     */
-    public function getExtension()
-    {
-        return $this->extension;
     }
 
     /**
