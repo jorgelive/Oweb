@@ -97,6 +97,18 @@ class Resumen implements ContainerAwareInterface
         $datosCotizacion['cotizacion']['estadocotizacion'] = $cotizacion->getEstadocotizacion()->getNombre();
 
         if($cotizacion->getCotservicios()->count() > 0){
+            if($cotizacion->getCotnotas()->count() > 0){
+                $auxNotas = [];
+                foreach ($cotizacion->getCotnotas() as $nota):
+                    $auxNotas['nombre'] = $nota->getNombre();
+                    $auxNotas['titulo'] = $nota->getTitulo();
+                    $auxNotas['contenido'] = $nota->getContenido();
+                    $datosTabs['itinerario']['notas'][] = $auxNotas;
+                    unset($auxNotas);
+                endforeach;
+
+
+            }
             foreach ($cotizacion->getCotservicios() as $servicio):
                 $itinerarioFechaAux = [];
                 if($servicio->getItinerario()->getItinerariodias()->count() > 0){
@@ -117,7 +129,7 @@ class Resumen implements ContainerAwareInterface
                             endforeach;
                         }
                         $datosTabs['itinerario']['itinerarios'][$fecha->format('ymd')]['fechaitems'][] = ['titulo' => $dia->getTitulo(), 'descripcion' => $dia->getContenido(), 'archivos' => $archivosTempArray];
-
+                        unset($archivosTempArray);
                     endforeach;
                 }
 
@@ -186,6 +198,7 @@ class Resumen implements ContainerAwareInterface
 
                                     if(!empty($tempArrayIncluye)){
                                         $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getComponente()->getId()]['tarifas'][] = $tempArrayIncluye;
+                                        unset($tempArrayIncluye);
                                     }
 
                                 }
@@ -280,6 +293,7 @@ class Resumen implements ContainerAwareInterface
                                 $this->completarTipoTarifa($tempArrayTarifa, $tarifa->getTarifa()->getProrrateado());
 
                                 $tempArrayComponente['tarifas'][] = $tempArrayTarifa;
+                                unset($tempArrayTarifa);
 
                             endforeach;
 
@@ -299,6 +313,7 @@ class Resumen implements ContainerAwareInterface
                             $this->obtenerTarifasComponente($tempArrayComponente['tarifas'], $datosCotizacion['cotizacion']['numeropasajeros']);
 
                             $datosTabs['agenda']['componentes'][] = $tempArrayComponente;
+                            unset($tempArrayComponente);
 
                             //no he sumado prorrateados puede ir en blanco para el caso de que solo exista prorrateado
                             if($cantidadComponente > 0 && $cantidadComponente != $cotizacion->getNumeropasajeros()){

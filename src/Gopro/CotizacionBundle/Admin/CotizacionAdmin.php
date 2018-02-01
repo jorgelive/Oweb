@@ -43,6 +43,9 @@ class CotizacionAdmin extends AbstractAdmin
             ->add('cotpolitica', null, [
                 'label' => 'Política'
             ])
+            ->add('cotnotas',  null, [
+                'label' => 'Notas'
+            ])
         ;
     }
 
@@ -55,7 +58,7 @@ class CotizacionAdmin extends AbstractAdmin
             ->add('id')
             ->add('nombre')
             ->add('numeropasajeros', null, [
-                'label' => 'Cantidad de pasajeros'
+                'label' => 'Num Pax'
             ])
             ->add('comision', null, [
                 'label' => 'Comisión'
@@ -66,6 +69,9 @@ class CotizacionAdmin extends AbstractAdmin
             ])
             ->add('cotpolitica', null, [
                 'label' => 'Política'
+            ])
+            ->add('cotnotas',  null, [
+                'label' => 'Notas'
             ])
             ->add('_action', null, [
                 'label' => 'Acciones',
@@ -93,7 +99,7 @@ class CotizacionAdmin extends AbstractAdmin
         $formMapper
             ->add('nombre')
             ->add('numeropasajeros', null, [
-                'label' => 'Cantidad de pasajeros'
+                'label' => 'Num Pax'
             ])
             ->add('comision', null, [
                 'label' => 'Comisión'
@@ -104,6 +110,9 @@ class CotizacionAdmin extends AbstractAdmin
             ->add('cotpolitica', null, [
                 'label' => 'Política'
             ])
+            ->add('cotnotas',  null, [
+                'label' => 'Notas'
+            ])
             ->add('cotservicios', 'sonata_type_collection', [
                 'by_reference' => false,
                 'label' => 'Servicios'
@@ -111,6 +120,7 @@ class CotizacionAdmin extends AbstractAdmin
                 'edit' => 'inline',
                 'inline' => 'table'
             ])
+
         ;
 
         $this->vars['cotservicios']{'serviciopath'} = 'gopro_servicio_servicio_ajaxinfo';
@@ -139,6 +149,9 @@ class CotizacionAdmin extends AbstractAdmin
             ])
             ->add('cotpolitica', null, [
                 'label' => 'Política'
+            ])
+            ->add('cotnotas',  null, [
+                'label' => 'Notas'
             ])
 
         ;

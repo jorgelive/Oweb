@@ -212,7 +212,7 @@ class Servicio implements TranslatableInterface
      */
     public function addComponente(\Gopro\ServicioBundle\Entity\Componente $componente)
     {
-        //notajg: no setear el componente ni uilizar by_reference = false en el admin
+        //notajg: no setear el componente ni uilizar by_reference = false en el admin en el owner(en que tiene inversed)
 
         $this->componentes[] = $componente;
     

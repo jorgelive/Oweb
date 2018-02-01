@@ -66,12 +66,19 @@ class Cotizacion implements TranslatableInterface
     protected $file;
 
     /**
-     * @var \Gopro\CotizacionBundle\Entity\File
+     * @var \Gopro\CotizacionBundle\Entity\Cotpolitica
      *
      * @ORM\ManyToOne(targetEntity="Gopro\CotizacionBundle\Entity\Cotpolitica", inversedBy="cotizaciones")
      * @ORM\JoinColumn(name="cotpolitica_id", referencedColumnName="id", nullable=false)
      */
     protected $cotpolitica;
+
+    /**
+     * @var \Gopro\CotizacionBundle\Entity\Cotnota
+     *
+     * @ORM\ManyToMany(targetEntity="Gopro\CotizacionBundle\Entity\Cotnota", inversedBy="cotizaciones")
+     */
+    protected $cotnotas;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -99,6 +106,7 @@ class Cotizacion implements TranslatableInterface
 
     public function __construct() {
         $this->cotservicios = new ArrayCollection();
+        $this->cotnotas = new ArrayCollection();
     }
 
     /**
@@ -346,5 +354,44 @@ class Cotizacion implements TranslatableInterface
     public function getCotpolitica()
     {
         return $this->cotpolitica;
+    }
+
+
+    /**
+     * Add cotnota.
+     *
+     * @param \Gopro\CotizacionBundle\Entity\Cotnota $cotnota
+     *
+     * @return Cotizacion
+     */
+    public function addCotnota(\Gopro\CotizacionBundle\Entity\Cotnota $cotnota)
+    {
+        //notajg: no setear el componente ni uilizar by_reference = false en el admin en el owner(en que tiene inversed)
+
+        $this->cotnotas[] = $cotnota;
+    
+        return $this;
+    }
+
+    /**
+     * Remove cotnota.
+     *
+     * @param \Gopro\CotizacionBundle\Entity\Cotnota $cotnota
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeCotnota(\Gopro\CotizacionBundle\Entity\Cotnota $cotnota)
+    {
+        return $this->cotnotas->removeElement($cotnota);
+    }
+
+    /**
+     * Get cotnotas.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCotnotas()
+    {
+        return $this->cotnotas;
     }
 }

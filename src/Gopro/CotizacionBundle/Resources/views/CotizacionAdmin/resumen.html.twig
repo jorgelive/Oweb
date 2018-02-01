@@ -11,15 +11,8 @@ file that was distributed with this source code.
 
 {% extends 'GoproSonataBundle:Admin:standard_layout.html.twig' %}
 
-{% block tab_menu %}
-    {{ knp_menu_render(admin.sidemenu(action), {
-        'currentClass' : 'active',
-        'template': sonata_admin.adminPool.getTemplate('tab_menu_template')
-    }, 'twig') }}
-{% endblock %}
 
 {% block show %}
-
 
 <div class="sonata-ba-view">
 
@@ -107,6 +100,7 @@ file that was distributed with this source code.
                         >
                             <div class="box-body container-fluid">
                                 <div class="sonata-ba-collapsed-fields">
+
                                     {% if name == 'tarifas' %}
                                         <h4><strong>Por tipo de pasajero</strong></h4>
                                         {% for rango in contenido.rangos %}
@@ -127,7 +121,6 @@ file that was distributed with this source code.
                                                         <th class="text-right">
                                                             Tarifa dolares
                                                         </th>
-
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -145,46 +138,50 @@ file that was distributed with this source code.
                                                         {% endfor %}
                                                     </tr>
                                                     </tbody>
-
                                                 </table>
                                             </div>
                                             <br />
-
                                         {% endfor %}
 
                                     {% elseif name == 'politica' %}
                                         {{ contenido.contenido|raw }}
 
                                     {% elseif name == 'itinerario' %}
-                                        {% for itinerario in contenido.itinerarios %}
-                                            <h4><strong>{{ itinerario.fecha }}</strong></h4>
-                                            {% for item in itinerario.fechaitems %}
-                                                <h4>{{ item.titulo }}</h4>
-                                                {{ item.descripcion|raw }}
-                                                <div class="container-fluid">
-                                                <div class="row">
-                                                    {% for archivo in item.archivos %}
-                                                        <div class="col-xs-4 col-md-2">
-                                                            <div class="thumbnail">
-                                                                <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}"{% if archivo.inmodal == true %} data-toggle="lightbox"{% else %} target="_blank" {% endif %}>
-                                                                    <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.thumbpath|raw }}" alt="{{ archivo.titulo }}" style="width:100%">
-                                                                    <div class="caption">
-                                                                        <p>{{ archivo.titulo }}</p>
+                                        {% if contenido.itinerarios is defined and contenido.itinerarios|length > 0 %}
+                                            {% for itinerario in contenido.itinerarios %}
+                                                <h4><strong>{{ itinerario.fecha }}</strong></h4>
+                                                {% for item in itinerario.fechaitems %}
+                                                    <h4>{{ item.titulo }}</h4>
+                                                    {{ item.descripcion|raw }}
+                                                    <div class="container-fluid">
+                                                        <div class="row">
+                                                            {% for archivo in item.archivos %}
+                                                                <div class="col-xs-4 col-md-2">
+                                                                    <div class="thumbnail">
+                                                                        <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}"{% if archivo.inmodal == true %} data-toggle="lightbox"{% else %} target="_blank" {% endif %}>
+                                                                            <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.thumbpath|raw }}" alt="{{ archivo.titulo }}" style="width:100%">
+                                                                            <div class="caption">
+                                                                                <p>{{ archivo.titulo }}</p>
+                                                                            </div>
+                                                                        </a>
                                                                     </div>
-                                                                </a>
-                                                            </div>
+                                                                </div>
+                                                            {% endfor %}
                                                         </div>
-                                                    {% endfor %}
-                                                </div>
-                                                </div>
-
+                                                    </div>
+                                                {% endfor %}
                                             {% endfor %}
-                                        {% endfor %}
+                                        {% endif %}
+                                        {% if contenido.notas is defined and contenido.notas|length > 0 %}
+                                            <h4>Notas:</h4>
+                                            {% for nota in contenido.notas %}
+                                                <h5><strong>{{ nota.titulo }}</strong></h5>
+                                                {{ nota.contenido|raw }}
+                                            {% endfor %}
+                                        {% endif %}
 
                                     {% elseif name == 'incluye' %}
-
                                         {% if contenido.tipos is defined %}
-
                                             {% for tipo in contenido.tipos %}
                                                 <h4>{{ tipo.titulo }}:</h4>
                                                 <ul>
@@ -197,13 +194,12 @@ file that was distributed with this source code.
                                                                     {% endfor %}
                                                                 </ul>
                                                             {% endif %}
-
                                                         </li>
                                                     {% endfor %}
                                                 </ul>
                                             {% endfor %}
-
                                         {% endif %}
+
                                     {% elseif name == 'agenda' %}
                                         <div class="box-body table-responsive no-padding">
                                             <table class="table table-bordered table-striped sonata-ba-list">
@@ -233,14 +229,11 @@ file that was distributed with this source code.
                                                             {{ componente.fechahorafin|date('Y/m/d H:i') }}
                                                         </td>
                                                     </tr>
-
-
                                                 {% endfor %}
                                                 </tbody>
                                             </table>
                                         </div>
                                     {% endif %}
-
 
                                 </div>
                             </div>
@@ -248,7 +241,6 @@ file that was distributed with this source code.
                     {% endfor %}
                 </div>
             </div>
-
         </div>
     </div>
 
