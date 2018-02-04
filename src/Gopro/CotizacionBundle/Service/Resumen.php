@@ -152,7 +152,7 @@ class Resumen implements ContainerAwareInterface
 
                                     if(!empty($tarifa->getTarifa()->getTitulo())) {
                                         $tempArrayIncluye['titulo'] = $tarifa->getTarifa()->getTitulo();
-                                        $tempArrayIncluye['cantidad'] = (int)($tarifa->getCantidad() * $componente->getCantidad());
+                                        $tempArrayIncluye['cantidad'] = (int)($tarifa->getCantidad());
                                         if(!empty($tarifa->getTarifa()->getValidezInicio())){
                                             $tempArrayIncluye['validezInicio'] = $tarifa->getTarifa()->getValidezInicio();
                                         }
@@ -185,6 +185,7 @@ class Resumen implements ContainerAwareInterface
                                     }
 
                                     $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['titulo'] = $tarifa->getTipotarifa()->getTitulo();
+                                    $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getComponente()->getId()]['cantidadcomponente'] = $componente->getCantidad();
                                     $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getComponente()->getId()]['titulo'] = $componente->getComponente()->getTitulo();
 
 

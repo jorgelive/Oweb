@@ -132,10 +132,10 @@
         $(document).on('sonata.add_element', function() {
             $('table input.form-control').autoFit();
             //$('table textarea.form-control').autoFit();
-            $(':input.hardreadonly').attr('readonly', 'readonly');
-            $(':input.softreadonly').attr('readonly', 'readonly');
-            $(':input.disabled').attr('disabled', 'disabled');
-            $(':input.paralelo').closest('tr').addClass('paralelo');
+            $('input.hardreadonly').attr('readonly', 'readonly');
+            $('input.softreadonly').attr('readonly', 'readonly');
+            $('input.disabled').attr('disabled', 'disabled');
+            $('input.paralelo').closest('tr').addClass('paralelo');
 
             $("[id$='_delete']").checkDelete();
 
@@ -154,10 +154,10 @@
             $("[id$='_delete']").checkDelete();
             $('table input.form-control').autoFit();
             //$('table textarea.form-control').autoFit();
-            $(':input.hardreadonly').attr('readonly', 'readonly');
-            $(':input.softreadonly').attr('readonly', 'readonly');
-            $(':input.disabled').attr('disabled', 'disabled');
-            $(':input.paralelo').closest('tr').addClass('paralelo');
+            $('input.hardreadonly').attr('readonly', 'readonly');
+            $('input.softreadonly').attr('readonly', 'readonly');
+            $('input.disabled').attr('disabled', 'disabled');
+            $('input.paralelo').closest('tr').addClass('paralelo');
 
             $('.ckeditor').each(function (index, value) {
                 ClassicEditor.create(this);

@@ -53,12 +53,15 @@
                             url:  url,
                             context: $(this),
                             success: function(result){
-                                var fechaHoraInicioId = $(this).attr("id").replace(/itinerario_autocomplete_input_v4/g, 'fechahorainicio');
+                                var basestr = $(this).attr("id").replace(/itinerario_autocomplete_input_v4/g, '');
+                                var fechaHoraInicioId = basestr + 'fechahorainicio';
                                 var newFechaHoraInicio = $('input#' + fechaHoraInicioId).val().replace(/\d\d:\d\d$/g, result.hora);
-                                var fechaHoraFinId = $(this).attr("id").replace(/itinerario_autocomplete_input_v4/g, 'fechahorafin');
+                                var fechaHoraFinId = basestr + 'fechahorafin';
                                 $('input#' + fechaHoraFinId).attr('duracion', result.duracion);
-                                //
+                                $('div#field_container_' + basestr + 'cotcomponentes').find("input[horariodependiente*='horariodependiente']").attr('duracion', result.duracion);
+                                //primero cambiamos la duracion de componentes con horario dependiente
                                 $('input#' + fechaHoraInicioId).attr('duracion', result.duracion).val('').change().val(newFechaHoraInicio).change();
+
                             }}
                         );
 
@@ -75,16 +78,21 @@
                                 var filaActual = $(this).closest('tr');
                                 var fecha = moment(new Date()).format('YYYY/MM/DD');
                                 if(filaActual.index() > 0){
-                                    var filaOrigen;
-                                    if(result.paralelo === false){
-                                        filaOrigen = filaActual.prevAll().not(".splitted, .paralelo").first();
+
+                                    var filaOrigen = filaActual.prevAll().not(".splitted, .paralelo").first();
+
+                                    if(result.paralelo === false && filaOrigen.length > 0 ){
                                         fecha = moment($("input.serviciofechafin", filaOrigen).val().substr(0, 10), 'YYYY/MM/DD').format('YYYY/MM/DD');
                                         fecha = moment(fecha, 'YYYY/MM/DD').add(1, 'days').format('YYYY/MM/DD HH:mm');
+                                    }else{
+                                        filaOrigen = $(this).closest('tbody').children('tr').first();
+                                        fecha = moment($("input.serviciofechainicio", filaOrigen).val().substr(0, 10), 'YYYY/MM/DD').format('YYYY/MM/DD HH:mm');
+                                    }
+
+                                    if(result.paralelo === false){
                                         filaActual.removeClass('paralelo');
                                         $('input#' + fechaIniciServicioId).removeClass('paralelo');
                                     }else{
-                                        filaOrigen = $(this).closest('tbody').children('tr').first();
-                                        fecha = moment($("input.serviciofechafin", filaOrigen).val().substr(0, 10), 'YYYY/MM/DD').format('YYYY/MM/DD');
                                         filaActual.removeClass('paralelo').addClass('paralelo');
                                         $('input#' + fechaIniciServicioId).removeClass('paralelo').addClass('paralelo');
                                     }
@@ -109,18 +117,28 @@
                                 var fecInicioServicioId = $(this).attr("id").replace(/cotcomponentes_\d_componente_autocomplete_input_v4$/g, 'fechahorainicio');
                                 var fecFinServicioId = $(this).attr("id").replace(/cotcomponentes_\d_componente_autocomplete_input_v4$/g, 'fechahorafin');
                                 if(result.duracion !== null){
+
+                                    if(result.duracion === '0.0'){
+                                        //var minutos = moment($('input#' + fecFinServicioId).val(), 'YYYY/MM/DD HH:mm', true).diff(moment($('input#' + fecInicioServicioId).val(), 'YYYY/MM/DD HH:mm', true), 'minutes');
+                                        result.duracion = $('input#' + fecInicioServicioId).attr('duracion');
+                                        $('input#' + fechaInicioComponenteId).attr('horariodependiente', 'horariodependiente');
+                                        $('input#' + fechaFinComponenteId).attr('horariodependiente', 'horariodependiente');
+                                    }else{
+                                        $('input#' + fechaInicioComponenteId).removeAttr('horariodependiente');
+                                        $('input#' + fechaFinComponenteId).removeAttr('horariodependiente');
+                                    }
                                     //para forzar cambio primero a ''  y despues al valor
                                     $('input#' + fechaFinComponenteId).removeClass('disabled').removeAttr('disabled').attr('duracion', result.duracion);
                                     $('input#' + fechaInicioComponenteId).removeClass('disabled').removeAttr('disabled').attr('duracion', result.duracion).val('').change().val($('input#' + fecInicioServicioId).val()).change();
 
                                 }else{
-                                    $('input#' + fechaFinComponenteId).removeAttr('duracion').attr('disabled', 'disabled').removeClass('disabled').addClass('disabled').val('').trigger('change');
-                                    $('input#' + fechaInicioComponenteId).removeAttr('duracion').attr('disabled', 'disabled').removeClass('disabled').addClass('disabled').val('').trigger('change');
+                                    $('input#' + fechaFinComponenteId).removeAttr('horariodependiente').removeAttr('duracion').attr('disabled', 'disabled').removeClass('disabled').addClass('disabled').val('').trigger('change');
+                                    $('input#' + fechaInicioComponenteId).removeAttr('horariodependiente').removeAttr('duracion').attr('disabled', 'disabled').removeClass('disabled').addClass('disabled').val('').trigger('change');
                                 }
 
                                 if(result.dependeduracion === true){
-                                    var inicio = $('input#' + fecInicioServicioId).val().substr(0, 10);
-                                    var fin = $('input#' + fecFinServicioId).val().substr(0, 10);
+                                    var inicio = $('input#' + fechaInicioComponenteId).val().substr(0, 10);
+                                    var fin = $('input#' + fechaFinComponenteId).val().substr(0, 10);
                                     //alert(dias)
                                     var dias = moment(fin, 'YYYY/MM/DD', true).diff(moment(inicio, 'YYYY/MM/DD', true), 'days');
 
@@ -202,22 +220,23 @@
                         //s5a43ceaa838b4[cotizaciones][0][cotservicios][0][fechahorainicio]
                         var inicio;
                         var fin;
-                        if (/\[cotservicios\]\[\d\]\[fechahorainicio\]$/g.test($(this).attr("name"))) {
+                        if (/\[cotcomponentes\]\[\d\]\[fechahorainicio\]$/g.test($(this).attr("name"))) {
                             var basestr = $(this).attr("name").replace( /\[fechahorainicio\]$/g, '');
                             inicio = $(this).val();
                             fin = $('input[name=' + $(this).attr("name").replace( /\[fechahorainicio\]/g, '[fechahorafin]').replace(/\[/g, '\\\[').replace(/\]/g, '\\\]') + ']').val();
                             return methods.cambiarcantidad.call($(this), basestr, inicio, fin)
                         }
-                        if (/\[cotservicios\]\[\d\]\[fechahorafin\]$/g.test($(this).attr("name"))) {
+                        if (/\[cotcomponentes\]\[\d\]\[fechahorafin\]$/g.test($(this).attr("name"))) {
                             var basestr = $(this).attr("name").replace( /\[fechahorafin\]$/g, '');
                             //var cadena = $(this).attr("name").replace( /\[fechahorafin\]/g, '[cotcomponentes][\\d][cantidad]').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
                             inicio = $('input[name=' + $(this).attr("name").replace( /\[fechahorafin\]/g, '[fechahorainicio]').replace(/\[/g, '\\\[').replace(/\]/g, '\\\]') + ']').val();
                             fin = $(this).val();
                             return methods.cambiarcantidad.call($(this), basestr, inicio, fin)
                         }
+
                     },
                     cambiarcantidad: function(basestr, inicio, fin){
-                        var cadena = (basestr + '[cotcomponentes][\\d][cantidad]').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+                        var cadena = (basestr + '[cantidad]').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
 
                         var inputCantidad = $('input').filter(function () {
                             if($(this).attr('name') && $(this).hasClass('dependeduracion') ){
@@ -241,7 +260,7 @@
 
             };
 
-            $.fn.actualizarFechaHoraComponente = function () {
+            $.fn.actualizarFechaHora = function () {
 
                 var methods = {
                     init: function () {
@@ -267,24 +286,35 @@
                         //s5a43ceaa838b4[cotizaciones][0][cotservicios][0][cotcomponentes][0][cantidad]
                         //s5a43ceaa838b4[cotizaciones][0][cotservicios][0][fechahorainicio]
                         var inicio;
+                        var basestr;
                         if (/\[cotservicios\]\[\d\]\[fechahorainicio\]$/g.test($(this).attr("name"))) {
-                            var basestr = $(this).attr("name").replace( /\[fechahorainicio\]$/g, '');
+                            basestr = $(this).attr("name").replace( /\[fechahorainicio\]$/g, '');
                             inicio = $(this).val();
                             methods.cambiarfechafin.call($(this), basestr, inicio)
                             return methods.cambiarfechacomponente.call($(this), basestr, inicio);
                         }
+                        if (/\[cotservicios\]\[\d\]\[fechahorafin\]$/g.test($(this).attr("name"))) {
+                            basestr = $(this).attr("name").replace( /\[fechahorafin\]$/g, '');
+                            fin = $(this).val();
+                            return methods.finservicioafincomponente.call($(this), basestr, fin);
+                        }
                         if (/\[cotcomponentes\]\[\d\]\[fechahorainicio\]$/g.test($(this).attr("name"))) {
-                            var basestr = $(this).attr("name").replace( /\[fechahorainicio\]$/g, '');
+                            basestr = $(this).attr("name").replace( /\[fechahorainicio\]$/g, '');
                             inicio = $(this).val();
                             return methods.cambiarfechafin.call($(this), basestr, inicio)
                         }
+                    },
+                    finservicioafincomponente: function (basestr, fin) {
+                        basestr = basestr.replace( /\]\[/g, '_').replace( /\]/g, '_').replace( /\[/g, '_');
+                        $('div#field_container_' + basestr + 'cotcomponentes').find("input.componentefin[horariodependiente*='horariodependiente']").val(fin).trigger('change');
+
                     },
                     cambiarfechafin: function (basestr, inicio) {
                         var cadenaFin = (basestr + '[fechahorafin]');
                         var fin = $('input[name=' + cadenaFin.replace(/\[/g, '\\\[').replace(/\]/g, '\\\]') + ']');
 
                         if (typeof fin.attr("duracion") !== 'undefined'){
-                            var newFechaHoraFin = moment(inicio).add(fin.attr("duracion"), 'hours').format('YYYY/MM/DD HH:mm');
+                            var newFechaHoraFin = moment(inicio,'YYYY/MM/DD HH:mm').add(fin.attr("duracion"), 'hours').format('YYYY/MM/DD HH:mm');
                             fin.val(newFechaHoraFin).trigger('change');
                         }
                     },
@@ -300,7 +330,7 @@
                         inputFechaInicio.each(function (index, value){
                             if (typeof $(this).attr("duracion") !== 'undefined'){
                                 //alert($(this).attr("name"));
-                                var newFechaHoraFin = moment(inicio).add($(this).attr("duracion"), 'hours').format('YYYY/MM/DD HH:mm');
+                                var newFechaHoraFin = moment(inicio, 'YYYY/MM/DD HH:mm').add($(this).attr("duracion"), 'hours').format('YYYY/MM/DD HH:mm');
                                 $('input[name=' + $(this).attr("name").replace( /\[fechahorainicio\]/g, '[fechahorafin]').replace(/\[/g, '\\\[').replace(/\]/g, '\\\]') + ']').val(newFechaHoraFin).trigger('change')
                                 $(this).val(inicio).trigger('change');
                             }
@@ -320,14 +350,13 @@
 
 
         $(document).ready(function(){
-            $(':input').cambiovalor();
-            $(':input[name$="[fechahorainicio]"], :input[name$="[fechahorafin]"]').cambiarComponenteCantidad();
-            $(':input[name$="[fechahorainicio]"]').actualizarFechaHoraComponente();
+            $('select').cambiovalor();
+            $('input[name$="[fechahorainicio]"], input[name$="[fechahorafin]"]').cambiarComponenteCantidad().actualizarFechaHora();
 
             $('body').on('sonata.add_element', function() {
-                $(':input').cambiovalor();
-                $(':input[name$="[fechahorainicio]"], :input[name$="[fechahorafin]"]').cambiarComponenteCantidad();
-                $(':input[name$="[fechahorainicio]"]').actualizarFechaHoraComponente();
+                $('select').cambiovalor();
+                $('input[name$="[fechahorainicio]"], input[name$="[fechahorafin]"]').cambiarComponenteCantidad().actualizarFechaHora();
+
             });
 
         });

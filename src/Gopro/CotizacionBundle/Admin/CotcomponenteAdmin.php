@@ -104,13 +104,19 @@ class CotcomponenteAdmin extends AbstractAdmin
                 'label' => 'Inicio',
                 'dp_show_today' => true,
                 'format'=> 'yyyy/MM/dd HH:mm',
-                'attr' => ['class' => 'disabled']
+                'attr' => [
+                    'class' => 'componenteinicio disabled',
+                    'horariodependiente' => false
+                ]
             ])
             ->add('fechahorafin', 'sonata_type_datetime_picker', [
                 'label' => 'Fin',
                 'dp_show_today' => true,
                 'format'=> 'yyyy/MM/dd HH:mm',
-                'attr' => ['class' => 'disabled']
+                'attr' => [
+                    'class' => 'componentefin disabled',
+                    'horariodependiente' => false
+                ]
             ])
             ->add('cottarifas', 'sonata_type_collection', [
                 'by_reference' => false,
@@ -134,19 +140,27 @@ class CotcomponenteAdmin extends AbstractAdmin
             );
         };
 
-        $horarioModifier = function (FormInterface $form, $duracion) {
+        $horarioModifier = function (FormInterface $form, $duracion, $horarioDependiente) {
 
             $form->add('fechahorainicio', 'sonata_type_datetime_picker', [
                     'label' => 'Inicio',
                     'dp_show_today' => true,
                     'format'=> 'yyyy/MM/dd HH:mm',
-                    'attr' => ['duracion' => $duracion]
+                    'attr' => [
+                        'duracion' => $duracion,
+                        'horariodependiente' => $horarioDependiente,
+                        'class' => 'componenteinicio'
+                    ]
                 ])
                 ->add('fechahorafin', 'sonata_type_datetime_picker', [
                     'label' => 'Fin',
                     'dp_show_today' => true,
                     'format'=> 'yyyy/MM/dd HH:mm',
-                    'attr' => ['duracion' => $duracion]
+                    'attr' => [
+                        'duracion' => $duracion,
+                        'horariodependiente' => $horarioDependiente,
+                        'class' => 'componentefin'
+                    ]
                 ])
             ;
         };
@@ -168,8 +182,18 @@ class CotcomponenteAdmin extends AbstractAdmin
                     && $event->getData()->getComponente()
                     && !is_null($event->getData()->getComponente()->getDuracion())
                 ){
+                    $horarioDependiente = false;
+                    $duracion = $event->getData()->getComponente()->getDuracion();
+                    if($duracion == '0.0'
+                        && $event->getData()->getCotservicio()
+                        && $event->getData()->getCotservicio()->getItinerario()
+                        && $event->getData()->getCotservicio()->getItinerario()->getDuracion()
+                    ){
+                        $duracion = $event->getData()->getCotservicio()->getItinerario()->getDuracion();
+                        $horarioDependiente = true;
+                    }
                     //var_dump($event->getData()->getComponente()->getTipocomponente()->getDependeduracion());
-                    $horarioModifier($event->getForm(), $event->getData()->getComponente()->getDuracion());
+                    $horarioModifier($event->getForm(), $duracion, $horarioDependiente);
                 }
             }
         );
