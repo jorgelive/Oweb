@@ -185,20 +185,23 @@ class Resumen implements ContainerAwareInterface
                                     }
 
                                     $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['titulo'] = $tarifa->getTipotarifa()->getTitulo();
-                                    $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getComponente()->getId()]['cantidadcomponente'] = $componente->getCantidad();
-                                    $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getComponente()->getId()]['titulo'] = $componente->getComponente()->getTitulo();
+                                    $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['cantidadcomponente'] = $componente->getCantidad();
+                                    $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['titulo'] = $componente->getComponente()->getTitulo();
+                                    if(!empty($componente->getFechahorainicio())){
+                                        $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['fecha'] = $componente->getFechahorainicio()->format('Y-m-d');
+                                    }
 
 
                                     if(!empty($itinerarioFechaAux)){
                                         if(!is_null($componente->getFechahorainicio()) && isset($itinerarioFechaAux[$componente->getFechahorainicio()->format('ymd')])){
-                                            $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getComponente()->getId()]['tituloItinerario'] = $itinerarioFechaAux[$componente->getFechahorainicio()->format('ymd')];
+                                            $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['tituloItinerario'] = $itinerarioFechaAux[$componente->getFechahorainicio()->format('ymd')];
                                         }else{
-                                            $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getComponente()->getId()]['tituloItinerario'] = reset($itinerarioFechaAux);
+                                            $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['tituloItinerario'] = reset($itinerarioFechaAux);
                                         }
                                     }
 
                                     if(!empty($tempArrayIncluye)){
-                                        $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getComponente()->getId()]['tarifas'][] = $tempArrayIncluye;
+                                        $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['tarifas'][] = $tempArrayIncluye;
                                         unset($tempArrayIncluye);
                                     }
 

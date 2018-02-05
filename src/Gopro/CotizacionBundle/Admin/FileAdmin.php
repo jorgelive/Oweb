@@ -13,6 +13,12 @@ class FileAdmin extends AbstractAdmin
 
     public $vars;
 
+    protected $datagridValues = [
+        '_page' => 1,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'modificado',
+    ];
+
     public function getFormTheme()
     {
         return array_merge(
@@ -49,6 +55,11 @@ class FileAdmin extends AbstractAdmin
             ])
             ->add('cotizaciones', null, [
                 'label' => 'Cotizaciones'
+            ])
+            ->add('modificado',  null, [
+                'label' => 'Modificación',
+                'format' => 'Y/m/d H:i'
+
             ])
             ->add('_action', null, [
                 'label' => 'Acciones',
