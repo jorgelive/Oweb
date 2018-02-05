@@ -163,7 +163,24 @@ file that was distributed with this source code.
                                         <br />
                                         <h4><strong>Por tipo de pasajero</strong></h4>
                                         {% for rango in contenido.rangos %}
-                                            <h4>{{ rango.tipoPaxNombre }} - {{ rango.rangoEdadNombre }} <strong>x {{ rango.cantidad }}</strong></h4>
+                                            <h4>
+                                                {{ rango.tipoPaxNombre }} <strong>x {{ rango.cantidad }}</strong>
+                                            </h4>
+                                            {% if rango.edadMin is defined or rango.edadMax is defined%}
+                                            <p>
+                                                {% if rango.edadMin is defined %}
+                                                    desde {{ rango.edadMin }} años
+                                                {% endif %}
+
+                                                {% if rango.edadMax is defined %}
+                                                    hasta {{ rango.edadMax }} años
+                                                    {% if rango.edadMax > 18 and rango.edadMax <= 23 %}
+                                                        <br />(con carné de estudiante válido y vigente)
+                                                    {% endif %}
+                                                {% endif %}
+                                            </p>
+                                            {% endif %}
+
                                             {% if rango.nombrePersistente is defined %}
                                                 <h5>{{ rango.nombrePersistente }}</h5>
                                             {% endif %}
