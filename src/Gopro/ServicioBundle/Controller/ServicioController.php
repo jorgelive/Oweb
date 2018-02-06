@@ -33,6 +33,8 @@ class ServicioController extends Controller
                 ->setParameter('cadena', '%' . $request->get('q') . '%');
         }
 
+        $servicios->orderBy('s.nombre', 'ASC');
+
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $servicios->getQuery(),

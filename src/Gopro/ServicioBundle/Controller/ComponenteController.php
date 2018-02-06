@@ -41,6 +41,8 @@ class ComponenteController extends Controller
                 ->setParameter('cadena', '%' . $request->get('q') . '%');
         }
 
+        $componentes->orderBy('c.nombre', 'ASC');
+
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $componentes->getQuery(),

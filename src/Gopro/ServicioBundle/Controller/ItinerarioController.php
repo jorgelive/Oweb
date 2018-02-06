@@ -64,6 +64,8 @@ class ItinerarioController extends Controller
                 ->setParameter('cadena', '%' . $request->get('q') . '%');
         }
 
+        $itinerarios->orderBy('i.nombre', 'ASC');
+
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $itinerarios->getQuery(),

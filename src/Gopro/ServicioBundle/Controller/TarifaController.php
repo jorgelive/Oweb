@@ -67,7 +67,7 @@ class TarifaController extends Controller
                 ->setParameter('cadena', '%' . $request->get('q') . '%');
         }
 
-        ($tarifas->getQuery()->getSQL());
+        $tarifas->orderBy('t.nombre', 'ASC');
             //->orderBy('p.price', 'ASC')
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
