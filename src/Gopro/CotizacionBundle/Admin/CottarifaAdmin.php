@@ -124,7 +124,7 @@ class CottarifaAdmin extends AbstractAdmin
                     if($event->getData()->getTarifa()->getCapacidadmax() == 1){
                         $clases = 'prorrateado inputwarning';
                     }else{
-                        $clases = 'prorrateado softreadonly';
+                        $clases = 'prorrateado readonly';
                     }
 
                     //var_dump($event->getData()->getComponente()->getTipocomponente()->getDependeduracion());

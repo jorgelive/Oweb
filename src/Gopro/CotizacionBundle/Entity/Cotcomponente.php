@@ -57,14 +57,14 @@ class Cotcomponente
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechahorainicio", type="datetime", nullable=true)
+     * @ORM\Column(name="fechahorainicio", type="datetime")
      */
     private $fechahorainicio;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechahorafin", type="datetime", nullable=true)
+     * @ORM\Column(name="fechahorafin", type="datetime")
      */
     private $fechahorafin;
 

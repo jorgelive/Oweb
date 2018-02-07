@@ -101,7 +101,7 @@ class CotservicioAdmin extends AbstractAdmin
                 'dp_show_today' => true,
                 'format'=> 'yyyy/MM/dd HH:mm',
                 'attr' => [
-                    'class' => 'serviciofechainicio'
+                    'class' => 'fechahora serviciofechainicio'
                 ]
             ])
             ->add('fechahorafin', 'sonata_type_datetime_picker', [
@@ -109,7 +109,7 @@ class CotservicioAdmin extends AbstractAdmin
                 'dp_show_today' => true,
                 'format'=> 'yyyy/MM/dd HH:mm',
                 'attr' => [
-                    'class' => 'serviciofechafin'
+                    'class' => 'fechahora serviciofechafin'
                 ]
             ])
             ->add('cotcomponentes', 'sonata_type_collection', [
@@ -129,7 +129,7 @@ class CotservicioAdmin extends AbstractAdmin
                     'format'=> 'yyyy/MM/dd HH:mm',
                     'attr' => [
                         'duracion' => $duracion,
-                        'class' => 'serviciofechainicio' . $paraleloclass
+                        'class' => 'fechahora serviciofechainicio' . $paraleloclass
                     ]
                 ])
                 ->add('fechahorafin', 'sonata_type_datetime_picker', [
@@ -138,7 +138,7 @@ class CotservicioAdmin extends AbstractAdmin
                     'format'=> 'yyyy/MM/dd HH:mm',
                     'attr' => [
                         'duracion' => $duracion,
-                        'class' => 'serviciofechafin'
+                        'class' => 'fechahora serviciofechafin'
                     ]
                 ])
             ;

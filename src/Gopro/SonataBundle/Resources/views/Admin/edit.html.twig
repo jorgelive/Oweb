@@ -5,7 +5,9 @@
 
     <style type="text/css">
         .field-container {overflow-x: auto; padding-bottom: 20px;}
-        input.form-control {min-width : 80px;}
+        input.form-control {min-width: 80px;}
+        .input-group .fecha {width: 95px;}
+        .input-group .fechahora {width: 130px;}
         .nav-tabs-custom{ margin-top: 30px; padding-top: 8px; margin-bottom: 10px; border-top: #3c8dbc solid 2px;}
         .nav-tabs-custom:first-of-type{ margin-top: 10px;}
         .select2-container{min-width: 140px;}
@@ -130,10 +132,9 @@
         })( jQuery );
 
         $(document).on('sonata.add_element', function() {
-            $('table input.form-control').autoFit();
+            $('table input.form-control').not('.fechahora, .fecha').autoFit();
             //$('table textarea.form-control').autoFit();
-            $('input.hardreadonly').attr('readonly', 'readonly');
-            $('input.softreadonly').attr('readonly', 'readonly');
+            $('input.readonly').attr('readonly', 'readonly');
             $('input.disabled').attr('disabled', 'disabled');
             $('input.paralelo').closest('tr').addClass('paralelo');
 
@@ -152,10 +153,9 @@
         $(document).ready(function() {
 
             $("[id$='_delete']").checkDelete();
-            $('table input.form-control').autoFit();
+            $('table input.form-control').not('.fechahora, .fecha').autoFit();
             //$('table textarea.form-control').autoFit();
-            $('input.hardreadonly').attr('readonly', 'readonly');
-            $('input.softreadonly').attr('readonly', 'readonly');
+            $('input.readonly').attr('readonly', 'readonly');
             $('input.disabled').attr('disabled', 'disabled');
             $('input.paralelo').closest('tr').addClass('paralelo');
 

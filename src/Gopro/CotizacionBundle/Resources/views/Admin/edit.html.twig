@@ -116,25 +116,19 @@
                                 var fechaFinComponenteId = $(this).attr("id").replace(/componente_autocomplete_input_v4$/g, 'fechahorafin');
                                 var fecInicioServicioId = $(this).attr("id").replace(/cotcomponentes_\d_componente_autocomplete_input_v4$/g, 'fechahorainicio');
                                 var fecFinServicioId = $(this).attr("id").replace(/cotcomponentes_\d_componente_autocomplete_input_v4$/g, 'fechahorafin');
-                                if(result.duracion !== null){
-
-                                    if(result.duracion === '0.0'){
+                                    if(result.duracion === null){
                                         //var minutos = moment($('input#' + fecFinServicioId).val(), 'YYYY/MM/DD HH:mm', true).diff(moment($('input#' + fecInicioServicioId).val(), 'YYYY/MM/DD HH:mm', true), 'minutes');
-                                        result.duracion = $('input#' + fecInicioServicioId).attr('duracion');
-                                        $('input#' + fechaInicioComponenteId).attr('horariodependiente', 'horariodependiente');
-                                        $('input#' + fechaFinComponenteId).attr('horariodependiente', 'horariodependiente');
-                                    }else{
-                                        $('input#' + fechaInicioComponenteId).removeAttr('horariodependiente');
-                                        $('input#' + fechaFinComponenteId).removeAttr('horariodependiente');
-                                    }
-                                    //para forzar cambio primero a ''  y despues al valor
-                                    $('input#' + fechaFinComponenteId).removeClass('disabled').removeAttr('disabled').attr('duracion', result.duracion);
-                                    $('input#' + fechaInicioComponenteId).removeClass('disabled').removeAttr('disabled').attr('duracion', result.duracion).val('').change().val($('input#' + fecInicioServicioId).val()).change();
+                                        $('input#' + fechaInicioComponenteId).removeAttr('horariodependiente').attr('horariodependiente', 'horariodependiente').removeAttr('duracion').attr('duracion', $('input#' + fecInicioServicioId).attr('duracion'));
+                                        $('input#' + fechaFinComponenteId).removeAttr('horariodependiente').attr('horariodependiente', 'horariodependiente').removeAttr('duracion').attr('duracion', $('input#' + fecInicioServicioId).attr('duracion'));
 
-                                }else{
-                                    $('input#' + fechaFinComponenteId).removeAttr('horariodependiente').removeAttr('duracion').attr('disabled', 'disabled').removeClass('disabled').addClass('disabled').val('').trigger('change');
-                                    $('input#' + fechaInicioComponenteId).removeAttr('horariodependiente').removeAttr('duracion').attr('disabled', 'disabled').removeClass('disabled').addClass('disabled').val('').trigger('change');
-                                }
+                                    }else{
+                                        $('input#' + fechaInicioComponenteId).removeAttr('horariodependiente').attr('duracion', result.duracion);
+                                        $('input#' + fechaFinComponenteId).removeAttr('horariodependiente').attr('duracion', result.duracion);
+
+                                    }
+
+                                //para forzar cambio primero a ''  y despues al valor
+                                $('input#' + fechaInicioComponenteId).val('').change().val($('input#' + fecInicioServicioId).val()).change();
 
                                 if(result.dependeduracion === true){
                                     var inicio = $('input#' + fechaInicioComponenteId).val().substr(0, 10);
@@ -175,12 +169,12 @@
                                             clase = 'inputwarning';
                                         }else{
                                             $('input#' + cantidadId).attr('readonly', 'readonly');
-                                            clase = 'softreadonly';
+                                            clase = 'readonly';
                                         }
-                                        $('input#' + cantidadId).removeClass('prorrateado').addClass('prorrateado').removeClass('inputwarning').removeClass('softreadonly').addClass(clase).val(1).trigger('input');
+                                        $('input#' + cantidadId).removeClass('prorrateado').addClass('prorrateado').removeClass('inputwarning').removeClass('readonly').addClass(clase).val(1).trigger('input');
 
                                     }else{
-                                        $('input#' + cantidadId).removeClass('prorrateado').removeClass('inputwarning').removeClass('softreadonly').removeAttr("readonly").val($('input#' + numeroPaxId).val()).trigger('input');
+                                        $('input#' + cantidadId).removeClass('prorrateado').removeClass('inputwarning').removeClass('readonly').removeAttr("readonly").val($('input#' + numeroPaxId).val()).trigger('input');
                                     }
                                 }
                             }}

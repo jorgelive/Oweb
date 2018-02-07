@@ -97,7 +97,7 @@ class CotcomponenteAdmin extends AbstractAdmin
             ])
             ->add('cantidad', null, [
                     'required' => false,
-                    'attr' => ['class' => 'hardreadonly']
+                    'attr' => ['class' => 'readonly']
                 ]
             )
             ->add('fechahorainicio', 'sonata_type_datetime_picker', [
@@ -105,7 +105,7 @@ class CotcomponenteAdmin extends AbstractAdmin
                 'dp_show_today' => true,
                 'format'=> 'yyyy/MM/dd HH:mm',
                 'attr' => [
-                    'class' => 'componenteinicio disabled',
+                    'class' => 'fechahora componenteinicio',
                     'horariodependiente' => false
                 ]
             ])
@@ -114,7 +114,7 @@ class CotcomponenteAdmin extends AbstractAdmin
                 'dp_show_today' => true,
                 'format'=> 'yyyy/MM/dd HH:mm',
                 'attr' => [
-                    'class' => 'componentefin disabled',
+                    'class' => 'fechahora componentefin',
                     'horariodependiente' => false
                 ]
             ])
@@ -135,7 +135,7 @@ class CotcomponenteAdmin extends AbstractAdmin
                 [
                     'label' => 'Cantidad',
                     'required' => false,
-                    'attr' => ['class' => 'dependeduracion hardreadonly']
+                    'attr' => ['class' => 'dependeduracion readonly']
                 ]
             );
         };
@@ -149,7 +149,7 @@ class CotcomponenteAdmin extends AbstractAdmin
                     'attr' => [
                         'duracion' => $duracion,
                         'horariodependiente' => $horarioDependiente,
-                        'class' => 'componenteinicio'
+                        'class' => 'fechahora componenteinicio'
                     ]
                 ])
                 ->add('fechahorafin', 'sonata_type_datetime_picker', [
@@ -159,7 +159,7 @@ class CotcomponenteAdmin extends AbstractAdmin
                     'attr' => [
                         'duracion' => $duracion,
                         'horariodependiente' => $horarioDependiente,
-                        'class' => 'componentefin'
+                        'class' => 'fechahora componentefin'
                     ]
                 ])
             ;
@@ -184,7 +184,7 @@ class CotcomponenteAdmin extends AbstractAdmin
                 ){
                     $horarioDependiente = false;
                     $duracion = $event->getData()->getComponente()->getDuracion();
-                    if($duracion == '0.0'
+                    if($duracion === null
                         && $event->getData()->getCotservicio()
                         && $event->getData()->getCotservicio()->getItinerario()
                         && $event->getData()->getCotservicio()->getItinerario()->getDuracion()

@@ -233,7 +233,7 @@ file that was distributed with this source code.
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                {% for componente in contenido.componentes if componente.fechahorainicio is not null %}
+                                                {% for componente in contenido.componentes if componente.fechahorainicio != componente.fechahorafin and componente.titulo is not null %}
                                                     <tr>
                                                         <td>
                                                             {{ componente.fechahorainicio|date('Y/m/d H:i') }}
