@@ -54,7 +54,8 @@ class FileAdmin extends AbstractAdmin
                 'label' => 'Documentos'
             ])
             ->add('cotizaciones', null, [
-                'label' => 'Cotizaciones'
+                'label' => 'Cotizaciones',
+                'associated_property' => 'nombre'
             ])
             ->add('modificado',  null, [
                 'label' => 'Modificación',

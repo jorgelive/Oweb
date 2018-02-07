@@ -178,21 +178,23 @@ class CotcomponenteAdmin extends AbstractAdmin
                     $cantidadModifier($event->getForm());
                 }
 
+                $horarioDependiente = false;
+                $duracion = 0;
                 if($event->getData()
                     && $event->getData()->getComponente()
                     && !is_null($event->getData()->getComponente()->getDuracion())
-                ){
-                    $horarioDependiente = false;
+                ) {
                     $duracion = $event->getData()->getComponente()->getDuracion();
-                    if($duracion === null
-                        && $event->getData()->getCotservicio()
-                        && $event->getData()->getCotservicio()->getItinerario()
-                        && $event->getData()->getCotservicio()->getItinerario()->getDuracion()
-                    ){
-                        $duracion = $event->getData()->getCotservicio()->getItinerario()->getDuracion();
-                        $horarioDependiente = true;
-                    }
-                    //var_dump($event->getData()->getComponente()->getTipocomponente()->getDependeduracion());
+                }elseif ($event->getData()
+                    && $event->getData()->getCotservicio()
+                    && $event->getData()->getCotservicio()->getItinerario()
+                    && $event->getData()->getCotservicio()->getItinerario()->getDuracion())
+                {
+                    $duracion = $event->getData()->getCotservicio()->getItinerario()->getDuracion();
+                    $horarioDependiente = true;
+                }
+                //var_dump($event->getData()->getComponente()->getTipocomponente()->getDependeduracion());
+                if(!empty($duracion)){
                     $horarioModifier($event->getForm(), $duracion, $horarioDependiente);
                 }
             }
