@@ -620,10 +620,18 @@ class Resumen implements ContainerAwareInterface
             $temp['rangoEdad'] = $clase['rangoEdad'];
             $temp['rangoEdad'] = $clase['rangoEdadNombre'];
         }
-        if(isset($clase['edadMin']) && $clase['edadMin'] > $this->clasificacionTarifas[$voterIndex]['edadMin'] ?? 0){
+
+        if(!isset($this->clasificacionTarifas[$voterIndex]['edadMin'])){
+            $this->clasificacionTarifas[$voterIndex]['edadMin'] = 0;
+        }
+        if(isset($clase['edadMin']) && $clase['edadMin'] > $this->clasificacionTarifas[$voterIndex]['edadMin']){
             $temp['edadMin'] = $clase['edadMin'];
         }
-        if(isset($clase['edadMax']) && $clase['edadMax'] < $this->clasificacionTarifas[$voterIndex]['edadMax'] ?? 120){
+
+        if(!isset($this->clasificacionTarifas[$voterIndex]['edadMax'])){
+            $this->clasificacionTarifas[$voterIndex]['edadMax'] = 120;
+        }
+        if(isset($clase['edadMax']) && $clase['edadMax'] < $this->clasificacionTarifas[$voterIndex]['edadMax']){
             $temp['edadMax'] = $clase['edadMax'];
         }
         //cambio de generico a nacionalidad
@@ -691,20 +699,37 @@ class Resumen implements ContainerAwareInterface
 
             $voter[$keyTarifa] = 0;
 
+            if(!isset($tarifaClasificada['edadMin'])){
+                $tarifaClasificada['edadMin'] = 0;
+            }
+
+            if(!isset($tarifaClasificada['edadMax'])){
+                $tarifaClasificada['edadMax'] = 120;
+            }
+
+            if(!isset($clase['edadMin'])){
+                $clase['edadMin'] = 0;
+            }
+
+            if(!isset($clase['edadMax'])){
+                $clase['edadMax'] = 120;
+            }
+
+
             if(($tarifaClasificada['cantidadRestante'] > 0) &&
                 (
                     $clase['tipoPaxId'] == $tarifaClasificada['tipoPaxId'] ||
                     $clase['tipoPaxId'] == 0 ||
                     $tarifaClasificada['tipoPaxId'] == 0
                 ) &&
-                $clase['edadMin'] ?? 0 < $tarifaClasificada['edadMax'] ?? 120 &&
-                $clase['edadMax'] ?? 120 > $tarifaClasificada['edadMin'] ?? 0
+                $clase['edadMin'] < $tarifaClasificada['edadMax'] &&
+                $clase['edadMax'] > $tarifaClasificada['edadMin']
 
             ){
-                if($clase['edadMin'] ?? 0 >= $tarifaClasificada['edadMin'] ?? 0){
+                if($clase['edadMin'] >= $tarifaClasificada['edadMin']){
                     $voter[$keyTarifa] += 2;
                 }
-                if($clase['edadMax'] ?? 120 <= $tarifaClasificada['edadMin'] ?? 120){
+                if($clase['edadMax'] <= $tarifaClasificada['edadMin']){
                     $voter[$keyTarifa] += 2;
                 }
 
