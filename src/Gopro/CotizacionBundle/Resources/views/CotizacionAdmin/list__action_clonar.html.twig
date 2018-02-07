@@ -1,0 +1,8 @@
+{% if admin.isGranted('EDIT', object) and admin.hasRoute('clonar') %}
+    <a href="{{ admin.generateObjectUrl('clonar', object) }}"
+       class="btn btn-sm btn-warning"
+       title="clonar">
+        Clonar
+    </a>
+{% endif %}
+

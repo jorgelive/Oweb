@@ -93,6 +93,7 @@ class Resumen implements ContainerAwareInterface
         $datosCotizacion['cotizacion']['tipocambioventa'] = $tipoCambio->getVenta();
         $datosCotizacion['cotizacion']['comision'] = $cotizacion->getComision();
         $datosCotizacion['cotizacion']['nombre'] = $cotizacion->getNombre();
+        $datosCotizacion['cotizacion']['titulo'] = $cotizacion->getTitulo();
         $datosCotizacion['cotizacion']['numeropasajeros'] = $cotizacion->getNumeropasajeros();
         $datosCotizacion['cotizacion']['estadocotizacion'] = $cotizacion->getEstadocotizacion()->getNombre();
 

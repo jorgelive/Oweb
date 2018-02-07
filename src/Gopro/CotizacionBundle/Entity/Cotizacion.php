@@ -36,6 +36,13 @@ class Cotizacion implements TranslatableInterface
     private $nombre;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="titulo", type="string", length=255)
+     */
+    private $titulo;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="numeropasajeros", type="integer")
@@ -108,6 +115,22 @@ class Cotizacion implements TranslatableInterface
         $this->cotservicios = new ArrayCollection();
         $this->cotnotas = new ArrayCollection();
     }
+
+    public function __clone() {
+        if ($this->id) {
+            $this->id = null;
+            $this->setCreado(null);
+            $this->setModificado(null);
+            $newCotservicios = new ArrayCollection();
+            foreach ($this->cotservicios as $cotservicio) {
+                $newCotservicio = clone $cotservicio;
+                $newCotservicio->setCotizacion($this);
+                $newCotservicios->add($newCotservicio);
+            }
+            $this->cotservicios = $newCotservicios;
+        }
+    }
+
 
     /**
      * @return string
@@ -393,5 +416,29 @@ class Cotizacion implements TranslatableInterface
     public function getCotnotas()
     {
         return $this->cotnotas;
+    }
+
+    /**
+     * Set titulo.
+     *
+     * @param string|null $titulo
+     *
+     * @return Cotizacion
+     */
+    public function setTitulo($titulo = null)
+    {
+        $this->titulo = $titulo;
+    
+        return $this;
+    }
+
+    /**
+     * Get titulo.
+     *
+     * @return string|null
+     */
+    public function getTitulo()
+    {
+        return $this->titulo;
     }
 }

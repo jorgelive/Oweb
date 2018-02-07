@@ -98,6 +98,7 @@ class Servicio
     public function __construct() {
         $this->serviciofiles = new ArrayCollection();
         $this->serviciocontables = new ArrayCollection();
+        $this->serviciooperativos = new ArrayCollection();
     }
 
     /**

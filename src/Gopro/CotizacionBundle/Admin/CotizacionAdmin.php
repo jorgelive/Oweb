@@ -36,14 +36,17 @@ class CotizacionAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
+            ->add('file')
             ->add('nombre')
+            ->add('titulo', null, [
+                'label' => 'Título'
+            ])
             ->add('numeropasajeros', null, [
                 'label' => 'Cantidad de pasajeros'
             ])
             ->add('comision', null, [
                 'label' => 'Comisión'
             ])
-            ->add('file')
             ->add('estadocotizacion', null, [
                 'label' => 'Estado'
             ])
@@ -63,14 +66,17 @@ class CotizacionAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
+            ->add('file')
             ->add('nombre')
+            ->add('titulo', null, [
+                'label' => 'Título'
+            ])
             ->add('numeropasajeros', null, [
                 'label' => 'Num Pax'
             ])
             ->add('comision', null, [
                 'label' => 'Comisión'
             ])
-            ->add('file')
             ->add('estadocotizacion', null, [
                 'label' => 'Estado'
             ])
@@ -93,6 +99,9 @@ class CotizacionAdmin extends AbstractAdmin
                     'delete' => [],
                     'resumen' => [
                         'template' => 'GoproCotizacionBundle:CotizacionAdmin:list__action_resumen.html.twig'
+                    ],
+                    'clonar' => [
+                        'template' => 'GoproCotizacionBundle:CotizacionAdmin:list__action_clonar.html.twig'
                     ]
                 ]
             ])
@@ -110,6 +119,9 @@ class CotizacionAdmin extends AbstractAdmin
         }
         $formMapper
             ->add('nombre')
+            ->add('titulo', null, [
+                'label' => 'Título'
+            ])
             ->add('numeropasajeros', null, [
                 'label' => 'Num Pax'
             ])
@@ -148,14 +160,17 @@ class CotizacionAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
+            ->add('file')
             ->add('nombre')
+            ->add('titulo', null, [
+                'label' => 'Título'
+            ])
             ->add('numeropasajeros', null, [
                 'label' => 'Cantidad de pasajeros'
             ])
             ->add('comision', null, [
                 'label' => 'Comisión'
             ])
-            ->add('file')
             ->add('estadocotizacion', null, [
                 'label' => 'Estado'
             ])
@@ -172,5 +187,6 @@ class CotizacionAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->add('resumen', $this->getRouterIdParameter() . '/resumen');
+        $collection->add('clonar', $this->getRouterIdParameter() . '/clonar');
     }
 }

@@ -92,6 +92,21 @@ class Cotcomponente
         $this->cottarifas = new ArrayCollection();
     }
 
+    public function __clone() {
+        if ($this->id) {
+            $this->id = null;
+            $this->setCreado(null);
+            $this->setModificado(null);
+            $newCottarifas = new ArrayCollection();
+            foreach ($this->cottarifas as $cottarifa) {
+                $newCottarifa = clone $cottarifa;
+                $newCottarifa->setCotcomponente($this);
+                $newCottarifas->add($newCottarifa);
+            }
+            $this->cottarifas = $newCottarifas;
+        }
+    }
+
     /**
      * @return string
      */
