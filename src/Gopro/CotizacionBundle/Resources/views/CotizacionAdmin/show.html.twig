@@ -51,7 +51,7 @@ file that was distributed with this source code.
                     </table>
                 </div>
             </div>
-            {% if cotizacion.archivos > 0 %}
+            {% if cotizacion.archivos is defined and cotitacion.archivos|length > 0 %}
                 <div class="box box-primary">
                     <div class="box-header">
                         <h5 class="box-title">

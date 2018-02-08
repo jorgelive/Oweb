@@ -157,7 +157,23 @@ class Tarifa implements TranslatableInterface
      */
     public function __toString()
     {
-        return $this->getNombre() ?? sprintf("Id: %s.", $this->getId()) ?? '';
+        $vars = [];
+        $varchain = '';
+        if(!empty($this->edadmin)){
+           $vars[] = '>=' . $this->edadmin;
+        }
+        if(!empty($this->edadmax)){
+            $vars[] = '<=' . $this->edadmax;
+        }
+        if(!empty($this->getTipopax())
+            && !empty($this->getTipopax()->getId())
+        ){
+            $vars[] = '(' . strtoupper(substr($this->getTipopax()->getNombre(), 0,2) . ')');
+        }
+        if(count($vars) > 0){
+            $varchain = ', ' . implode(' ', $vars);
+        }
+        return sprintf('%s%s', $this->getNombre(), $varchain) ?? sprintf("Id: %s.", $this->getId()) ?? '';
     }
 
 

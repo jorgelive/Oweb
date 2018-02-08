@@ -317,6 +317,9 @@ class Resumen implements ContainerAwareInterface
 
                             $this->obtenerTarifasComponente($tempArrayComponente['tarifas'], $datosCotizacion['cotizacion']['numeropasajeros']);
 
+                            if(!empty($this->mensaje)){
+                                return false;
+                            }
                             $datosTabs['agenda']['componentes'][] = $tempArrayComponente;
                             unset($tempArrayComponente);
 
@@ -600,17 +603,22 @@ class Resumen implements ContainerAwareInterface
 
         endforeach;
 
-        if($ejecucion < 10 && count($claseTarifas) > 0){
+        if($ejecucion <= 10 && count($claseTarifas) > 0){
             $this->procesarTarifa($claseTarifas, $ejecucion, $cantidadTotalPasajeros);
         }
 
         //si despues del proceso hay tarifas muestro error
-        if(count($claseTarifas) > 0){
-            // todo revisar esto
-            //var_dump(sprintf('Hay tarifas que no pudieron ser clasificadas despues de %d ejecuciones, revise: %s.', $ejecucion, reset($claseTarifas)['nombre']));
-            //$this->addFlash('sonata_flash_error', sprintf('Hay tarifas que no pudieron ser clasificadas despues de %d ejecuciones, revise: %s.', $ejecucion, reset($claseTarifas)['nombre']));
-            //return new RedirectResponse($this->admin->generateUrl('list'));
+        if(count($claseTarifas) > 0 && $ejecucion == 10){
+            /*
+            var_dump($voterIndex);
+            var_dump($claseTarifas);
+            var_dump($this->clasificacionTarifas);
+            die;
+            */
+            $this->mensaje = sprintf('Hay tarifas que no pudieron ser clasificadas despues de %d ejecuciones, revise: %s.', $ejecucion, reset($claseTarifas)['nombre']);
         }
+
+
     }
 
     private function modificarClasificacion(&$clase, $voterIndex, $forzarNuevo = false){
@@ -621,24 +629,30 @@ class Resumen implements ContainerAwareInterface
             $temp['rangoEdad'] = $clase['rangoEdadNombre'];
         }
 
-        if(!isset($this->clasificacionTarifas[$voterIndex]['edadMin'])){
-            $this->clasificacionTarifas[$voterIndex]['edadMin'] = 0;
+        $edadMaxima = 120;
+        $edadMinima = 0;
+
+        if(isset($this->clasificacionTarifas[$voterIndex]['edadMin'])){
+            $edadMinima = $this->clasificacionTarifas[$voterIndex]['edadMin'];
         }
-        if(isset($clase['edadMin']) && $clase['edadMin'] > $this->clasificacionTarifas[$voterIndex]['edadMin']){
+        if(isset($this->clasificacionTarifas[$voterIndex]['edadMax'])){
+            $edadMaxima = $this->clasificacionTarifas[$voterIndex]['edadMax'];
+        }
+
+
+        if(isset($clase['edadMin']) && $clase['edadMin'] > $edadMinima){
             $temp['edadMin'] = $clase['edadMin'];
         }
 
-        if(!isset($this->clasificacionTarifas[$voterIndex]['edadMax'])){
-            $this->clasificacionTarifas[$voterIndex]['edadMax'] = 120;
-        }
-        if(isset($clase['edadMax']) && $clase['edadMax'] < $this->clasificacionTarifas[$voterIndex]['edadMax']){
+        if(isset($clase['edadMax']) && $clase['edadMax'] < $edadMaxima){
             $temp['edadMax'] = $clase['edadMax'];
         }
         //cambio de generico a nacionalidad
         if($clase['tipoPaxId'] != 0){
             $temp['tipoPaxId'] = $clase['tipoPaxId'];
+            $temp['tipoPaxNombre'] = $clase['tipoPaxNombre'];
         }
-        $temp['tipoPaxNombre'] = $clase['tipoPaxNombre'];
+
         $temp['tipo'] = $clase['tipo'];
         $temp['nombre'] = $clase['nombre'];
         $temp['titulo'] = $clase['titulo'];
@@ -656,14 +670,35 @@ class Resumen implements ContainerAwareInterface
 
             $this->clasificacionTarifas[] = $temp;
 
+            //todo fer si sera necesario
+            /*
+            if(isset($clase['edadMin']) && $clase['edadMin'] < $edadMaxima){
+                $this->clasificacionTarifas[$voterIndex]['edadMax'] = $clase['edadMin'] - 1;
+            }*/
+
             $this->clasificacionTarifas[$voterIndex]['cantidad'] = $this->clasificacionTarifas[$voterIndex]['cantidad'] - $clase['cantidad'];
             $this->clasificacionTarifas[$voterIndex]['cantidadRestante'] = $this->clasificacionTarifas[$voterIndex]['cantidadRestante'] - $clase['cantidad'];
+
+
             if($forzarNuevo === true){
                 $this->clasificacionTarifas[$voterIndex]['nombrePersistente'] = $this->clasificacionTarifas[$voterIndex]['nombre'];
                 $this->clasificacionTarifas[$voterIndex]['tituloPeristente'] = $this->clasificacionTarifas[$voterIndex]['titulo'];
             }
         }else{
-            //todo: sera necesario??
+            //solo modifico tipo
+            if(isset($clase['edadMin']) && $clase['edadMin'] > $edadMinima){
+                $this->clasificacionTarifas[$voterIndex]['edadMin'] = $clase['edadMin'];
+            }
+
+            if(isset($clase['edadMax']) && $clase['edadMax'] < $edadMaxima){
+                $this->clasificacionTarifas[$voterIndex]['edadMax'] = $clase['edadMax'];
+            }
+
+            if($clase['tipoPaxId'] != 0){
+                $this->clasificacionTarifas[$voterIndex]['tipoPaxId'] = $clase['tipoPaxId'];
+                $this->clasificacionTarifas[$voterIndex]['tipoPaxNombre'] = $clase['tipoPaxNombre'];
+            }
+
         }
     }
 
@@ -715,31 +750,65 @@ class Resumen implements ContainerAwareInterface
                 $clase['edadMax'] = 120;
             }
 
+            /*
+            var_dump($clase['tipoPaxId']);
+            var_dump($tarifaClasificada['tipoPaxId']);
+            var_dump($clase['edadMin']);
+            var_dump($tarifaClasificada['edadMax']);
+            var_dump($clase['edadMax']);
+            var_dump($tarifaClasificada['edadMin']);
+            */
 
             if(($tarifaClasificada['cantidadRestante'] > 0) &&
                 (
                     $clase['tipoPaxId'] == $tarifaClasificada['tipoPaxId'] ||
                     $clase['tipoPaxId'] == 0 ||
                     $tarifaClasificada['tipoPaxId'] == 0
-                ) &&
-                $clase['edadMin'] < $tarifaClasificada['edadMax'] &&
-                $clase['edadMax'] > $tarifaClasificada['edadMin']
+                )
+                && $clase['edadMin'] < $tarifaClasificada['edadMax']
+                && $clase['edadMax'] > $tarifaClasificada['edadMin']
 
             ){
-                if($clase['edadMin'] >= $tarifaClasificada['edadMin']){
+
+                $voter[$keyTarifa] += 0.1;
+
+                if($clase['edadMin'] == $tarifaClasificada['edadMin']){
+                    $voter[$keyTarifa] += 1.5;
+                }else{
+                    $voter[$keyTarifa] = 1 / abs($clase['edadMin'] - $tarifaClasificada['edadMin']);
+                }
+
+                if($clase['edadMax'] == $tarifaClasificada['edadMax']){
+                    $voter[$keyTarifa] += 1.5;
+                }else{
+                    $voter[$keyTarifa] = 1 / abs($clase['edadMax'] - $tarifaClasificada['edadMax']);
+                }
+
+                if($tarifaClasificada['cantidad'] == $clase['cantidad']){
+                    $voter[$keyTarifa] += 0.5;
+                }
+
+                /*if($clase['edadMin'] == $tarifaClasificada['edadMin']){
+                    $voter[$keyTarifa] += 4;
+                }elseif($clase['edadMin'] > $tarifaClasificada['edadMin']){
                     $voter[$keyTarifa] += 2;
                 }
-                if($clase['edadMax'] <= $tarifaClasificada['edadMin']){
+
+                if($clase['edadMax'] == $tarifaClasificada['edadMax']){
+                    $voter[$keyTarifa] +=4;
+                }elseif($clase['edadMax'] <= $tarifaClasificada['edadMax']){
                     $voter[$keyTarifa] += 2;
                 }
 
                 if($tarifaClasificada['cantidad'] == $clase['cantidad']){
                     $voter[$keyTarifa] += 1;
-                }
+                }*/
+
+
             }
 
         endforeach;
-        if(empty($voter) || max($voter) < 1){
+        if(empty($voter) || max($voter) <= 0 ){
             return false;
         }
         return array_search(max($voter), $voter);

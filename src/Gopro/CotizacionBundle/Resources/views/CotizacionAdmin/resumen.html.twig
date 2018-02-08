@@ -140,7 +140,7 @@ file that was distributed with this source code.
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    {%  for tarifaresumen in rango.resumen %}
+                                                    {%  for tarifaresumen in rango.resumen if tarifaresumen.ventasoles > 0 %}
                                                     <tr>
                                                         <td>
                                                             {{ tarifaresumen.tipoTarTitulo }}
