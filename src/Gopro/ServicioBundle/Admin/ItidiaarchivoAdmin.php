@@ -23,6 +23,7 @@ class ItidiaarchivoAdmin extends AbstractAdmin
             ->add('titulo', TranslationFieldFilter::class, [
                 'label' => 'Título'
             ])
+            ->add('prioridad')
         ;
     }
 
@@ -37,6 +38,7 @@ class ItidiaarchivoAdmin extends AbstractAdmin
             ->add('titulo', null, [
                 'label' => 'Título'
             ])
+            ->add('prioridad')
             ->add('_action', null, [
                 'label' => 'Acciones',
                 'actions' => [
@@ -70,6 +72,7 @@ class ItidiaarchivoAdmin extends AbstractAdmin
             ->add('titulo', null, [
                 'label' => 'Título'
             ])
+            ->add('prioridad')
             ->add('archivo', 'file', [
                 'required' => false
             ])
@@ -87,6 +90,7 @@ class ItidiaarchivoAdmin extends AbstractAdmin
             ->add('titulo', null, [
                 'label' => 'Título'
             ])
+            ->add('prioridad')
         ;
     }
 

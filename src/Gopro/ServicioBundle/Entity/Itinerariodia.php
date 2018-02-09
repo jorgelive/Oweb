@@ -88,6 +88,7 @@ class Itinerariodia implements TranslatableInterface
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Gopro\ServicioBundle\Entity\Itidiaarchivo", mappedBy="itinerariodia", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"prioridad" = "ASC"})
      */
     private $itidiaarchivos;
 

@@ -31,6 +31,13 @@ trait ArchivoTrait
     private $extension;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="prioridad", type="integer", nullable=true)
+     */
+    private $prioridad;
+
+    /**
      * @Assert\File(maxSize = "2M")
      */
     private $archivo;
@@ -77,6 +84,28 @@ trait ArchivoTrait
     public function getExtension()
     {
         return $this->extension;
+    }
+
+    /**
+     * Set prioridad.
+     *
+     * @param int|null $prioridad
+     */
+    public function setPrioridad($prioridad = null)
+    {
+        $this->prioridad = $prioridad;
+
+        return $this;
+    }
+
+    /**
+     * Get prioridad.
+     *
+     * @return int|null
+     */
+    public function getPrioridad()
+    {
+        return $this->prioridad;
     }
 
     public function getInModal(){

@@ -64,7 +64,7 @@ file that was distributed with this source code.
                                 {% for archivo in cotizacion.archivos %}
                                     <div class="col-xs-4 col-md-2">
                                         <div class="thumbnail">
-                                            <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}"{% if archivo.inmodal == true %} data-toggle="lightbox"{% else %} target="_blank" {% endif %}>
+                                            <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}"{% if archivo.inmodal == true %} data-toggle="lightbox" data-gallery="{{ item.titulo }}"{% else %} target="_blank" {% endif %}>
                                                 <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.thumbpath|raw }}" alt="{{ archivo.nombre }}" style="width:100%">
                                                 <div class="caption">
                                                     <p>{{ archivo.nombre }}</p>

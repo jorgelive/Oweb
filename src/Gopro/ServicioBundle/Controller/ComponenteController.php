@@ -37,7 +37,7 @@ class ComponenteController extends Controller
         }
 
         if(!empty($request->get('q'))){
-            $componentes->andWhere('s.nombre like :cadena')
+            $componentes->andWhere('c.nombre like :cadena')
                 ->setParameter('cadena', '%' . $request->get('q') . '%');
         }
 

@@ -22,6 +22,7 @@ class FiledocumentoAdmin extends AbstractAdmin
             ->add('tipofiledocumento', null, [
                 'label' => 'Tipo de documento'
             ])
+            ->add('prioridad')
         ;
     }
 
@@ -36,6 +37,7 @@ class FiledocumentoAdmin extends AbstractAdmin
             ->add('tipofiledocumento', null, [
                 'label' => 'Tipo de documento'
             ])
+            ->add('prioridad')
             ->add('_action', null, [
                 'label' => 'Acciones',
                 'actions' => [
@@ -63,6 +65,7 @@ class FiledocumentoAdmin extends AbstractAdmin
             ->add('tipofiledocumento', null, [
                 'label' => 'Tipo de documento'
             ])
+            ->add('prioridad')
             ->add('archivo', 'file', [
                 'required' => false
             ])
@@ -80,6 +83,7 @@ class FiledocumentoAdmin extends AbstractAdmin
             ->add('tipofiledocumento', null, [
                 'label' => 'Tipo de documento'
             ])
+            ->add('prioridad')
         ;
     }
 

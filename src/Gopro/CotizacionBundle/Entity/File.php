@@ -58,6 +58,7 @@ class File
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Gopro\CotizacionBundle\Entity\Filedocumento", mappedBy="file", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"prioridad" = "ASC"})
      */
     private $filedocumentos;
 

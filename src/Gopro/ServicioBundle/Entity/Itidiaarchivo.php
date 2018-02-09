@@ -178,4 +178,5 @@ class Itidiaarchivo implements TranslatableInterface
     {
         return $this->titulo;
     }
+
 }
