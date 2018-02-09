@@ -154,8 +154,8 @@ trait ArchivoTrait
 
         if(in_array($this->getArchivo()->getMimeType(), $imageTypes )){
             //debe ir antes ta que la imagen sera movida
-            $this->generarThumb($this->getArchivo()->getPathname(), $this->getInternalFullThumbDir(), 200, 200);
-            $this->generarThumb($this->getArchivo()->getPathname(), $this->getInternalFullDir(), 800, 800);
+            $this->generarThumb($this->getArchivo(), $this->getInternalFullThumbDir(), 200, 200);
+            $this->generarThumb($this->getArchivo(), $this->getInternalFullDir(), 800, 800);
             unlink($this->getArchivo()->getPathname());
         }else{
             $this->getArchivo()->move($this->getInternalFullDir(), $this->id . '.' . $this->extension);
@@ -167,10 +167,17 @@ trait ArchivoTrait
 
     public function generarThumb($image, $path, $ancho, $alto){
         // Create Imagick object
-        $im = new \Imagick();
-        $im->readImage($image); //Read the file
 
-        $im->resizeImage( $ancho, $alto, \Imagick::FILTER_LANCZOS, 1, TRUE);
+        $im = new \Imagick();
+        $im->readImage($image->getPathname()); //Read the file
+        $im->setCompressionQuality(95);
+
+        if($image->getMimeType() == 'image/jpeg') {
+            $im->setInterlaceScheme(\Imagick::INTERLACE_PNG);
+        }elseif($image->getMimeType() == 'image/png'){
+            $im->setInterlaceScheme(\Imagick::INTERLACE_JPEG);
+        }
+        $im->resizeImage($ancho, $alto,\Imagick::FILTER_LANCZOS, 1, TRUE);
 
         if(!is_dir($path)){
             mkdir($path, 0755, true);
