@@ -154,26 +154,29 @@ trait ArchivoTrait
 
         if(in_array($this->getArchivo()->getMimeType(), $imageTypes )){
             //debe ir antes ta que la imagen sera movida
-            $this->generarThumb($this->getArchivo()->getPathname());
+            $this->generarThumb($this->getArchivo()->getPathname(), $this->getInternalFullThumbDir(), 200, 200);
+            $this->generarThumb($this->getArchivo()->getPathname(), $this->getInternalFullDir(), 800, 800);
+            unlink($this->getArchivo()->getPathname());
+        }else{
+            $this->getArchivo()->move($this->getInternalFullDir(), $this->id . '.' . $this->extension);
         }
 
-        $this->getArchivo()->move($this->getInternalFullDir(), $this->id . '.' . $this->extension);
         $this->setArchivo(null);
     }
 
 
-    public function generarThumb($image){
+    public function generarThumb($image, $path, $ancho, $alto){
         // Create Imagick object
         $im = new \Imagick();
         $im->readImage($image); //Read the file
 
-        $im->resizeImage( 200 , 200 , \Imagick::FILTER_LANCZOS, 1, TRUE);
+        $im->resizeImage( $ancho, $alto, \Imagick::FILTER_LANCZOS, 1, TRUE);
 
-        if(!is_dir($this->getInternalFullThumbDir())){
-            mkdir($this->getInternalFullThumbDir(), 0755, true);
+        if(!is_dir($path)){
+            mkdir($path, 0755, true);
         }
         //return $im->writeImages('C:\wamp\temp', true);
-        return $im->writeImages($this->getInternalFullThumbPath(), true);
+        return $im->writeImages($path . '/' . $this->id . '.' . $this->extension, true);
 
     }
 
