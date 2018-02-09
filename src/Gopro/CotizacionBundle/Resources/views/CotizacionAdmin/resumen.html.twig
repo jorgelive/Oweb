@@ -131,11 +131,13 @@ file that was distributed with this source code.
                                                         <th>
                                                             Tipo
                                                         </th>
+                                                        {% if cotizacion.file.paisid == 117 %}
                                                         <th class="text-right">
-                                                            Tarifa soles
+                                                            Tarifa en soles por persona
                                                         </th>
+                                                        {% endif %}
                                                         <th class="text-right">
-                                                            Tarifa dolares
+                                                            Tarifa en dolares por persona
                                                         </th>
                                                     </tr>
                                                     </thead>
@@ -145,9 +147,11 @@ file that was distributed with this source code.
                                                         <td>
                                                             {{ tarifaresumen.tipoTarTitulo }}
                                                         </td>
+                                                        {% if cotizacion.file.paisid == 117 %}
                                                         <td class="text-right">
                                                             {{ tarifaresumen.ventasoles }}
                                                         </td>
+                                                        {% endif %}
                                                         <td class="text-right">
                                                             {{ tarifaresumen.ventadolares }}
                                                         </td>

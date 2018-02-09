@@ -21,7 +21,10 @@ class ItinerariodiaAdmin extends AbstractAdmin
             ->add('id')
             ->add('itinerario')
             ->add('dia')
-            ->add('titulo', TranslationFieldFilter::class)
+            ->add('titulo', TranslationFieldFilter::class, [
+                'label' => 'Título'
+            ])
+            ->add('importante')
             ->add('contenido', TranslationFieldFilter::class)
         ;
     }
@@ -35,7 +38,10 @@ class ItinerariodiaAdmin extends AbstractAdmin
             ->add('id')
             ->add('itinerario')
             ->add('dia')
-            ->add('titulo')
+            ->add('titulo', null, [
+                'label' => 'Título'
+            ])
+            ->add('importante')
             ->add('contenido')
             ->add('_action', null, [
                 'label' => 'Acciones',
@@ -60,7 +66,10 @@ class ItinerariodiaAdmin extends AbstractAdmin
         }
         $formMapper
             ->add('dia')
-            ->add('titulo')
+            ->add('titulo', null, [
+                'label' => 'Título'
+            ])
+            ->add('importante')
             ->add('contenido', null, [
                 'required' => false,
                 'attr' => ['class' => 'ckeditor']
@@ -84,7 +93,10 @@ class ItinerariodiaAdmin extends AbstractAdmin
             ->add('id')
             ->add('itinerario')
             ->add('dia')
-            ->add('titulo')
+            ->add('titulo', null, [
+                'label' => 'Título'
+            ])
+            ->add('importante')
             ->add('contenido')
         ;
     }

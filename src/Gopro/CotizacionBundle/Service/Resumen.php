@@ -71,7 +71,8 @@ class Resumen implements ContainerAwareInterface
 
 
         $datosCotizacion['file']['nombre'] = $cotizacion->getFile()->getNombre();
-        $datosCotizacion['file']['pais'] = $cotizacion->getFile()->getPais()->getNombre();
+        $datosCotizacion['file']['paisid'] = $cotizacion->getFile()->getPais()->getId();
+        $datosCotizacion['file']['paisnombre'] = $cotizacion->getFile()->getPais()->getNombre();
         $datosCotizacion['file']['idioma'] = $cotizacion->getFile()->getIdioma()->getNombre();
 
         if($cotizacion->getFile()->getFiledocumentos()->count() > 0) {
@@ -87,7 +88,6 @@ class Resumen implements ContainerAwareInterface
                 $datosCotizacion['archivos'][] = $archivosAux;
             endforeach;
         }
-
 
         $datosCotizacion['cotizacion']['tipocambiocompra'] = $tipoCambio->getCompra();
         $datosCotizacion['cotizacion']['tipocambioventa'] = $tipoCambio->getVenta();
@@ -107,16 +107,15 @@ class Resumen implements ContainerAwareInterface
                     $datosTabs['itinerario']['notas'][] = $auxNotas;
                     unset($auxNotas);
                 endforeach;
-
-
             }
             foreach ($cotizacion->getCotservicios() as $servicio):
                 $itinerarioFechaAux = [];
                 if($servicio->getItinerario()->getItinerariodias()->count() > 0){
                     foreach ($servicio->getItinerario()->getItinerariodias() as $dia):
 
-                        $fecha = clone($servicio->getFechahorainicio())->add(new \DateInterval('P' . ($dia->getDia() - 1) . 'D'));
-                        $itinerarioFechaAux[$fecha->format('ymd')] = $dia->getTitulo();
+                        $fecha = clone($servicio->getFechahorainicio());
+                        $fecha->add(new \DateInterval('P' . ($dia->getDia() - 1) . 'D'));
+
                         $datosTabs['itinerario']['itinerarios'][$fecha->format('ymd')]['fecha'] = $this->getFormatedDate(strtotime($fecha->format('Y-m-d')));
                         $archivosTempArray = [];
                         if($dia->getItidiaarchivos()->count() > 0){
@@ -131,6 +130,11 @@ class Resumen implements ContainerAwareInterface
                         }
                         $datosTabs['itinerario']['itinerarios'][$fecha->format('ymd')]['fechaitems'][] = ['titulo' => $dia->getTitulo(), 'descripcion' => $dia->getContenido(), 'archivos' => $archivosTempArray];
                         unset($archivosTempArray);
+                        //para uso en agenda e incluye.
+                        if($dia->getImportante() === true){
+                            $itinerarioFechaAux[$fecha->format('ymd')] = $dia->getTitulo();
+                        }
+
                     endforeach;
                 }
 
@@ -182,7 +186,6 @@ class Resumen implements ContainerAwareInterface
                                             $tempArrayIncluye['tipoPaxId'] = $tarifa->getTarifa()->getTipopax()->getId();
                                             $tempArrayIncluye['tipoPaxNombre'] = $tarifa->getTarifa()->getTipopax()->getNombre();
                                         }
-
                                     }
 
                                     $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['titulo'] = $tarifa->getTipotarifa()->getTitulo();
@@ -192,10 +195,19 @@ class Resumen implements ContainerAwareInterface
                                         $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['fecha'] = $componente->getFechahorainicio()->format('Y-m-d');
                                     }
 
-
                                     if(!empty($itinerarioFechaAux)){
-                                        if(!is_null($componente->getFechahorainicio()) && isset($itinerarioFechaAux[$componente->getFechahorainicio()->format('ymd')])){
+
+                                        $diaAnterior = clone ($componente->getFechahorainicio());
+                                        $diaAnterior->sub(new \DateInterval('P1D')) ;
+                                        $diaPosterior = clone ($componente->getFechahorainicio());
+                                        $diaPosterior->add(new \DateInterval('P1D')) ;
+
+                                        if(isset($itinerarioFechaAux[$componente->getFechahorainicio()->format('ymd')])){
                                             $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['tituloItinerario'] = $itinerarioFechaAux[$componente->getFechahorainicio()->format('ymd')];
+                                        }elseif((int)$componente->getFechahorainicio()->format('H') > 12 && isset($itinerarioFechaAux[$diaPosterior->format('ymd')])){
+                                            $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['tituloItinerario'] = $itinerarioFechaAux[$diaPosterior->format('ymd')];
+                                        }elseif((int)$componente->getFechahorainicio()->format('H') <= 12 && isset($itinerarioFechaAux[$diaAnterior->format('ymd')])){
+                                            $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['tituloItinerario'] = $itinerarioFechaAux[$diaAnterior->format('ymd')];
                                         }else{
                                             $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['tituloItinerario'] = reset($itinerarioFechaAux);
                                         }
@@ -205,7 +217,6 @@ class Resumen implements ContainerAwareInterface
                                         $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['tarifas'][] = $tempArrayIncluye;
                                         unset($tempArrayIncluye);
                                     }
-
                                 }
 
                                 /////Tarifas////////
@@ -670,7 +681,7 @@ class Resumen implements ContainerAwareInterface
 
             $this->clasificacionTarifas[] = $temp;
 
-            //todo fer si sera necesario
+            //todo ver si sera necesario
             /*
             if(isset($clase['edadMin']) && $clase['edadMin'] < $edadMaxima){
                 $this->clasificacionTarifas[$voterIndex]['edadMax'] = $clase['edadMin'] - 1;
@@ -803,8 +814,6 @@ class Resumen implements ContainerAwareInterface
                 if($tarifaClasificada['cantidad'] == $clase['cantidad']){
                     $voter[$keyTarifa] += 1;
                 }*/
-
-
             }
 
         endforeach;

@@ -32,6 +32,12 @@ class TarifaAdmin extends AbstractAdmin
                 'label' => 'Fin'
             ])
             ->add('prorrateado')
+            ->add('tipopax', null, [
+                'label' => 'Tipo de paaajero'
+            ])
+            ->add('tipotarifa', null, [
+                'label' => 'Típo de tarifa'
+            ])
             ->add('capacidadmin', null, [
                 'label' => 'Cantidad min'
             ])
@@ -44,16 +50,9 @@ class TarifaAdmin extends AbstractAdmin
             ->add('edadmax', null, [
                 'label' => 'Edad max'
             ])
-            ->add('tipotarifa', null, [
-                'label' => 'Típo de tarifa'
-            ])
             ->add('categoriatour', null, [
                 'label' => 'Categoria de tour'
             ])
-            ->add('tipopax', null, [
-                'label' => 'Tipo de paaajero'
-            ])
-
         ;
     }
 
@@ -78,6 +77,12 @@ class TarifaAdmin extends AbstractAdmin
                 'label' => 'Fin'
             ])
             ->add('prorrateado')
+            ->add('tipopax', null, [
+                'label' => 'Tipo de pasajero'
+            ])
+            ->add('tipotarifa', null, [
+                'label' => 'Tipo de tarifa'
+            ])
             ->add('capacidadmin', null, [
                 'label' => 'Cantidad min'
             ])
@@ -90,14 +95,8 @@ class TarifaAdmin extends AbstractAdmin
             ->add('edadmax', null, [
                 'label' => 'Edad max'
             ])
-            ->add('tipotarifa', null, [
-                'label' => 'Tipo de tarifa'
-            ])
             ->add('categoriatour', null, [
                 'label' => 'Categoria de tour'
-            ])
-            ->add('tipopax', null, [
-                'label' => 'Tipo de pasajero'
             ])
             ->add('_action', null, [
                 'label' => 'Acciones',
@@ -141,6 +140,12 @@ class TarifaAdmin extends AbstractAdmin
                 'format'=> 'yyyy/MM/dd'
             ])
             ->add('prorrateado')
+            ->add('tipopax', null, [
+                'label' => 'Tipo de pasajero'
+            ])
+            ->add('tipotarifa', null, [
+                'label' => 'Tipo de tarifa'
+            ])
             ->add('capacidadmin', null, [
                 'label' => 'Cantidad min'
             ])
@@ -153,14 +158,8 @@ class TarifaAdmin extends AbstractAdmin
             ->add('edadmax', null, [
                 'label' => 'Edad max'
             ])
-            ->add('tipotarifa', null, [
-                'label' => 'Tipo de tarifa'
-            ])
             ->add('categoriatour', null, [
                 'label' => 'Categoria de tour'
-            ])
-            ->add('tipopax', null, [
-                'label' => 'Tipo de pasajero'
             ])
         ;
     }
@@ -186,6 +185,12 @@ class TarifaAdmin extends AbstractAdmin
                 'label' => 'Fin'
             ])
             ->add('prorrateado')
+            ->add('tipopax', null, [
+                'label' => 'Típo de pasajero'
+            ])
+            ->add('tipotarifa', null, [
+                'label' => 'Tipo de tarifa'
+            ])
             ->add('capacidadmin', null, [
                 'label' => 'Cantidad min'
             ])
@@ -198,14 +203,9 @@ class TarifaAdmin extends AbstractAdmin
             ->add('edadmax', null, [
                 'label' => 'Edad max'
             ])
-            ->add('tipotarifa', null, [
-                'label' => 'Tipo de tarifa'
-            ])
+
             ->add('categoriatour', null, [
                 'label' => 'Categoria de tour'
-            ])
-            ->add('tipopax', null, [
-                'label' => 'Típo de pasajero'
             ])
         ;
     }

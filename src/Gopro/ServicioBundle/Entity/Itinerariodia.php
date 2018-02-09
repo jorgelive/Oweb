@@ -54,6 +54,13 @@ class Itinerariodia implements TranslatableInterface
     private $titulo;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="importante", type="boolean", options={"default": 1})
+     */
+    private $importante;
+
+    /**
      * @var string
      *
      * @Gedmo\Translatable
@@ -293,5 +300,29 @@ class Itinerariodia implements TranslatableInterface
     public function getItidiaarchivos()
     {
         return $this->itidiaarchivos;
+    }
+
+    /**
+     * Set importante.
+     *
+     * @param bool $importante
+     *
+     * @return Itinerariodia
+     */
+    public function setImportante($importante)
+    {
+        $this->importante = $importante;
+    
+        return $this;
+    }
+
+    /**
+     * Get importante.
+     *
+     * @return bool
+     */
+    public function getImportante()
+    {
+        return $this->importante;
     }
 }
