@@ -60,20 +60,27 @@ file that was distributed with this source code.
                     </div>
                     <div class="box-body no-padding">
                         <div class="container-fluid">
-                            <div class="row">
-                                {% for archivo in cotizacion.archivos %}
-                                    <div class="col-xs-4 col-md-2">
-                                        <div class="thumbnail">
-                                            <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}"{% if archivo.inmodal == true %} data-toggle="lightbox"{% else %} target="_blank" {% endif %}>
-                                                <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.thumbpath|raw }}" alt="{{ archivo.nombre }}" style="width:100%">
-                                                <div class="caption">
-                                                    <p>{{ archivo.nombre }}</p>
-                                                </div>
-                                            </a>
-                                        </div>
+                            {% for archivo in cotizacion.archivos %}
+                                {% if loop.index0 % 4 == 0 %}
+                                    <div class="row">
+                                {% endif %}
+                                {% if loop.index0 % 2 == 0 and loop.index0 % 4 != 0 %}
+                                    <div class="clearfix visible-xs"></div>
+                                {% endif %}
+                                <div class="col-xs-6 col-sm-3">
+                                    <div class="thumbnail">
+                                        <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}"{% if archivo.inmodal == true %} data-toggle="lightbox"{% else %} target="_blank" {% endif %}>
+                                            <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.thumbpath|raw }}" alt="{{ archivo.nombre }}" style="width:100%">
+                                            <div class="caption">
+                                                <p style="overflow-wrap: break-word;" class="small text-center">{{ archivo.nombre }}</p>
+                                            </div>
+                                        </a>
                                     </div>
-                                {% endfor %}
-                            </div>
+                                </div>
+                                {% if loop.index % 4 == 0 or loop.last %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -174,20 +181,27 @@ file that was distributed with this source code.
                                                     <h4>{{ item.titulo }}</h4>
                                                     {{ item.descripcion|raw }}
                                                     <div class="container-fluid">
-                                                        <div class="row">
-                                                            {% for archivo in item.archivos %}
-                                                                <div class="col-xs-4 col-md-2">
-                                                                    <div class="thumbnail">
-                                                                        <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}"{% if archivo.inmodal == true %} data-toggle="lightbox" data-gallery="{{ item.titulo }}"{% else %} target="_blank" {% endif %}>
-                                                                            <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.thumbpath|raw }}" alt="{{ archivo.titulo }}" style="width:100%">
-                                                                            <div class="caption">
-                                                                                <p>{{ archivo.titulo }}</p>
-                                                                            </div>
-                                                                        </a>
-                                                                    </div>
+                                                        {% for archivo in item.archivos %}
+                                                            {% if loop.index0 % 4 == 0 %}
+                                                                <div class="row">
+                                                            {% endif %}
+                                                            {% if loop.index0 % 2 == 0 and loop.index0 % 4 != 0 %}
+                                                                <div class="clearfix visible-xs"></div>
+                                                            {% endif %}
+                                                            <div class="col-xs-6 col-sm-3">
+                                                                <div class="thumbnail">
+                                                                    <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}"{% if archivo.inmodal == true %} data-toggle="lightbox" data-gallery="{{ item.titulo }}"{% else %} target="_blank" {% endif %}>
+                                                                        <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.thumbpath|raw }}" alt="{{ archivo.titulo }}" style="width:100%">
+                                                                        <div class="caption">
+                                                                            <p style="overflow-wrap: break-word;" class="small text-center">{{ archivo.titulo }}</p>
+                                                                        </div>
+                                                                    </a>
                                                                 </div>
-                                                            {% endfor %}
-                                                        </div>
+                                                            </div>
+                                                            {% if loop.index % 4 == 0 or loop.last %}
+                                                                </div>
+                                                            {% endif %}
+                                                        {% endfor %}
                                                     </div>
                                                 {% endfor %}
                                             {% endfor %}
