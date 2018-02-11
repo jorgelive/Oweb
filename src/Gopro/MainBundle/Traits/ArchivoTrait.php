@@ -318,9 +318,13 @@ trait ArchivoTrait
 
     }
 
-
     protected function getWebDir()
     {
         return $this->path;
+    }
+
+    public function refreshModificado()
+    {
+        $this->setModificado(new \DateTime());
     }
 }

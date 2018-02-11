@@ -55,7 +55,6 @@ class Filedocumento
 
     /**
      * @var \DateTime $modificado
-     * @Gedmo\Timestampable(on="update")
      *
      * @ORM\Column(type="datetime")
      */

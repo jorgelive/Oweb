@@ -1,6 +1,6 @@
 <?php
 
-namespace Gopro\ServicioBundle\Entity;
+namespace Gopro\MaestroBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gopro\CotizacionBundle\GoproCotizacionBundle;
@@ -13,20 +13,20 @@ use Gopro\MainBundle\Traits\ArchivoTrait;
 
 
 /**
- * Itidiaarchivo
+ * Medio
  *
- * @ORM\Table(name="ser_itidiaarchivo")
- * @ORM\Entity(repositoryClass="Gopro\ServicioBundle\Repository\ItidiaarchivoRepository")
+ * @ORM\Table(name="mae_medio")
+ * @ORM\Entity(repositoryClass="Gopro\MaestroBundle\Repository\MedioRepository")
  * @ORM\HasLifecycleCallbacks
- * @Gedmo\TranslationEntity(class="Gopro\ServicioBundle\Entity\ItidiaarchivoTranslation")
+ * @Gedmo\TranslationEntity(class="Gopro\MaestroBundle\Entity\MedioTranslation")
  */
-class Itidiaarchivo implements TranslatableInterface
+class Medio implements TranslatableInterface
 {
     use PersonalTranslatableTrait;
 
     use ArchivoTrait;
 
-    private $path = '/carga/goprocotizacion/itidiaarchivo';
+    private $path = '/carga/gopromaestro/medio';
 
     /**
      * @ORM\Id
@@ -42,12 +42,12 @@ class Itidiaarchivo implements TranslatableInterface
     private $titulo;
 
     /**
-     * @var \Gopro\ServicioBundle\Entity\Itinerariodia
+     * @var \Gopro\MaestroBundle\Entity\Clasemedio
      *
-     * @ORM\ManyToOne(targetEntity="Gopro\ServicioBundle\Entity\Itinerariodia", inversedBy="itidiaarchivos")
-     * @ORM\JoinColumn(name="itinerariodia_id", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Clasemedio", inversedBy="medios")
+     * @ORM\JoinColumn(name="clasemedio_id", referencedColumnName="id", nullable=false)
      */
-    protected $itinerariodia;
+    protected $clasemedio;
 
     /**
      * @var \DateTime $creado
@@ -84,27 +84,27 @@ class Itidiaarchivo implements TranslatableInterface
     }
 
     /**
-     * Set itinerariodia
+     * Set clasemedio
      *
-     * @param \Gopro\ServicioBundle\Entity\Itinerariodia $itinerariodia
+     * @param \Gopro\MaestroBundle\Entity\Clasemedio $clasemedio
      *
-     * @return Itidiaarchivo
+     * @return Medio
      */
-    public function setItinerariodia(\Gopro\ServicioBundle\Entity\Itinerariodia $itinerariodia = null)
+    public function setClasemedio(\Gopro\MaestroBundle\Entity\Clasemedio $clasemedio = null)
     {
-        $this->itinerariodia = $itinerariodia;
+        $this->clasemedio = $clasemedio;
 
         return $this;
     }
 
     /**
-     * Get itinerariodia
+     * Get clasemedio
      *
-     * @return \Gopro\ServicioBundle\Entity\Itinerariodia
+     * @return \Gopro\MaestroBundle\Entity\Clasemedio
      */
-    public function getItinerariodia()
+    public function getClasemedio()
     {
-        return $this->itinerariodia;
+        return $this->clasemedio;
     }
 
 
@@ -112,7 +112,7 @@ class Itidiaarchivo implements TranslatableInterface
      * Set creado
      *
      * @param \DateTime $creado
-     * @return Itidiaarchivo
+     * @return Medio
      */
     public function setCreado($creado)
     {
@@ -135,7 +135,7 @@ class Itidiaarchivo implements TranslatableInterface
      * Set modificado
      *
      * @param \DateTime $modificado
-     * @return Itidiaarchivo
+     * @return Medio
      */
     public function setModificado($modificado)
     {
@@ -159,7 +159,7 @@ class Itidiaarchivo implements TranslatableInterface
      *
      * @param string $titulo
      *
-     * @return Itidiaarchivo
+     * @return Medio
      */
     public function setTitulo($titulo)
     {

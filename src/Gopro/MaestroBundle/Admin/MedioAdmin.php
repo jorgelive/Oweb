@@ -1,6 +1,6 @@
 <?php
 
-namespace Gopro\CotizacionBundle\Admin;
+namespace Gopro\MaestroBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -8,8 +8,9 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\TranslationBundle\Filter\TranslationFieldFilter;
 
-class FiledocumentoAdmin extends AbstractAdmin
+class MedioAdmin extends AbstractAdmin
 {
     /**
      * @param DatagridMapper $datagridMapper
@@ -18,11 +19,14 @@ class FiledocumentoAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
+            ->add('clasemedio', null, [
+                    'label' => 'Clase'
+                ]
+            )
             ->add('nombre')
-            ->add('tipofiledocumento', null, [
-                'label' => 'Tipo de documento'
+            ->add('titulo', TranslationFieldFilter::class, [
+                'label' => 'Título'
             ])
-            ->add('prioridad')
         ;
     }
 
@@ -33,11 +37,14 @@ class FiledocumentoAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
+            ->add('clasemedio', null, [
+                    'label' => 'Clase'
+                ]
+            )
             ->add('nombre')
-            ->add('tipofiledocumento', null, [
-                'label' => 'Tipo de documento'
+            ->add('titulo', null, [
+                'label' => 'Título'
             ])
-            ->add('prioridad')
             ->add('_action', null, [
                 'label' => 'Acciones',
                 'actions' => [
@@ -55,17 +62,17 @@ class FiledocumentoAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
 
-        if ($this->getRoot()->getClass() != 'Gopro\CotizacionBundle\Entity\File'){
-            $formMapper->add('file');
-        }
         $formMapper
+            ->add('clasemedio', null, [
+                    'label' => 'Clase'
+                ]
+            )
             ->add('nombre', null, [
                 'attr' => ['class' => 'uploadedimage']
             ])
-            ->add('tipofiledocumento', null, [
-                'label' => 'Tipo de documento'
+            ->add('titulo', null, [
+                'label' => 'Título'
             ])
-            ->add('prioridad')
             ->add('archivo', 'file', [
                 'required' => false
             ])
@@ -79,28 +86,31 @@ class FiledocumentoAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
+            ->add('clasemedio', null, [
+                    'label' => 'Clase'
+                ]
+            )
             ->add('nombre')
-            ->add('tipofiledocumento', null, [
-                'label' => 'Tipo de documento'
+            ->add('titulo', null, [
+                'label' => 'Título'
             ])
-            ->add('prioridad')
         ;
     }
 
-    public function prePersist($filedocumento)
+    public function prePersist($medio)
     {
-        $this->manageFileUpload($filedocumento);
+        $this->manageFileUpload($medio);
     }
 
-    public function preUpdate($filedocumento)
+    public function preUpdate($medio)
     {
-        $this->manageFileUpload($filedocumento);
+        $this->manageFileUpload($medio);
     }
 
-    private function manageFileUpload($filedocumento)
+    private function manageFileUpload($medio)
     {
-        if ($filedocumento->getArchivo()) {
-            $filedocumento->refreshModificado();
+        if ($medio->getArchivo()) {
+            $medio->refreshModificado();
         }
     }
 

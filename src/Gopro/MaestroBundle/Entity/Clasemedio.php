@@ -1,53 +1,48 @@
 <?php
 
-namespace Gopro\ServicioBundle\Entity;
+namespace Gopro\MaestroBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gopro\CotizacionBundle\GoproCotizacionBundle;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
+
 use Sonata\TranslationBundle\Model\Gedmo\TranslatableInterface;
 use Sonata\TranslationBundle\Traits\Gedmo\PersonalTranslatableTrait;
 
-use Gopro\MainBundle\Traits\ArchivoTrait;
-
-
 /**
- * Itidiaarchivo
+ * Clasemedio
  *
- * @ORM\Table(name="ser_itidiaarchivo")
- * @ORM\Entity(repositoryClass="Gopro\ServicioBundle\Repository\ItidiaarchivoRepository")
- * @ORM\HasLifecycleCallbacks
- * @Gedmo\TranslationEntity(class="Gopro\ServicioBundle\Entity\ItidiaarchivoTranslation")
+ * @ORM\Table(name="mae_clasemedio")
+ * @ORM\Entity
+ * @Gedmo\TranslationEntity(class="Gopro\MaestroBundle\Entity\ClasemedioTranslation")
  */
-class Itidiaarchivo implements TranslatableInterface
+class Clasemedio implements TranslatableInterface
 {
     use PersonalTranslatableTrait;
 
-    use ArchivoTrait;
-
-    private $path = '/carga/goprocotizacion/itidiaarchivo';
-
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="string", length=255)
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=255)
      */
-    private $titulo;
+    private $nombre;
 
     /**
-     * @var \Gopro\ServicioBundle\Entity\Itinerariodia
+     * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Gopro\ServicioBundle\Entity\Itinerariodia", inversedBy="itidiaarchivos")
-     * @ORM\JoinColumn(name="itinerariodia_id", referencedColumnName="id", nullable=false)
+     * @Gedmo\Translatable
+     * @ORM\Column(name="titulo", type="string", length=100, nullable=false)
      */
-    protected $itinerariodia;
+    private $titulo;
 
     /**
      * @var \DateTime $creado
@@ -60,9 +55,11 @@ class Itidiaarchivo implements TranslatableInterface
     /**
      * @var \DateTime $modificado
      *
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
     private $modificado;
+
 
     /**
      * @return string
@@ -71,7 +68,6 @@ class Itidiaarchivo implements TranslatableInterface
     {
         return $this->getNombre() ?? sprintf("Id: %s.", $this->getId()) ?? '';
     }
-
 
     /**
      * Get id
@@ -84,40 +80,40 @@ class Itidiaarchivo implements TranslatableInterface
     }
 
     /**
-     * Set itinerariodia
+     * Set nombre
      *
-     * @param \Gopro\ServicioBundle\Entity\Itinerariodia $itinerariodia
+     * @param string $nombre
      *
-     * @return Itidiaarchivo
+     * @return Clasemedio
      */
-    public function setItinerariodia(\Gopro\ServicioBundle\Entity\Itinerariodia $itinerariodia = null)
+    public function setNombre($nombre)
     {
-        $this->itinerariodia = $itinerariodia;
-
+        $this->nombre = $nombre;
+    
         return $this;
     }
 
     /**
-     * Get itinerariodia
+     * Get nombre
      *
-     * @return \Gopro\ServicioBundle\Entity\Itinerariodia
+     * @return string
      */
-    public function getItinerariodia()
+    public function getNombre()
     {
-        return $this->itinerariodia;
+        return $this->nombre;
     }
-
 
     /**
      * Set creado
      *
      * @param \DateTime $creado
-     * @return Itidiaarchivo
+     *
+     * @return Clasemedio
      */
     public function setCreado($creado)
     {
         $this->creado = $creado;
-
+    
         return $this;
     }
 
@@ -135,12 +131,13 @@ class Itidiaarchivo implements TranslatableInterface
      * Set modificado
      *
      * @param \DateTime $modificado
-     * @return Itidiaarchivo
+     *
+     * @return Clasemedio
      */
     public function setModificado($modificado)
     {
         $this->modificado = $modificado;
-
+    
         return $this;
     }
 
@@ -157,11 +154,11 @@ class Itidiaarchivo implements TranslatableInterface
     /**
      * Set titulo.
      *
-     * @param string $titulo
+     * @param string|null $titulo
      *
-     * @return Itidiaarchivo
+     * @return Clasemedio
      */
-    public function setTitulo($titulo)
+    public function setTitulo($titulo = null)
     {
         $this->titulo = $titulo;
     
@@ -171,7 +168,7 @@ class Itidiaarchivo implements TranslatableInterface
     /**
      * Get titulo.
      *
-     * @return string
+     * @return string|null
      */
     public function getTitulo()
     {
