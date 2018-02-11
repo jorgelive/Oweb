@@ -120,11 +120,11 @@ class Resumen implements ContainerAwareInterface
                         $archivosTempArray = [];
                         if($dia->getItidiaarchivos()->count() > 0){
                             foreach ($dia->getItidiaarchivos() as $archivo):
-                                $archivoTemp['nombre'] = $archivo->getNombre();
-                                $archivoTemp['titulo'] = $archivo->getTitulo();
-                                $archivoTemp['thumbpath'] = $archivo->getWebThumbPath();
-                                $archivoTemp['webpath'] = $archivo->getWebPath();
-                                $archivoTemp['inmodal'] = $archivo->getInModal();
+                                $archivoTemp['nombre'] = $archivo->getMedio()->getNombre();
+                                $archivoTemp['titulo'] = $archivo->getMedio()->getTitulo();
+                                $archivoTemp['thumbpath'] = $archivo->getMedio()->getWebThumbPath();
+                                $archivoTemp['webpath'] = $archivo->getMedio()->getWebPath();
+                                $archivoTemp['inmodal'] = $archivo->getMedio()->getInModal();
                                 $archivosTempArray[] = $archivoTemp;
                             endforeach;
                         }

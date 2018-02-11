@@ -59,7 +59,7 @@ class Medio implements TranslatableInterface
 
     /**
      * @var \DateTime $modificado
-     *
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
     private $modificado;
@@ -69,7 +69,7 @@ class Medio implements TranslatableInterface
      */
     public function __toString()
     {
-        return $this->getNombre() ?? sprintf("Id: %s.", $this->getId()) ?? '';
+        return sprintf('%s: %s', $this->getClasemedio()->getNombre(), $this->getNombre()) ?? sprintf("Id: %s.", $this->getId()) ?? '';
     }
 
 

@@ -41,6 +41,11 @@ class MedioAdmin extends AbstractAdmin
                     'label' => 'Clase'
                 ]
             )
+            ->add('webThumbPath', 'string', [
+                    'label' => 'Archivo',
+                    'template' => 'GoproSonataBundle:Admin:list_image.html.twig'
+                ]
+            )
             ->add('nombre')
             ->add('titulo', null, [
                 'label' => 'Título'
@@ -86,6 +91,10 @@ class MedioAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
+            ->add('webThumbPath', null, [
+                    'label' => 'Archivo'
+                ]
+            )
             ->add('clasemedio', null, [
                     'label' => 'Clase'
                 ]

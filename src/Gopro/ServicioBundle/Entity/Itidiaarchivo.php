@@ -6,8 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Gopro\CotizacionBundle\GoproCotizacionBundle;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Sonata\TranslationBundle\Model\Gedmo\TranslatableInterface;
-use Sonata\TranslationBundle\Traits\Gedmo\PersonalTranslatableTrait;
 
 use Gopro\MainBundle\Traits\ArchivoTrait;
 
@@ -18,15 +16,9 @@ use Gopro\MainBundle\Traits\ArchivoTrait;
  * @ORM\Table(name="ser_itidiaarchivo")
  * @ORM\Entity(repositoryClass="Gopro\ServicioBundle\Repository\ItidiaarchivoRepository")
  * @ORM\HasLifecycleCallbacks
- * @Gedmo\TranslationEntity(class="Gopro\ServicioBundle\Entity\ItidiaarchivoTranslation")
  */
-class Itidiaarchivo implements TranslatableInterface
+class Itidiaarchivo
 {
-    use PersonalTranslatableTrait;
-
-    use ArchivoTrait;
-
-    private $path = '/carga/goprocotizacion/itidiaarchivo';
 
     /**
      * @ORM\Id
@@ -36,18 +28,27 @@ class Itidiaarchivo implements TranslatableInterface
     private $id;
 
     /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="string", length=255)
-     */
-    private $titulo;
-
-    /**
      * @var \Gopro\ServicioBundle\Entity\Itinerariodia
      *
      * @ORM\ManyToOne(targetEntity="Gopro\ServicioBundle\Entity\Itinerariodia", inversedBy="itidiaarchivos")
      * @ORM\JoinColumn(name="itinerariodia_id", referencedColumnName="id", nullable=false)
      */
     protected $itinerariodia;
+
+    /**
+     * @var \Gopro\MaestroBundle\Entity\Medio
+     *
+     * @ORM\ManyToOne(targetEntity="Gopro\MaestroBundle\Entity\Medio")
+     * @ORM\JoinColumn(name="medio_id", referencedColumnName="id", nullable=false)
+     */
+    private $medio;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="prioridad", type="integer", nullable=true)
+     */
+    private $prioridad;
 
     /**
      * @var \DateTime $creado
@@ -59,7 +60,7 @@ class Itidiaarchivo implements TranslatableInterface
 
     /**
      * @var \DateTime $modificado
-     *
+     * @Gedmo\Timestampable(on="update")
      * @ORM\Column(type="datetime")
      */
     private $modificado;
@@ -69,9 +70,8 @@ class Itidiaarchivo implements TranslatableInterface
      */
     public function __toString()
     {
-        return $this->getNombre() ?? sprintf("Id: %s.", $this->getId()) ?? '';
+        return $this->getMedio()->getNombre() ?? sprintf("Id: %s.", $this->getId()) ?? '';
     }
-
 
     /**
      * Get id
@@ -106,7 +106,6 @@ class Itidiaarchivo implements TranslatableInterface
     {
         return $this->itinerariodia;
     }
-
 
     /**
      * Set creado
@@ -155,27 +154,50 @@ class Itidiaarchivo implements TranslatableInterface
     }
 
     /**
-     * Set titulo.
+     * Set prioridad.
      *
-     * @param string $titulo
+     * @param int|null $prioridad
      *
      * @return Itidiaarchivo
      */
-    public function setTitulo($titulo)
+    public function setPrioridad($prioridad = null)
     {
-        $this->titulo = $titulo;
+        $this->prioridad = $prioridad;
     
         return $this;
     }
 
     /**
-     * Get titulo.
+     * Get prioridad.
      *
-     * @return string
+     * @return int|null
      */
-    public function getTitulo()
+    public function getPrioridad()
     {
-        return $this->titulo;
+        return $this->prioridad;
     }
 
+    /**
+     * Set medio.
+     *
+     * @param \Gopro\MaestroBundle\Entity\Medio|null $medio
+     *
+     * @return Itidiaarchivo
+     */
+    public function setMedio(\Gopro\MaestroBundle\Entity\Medio $medio = null)
+    {
+        $this->medio = $medio;
+    
+        return $this;
+    }
+
+    /**
+     * Get medio.
+     *
+     * @return \Gopro\MaestroBundle\Entity\Medio|null
+     */
+    public function getMedio()
+    {
+        return $this->medio;
+    }
 }

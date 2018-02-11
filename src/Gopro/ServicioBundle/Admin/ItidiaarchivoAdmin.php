@@ -19,9 +19,12 @@ class ItidiaarchivoAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('nombre')
-            ->add('titulo', TranslationFieldFilter::class, [
-                'label' => 'Título'
+            ->add('itinerariodia', null, [
+                    'label' => 'Dia de itineratio'
+                ]
+            )
+            ->add('medio', null, [
+                'label' => 'Multimedia'
             ])
             ->add('prioridad')
         ;
@@ -34,9 +37,12 @@ class ItidiaarchivoAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
-            ->add('titulo', null, [
-                'label' => 'Título'
+            ->add('itinerariodia', null, [
+                    'label' => 'Dia de itineratio'
+                ]
+            )
+            ->add('medio', null, [
+                'label' => 'Multimedia'
             ])
             ->add('prioridad')
             ->add('_action', null, [
@@ -66,16 +72,10 @@ class ItidiaarchivoAdmin extends AbstractAdmin
             );
         }
         $formMapper
-            ->add('nombre', null, [
-                'attr' => ['class' => 'uploadedimage']
-            ])
-            ->add('titulo', null, [
-                'label' => 'Título'
+            ->add('medio', null, [
+                'label' => 'Multimedia'
             ])
             ->add('prioridad')
-            ->add('archivo', 'file', [
-                'required' => false
-            ])
         ;
     }
 
@@ -86,29 +86,11 @@ class ItidiaarchivoAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
-            ->add('nombre')
-            ->add('titulo', null, [
-                'label' => 'Título'
+            ->add('medio', null, [
+                'label' => 'Multimedia'
             ])
             ->add('prioridad')
         ;
-    }
-
-    public function prePersist($itidiaarchivo)
-    {
-        $this->manageFileUpload($itidiaarchivo);
-    }
-
-    public function preUpdate($itidiaarchivo)
-    {
-        $this->manageFileUpload($itidiaarchivo);
-    }
-
-    private function manageFileUpload($itidiaarchivo)
-    {
-        if ($itidiaarchivo->getArchivo()) {
-            $itidiaarchivo->refreshModificado();
-        }
     }
 
 }

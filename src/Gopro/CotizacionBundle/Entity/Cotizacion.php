@@ -131,6 +131,16 @@ class Cotizacion implements TranslatableInterface
         }
     }
 
+    /**
+     * Get nombre
+     *
+     * @return string
+     */
+    public function getPrimerCotservicioFecha()
+    {
+        return $this->getCotservicios()->first()->getFechaHoraInicio();
+    }
+
 
     /**
      * @return string

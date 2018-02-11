@@ -66,6 +66,10 @@ class CotizacionAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
+            ->add('primerCotservicioFecha', 'datetime', [
+                'label' => 'Fecha Inicio',
+                'format' => 'Y/m/d'
+            ])
             ->add('file')
             ->add('nombre')
             ->add('titulo', null, [
