@@ -1,4 +1,4 @@
-{% if admin.isGranted('EDIT', object) and admin.hasRoute('resumen') %}
+{% if admin.isGranted('show', object) and admin.hasRoute('resumen') %}
     <a href="{{ admin.generateObjectUrl('resumen', object) }}"
        class="btn btn-sm btn-success"
        title="Resumen">

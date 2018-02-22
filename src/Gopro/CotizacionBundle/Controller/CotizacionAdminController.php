@@ -66,14 +66,13 @@ class CotizacionAdminController extends CRUDController
                 ['cotizacion' => $this->container->get('gopro_cotizacion.resumen')->getDatosCotizacion(),
                     'tabs' => $this->container->get('gopro_cotizacion.resumen')->getDatosTabs(),
                     'object' => $object,
-                    'action' => 'resumen',
+                    'action' => 'show',
                     'elements' => $this->admin->getShow()
 
                 ], null);
         }else{
             $this->addFlash('sonata_flash_error', $this->container->get('gopro_cotizacion.resumen')->getMensaje());
             return new RedirectResponse($this->admin->generateUrl('list'));
-
         }
 
     }

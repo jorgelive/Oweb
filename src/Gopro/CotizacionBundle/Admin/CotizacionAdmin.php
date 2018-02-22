@@ -29,6 +29,17 @@ class CotizacionAdmin extends AbstractAdmin
         );
     }
 
+    public function getActionButtons($action, $object = null)
+    {
+        $list = parent::getActionButtons($action, $object);
+
+        $list['resumen'] = [
+            'template' => 'GoproCotizacionBundle:CotizacionAdmin:resumen_button.html.twig',
+        ];
+
+        return $list;
+    }
+
     /**
      * @param DatagridMapper $datagridMapper
      */
