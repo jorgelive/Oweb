@@ -33,13 +33,12 @@ file that was distributed with this source code.
     </thead>
     <tbody class="sonata-ba-tbody">
         {% for nested_group_field_name, nested_group_field in form.children %}
-            <tr>
+            <tr class="row-{{ nested_group_field.vars.sonata_admin.name }}">
                 {% for field_name, nested_field in nested_group_field.children %}
                     {% if field_name != 'cotservicios' and field_name != 'cotcomponentes' and field_name != 'cottarifas' %}
-
                     <td class="
-                        sonata-ba-td-{{ id }}-{{ field_name  }}
-                        control-group
+                        sonata-ba-td-{{ id }}-{{ field_name }}
+                        control-group campo-{{ field_name }}
                         {% if nested_field.vars.errors|length > 0 %} error sonata-ba-field-error{% endif %}
                         "
                         {% if (nested_field.vars['attr']['hidden'] is defined) and (nested_field.vars['attr']['hidden']) %}
