@@ -69,7 +69,10 @@ class Medio implements TranslatableInterface
      */
     public function __toString()
     {
-        return sprintf('%s: %s', $this->getClasemedio()->getNombre(), $this->getNombre()) ?? sprintf("Id: %s.", $this->getId()) ?? '';
+        if(empty($this->getClasemedio()) || empty($this->getNombre())){
+            return sprintf("Id: %s.", $this->getId());
+        }
+        return sprintf('%s: %s', $this->getClasemedio()->getNombre(), $this->getNombre());
     }
 
 

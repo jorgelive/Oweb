@@ -53,7 +53,6 @@ class Resumen implements ContainerAwareInterface
             ->getRepository('GoproMaestroBundle:Tipocambio')
             ->findOneBy(['moneda' => 2, 'fecha' => $cotizacion->getCreado()]);
 
-
         if(!$tipoCambio){
             $this->mensaje = sprintf('No se puede obtener la el tipo de cambio del dia %s.',  $cotizacion->getCreado()->format('Y-m-d') );
             return false;
@@ -86,6 +85,20 @@ class Resumen implements ContainerAwareInterface
                 $archivosAux['inmodal'] = $documento->getInModal();
 
                 $datosCotizacion['archivos'][] = $archivosAux;
+            endforeach;
+        }
+
+        if($cotizacion->getFile()->getFilepasajeros()->count() > 0) {
+            $pasajerosAux = [];
+            foreach ($cotizacion->getFile()->getFilepasajeros() as $pasajero):
+                $pasajerosAux['nombre'] = $pasajero->getNombre();
+                $pasajerosAux['apellido'] = $pasajero->getApellido();
+                $pasajerosAux['pais'] = $pasajero->getPais()->getNombre();
+                $pasajerosAux['sexo'] = $pasajero->getSexo()->getNombre();
+                $pasajerosAux['tipodocumento'] = $pasajero->getTipodocumento()->getNombre();
+                $pasajerosAux['numerodocumento'] = $pasajero->getNumerodocumento();
+                $pasajerosAux['fechanacimiento'] = $pasajero->getFechanacimiento()->format('Y/m/d');
+                $datosCotizacion['pasajeros'][] = $pasajerosAux;
             endforeach;
         }
 

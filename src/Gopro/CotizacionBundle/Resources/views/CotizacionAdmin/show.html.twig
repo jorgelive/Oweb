@@ -51,38 +51,117 @@ file that was distributed with this source code.
                     </table>
                 </div>
             </div>
-            {% if cotizacion.archivos is defined and cotizacion.archivos|length > 0 %}
-                <div class="box box-primary">
-                    <div class="box-header">
-                        <h5 class="box-title">
-                            Documentos
-                        </h5>
-                    </div>
-                    <div class="box-body no-padding">
-                        <div class="container-fluid">
-                            {% for archivo in cotizacion.archivos %}
-                                {% if loop.index0 % 6 == 0 %}
-                                    <div class="row">
-                                {% endif %}
-                                {% if loop.index0 % 3 == 0 and loop.index0 % 6 != 0 %}
-                                    <div class="clearfix visible-xs"></div>
-                                {% endif %}
-                                <div class="col-xs-4 col-sm-2">
-                                    <div class="thumbnail">
-                                        <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}"{% if archivo.inmodal == true %} data-toggle="lightbox"{% else %} target="_blank" {% endif %}>
-                                            <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.thumbpath|raw }}" alt="{{ archivo.nombre }}" style="width:100%">
-                                            <div class="caption">
-                                                <p style="overflow-wrap: break-word;" class="small text-center">{{ archivo.nombre }}</p>
+
+
+            {% if cotizacion.pasajeros is defined or cotizacion.archivos is defined %}
+                <div class="panel-group box box-primary" id="accordion">
+                    {% if cotizacion.pasajeros is defined and cotizacion.pasajeros|length > 0 %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                                        Relación de pasajeros
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="collapse1" class="panel-collapse collapse {% if cotizacion.archivos is not defined %} in {% endif %}">
+                                <div class="panel-body table-responsive no-padding">
+                                    <table class="table table-bordered table-striped sonata-ba-list">
+                                        <thead>
+                                        <tr class="sonata-ba-list-field-header">
+                                            <th>
+                                                Nombres
+                                            </th>
+                                            <th>
+                                                Apellidos
+                                            </th>
+                                            <th>
+                                                Pais
+                                            </th>
+                                            <th>
+                                                Sexo
+                                            </th>
+                                            <th>
+                                                Tipo doc.
+                                            </th>
+                                            <th>
+                                                Número doc.
+                                            </th>
+                                            <th>
+                                                Feche nacimiento
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for pasajero in cotizacion.pasajeros %}
+                                            <tr>
+                                                <td>
+                                                    {{ pasajero.nombre }}
+                                                </td>
+                                                <td>
+                                                    {{ pasajero.apellido }}
+                                                </td>
+                                                <td>
+                                                    {{ pasajero.pais }}
+                                                </td>
+                                                <td>
+                                                    {{ pasajero.sexo }}
+                                                </td>
+                                                <td>
+                                                    {{ pasajero.tipodocumento }}
+                                                </td>
+                                                <td>
+                                                    {{ pasajero.numerodocumento }}
+                                                </td>
+                                                <td>
+                                                    {{ pasajero.fechanacimiento }}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if cotizacion.archivos is defined and cotizacion.archivos|length > 0 %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                                        Documentos
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="collapse2" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="container-fluid">
+                                        {% for archivo in cotizacion.archivos %}
+                                            {% if loop.index0 % 6 == 0 %}
+                                                <div class="row">
+                                            {% endif %}
+                                            {% if loop.index0 % 3 == 0 and loop.index0 % 6 != 0 %}
+                                                <div class="clearfix visible-xs"></div>
+                                            {% endif %}
+                                            <div class="col-xs-4 col-sm-2">
+                                                <div class="thumbnail">
+                                                    <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}"{% if archivo.inmodal == true %} data-toggle="lightbox"{% else %} target="_blank" {% endif %}>
+                                                        <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.thumbpath|raw }}" alt="{{ archivo.nombre }}" style="width:100%">
+                                                        <div class="caption">
+                                                            <p style="overflow-wrap: break-word;" class="small text-center">{{ archivo.nombre }}</p>
+                                                        </div>
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </a>
+                                            {% if loop.index % 6 == 0 or loop.last %}
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
                                     </div>
                                 </div>
-                                {% if loop.index % 6 == 0 or loop.last %}
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
                 </div>
             {% endif %}
 
@@ -361,7 +440,7 @@ file that was distributed with this source code.
                                                 <h4>{{ tipo.titulo }}:</h4>
                                                 <ul>
                                                     {% for componente in tipo.componentes %}
-                                                        <li>{{ componente.titulo }} {% if componente.tituloItinerario is defined %} en {{ componente.tituloItinerario }} {% endif %} {% if componente.fecha is defined %} ({{ componente.fecha }}) {% endif %}
+                                                        <li>{{ componente.titulo }} {% if componente.cantidadcomponente > 1 %} <strong>x {{ componente.cantidadcomponente }}</strong> {% endif %} {% if componente.tituloItinerario is defined %} en {{ componente.tituloItinerario }} {% endif %} {% if componente.fecha is defined %} ({{ componente.fecha }}) {% endif %}
                                                             {% if componente.tarifas is defined %}
                                                                 <ul>
                                                                     {% for tarifa in componente.tarifas %}

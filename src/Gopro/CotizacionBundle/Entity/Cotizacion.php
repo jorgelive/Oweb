@@ -265,7 +265,7 @@ class Cotizacion implements TranslatableInterface
      *
      * @return Cotizacion
      */
-    public function setEstadocotizacion(\Gopro\CotizacionBundle\Entity\Estadocotizacion $estadocotizacion = null)
+    public function setEstadocotizacion(\Gopro\CotizacionBundle\Entity\Estadocotizacion $estadocotizacion)
     {
         $this->estadocotizacion = $estadocotizacion;
     
@@ -289,7 +289,7 @@ class Cotizacion implements TranslatableInterface
      *
      * @return Cotizacion
      */
-    public function setFile(\Gopro\CotizacionBundle\Entity\File $file = null)
+    public function setFile(\Gopro\CotizacionBundle\Entity\File $file)
     {
         $this->file = $file;
     
