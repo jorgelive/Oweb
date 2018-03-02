@@ -310,6 +310,16 @@ class Serviciocontable
     }
 
     /**
+     * Get seriedocumento
+     *
+     * @return string
+     */
+    public function getSeriedocumento()
+    {
+        return sprintf('%s-%s', $this->serie, $this->documento);
+    }
+
+    /**
      * Set creado
      *
      * @param \DateTime $creado

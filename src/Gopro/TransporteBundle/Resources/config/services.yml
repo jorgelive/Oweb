@@ -7,6 +7,7 @@ services:
             - {name: sonata.admin, manager_type: orm, group: Transporte, label: Servicios}
         calls:
             - [ setTemplate, [list, GoproTransporteBundle:ServicioAdmin:list.html.twig]]
+            - [ setTemplate, [edit, GoproTransporteBundle:ServicioAdmin:edit.html.twig]]
         public: true
 
     gopro_transporte.admin.serviciooperativo:
@@ -21,6 +22,8 @@ services:
         arguments: [~, Gopro\TransporteBundle\Entity\Serviciocontable, GoproTransporteBundle:ServiciocontableAdmin ]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Transporte, label: Contables}
+        calls:
+            - [ setTemplate, [edit, GoproTransporteBundle:ServiciocontableAdmin:edit.html.twig]]
         public: true
 
     gopro_transporte.admin.sercontablemensajeadmin:

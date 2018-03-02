@@ -24,8 +24,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class CargadorController extends Controller
 {
 
-    protected $igv = 18;
-
     /**
      * @Route("/genericoprograma/{archivoEjecutar}", name="gopro_transporte_cargador_genericoprograma", defaults={"archivoEjecutar" = null})
      * @Template()
@@ -181,9 +179,11 @@ class CargadorController extends Controller
                 && isset($linea['totalContable'])
                 && isset($linea['descripcionContable'])
             ) {
-                $igv = $this->igv;
+                $igv = $this->getParameter('facturacion_igv_porcentaje');
+                $preproceso[$i]['servicioContable']['estadosercontable'] = 1;
                 if($linea['tiposercontableContable'] <= 0){
-                    $igv = 0;
+                    $igv = '0.00';
+                    $preproceso[$i]['servicioContable']['estadosercontable'] = 3;
                 }
                 $preproceso[$i]['servicioContable']['tiposercontable'] = $linea['tiposercontableContable'];
                 $preproceso[$i]['servicioContable']['moneda'] = $linea['monedaContable'];
@@ -251,7 +251,7 @@ class CargadorController extends Controller
 
             if(isset($linea['servicioContable'])){
                 $servicioContable = new Serviciocontable();
-                $servicioContable->setEstadocontable($em->getReference('Gopro\TransporteBundle\Entity\Estadocontable', 1));
+                $servicioContable->setEstadocontable($em->getReference('Gopro\TransporteBundle\Entity\Estadocontable', $linea['servicioContable']['estadosercontable']));
                 $servicioContable->setTiposercontable($em->getReference('Gopro\TransporteBundle\Entity\Tiposercontable', $linea['servicioContable']['tiposercontable']));
                 $servicioContable->setMoneda($em->getReference('Gopro\MaestroBundle\Entity\Moneda', $linea['servicioContable']['moneda']));
                 $servicioContable->setNeto($linea['servicioContable']['neto']);

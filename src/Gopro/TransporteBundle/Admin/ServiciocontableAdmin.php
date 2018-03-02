@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ServiciocontableAdmin extends AbstractAdmin
 {
@@ -223,6 +224,11 @@ class ServiciocontableAdmin extends AbstractAdmin
             ->add('impuesto')
             ->add('total')
             ->add('original')
+            ->add('seriedocumento', TextType::class, [
+                'label' => 'Documento',
+                'disabled' => true,
+                'required' => false
+            ])
         ;
     }
 

@@ -84,7 +84,7 @@ class TarifaController extends Controller
 
         foreach ($pagination->getItems() as $key => $item):
             $resultado[$key]['id'] = $item->getId();
-            $resultado[$key]['label'] = $item->getNombre();
+            $resultado[$key]['label'] = $item->__toString();
         endforeach;
 
         $totalItems = $pagination->getTotalItemCount();

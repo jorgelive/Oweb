@@ -70,7 +70,9 @@ class ServiciofileAdmin extends AbstractAdmin
             $formMapper->add('servicio');
         }
         $formMapper
-            ->add('hora')
+            ->add('hora', null, [
+                'attr' => ['class' => 'horadropdown']
+            ])
             ->add('nombre')
             ->add('codigo', null, [
                 'label' => 'Código'

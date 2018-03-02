@@ -63,6 +63,8 @@ twig:
     strict_variables: "%kernel.debug%"
     form_themes:
         - 'SonataCoreBundle:Form:datepicker.html.twig'
+    globals:
+        facturacion_igv_porcentaje: "%facturacion_igv_porcentaje%"
 
 # Assetic Configuration
 assetic:

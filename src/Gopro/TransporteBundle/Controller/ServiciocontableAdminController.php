@@ -40,14 +40,21 @@ class ServiciocontableAdminController extends CRUDController
         $tipoNotaCredito = '';
 
         if( $object->getTiposercontable()->getEsnotacredito() === true){
-            if(!$object->getOriginal() || empty($object->getOriginal()->getDocumento()) || $object->getOriginal()->getTiposercontable()->getEsnotacredito() === true) {
-                $this->addFlash('sonata_flash_error', 'El tipo de documento debe tener un documento asociado enviado a facturacion.');
-                return new RedirectResponse($this->admin->generateUrl('list'));
-            }else{
+            if($object->getOriginal() && !empty($object->getOriginal()->getDocumento()) && $object->getOriginal()->getTiposercontable()->getEsnotacredito() === false) {
                 $tipoAsociado = $object->getOriginal()->getTiposercontable()->getCodigoexterno();
                 $documentoAsociado = $object->getOriginal()->getDocumento();
                 $serieAsociado = $object->getOriginal()->getSerie();
-                $tipoNotaCredito = '1';
+                if($object->getOriginal()->getNeto() == $object->getNeto() && $object->getOriginal()->getImpuesto() == $object->getImpuesto() && $object->getOriginal()->getTotal() == $object->getTotal()){
+                    $tipoNotaCredito = '1';
+                }elseif($object->getOriginal()->getNeto() > $object->getNeto() && $object->getOriginal()->getImpuesto() > $object->getImpuesto() && $object->getOriginal()->getTotal() > $object->getTotal()){
+                    $tipoNotaCredito = '9';
+                }else{
+                    $this->addFlash('sonata_flash_error', 'el valor de la nota de crédito debe ser menor al del documento.');
+                    return new RedirectResponse($this->admin->generateUrl('list'));
+                }
+            }else{
+                $this->addFlash('sonata_flash_error', 'El tipo de documento debe tener un documento asociado enviado a facturación.');
+                return new RedirectResponse($this->admin->generateUrl('list'));
             }
         }
         $solicitud = [];
@@ -102,7 +109,7 @@ class ServiciocontableAdminController extends CRUDController
         }
 
         $solicitud['tipo_de_cambio'] = $tipoCambioStr;
-        $solicitud['porcentaje_de_igv'] = '18.00';
+        $solicitud['porcentaje_de_igv'] = $this->getParameter('facturacion_igv_porcentaje');
         $solicitud['descuento_global'] = '';
         $solicitud['total_descuento'] = '';
         $solicitud['total_anticipo'] = '';
@@ -218,31 +225,6 @@ class ServiciocontableAdminController extends CRUDController
 
 
         return new RedirectResponse($this->admin->generateUrl('list'));
-
-        /*Array (
-            [tipo_de_comprobante] => 1;
-            [serie] => F001
-            [numero] => 1
-            [enlace] => https://www.nubefact.com/cpe/63ba4f20-036b-4727-b47a-8b5802d21b7b-9cb2893a-e271-4e92-b216-db748a180521;
-            [aceptada_por_sunat] => 1
-            [sunat_description] => La Factura numero F001-1, ha sido aceptada
-            [sunat_note] =>
-            [sunat_responsecode] => 0
-            [sunat_soap_error] =>
-            [pdf_zip_base64] =>
-            [xml_zip_base64] =>
-            [cdr_zip_base64] =>
-            [cadena_para_codigo_qr] => 20600633164 | 01 | F001 | 000001 | 1.45 | 9.50 | 26/09/2017 | 6 | 20387589181 |
-            [codigo_hash] => cAZE5yQJTq3g97XUx7Tf2/lOLvA=
-            [codigo_de_barras] => 20600633164 | 01 | F001 | 000001 | 1.45 | 9.50 | 26/09/2017 | 6 | 20387589181 | cAZE5yQJTq3g97XUx7Tf2/lOLvA= | pYbOb8fbmNpW4lGUA/SHwoA6JY52nlQGUiI4HSaQIF1+iqfEHREbHwLJRAbo T54cAOMU60wHC6gBbqbFwn9QokAg/oOrp+qKefg/X9tTutXM2ffYyIBUKKcn KvaY0B0vzQ5pkk4zc3+EvP78UwB/wZVkRI/BtAKWQb3BLgM/FENJfYxq8Y5P IU/zPA5nNgt6TXUW5Xp+aOLXDcLo/Bj+v2BkpnuNjV2/x2WHOvi8vokxIFbp tcE8iSrhy10ggAFMpvGrquDJKqjqxw+sOy19IQP9VfxFhWxe1/Ak1knyBmfK uJZZ0ogXT2GiYD/GO1Vmx5mpqeYRvOTzmVHbtG49vw== |
-            [key] => 63ba4f20-036b-4727-b47a-8b5802d21b7b-9cb2893a-e271-4e92-b216-db748a180521
-            [digest_value] => cAZE5yQJTq3g97XUx7Tf2/lOLvA=
-            [enlace_del_pdf] => https://www.nubefact.com/cpe/63ba4f20-036b-4727-b47a-8b5802d21b7b-9cb2893a-e271-4e92-b216-db748a180521.pdf
-            [enlace_del_xml] => https://www.nubefact.com/cpe/63ba4f20-036b-4727-b47a-8b5802d21b7b-9cb2893a-e271-4e92-b216-db748a180521.xml
-            [enlace_del_cdr] => https://www.nubefact.com/cpe/63ba4f20-036b-4727-b47a-8b5802d21b7b-9cb2893a-e271-4e92-b216-db748a180521.cdr
-
-
-*/
 
     }
 
