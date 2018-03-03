@@ -11,6 +11,14 @@ file that was distributed with this source code.
 
 {% extends 'GoproSonataBundle:Admin:standard_layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style type="text/css">
+        .main-sidebar, .sidebar-toggle {display: none; }
+        .content-wrapper {margin-left: 0;}
+    </style>
+{% endblock %}
 
 {% block show %}
 
@@ -355,13 +363,6 @@ file that was distributed with this source code.
     </div>
 
 </div>
-
-
-
-
-
-
-
 
     {{ sonata_block_render_event('sonata.admin.show.bottom', { 'admin': admin, 'object': object }) }}
 {% endblock %}

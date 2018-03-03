@@ -88,8 +88,11 @@
 {% endblock %}
 
 {% block side_bar_after_nav %}
+
     <div class="btn-group btn-group-justified">
         <a class="btn btn-primary btn-md" href="{{ path('gopro_main') }}">Inicio</a>
-        <a class="btn btn-primary btn-md" href="{{ path('gopro_transporte_cargador_genericoprograma') }}">Cargador</a>
+        {% if is_granted('ROLE_CARGA') %}
+            <a class="btn btn-primary btn-md" href="{{ path('gopro_transporte_cargador_genericoprograma') }}">Cargador</a>
+        {% endif %}
     </div>
 {% endblock %}
