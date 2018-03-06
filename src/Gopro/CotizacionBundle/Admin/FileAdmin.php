@@ -82,6 +82,7 @@ class FileAdmin extends AbstractAdmin
             ->add('nombre')
             ->add('pais')
             ->add('idioma')
+            ->add('pauta')
             ->add('filepasajeros', 'sonata_type_collection', [
                 'by_reference' => false,
                 'label' => 'Name List'
@@ -122,6 +123,7 @@ class FileAdmin extends AbstractAdmin
             ->add('nombre')
             ->add('pais')
             ->add('idioma')
+            ->add('pauta')
             ->add('filepasajeros', null, [
                 'label' => 'Name List'
             ])

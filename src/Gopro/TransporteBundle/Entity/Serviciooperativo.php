@@ -35,7 +35,7 @@ class Serviciooperativo
     private $tiposeroperativo;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="texto", type="text")
      */
     private $texto;
 

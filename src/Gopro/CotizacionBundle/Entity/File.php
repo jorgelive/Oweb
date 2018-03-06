@@ -40,6 +40,11 @@ class File
     protected $pais;
 
     /**
+     * @ORM\Column(name="pauta", type="text", nullable=true)
+     */
+    private $pauta;
+
+    /**
      * @var \Gopro\MaestroBundle\Entity\Idioma
      *
      * @ORM\ManyToOne(targetEntity="Gopro\MaestroBundle\Entity\Idioma")
@@ -362,5 +367,29 @@ class File
     public function getFiledocumentos()
     {
         return $this->filedocumentos;
+    }
+
+    /**
+     * Set pauta.
+     *
+     * @param string $pauta
+     *
+     * @return File
+     */
+    public function setPauta($pauta = null)
+    {
+        $this->pauta = $pauta;
+    
+        return $this;
+    }
+
+    /**
+     * Get pauta.
+     *
+     * @return string
+     */
+    public function getPauta()
+    {
+        return $this->pauta;
     }
 }

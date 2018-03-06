@@ -27,42 +27,42 @@ class Serviciofile
     private $servicio;
 
     /**
-     * @ORM\Column(type="time")
+     * @ORM\Column(name="hora", type="time")
      */
     private $hora;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(name="nombre", type="string", length=100)
      */
     private $nombre;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(name="codigo", type="string", length=100)
      */
     private $codigo;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(name="numadl", type="smallint")
      */
     private $numadl;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(name="numchd", type="smallint")
      */
     private $numchd;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(name="origen", type="string", length=100)
      */
     private $origen;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(name="destino", type="string", length=100)
      */
     private $destino;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(name="nota", type="text", nullable=true)
      */
     private $nota;
 
