@@ -1,5 +1,6 @@
 $(document).ready(function()
 {
+    "use strict";
     var formulario=$('form[name="archivo"]');
     var url=formulario.attr('action');
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>{% block title %}Bienvenidos! - OWeb{% endblock title %}</title>
+    <title>{% block title %}Bienvenidos a OpenPeru{% endblock title %}</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,7 +14,7 @@
     {% endblock stylesheets%}
 
     {% block javascripts %}
-        {% javascripts '@jquery' '@bootstrap_js''@GoproMainBundle/Resources/public/js/inicio/*' %}
+        {% javascripts '@jquery' '@bootstrap_js''@GoproMainBundle/Resources/public/js/*' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
     {% endblock javascripts %}
@@ -73,20 +73,11 @@
         {% endblock maincontent %}
     </div>
 {% endblock body %}
-{% block javascriptsfinal %}
-    <script id="plantillaHighlight" type="text/x-tmpl">
-        {{ source("GoproMainBundle:Plantilla:highlight.js.twig") }}
-    </script>
-    <script id="plantillaError" type="text/x-tmpl">
-        {{ source("GoproMainBundle:Plantilla:error.js.twig") }}
-    </script>
-    <script id="archivoRow" type="text/x-tmpl">
-        {{ source("GoproMainBundle:Plantilla:archivorow.js.twig") }}
-    </script>
-    {% javascripts '@GoproMainBundle/Resources/public/js/fin/*'%}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock javascriptsfinal %}
+{% block plantillasajax %}
+    {{ source("GoproMainBundle:Rawhtml:highlight.html.twig") }}
+    {{ source("GoproMainBundle:Rawhtml:error.html.twig") }}
+    {{ source("GoproMainBundle:Rawhtml:archivorow.html.twig") }}
+{% endblock plantillasajax %}
 </div>
 </body>
 </html>

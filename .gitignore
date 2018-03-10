@@ -17,5 +17,5 @@
 /vendor/
 /composer.lock
 /.idea/*
+/node_modules/
 *~
-

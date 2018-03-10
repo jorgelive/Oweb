@@ -1,4 +1,5 @@
 $.fn.borraFila = function() {
+    "use strict";
     this.click(function(event) {
         event.preventDefault();
         var id = $(this).data('id');
@@ -8,13 +9,13 @@ $.fn.borraFila = function() {
             type: 'DELETE',
             statusCode: {
                 500: function() {
-                    alert("500 Error Interno: No se ha eliminado la fila.");
+                    window.alert("500 Error Interno: No se ha eliminado la fila.");
                 }
             }
         });
         deleting.done(function(data) {
             if(!data.hasOwnProperty('mensaje')){
-                alert ('La respuesta no fue válida.');
+                window.alert ('La respuesta no fue válida.');
                 return false;
             }
             if(data.mensaje.exito=='si'){
@@ -23,7 +24,12 @@ $.fn.borraFila = function() {
                 $("#sessionFlash").empty().append(tmpl('plantillaHighlight',data.mensaje));
             }else{
                 $("#sessionFlash").empty().append(tmpl('plantillaError',data.mensaje));
-            };
+            }
         });
     });
 };
+$(document).ready(function()
+{
+    "use strict";
+    $(".borrarFila").borraFila();
+});
