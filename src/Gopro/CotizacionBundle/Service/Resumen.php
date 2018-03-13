@@ -373,7 +373,7 @@ class Resumen implements ContainerAwareInterface
         }
 
         if(!empty($this->clasificacionTarifas)){
-            $this->resumenTarifas();
+            $this->orderResumenTarifas();
             $datosTabs['tarifas']['rangos'] = $this->clasificacionTarifas;
             $datosTabs['tarifas']['resumen'] = $this->resumendeClasificado;
         }
@@ -396,7 +396,12 @@ class Resumen implements ContainerAwareInterface
         return $this->datosCotizacion;
     }
 
-    public function resumenTarifas(){
+    public function orderResumenTarifas(){
+
+        usort($this->clasificacionTarifas, function($a, $b) {
+            return $b['edadMin'] <=> $a['edadMin']; //inverso
+        });
+
         foreach ($this->clasificacionTarifas as &$clase):
 
             foreach ($clase['tarifa'] as $tarifa):
@@ -812,21 +817,6 @@ class Resumen implements ContainerAwareInterface
                     $voter[$keyTarifa] += 0.5;
                 }
 
-                /*if($clase['edadMin'] == $tarifaClasificada['edadMin']){
-                    $voter[$keyTarifa] += 4;
-                }elseif($clase['edadMin'] > $tarifaClasificada['edadMin']){
-                    $voter[$keyTarifa] += 2;
-                }
-
-                if($clase['edadMax'] == $tarifaClasificada['edadMax']){
-                    $voter[$keyTarifa] +=4;
-                }elseif($clase['edadMax'] <= $tarifaClasificada['edadMax']){
-                    $voter[$keyTarifa] += 2;
-                }
-
-                if($tarifaClasificada['cantidad'] == $clase['cantidad']){
-                    $voter[$keyTarifa] += 1;
-                }*/
             }
 
         endforeach;
@@ -840,12 +830,12 @@ class Resumen implements ContainerAwareInterface
 
         if(!isset($tarifa['tipoPaxId'])){
             $tarifa['tipoPaxId'] = 0;
-            $tarifa['tipoPaxNombre'] = 'Todos';
+            $tarifa['tipoPaxNombre'] = 'Cualquier nacionalidad';
         }
 
         if($prorrateado === true || (!isset($tarifa['edadMin']) && !isset($tarifa['edadMax']))){
             $tarifa['rangoEdad'] = 0;
-            $tarifa['rangoEdadNombre'] = 'Cualquier Edad';
+            $tarifa['rangoEdadNombre'] = 'Cualquier edad';
             return;
         }
 
