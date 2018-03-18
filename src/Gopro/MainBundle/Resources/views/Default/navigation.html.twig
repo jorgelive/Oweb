@@ -1,16 +1,26 @@
-<div class="btn-group btn-group-justified btn-group-md">
-    {% for item in items %}
-        {% if item.route is defined %}
-            <a class="btn btn-primary" href="{{ path(item.route) }}">
-                {{ item.nombre }}
-            </a>
-        {% elseif item.url %}
-            <a class="btn btn-primary" href="http://{{ item.url }}">
-                {{ item.nombre }}
-            </a>
-        {% else %}
+<li class="c-menu-type-classic">
+    <a href="javascript:;" class="c-link dropdown-toggle">Funciones
+        <span class="c-arrow c-toggler"></span>
+    </a>
+    <ul class="dropdown-menu c-menu-type-classic c-pull-left">
+        {% for item in items %}
+            <li>
+                {% if item.route is defined %}
+                    <a href="{{ path(item.route) }}">
+                        {{ item.nombre }}
+                    </a>
+                {% elseif item.url %}
+                    <a href="http://{{ item.url }}">
+                        {{ item.nombre }}
+                    </a>
+                {% else %}
 
-        {% endif %}
-    {% endfor %}
-</div>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</li>
+
+
+
 

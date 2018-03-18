@@ -98,6 +98,7 @@ class Resumen implements ContainerAwareInterface
                 $pasajerosAux['tipodocumento'] = $pasajero->getTipodocumento()->getNombre();
                 $pasajerosAux['numerodocumento'] = $pasajero->getNumerodocumento();
                 $pasajerosAux['fechanacimiento'] = $pasajero->getFechanacimiento()->format('Y/m/d');
+                $pasajerosAux['edad'] = $pasajero->getEdad();
                 $datosCotizacion['pasajeros'][] = $pasajerosAux;
             endforeach;
         }

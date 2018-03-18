@@ -193,6 +193,20 @@ class Filepasajero
         return $this->fechanacimiento;
     }
 
+
+    /**
+     * Get edad.
+     *
+     * @return int
+     */
+    public function getEdad()
+    {
+        $hoy = new \DateTime();
+        $diferencia = $hoy->diff($this->fechanacimiento);
+
+        return $diferencia->y;
+    }
+
     /**
      * Set numerodocumento.
      *

@@ -2,8 +2,6 @@
 /web/components/
 /web/carga/*
 !/web/carga/archivos/.gitkeep
-/web/js/
-/web/css/
 /web/assetic/
 /app/bootstrap.php.cache
 /app/config/parameters.yml

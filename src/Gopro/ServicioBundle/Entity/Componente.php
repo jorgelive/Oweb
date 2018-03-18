@@ -70,6 +70,7 @@ class Componente implements TranslatableInterface
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Gopro\ServicioBundle\Entity\Tarifa", mappedBy="componente", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"nombre" = "ASC"})
      */
     private $tarifas;
 

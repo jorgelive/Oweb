@@ -1,83 +1,258 @@
 <!DOCTYPE html>
+<!--[if IE 9]> <html lang="es" class="ie9"> <![endif]-->
+<!--[if !IE]><!-->
 <html lang="es">
-<head>
-    <title>{% block title %}Bienvenidos a OpenPeru{% endblock title %}</title>
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
+    <head>
+        <title>{% block title %}Bienvenidos a OpenPeru{% endblock title %}</title>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 
-    {% block stylesheets %}
-        {% stylesheets filter='css_url_rewrite' '@bootstrap_css' '@GoproMainBundle/Resources/public/css/*' %}
-            <link type="text/css" rel="stylesheet" href="{{ asset_url }}" media="screen"/>
-        {% endstylesheets %}
+        <meta content="" name="description" />
+        <meta content="" name="author" />
 
-    {% endblock stylesheets%}
+        {% block stylesheets %}
 
-    {% block javascripts %}
-        {% javascripts '@jquery' '@bootstrap_js''@GoproMainBundle/Resources/public/js/*' %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-    {% endblock javascripts %}
+            <!-- BEGIN GLOBAL MANDATORY STYLES -->
+            <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300italic,400italic,700italic,400,300,700&amp;subset=all' rel='stylesheet' type='text/css'>
+            <link href="{{ asset('vendor/socicon/socicon.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('vendor/bootstrap-social/bootstrap-social.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('vendor/simple-line-icons/simple-line-icons.min.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('vendor/animate/animate.min.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('vendor/jquery-upload-file/css/uploadfile.css') }}" rel="stylesheet" type="text/css" />
+            <!-- END GLOBAL MANDATORY STYLES -->
+            <!-- BEGIN: BASE PLUGINS  -->
+            <link href="{{ asset('vendor/revo-slider/css/settings.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('vendor/revo-slider/css/layers.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('vendor/revo-slider/css/navigation.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('vendor/cubeportfolio/css/cubeportfolio.min.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('vendor/owl-carousel/assets/owl.carousel.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('vendor/fancybox/jquery.fancybox.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('vendor/slider-for-bootstrap/css/slider.css') }}" rel="stylesheet" type="text/css" />
+            <!-- END: BASE PLUGINS -->
+            <!-- BEGIN: PAGE STYLES -->
+            <link href="{{ asset('vendor/ilightbox/css/ilightbox.css') }}" rel="stylesheet" type="text/css" />
+            <!-- END: PAGE STYLES -->
+            <!-- BEGIN THEME STYLES -->
+            <link href="{{ asset('css/plugins.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('css/components.css') }}" id="style_components" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('css/themes/default.css') }}" rel="stylesheet" id="style_theme" type="text/css" />
+            <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css" />
+            <!-- END THEME STYLES -->
+
+        {% endblock stylesheets%}
+
+
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
 </head>
-<body>
-{% block body %}
-<div class="container">
-    <div class="jumbotron" id="header">
-        {% block header %}
-        <div id='titulo'><h2>{% block titulo %}{% endblock titulo %}</h2></div>
-        <div id="loginStatus">
+<body class="c-layout-header-fixed c-layout-header-mobile-fixed">
+<!-- BEGIN: LAYOUT/HEADERS/HEADER-1 -->
+<!-- BEGIN: HEADER -->
+{% block header %}
+    <header class="c-layout-header c-layout-header-4 c-layout-header-default-mobile" data-minimize-offset="80">
+        <div class="c-navbar">
+            <div class="container">
+                <!-- BEGIN: BRAND -->
+                <div class="c-navbar-wrapper clearfix">
+                    <div class="c-brand c-pull-left">
+                        <a href="{{ url('gopro_main') }}" class="c-logo">
+                            <img src="{{ asset('images/logo-desktop.png') }}" alt="OPENPERU" class="c-desktop-logo">
+                            <img src="{{ asset('images/logo-desktop.png') }}" alt="OPENPERU" class="c-desktop-logo-inverse">
+                            <img src="{{ asset('images/logo-movil.png') }}" alt="OPENPERU" class="c-mobile-logo"> </a>
+                        <button class="c-hor-nav-toggler" type="button" data-target=".c-mega-menu">
+                            <span class="c-line"></span>
+                            <span class="c-line"></span>
+                            <span class="c-line"></span>
+                        </button>
+                        <button class="c-topbar-toggler" type="button">
+                            <i class="fa fa-ellipsis-v"></i>
+                        </button>
+                        <button class="c-search-toggler" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        <button class="c-cart-toggler" type="button">
+                            <i class="icon-user"></i>
+                            <span class="c-cart-number c-theme-bg">2</span>
+                        </button>
+                    </div>
+                    <!-- END: BRAND -->
+                    <!-- BEGIN: QUICK SEARCH -->
+                    <form class="c-quick-search" action="#">
+                        <input type="text" name="query" placeholder="Type to search..." value="" class="form-control" autocomplete="off">
+                        <span class="c-theme-link">&times;</span>
+                    </form>
+                    <!-- END: QUICK SEARCH -->
+                    <!-- BEGIN: HOR NAV -->
+                    <!-- BEGIN: LAYOUT/HEADERS/MEGA-MENU -->
+                    <!-- BEGIN: MEGA MENU -->
+                    <!-- Dropdown menu toggle on mobile: c-toggler class can be applied to the link arrow or link itself depending on toggle mode -->
+                    <nav class="c-mega-menu c-pull-right c-mega-menu-dark c-mega-menu-dark-mobile c-fonts-uppercase c-fonts-bold">
+                        <ul class="nav navbar-nav c-theme-nav">
 
-            {% if  is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
-                <a href="{{ path('sonata_user_admin_security_logout') }}">
-                    {{ 'user_block_logout'|trans({}, 'SonataUserBundle') }}
-                </a>
-            {% else %}
+                            {{ render(controller('GoproMainBundle:Default:navigation')) }}
 
-                <a href="{{ path('sonata_user_admin_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
-            {% endif %}
-        </div>
-        {% endblock header %}
-    </div>
+                            <li class="c-search-toggler-wrapper">
+                                <a href="#" class="c-btn-icon c-search-toggler">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                            </li>
+                            <li class="c-cart-toggler-wrapper">
+                                <a href="#" class="c-btn-icon c-cart-toggler">
+                                    <i class="icon-user c-cart-icon"></i>
+                                    <span class="c-cart-number c-theme-bg">2</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- END: MEGA MENU -->
+                    <!-- END: LAYOUT/HEADERS/MEGA-MENU -->
+                    <!-- END: HOR NAV -->
+                </div>
+                <!-- BEGIN: LAYOUT/HEADERS/QUICK-CART -->
+                <!-- BEGIN: USER MENU -->
+                <div class="c-cart-menu">
 
-    <div id='navigation'>
-        {% block navigation %}
-            {{ render(controller('GoproMainBundle:Default:navigation')) }}
-        {% endblock navigation %}
-    </div>
+                    {% if  is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        <div class="c-cart-menu-title">
+                            <p class="c-cart-menu-float-l c-font-sbold">
+                                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}
+                            </p>
+                        </div>
 
-    <br />
-
-    <div id="sessionFlash">
-        {% block sesionflash %}
-            {% for type, messages in app.session.flashBag.all %}
-                {% for message in messages %}
-                    {% if type == 'error' %}
-                        <div class="alert alert-danger">
-                            {{ message}}
+                        <div class="c-cart-menu-footer">
+                            <a href="{{ path('sonata_user_admin_security_logout') }}" class="btn btn-md c-btn c-btn-square c-theme-btn c-font-white c-font-bold c-center c-font-uppercase">
+                                {{ 'user_block_logout'|trans({}, 'SonataUserBundle') }}
+                            </a>
                         </div>
                     {% else %}
-                        <div class="alert alert-success">
-                            {{ message }}
+                        <div class="c-cart-menu-title">
+                            <p class="c-cart-menu-float-l c-font-sbold">
+                                Por favor registrese
+                            </p>
+                        </div>
+
+                        <div class="c-cart-menu-footer">
+                            <a href="{{ path('sonata_user_admin_security_login') }}" class="btn btn-md c-btn c-btn-square c-theme-btn c-font-white c-font-bold c-center c-font-uppercase">
+                                {{ 'layout.login'|trans({}, 'FOSUserBundle') }}
+                            </a>
                         </div>
                     {% endif %}
+                </div>
+                <!-- END: USER MENU -->
+                <!-- END: LAYOUT/HEADERS/QUICK-CART -->
+            </div>
+        </div>
+    </header>
+{% endblock header %}
 
-                {% endfor %}
-            {% endfor %}
-        {% endblock sesionflash %}
-    </div>
+<!-- END: HEADER -->
+<!-- BEGIN: PAGE CONTAINER -->
+{% block body %}
+    <div class="c-layout-page">
+        <!-- BEGIN: LAYOUT/BREADCRUMBS/BREADCRUMBS-1 -->
+        {% block breadcrumb %}
+        {% endblock breadcrumb %}
+        <!-- END: LAYOUT/BREADCRUMBS/BREADCRUMBS-1 -->
 
-    <div id="mainContent">
-        {% block maincontent %}
-        {% endblock maincontent %}
+        <div class="c-content-box c-size-md c-bg-white">
+            <div class="container">
+                <div id="sessionFlash">
+                    {% block sesionflash %}
+                        {% for type, messages in app.session.flashBag.all %}
+                            {% for message in messages %}
+                                {% if type == 'error' %}
+                                    <div class="alert alert-danger">
+                                        {{ message}}
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-success">
+                                        {{ message }}
+                                    </div>
+                                {% endif %}
+
+                            {% endfor %}
+                        {% endfor %}
+                    {% endblock sesionflash %}
+                </div>
+                {% block maincontent %}
+                {% endblock maincontent %}
+            </div>
+        </div>
     </div>
 {% endblock body %}
+
+
 {% block plantillasajax %}
     {{ source("GoproMainBundle:Rawhtml:highlight.html.twig") }}
     {{ source("GoproMainBundle:Rawhtml:error.html.twig") }}
     {{ source("GoproMainBundle:Rawhtml:archivorow.html.twig") }}
 {% endblock plantillasajax %}
-</div>
+
+{% block javascripts %}
+    <!-- BEGIN: CORE PLUGINS -->
+    <!--[if lt IE 9]>
+    <script src="{{ asset('vendor/excanvas/excanvas.js') }}"></script>
+    <![endif]-->
+
+    <script src="{{ asset('vendor/jquery/jquery.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/jquery-serialize-object/jquery.serializeObject.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/jquery-upload-file/js/jquery.uploadfile.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/tmpl/tmpl.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/jquery-migrate/jquery-migrate.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/reveal-animate/wow.js') }}" type="text/javascript"></script>
+    <!-- END: CORE PLUGINS -->
+    <!-- BEGIN: LAYOUT PLUGINS -->
+    <script src="{{ asset('vendor/revo-slider/js/jquery.themepunch.tools.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/revo-slider/js/jquery.themepunch.revolution.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/revo-slider/js/extensions/revolution.extension.slideanims.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/revo-slider/js/extensions/revolution.extension.layeranimation.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/revo-slider/js/extensions/revolution.extension.navigation.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/revo-slider/js/extensions/revolution.extension.video.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/revo-slider/js/extensions/revolution.extension.parallax.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/cubeportfolio/js/jquery.cubeportfolio.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/owl-carousel/owl.carousel.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/counterup/jquery.waypoints.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/counterup/jquery.counterup.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/fancybox/jquery.fancybox.pack.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/smooth-scroll/jquery.smooth-scroll.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/typed/typed.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/slider-for-bootstrap/js/bootstrap-slider.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/js-cookie/js.cookie.js') }}" type="text/javascript"></script>
+
+    <script src="{{ asset('vendor/isotope/isotope.pkgd.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/isotope/imagesloaded.pkgd.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/isotope/packery-mode.pkgd.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/ilightbox/js/jquery.requestAnimationFrame.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/ilightbox/js/jquery.mousewheel.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/ilightbox/js/ilightbox.packed.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/revo-slider/js/extensions/revolution.extension.parallax.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('vendor/revo-slider/js/extensions/revolution.extension.kenburn.min.js') }}" type="text/javascript"></script>
+    <!-- END: LAYOUT PLUGINS -->
+    <!-- BEGIN: THEME SCRIPTS -->
+    <script src="{{ asset('js/components.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/components-shop.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/app.js') }}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function()
+        {
+            App.init(); // init core
+        });
+    </script>
+    <!-- END: THEME SCRIPTS -->
+    <!-- BEGIN: PAGE SCRIPTS -->
+    <script src="{{ asset('js/archivoForm.js') }}"></script>
+    <script src="{{ asset('js/jquery.goproBorrarFila.js') }}"></script>
+    <!-- END: PAGE SCRIPTS -->
+
+{% endblock javascripts %}
+
 </body>
 </html>

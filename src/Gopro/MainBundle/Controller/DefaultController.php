@@ -29,9 +29,10 @@ class DefaultController extends Controller
     public function navigationAction()
     {
         $items=array(
-            array('nombre'=>'Inicio','route'=>'gopro_main'),
             array('nombre'=>'Admin','route'=>'sonata_admin_dashboard'),
             array('nombre'=>'Servicios','route'=>'admin_gopro_transporte_servicio_list'),
+            array('nombre'=>'Files','route'=>'admin_gopro_cotizacion_file_list'),
+            array('nombre'=>'Cotizaciones','route'=>'admin_gopro_cotizacion_cotizacion_list'),
             array('nombre'=>'Cargador','route'=>'gopro_transporte_cargador_genericoprograma'),
         );
         return array('items'=> $items);

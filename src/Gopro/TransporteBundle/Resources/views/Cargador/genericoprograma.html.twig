@@ -1,11 +1,8 @@
-{% extends 'GoproTransporteBundle::layout.html.twig' %}
+{% extends 'GoproMainBundle::global.html.twig' %}
 {% block title %}Cargador de Servicios{% endblock title %}
-{% block titulo %}Cargador de Servicios{% endblock titulo %}
 
 {% block sesionflash %}
-
     {% for mensaje in mensajes %}
-
         {% if mensaje.tipo == 'error' %}
             <div class="alert alert-danger">
                 {{ mensaje.contenido}}
@@ -20,10 +17,23 @@
             </div>
 
         {% endif %}
-
-
     {% endfor %}
 {% endblock sesionflash %}
+
+{% block breadcrumb %}
+    <div class="c-layout-breadcrumbs-1 c-fonts-uppercase c-fonts-bold">
+        <div class="container">
+            <div class="c-page-title c-pull-left">
+                <h3 class="c-font-uppercase c-font-sbold">{% block titulo %}{% endblock titulo %}</h3>
+            </div>
+            <ul class="c-page-breadcrumbs c-theme-nav c-pull-right c-fonts-regular">
+                <li><a href="{{ url('gopro_main') }}">Inicio</a></li>
+                <li>/</li>
+                <li class="c-state_active">Funciones</li>
+            </ul>
+        </div>
+    </div>
+{% endblock breadcrumb %}
 
 {% block maincontent %}
 

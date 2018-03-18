@@ -127,24 +127,12 @@ class TarifaAdmin extends AbstractAdmin
             ])
             ->add('moneda')
             ->add('monto')
-            ->add('validezinicio', 'sonata_type_date_picker', [
-                'label' => 'Inicio',
-                'dp_use_current' => true,
-                'dp_show_today' => true,
-                'format'=> 'yyyy/MM/dd'
-            ])
-            ->add('validezfin', 'sonata_type_date_picker', [
-                'label' => 'Fin',
-                'dp_use_current' => true,
-                'dp_show_today' => true,
-                'format'=> 'yyyy/MM/dd'
-            ])
             ->add('prorrateado')
-            ->add('tipopax', null, [
-                'label' => 'Tipo de pasajero'
-            ])
             ->add('tipotarifa', null, [
                 'label' => 'Tipo de tarifa'
+            ])
+            ->add('tipopax', null, [
+                'label' => 'Tipo de pasajero'
             ])
             ->add('capacidadmin', null, [
                 'label' => 'Cantidad min'
@@ -157,6 +145,18 @@ class TarifaAdmin extends AbstractAdmin
             ])
             ->add('edadmax', null, [
                 'label' => 'Edad max'
+            ])
+            ->add('validezinicio', 'sonata_type_date_picker', [
+                'label' => 'Inicio',
+                'dp_use_current' => true,
+                'dp_show_today' => true,
+                'format'=> 'yyyy/MM/dd'
+            ])
+            ->add('validezfin', 'sonata_type_date_picker', [
+                'label' => 'Fin',
+                'dp_use_current' => true,
+                'dp_show_today' => true,
+                'format'=> 'yyyy/MM/dd'
             ])
             ->add('categoriatour', null, [
                 'label' => 'Categoria de tour'

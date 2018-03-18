@@ -77,6 +77,7 @@ class Servicio implements TranslatableInterface
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Gopro\ServicioBundle\Entity\Itinerario", mappedBy="servicio", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"nombre" = "ASC"})
      */
     private $itinerarios;
 

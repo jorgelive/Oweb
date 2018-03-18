@@ -23,9 +23,8 @@
         "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
     },
         "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.1.0",
         "beberlei/DoctrineExtensions": "dev-master",
-        "components/jquery": "1.11.1",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
         "fkr/cssurlrewrite-bundle": "*",
@@ -46,8 +45,7 @@
         "symfony/monolog-bundle": "^3.1.0",
         "symfony/swiftmailer-bundle": "^2.3.10",
         "symfony/symfony": "3.4.*",
-        "twig/extensions": "dev-master",
-        "twitter/bootstrap": "3.*"
+        "twig/extensions": "dev-master"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
