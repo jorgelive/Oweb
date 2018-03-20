@@ -7,6 +7,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpKernel\Exception\HttpException as HttpException;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Security\Http\AccessMap;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\Request;
 
 class Eventsfinder
 {
@@ -14,10 +17,8 @@ class Eventsfinder
     protected $container;
     protected $calendars;
     protected $manager;
-    protected $parameters;
-    protected $name;
-    protected $repositorymethod;
     protected $repository;
+    protected $options;
 
     public function __construct(ManagerRegistry $managerRegistry, Container $container)
     {
@@ -31,23 +32,25 @@ class Eventsfinder
         if(!array_key_exists($calendar, $this->calendars)){
             throw new HttpException(500, sprintf("El calendario %s no esta en los parametros de configuración.", $calendar));
         }
-        $this->name = $this->calendars[$calendar]['entity'];
-        $this->parameters = $this->calendars[$calendar]['parameters'];
-        $this->repositorymethod = $this->calendars[$calendar]['repositorymethod'];
+        $this->options['name'] = $this->calendars[$calendar]['entity'];
+        $this->options['parameters'] = $this->calendars[$calendar]['parameters'];
+        $this->options['repositorymethod'] = $this->calendars[$calendar]['repositorymethod'];
+        $this->options['show'] = $this->calendars[$calendar]['show'];
+        $this->options['edit'] = $this->calendars[$calendar]['edit'];
 
-        $this->manager = $this->managerRegistry->getManagerForClass($this->name);
-        $this->repository = $this->manager->getRepository($this->name);
+        $this->manager = $this->managerRegistry->getManagerForClass($this->options['name']);
+        $this->repository = $this->manager->getRepository($this->options['name']);
     }
 
     public function getEvents($dataFrom, $dataTo) {
 
-        if(!empty($this->repositorymethod)){
-            return $this->repository->{$this->repositorymethod}($dataFrom, $dataTo);
+        if(!empty($this->options['repositorymethod'])){
+            return $this->repository->{$this->options['repositorymethod']}($dataFrom, $dataTo);
         }else{
             $qb = $this->manager->createQueryBuilder()
                 ->select('c')
-                ->from($this->name, 'c')
-                ->where('c.'. $this->parameters['start'] . ' BETWEEN :firstDate AND :lastDate')
+                ->from($this->options['name'], 'c')
+                ->where('c.'. $this->options['parameters']['start'] . ' BETWEEN :firstDate AND :lastDate')
                 ->setParameter('firstDate', $dataFrom)
                 ->setParameter('lastDate', $dataTo)
             ;
@@ -58,31 +61,39 @@ class Eventsfinder
 
     public function serialize($elements) {
         $result = [];
-        $i=0;
-        foreach ($elements as $element) {
-            foreach ($this->parameters as $key => $parameter){
-                if(strpos($parameter, '.') > 0){
-                    $methods = explode('.', $parameter);
-                }else{
-                    $methods = [$parameter];
-                }
 
-                $clonedElement = clone $element; //var_dump($element);
-                foreach ($methods as $method){
-                    $methodFormated = 'get' . ucfirst($method);
-                    $clonedElement = $clonedElement->$methodFormated();
-                }
+        if(true === $this->container->get('security.authorization_checker')->isGranted($this->options['show']['role'])){
+            $i=0;
+            foreach ($elements as $element) {
+                foreach ($this->options['parameters'] as $key => $parameter){
+                    if(strpos($parameter, '.') > 0){
+                        $methods = explode('.', $parameter);
+                    }else{
+                        $methods = [$parameter];
+                    }
 
-                if($key == 'start' || $key == 'end'){
-                    $result[$i][$key] = $clonedElement->format("Y-m-d\TH:i:sP");
-                }elseif($key == 'url'){
-                    $result[$i][$key] = $this->container->get('router')->generate('admin_gopro_transporte_servicio_show', ['id' => $clonedElement]);
-                }else{
-                    $result[$i][$key] = $clonedElement;
-                }
+                    $clonedElement = clone $element; //var_dump($element);
+                    foreach ($methods as $method){
+                        $methodFormated = 'get' . ucfirst($method);
+                        $clonedElement = $clonedElement->$methodFormated();
+                    }
 
+                    if($key == 'start' || $key == 'end'){
+                        $result[$i][$key] = $clonedElement->format("Y-m-d\TH:i:sP");
+                    }elseif($key == 'url'){
+                        if(true === $this->container->get('security.authorization_checker')->isGranted($this->options['edit']['role'])){
+                            $result[$i][$key] = $this->container->get('router')->generate($this->options['edit']['route'], ['id' => $clonedElement]);
+                        }else{
+                            $result[$i][$key] = $this->container->get('router')->generate($this->options['show']['route'], ['id' => $clonedElement]);
+                        }
+
+                    }else{
+                        $result[$i][$key] = $clonedElement;
+                    }
+
+                }
+                $i++;
             }
-            $i++;
         }
         return json_encode($result);
     }

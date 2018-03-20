@@ -48,7 +48,6 @@
                         return $this;
                     },
                     fitdatetime: function (event){
-
                         return methods.resizelement.call($(this).find("input").first());
                     },
                     fit: function (event) {
@@ -56,22 +55,16 @@
                     },
                     resizelement : function () {
                         $this = this;
-                        var disminuir = 50;
-                        if ($this.attr('type') === "number"){
-                            disminuir = 20;
-                        }
-                        if($this.get(0).tagName.toLowerCase() === "textarea" || $this.get(0).tagName.toLowerCase() === 'input') {
-                            val = $this.val().replace(' ', '-');
-                        } else{
-                            val = $this.text().replace(' ', '-');
-                        }
+                        val = $this.val().replace(' ', '-');
+
                         var fontSize = $this.css('font-size');
-                        var padding = $this.outerWidth() - $this.width();
-                        var elemento = $('<span style="font-size: ' + fontSize + '; padding: 0 ' + padding / 2 + 'px; display: inline-block; position: absolute; visibility: hidden;">' + val + '</span>').appendTo('body');
+                        var elemento = $('<span style="font-size: ' + fontSize + '; padding: 0; display: inline-block; position: absolute; ">' + val + '</span>').appendTo('body');
+
                         var contentWidth = elemento.outerWidth();
 
-                        $this.width((contentWidth + padding - disminuir) + 'px');
+                        $this.width((contentWidth) + 'px');
 
+                        elemento.remove();
                         return $this;
                     }
                 };

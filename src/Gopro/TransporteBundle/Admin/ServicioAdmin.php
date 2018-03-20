@@ -103,7 +103,6 @@ class ServicioAdmin extends AbstractAdmin
                 )
             ])
             ->add('dependencia.organizacion', null, [
-                'route' => ['name' => 'show'],
                 'label' => 'Cliente'
             ])
             ->add('unidad')
@@ -138,7 +137,6 @@ class ServicioAdmin extends AbstractAdmin
                 'format' => 'H:i'
             ])
             ->add('dependencia.organizacion', null, [
-                'route' => ['name' => 'show'],
                 'label' => 'Cliente'
             ])
             ->add('unidad', null, [
@@ -233,7 +231,6 @@ class ServicioAdmin extends AbstractAdmin
             ])
             ->add('nombre')
             ->add('dependencia.organizacion', null, [
-                'route' => ['name' => 'show'],
                 'label' => 'Cliente'
             ])
             ->add('unidad', null, [

@@ -16,6 +16,12 @@ gopro_fullcalendar:
         transporte_servicio_conductor:
             entity: 'GoproTransporteBundle:Servicio'
             repositorymethod: 'findCalendarConductorColored'
+            show:
+                route: 'admin_gopro_transporte_servicio_show'
+                role: 'ROLE_TRANSPORTES_GUEST'
+            edit:
+                route: 'admin_gopro_transporte_servicio_edit'
+                role: 'ROLE_TRANSPORTES_EDITOR'
             parameters:
                 title: 'resumen'
                 start: 'fechahorainicio'
@@ -25,6 +31,12 @@ gopro_fullcalendar:
         transporte_servicio_unidad:
             entity: 'GoproTransporteBundle:Servicio'
             repositorymethod: 'findCalendarUnidadColored'
+            show:
+                route: 'admin_gopro_transporte_servicio_show'
+                role: 'ROLE_TRANSPORTES_GUEST'
+            edit:
+                route: 'admin_gopro_transporte_servicio_edit'
+                role: 'ROLE_TRANSPORTES_EDITOR'
             parameters:
                 title: 'resumen'
                 start: 'fechahorainicio'
