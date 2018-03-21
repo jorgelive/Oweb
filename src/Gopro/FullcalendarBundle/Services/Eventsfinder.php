@@ -45,7 +45,10 @@ class Eventsfinder
     public function getEvents($dataFrom, $dataTo) {
 
         if(!empty($this->options['repositorymethod'])){
-            return $this->repository->{$this->options['repositorymethod']}($dataFrom, $dataTo);
+
+            $user = $this->container->get('security.token_storage')->getToken()->getUser();
+
+            return $this->repository->{$this->options['repositorymethod']}($dataFrom, $dataTo, $user);
         }else{
             $qb = $this->manager->createQueryBuilder()
                 ->select('c')

@@ -77,6 +77,9 @@ class ConductorAdmin extends AbstractAdmin
             ->add('user.fullname', null, [
                 'label'=>'Nombre'
             ])
+            ->add('user.phone', null, [
+                'label' => 'Teléfono'
+            ])
             ->add('licencia')
             ->add('abreviatura')
             ->add('color')

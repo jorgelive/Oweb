@@ -101,16 +101,40 @@ class ServicioAdmin extends AbstractAdmin
                         'Menor a' => 4
                     )
                 )
-            ])
-            ->add('dependencia.organizacion', null, [
-                'label' => 'Cliente'
-            ])
+            ]);
+
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        if($user && $user->getDependencia() && $user->getDependencia()->getId() == 1) {
+            $datagridMapper
+                ->add('dependencia.organizacion', null, [
+                    'label' => 'Cliente'
+                ]);
+        }
+
+        $datagridMapper
             ->add('unidad')
             ->add('conductor')
             ->add('nombre')
         ;
     }
 
+
+    public function createQuery($context = 'list')
+    {
+        $query = parent::createQuery($context);
+
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        if($user && $user->getDependencia() && $user->getDependencia()->getId() != 1){
+            $user->getDependencia()->getId();
+            $rootAlias = $query->getRootAliases()[0];
+            $query->andWhere(
+                $query->expr()->eq($rootAlias.'.dependencia', ':dependencia')
+            );
+            $query->setParameter(':dependencia', $user->getDependencia()->getId());
+        }
+
+        return $query;
+    }
 
 
     /**
@@ -135,10 +159,17 @@ class ServicioAdmin extends AbstractAdmin
             ->add('fechahorafin',  null, [
                 'label' => 'Fin',
                 'format' => 'H:i'
-            ])
-            ->add('dependencia.organizacion', null, [
-                'label' => 'Cliente'
-            ])
+            ]);
+
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        if($user && $user->getDependencia() && $user->getDependencia()->getId() == 1) {
+            $listMapper
+                ->add('dependencia.organizacion', null, [
+                    'label' => 'Cliente'
+                ]);
+        }
+
+        $listMapper
             ->add('unidad', null, [
                 'associated_property' => 'abreviatura',
                 'route' => ['name' => 'show']
@@ -229,10 +260,17 @@ class ServicioAdmin extends AbstractAdmin
                 'label' => 'Inicio',
                 'format' => 'Y/m/d H:i'
             ])
-            ->add('nombre')
-            ->add('dependencia.organizacion', null, [
-                'label' => 'Cliente'
-            ])
+            ->add('nombre');
+
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        if($user && $user->getDependencia() && $user->getDependencia()->getId() == 1) {
+            $showMapper
+                ->add('dependencia.organizacion', null, [
+                    'label' => 'Cliente'
+                ]);
+        }
+
+        $showMapper
             ->add('unidad', null, [
                 'route' => ['name' => 'show']
             ])

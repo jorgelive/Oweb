@@ -28,13 +28,24 @@ class DefaultController extends Controller
      */
     public function navigationAction()
     {
-        $items=array(
-            array('nombre'=>'Admin','route'=>'sonata_admin_dashboard'),
-            array('nombre'=>'Servicios','route'=>'admin_gopro_transporte_servicio_list'),
-            array('nombre'=>'Files','route'=>'admin_gopro_cotizacion_file_list'),
-            array('nombre'=>'Cotizaciones','route'=>'admin_gopro_cotizacion_cotizacion_list'),
-            array('nombre'=>'Cargador','route'=>'gopro_transporte_cargador_genericoprograma'),
-        );
-        return array('items'=> $items);
+        $menu[] = [ 'nombre' => 'Transportes', 'items' => [
+
+            ['nombre'=>'Servicios', 'route'=>'admin_gopro_transporte_servicio_list']
+        ]
+        ];
+
+        $menu[] = [ 'nombre' => 'Reservas', 'items' => [
+            ['nombre'=>'Files', 'route'=>'admin_gopro_cotizacion_file_list'],
+            ['nombre'=>'Cotizaciones', 'route'=>'admin_gopro_cotizacion_cotizacion_list'],
+        ]
+        ];
+
+        $menu[] = [ 'nombre' => 'Administrador', 'items' => [
+
+            ['nombre' => 'Admin', 'route'=>'sonata_admin_dashboard'],
+            ['nombre'=>'Cargador', 'route'=>'gopro_transporte_cargador_genericoprograma'],
+        ]
+        ];
+        return array('menu'=> $menu);
     }
 }

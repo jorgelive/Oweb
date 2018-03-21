@@ -1,25 +1,27 @@
-<li class="c-menu-type-classic">
-    <a href="javascript:;" class="c-link dropdown-toggle">Funciones
-        <span class="c-arrow c-toggler"></span>
-    </a>
-    <ul class="dropdown-menu c-menu-type-classic c-pull-left">
-        {% for item in items %}
-            <li>
-                {% if item.route is defined %}
-                    <a href="{{ path(item.route) }}">
-                        {{ item.nombre }}
-                    </a>
-                {% elseif item.url %}
-                    <a href="http://{{ item.url }}">
-                        {{ item.nombre }}
-                    </a>
-                {% else %}
+{% for elemento in menu %}
+    <li class="c-menu-type-classic">
+        <a href="javascript:;" class="c-link dropdown-toggle">{{ elemento.nombre }}
+            <span class="c-arrow c-toggler"></span>
+        </a>
+        <ul class="dropdown-menu c-menu-type-classic c-pull-left">
+            {% for item in elemento.items %}
+                <li>
+                    {% if item.route is defined %}
+                        <a href="{{ path(item.route) }}">
+                            {{ item.nombre }}
+                        </a>
+                    {% elseif item.url %}
+                        <a href="http://{{ item.url }}">
+                            {{ item.nombre }}
+                        </a>
+                    {% else %}
 
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-</li>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </li>
+{% endfor %}
 
 
 
