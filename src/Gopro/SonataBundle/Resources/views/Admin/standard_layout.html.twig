@@ -4,6 +4,7 @@
     {{ parent() }}
     <link href="{{ asset('bundles/goprofullcalendar/css/fullcalendar.min.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/goprofullcalendar/css/fullcalendar.print.min.css') }}" rel="stylesheet" media="print">
+    <link href="{{ asset('bundles/goprofullcalendar/css/scheduler.min.css') }}" rel="stylesheet">
 
     {% stylesheets
         '@SonataTranslationBundle/Resources/public/css/sonata-translation.css'
@@ -76,7 +77,7 @@
 
     <script src="{{ asset('bundles/goprofullcalendar/js/fullcalendar.min.js') }}"></script>
     <script src="{{ asset('bundles/goprofullcalendar/js/locale-all.js') }}"></script>
-    <script src="{{ asset('bundles/goprofullcalendar/js/gcal.min.js') }}"></script>
+    <script src="{{ asset('bundles/goprofullcalendar/js/scheduler.min.js') }}"></script>
 
     <script>
         $(document).ready(function() {

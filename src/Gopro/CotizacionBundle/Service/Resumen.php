@@ -593,12 +593,12 @@ class Resumen implements ContainerAwareInterface
 
         foreach ($claseTarifas as $keyClase => &$clase):
             //los prorrateados no modifican los rangos
-            if($clase['cantidad'] < $cantidadTotalPasajeros) {
+            if($clase['cantidad'] <= $cantidadTotalPasajeros) {
                 $voterIndex = $this->voter($clase, $cantidadTotalPasajeros);
 
                 if ($voterIndex !== false) {
 
-                    //paso elarray principal para adicionar elemento como esta por referencia
+                    //paso el array principal para adicionar elemento como esta por referencia
                     $this->modificarClasificacion($clase, $voterIndex, $clase['generarNuevo']);
                 }
             }

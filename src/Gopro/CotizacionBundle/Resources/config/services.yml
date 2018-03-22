@@ -35,6 +35,7 @@ services:
             - { name: sonata.admin, manager_type: orm, group: Cotizacion, label: Cotizaciones }
         calls:
             - [ setTemplate, [edit, GoproCotizacionBundle:CotizacionAdmin:edit.html.twig]]
+            - [ setTemplate, [list, GoproCotizacionBundle:CotizacionAdmin:list.html.twig]]
         public: true
 
     gopro_cotizacion.admin.cotservicio:

@@ -95,6 +95,7 @@ class Eventsfinder
                     }
 
                 }
+                $result[$i]['resourceId'] = 'a';
                 $i++;
             }
         }

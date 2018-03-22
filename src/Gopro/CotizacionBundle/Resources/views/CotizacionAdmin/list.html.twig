@@ -19,7 +19,7 @@
 {% block sonata_admin_content %}
 
     {% if admin.listmode == 'mosaic' %}
-        {{ fullCalendar({'Conductor' : 'transporte_servicio_conductor', 'Unidad' : 'transporte_servicio_unidad'}) }}
+        {{ fullCalendar({'Color por conductor' : 'transporte_servicio_conductor', 'Color por unidad' : 'transporte_servicio_unidad'}) }}
     {% else %}
         {{ parent() }}
     {% endif %}
