@@ -30,23 +30,23 @@ class fullCalendarExtension extends \Twig_Extension
     }
 
     public function generateUrl($calendar){
-        $exists = $this->_router->getRouteCollection()->get('gopro_fullcalendar_event_load');
+        $exists = $this->_router->getRouteCollection()->get('gopro_fullcalendar_load_event');
         if (null === $exists)
         {
             return null;
         }
 
-        return $this->_router->generate('gopro_fullcalendar_event_load', ['calendar' => $calendar]);
+        return $this->_router->generate('gopro_fullcalendar_load_event', ['calendar' => $calendar]);
     }
 
     public function generateResourceUrl($calendar){
-        $exists = $this->_router->getRouteCollection()->get('gopro_fullcalendar_resource_load');
+        $exists = $this->_router->getRouteCollection()->get('gopro_fullcalendar_load_resource');
         if (null === $exists)
         {
             return null;
         }
 
-        return $this->_router->generate('gopro_fullcalendar_resource_load', ['calendar' => $calendar]);
+        return $this->_router->generate('gopro_fullcalendar_load_resource', ['calendar' => $calendar]);
     }
 
     public function fullCalendar($calendars, $defaultView = 'agendaWeek', $allDaySlot = false)
@@ -64,6 +64,7 @@ class fullCalendarExtension extends \Twig_Extension
         }
 
         $arrayKeys = array_keys($calendarsUrls);
+        $defaultLabel = $calendarsUrls[$arrayKeys[0]]['nombre'];
         $defaultEventUrl = $calendarsUrls[$arrayKeys[0]]['event'];
         $defaultResourceUrl = $calendarsUrls[$arrayKeys[0]]['resource'];
 
@@ -74,67 +75,6 @@ class fullCalendarExtension extends \Twig_Extension
         }else{
             $allDaySlot = 'false';
         }
-
-        $old = <<<JS
-    $(document).ready(function() {
-
-        var resourceUrl = '$defaultResourceUrl';
-        
-        var data = $calendarsUrls;
-
-        var s = $("<select style=\"margin-top: 10px; margin-left: 10px;\" id=\"calendarSelector\" />");
-        
-        s.change(function() {
-            $('#calendar').fullCalendar('removeEventSources');
-            $('#calendar').fullCalendar('addEventSource', data[s.val()]['event'] )
-            resourceUrl = data[s.val()]['resources'];
-        })
-        
-        for(var val in data) {
-            $("<option />", {text: data[val]['nombre'], value: val}).appendTo(s);
-        }
-        $("#calendar").before(s);
-        
-        function getResources(handleData) {
-            $.ajax({
-                url: resourceUrl,
-                success:function(data) {
-                    handleData(data);
-                }
-            });
-        }
-        
-        $('#calendar').fullCalendar({
-            header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'timelineDay,timelineThreeDays,month,agendaWeek,agendaDay,listMonth'
-            },
-            views: {
-                timelineThreeDays: {
-                    type: 'timeline',
-                    duration: { days: 3 }
-                }
-            },
-            resourceLabelText: 'Rooms',
-            schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-            defaultView: '$defaultView',
-            navLinks: true,
-            editable: false,
-            eventLimit: true,
-            events: '$defaultEventUrl',
-            resources: function(callback) {
-                getResources(function(resourceObjects) {
-                    callback(resourceObjects);
-                });
-            },
-            allDaySlot: $allDaySlot,
-            locale: 'es',
-            nowIndicator: true
-        });
-    });
-
-JS;
 
         $script = <<<JS
     $(document).ready(function() {
@@ -148,7 +88,8 @@ JS;
         s.change(function() {
             $('#calendar').fullCalendar('removeEventSources');
             $('#calendar').fullCalendar('addEventSource', data[s.val()]['event'] )
-            resourceUrl = data[s.val()]['resources'];
+            resourceUrl = data[s.val()]['resource'];
+            $('#calendar').fullCalendar('option','resourceLabelText',data[s.val()]['nombre']);
         })
         
         for(var val in data) {
@@ -156,36 +97,50 @@ JS;
         }
         $("#calendar").before(s);
         
+        function getResources(start, end, timezone, handleData) {
+            var params = { start: start.format("YYYY-MM-DD"), end: end.format("YYYY-MM-DD") };
+            var strParams = jQuery.param( params );
+            
+            $.ajax({
+                url: resourceUrl + '?' + strParams,
+                success:function(data) {
+                    handleData(data);
+                }
+            });
+        }
+        
         $('#calendar').fullCalendar({
             resourceAreaWidth: 100,
-            aspectRatio: 1.5,
+            aspectRatio: 1,
             scrollTime: '00:00',
             header: {
-              left: 'promptResource today prev,next',
-              center: 'title',
-              right: 'timelineDay, timelineThreeDays, agendaWeek, listMonth'
+                left: 'promptResource today prev,next',
+                center: 'title',
+                right: 'agendaDay, agendaTwoDays, agendaWeek, month, listMonth'
             },
             defaultView: '$defaultView',
+            refetchResourcesOnNavigate: true,
             views: {
-              timelineThreeDays: {
-                type: 'timeline',
-                duration: { days: 3 }
-              }
+                agendaTwoDays: {
+                    type: 'agenda',
+                    duration: { days: 2 },
+                    groupByResource: true
+                    //groupByDateAndResource: true
+                }
             },
             schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-            resourceLabelText: 'Unidades',
+            resourceLabelText: '$defaultLabel',
             allDaySlot: $allDaySlot,
             locale: 'es',
             nowIndicator: true,
             navLinks: true,
             editable: false,
             eventLimit: true,
-            resources: [
-              { id: 'a', title: 'Op1' },
-              { id: 'b', title: 'Op2' },
-              { id: 'c', title: 'Op3' }
-        
-            ],
+            resources: function(callback, start, end, timezone) {
+                getResources(start, end, timezone, function(resourceObjects) {
+                    callback(resourceObjects);
+                });
+            },
             events: '$defaultEventUrl'
         });
     });

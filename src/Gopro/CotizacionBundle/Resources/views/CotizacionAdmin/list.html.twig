@@ -19,6 +19,9 @@
 {% block sonata_admin_content %}
 
     {% if admin.listmode == 'mosaic' %}
+        {% block notice %}
+            {% include '@SonataCore/FlashMessage/render.html.twig' %}
+        {% endblock notice %}
         {{ fullCalendar({'Color por conductor' : 'transporte_servicio_conductor', 'Color por unidad' : 'transporte_servicio_unidad'}) }}
     {% else %}
         {{ parent() }}

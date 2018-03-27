@@ -68,14 +68,8 @@ class Conductor
      */
     public function __toString()
     {
-        if(is_null($this->getUser()) || is_null($this->getUser()->getFullname())) {
-            return sprintf("Id: %s.", $this->getId());
-        }
-
-        return sprintf("%s", $this->getUser()->getFullname());
+        return $this->getNombre();
     }
-
-
 
     /**
      * Constructor
@@ -85,7 +79,20 @@ class Conductor
         $this->servicios = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    /**
+     * Get nombre
+     *
+     * @return string
+     */
+    public function getNombre(){
 
+        if(is_null($this->getUser()) || is_null($this->getUser()->getFullname())) {
+            return sprintf("Id: %s.", $this->getId());
+        }
+
+        return sprintf("%s", $this->getUser()->getFullname());
+
+    }
 
     /**
      * Get id
@@ -96,7 +103,6 @@ class Conductor
     {
         return $this->id;
     }
-
 
     /**
      * Set licencia

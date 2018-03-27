@@ -32,43 +32,64 @@ class Eventsfinder
         if(!array_key_exists($calendar, $this->calendars)){
             throw new HttpException(500, sprintf("El calendario %s no esta en los parametros de configuración.", $calendar));
         }
-        $this->options['name'] = $this->calendars[$calendar]['entity'];
+        $this->options['entity'] = $this->calendars[$calendar]['entity'];
         $this->options['parameters'] = $this->calendars[$calendar]['parameters'];
-        $this->options['repositorymethod'] = $this->calendars[$calendar]['repositorymethod'];
-        $this->options['show'] = $this->calendars[$calendar]['show'];
-        $this->options['edit'] = $this->calendars[$calendar]['edit'];
+        if(isset($this->calendars[$calendar]['resource'])) {
+            $this->options['resource'] = $this->calendars[$calendar]['resource'];
+        }
+        if(isset($this->options['repositorymethod']) && isset($this->options['relatedproperty'])){
+            throw new HttpException(500, 'Solo debe de haber uno de los dos parametros: repositorymethod o relatedproperty.');
+        }
 
-        $this->manager = $this->managerRegistry->getManagerForClass($this->options['name']);
-        $this->repository = $this->manager->getRepository($this->options['name']);
+        if(isset($this->calendars[$calendar]['repositorymethod'])){
+            $this->options['repositorymethod'] = $this->calendars[$calendar]['repositorymethod'];
+        }
+        if(isset($this->calendars[$calendar]['relatedproperty'])){
+            $this->options['relatedproperty'] = $this->calendars[$calendar]['relatedproperty'];
+        }
+
+        $this->manager = $this->managerRegistry->getManagerForClass($this->options['entity']);
+        $this->repository = $this->manager->getRepository($this->options['entity']);
     }
 
-    public function getEvents($dataFrom, $dataTo) {
+    public function getEvents($data) {
+
+        if(isset($this->options['relatedproperty']) && !isset($data['relatedPropertyId'])){
+            throw new HttpException(500, 'La propiedad relacionada debe estar especificada ya que existe en la configuración.');
+        }
 
         if(!empty($this->options['repositorymethod'])){
+            //Para consultas complejas
+            $data['user'] = $this->container->get('security.token_storage')->getToken()->getUser();
 
-            $user = $this->container->get('security.token_storage')->getToken()->getUser();
-
-            return $this->repository->{$this->options['repositorymethod']}($dataFrom, $dataTo, $user);
+            return $this->repository->{$this->options['repositorymethod']}($data);
         }else{
+            //Para consultas simples
             $qb = $this->manager->createQueryBuilder()
                 ->select('c')
-                ->from($this->options['name'], 'c')
-                ->where('c.'. $this->options['parameters']['start'] . ' BETWEEN :firstDate AND :lastDate')
-                ->setParameter('firstDate', $dataFrom)
-                ->setParameter('lastDate', $dataTo)
+                ->from($this->options['entity'], 'c')
+                ->where('c.'. $this->options['parameters']['start'] . ' BETWEEN :firstDate AND :lastDate');
+
+            if(isset($this->options['relatedproperty'])){
+                $qb->andWhere('c.' . $this->options['relatedproperty'] . ' = :relatedproperty')
+                    ->setParameter('relatedproperty', $data['relatePropertyId']);            }
+
+            $qb->setParameter('firstDate', $data['from'])
+                ->setParameter('lastDate', $data['to'])
             ;
             return $qb->getQuery()->getResult();
         }
 
     }
 
-    public function serialize($elements) {
-        $result = [];
+    public function serializeResources($elements) {
 
-        if(true === $this->container->get('security.authorization_checker')->isGranted($this->options['show']['role'])){
+        $result = [];
+        $aux = [];
+        if(isset($this->options['resource'])){
             $i=0;
             foreach ($elements as $element) {
-                foreach ($this->options['parameters'] as $key => $parameter){
+                foreach ($this->options['resource'] as $key => $parameter){
                     if(strpos($parameter, '.') > 0){
                         $methods = explode('.', $parameter);
                     }else{
@@ -81,23 +102,95 @@ class Eventsfinder
                         $clonedElement = $clonedElement->$methodFormated();
                     }
 
-                    if($key == 'start' || $key == 'end'){
-                        $result[$i][$key] = $clonedElement->format("Y-m-d\TH:i:sP");
-                    }elseif($key == 'url'){
-                        if(true === $this->container->get('security.authorization_checker')->isGranted($this->options['edit']['role'])){
-                            $result[$i][$key] = $this->container->get('router')->generate($this->options['edit']['route'], ['id' => $clonedElement]);
+                    if($key == 'id'){
+                        if(false !== array_search($clonedElement, $aux, true)){
+                            unset($result[$i]);
+                            $agregado = false;
+                            break;
                         }else{
-                            $result[$i][$key] = $this->container->get('router')->generate($this->options['show']['route'], ['id' => $clonedElement]);
+                            $aux[] = $clonedElement;
+                            $agregado = true;
                         }
-
-                    }else{
-                        $result[$i][$key] = $clonedElement;
                     }
-
+                    $result[$i][$key] = $clonedElement;
                 }
-                $result[$i]['resourceId'] = 'a';
-                $i++;
+                if($agregado === true){
+                    $i++;
+                }
+
             }
+
+            usort($result, function($a, $b) {
+                return $a['id'] <=> $b['id'];
+            });
+        }else{
+            $result[] = ['id' => 'default', 'title' => 'Default'];
+        }
+
+
+
+        return json_encode($result);
+    }
+
+    public function serialize($elements) {
+
+        $result = [];
+
+        $i=0;
+        foreach ($elements as $element) {
+            foreach ($this->options['parameters'] as $key => $parameter){
+                if($key == 'url'){ // el parametro url es array porceso el subparametro id
+                    $subject = $parameter['id'];
+                }else{
+                    $subject = $parameter;
+                }
+
+                if(strpos($subject, '.') > 0){
+                    $methods = explode('.', $subject);
+                }else{
+                    $methods = [$subject];
+                }
+
+                $clonedElement = clone $element; //var_dump($element);
+                foreach ($methods as $method){
+                    $methodFormated = 'get' . ucfirst($method);
+                    $clonedElement = $clonedElement->$methodFormated();
+                }
+
+                if($key == 'start' || $key == 'end'){
+                    $result[$i][$key] = $clonedElement->format("Y-m-d\TH:i:sP");
+                }elseif($key == 'url'){
+                    if(isset($parameter['edit']) && true === $this->container->get('security.authorization_checker')->isGranted($parameter['edit']['role'])){
+                        $result[$i]['url'] = $this->container->get('router')->generate($parameter['edit']['route'], ['id' => $clonedElement]);
+                    }elseif(isset($parameter['show']) && true === $this->container->get('security.authorization_checker')->isGranted($parameter['show']['role'])){
+                        $result[$i]['url'] = $this->container->get('router')->generate($parameter['show']['route'], ['id' => $clonedElement]);
+                    }
+                }else{
+                    $result[$i][$key] = $clonedElement;
+                }
+
+            }
+            if($this->options['resource']){
+                $clonedElement = clone $element;
+
+                if(strpos($this->options['resource']['id'], '.') > 0){
+                    $methods = explode('.', $this->options['resource']['id']);
+                }else{
+                    $methods = [$this->options['resource']['id']];
+                }
+
+                foreach ($methods as $method){
+                    $methodFormated = 'get' . ucfirst($method);
+                    $clonedElement = $clonedElement->$methodFormated();
+                }
+
+                $result[$i]['resourceId'] = $clonedElement;
+            }else{
+                $result[$i]['resourceId'] = 'default';
+            }
+
+            $i++;
+
         }
         return json_encode($result);
     }

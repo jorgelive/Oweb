@@ -11,24 +11,28 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 /**
  * Cargador controller.
  *
- * @Route("/event")
+ * @Route("/load")
  */
-class CalendarController extends Controller
+class LoadController extends Controller
 {
     private $manager;
 
     /**
-     * @Route("/load/{calendar}", name="gopro_fullcalendar_event_load")
+     * @Route("/event/{calendar}/{relatedpropertyid}", defaults={"relatedpropertyid"=null},  name="gopro_fullcalendar_load_event")
      */
-    function loadAction(Request $request, $calendar) {
+    function eventAction(Request $request, $calendar) {
 
-        $dataFrom = new \DateTime($request->get('start'));
-        $dataTo = new \DateTime($request->get('end'));
+        $data = [];
+        $data['from'] = new \DateTime($request->get('start'));
+        $data['to'] = new \DateTime($request->get('end'));
+        if(!empty($request->get('relatedpropertyid'))){
+            $data['relatedPropertyId'] = $request->get('relatedpropertyid');
+        }
 
         $eventsfinder = $this->get('gopro.fullcalendar.eventsfinder');
         $eventsfinder->setCalendar($calendar);
 
-        $events = $eventsfinder->getEvents($dataFrom, $dataTo);
+        $events = $eventsfinder->getEvents($data);
         $status = empty($events) ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
         $jsonContent = $eventsfinder->serialize($events);
 
@@ -40,24 +44,33 @@ class CalendarController extends Controller
     }
 
     /**
-     * @Route("/resourceload/{calendar}", name="gopro_fullcalendar_resource_load")
+     * @Route("/resource/{calendar}/{relatedpropertyid}", defaults={"relatedpropertyid"=null},  name="gopro_fullcalendar_load_resource")
      */
-    function resourceloadAction(Request $request, $calendar) {
+    function resourceAction(Request $request, $calendar) {
 
-        $dataFrom = new \DateTime($request->get('start'));
-        $dataTo = new \DateTime($request->get('end'));
+        $data = [];
+        $data['from'] = new \DateTime($request->get('start'));
+        $data['to'] = new \DateTime($request->get('end'));
+
+        if(!empty($request->get('relatedpropertyid'))){
+            $data['relatedPropertyId'] = $request->get('relatedpropertyid');
+        }
 
         $eventsfinder = $this->get('gopro.fullcalendar.eventsfinder');
         $eventsfinder->setCalendar($calendar);
 
-        $events = $eventsfinder->getEvents($dataFrom, $dataTo);
+        $events = $eventsfinder->getEvents($data);
         $status = empty($events) ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
-        $jsonContent = $eventsfinder->serialize($events);
+
+        $jsonContent = $eventsfinder->serializeResources($events);
+
 
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
         $response->setContent($jsonContent);
         $response->setStatusCode($status);
+
+
         return $response;
     }
 

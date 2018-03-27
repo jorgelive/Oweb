@@ -16,33 +16,43 @@ gopro_fullcalendar:
         transporte_servicio_conductor:
             entity: 'GoproTransporteBundle:Servicio'
             repositorymethod: 'findCalendarConductorColored'
-            show:
-                route: 'admin_gopro_transporte_servicio_show'
-                role: 'ROLE_TRANSPORTES_GUEST'
-            edit:
-                route: 'admin_gopro_transporte_servicio_edit'
-                role: 'ROLE_TRANSPORTES_EDITOR'
+            resource:
+                id: 'conductor.id'
+                title: 'conductor.nombre'
+
             parameters:
                 title: 'resumen'
                 start: 'fechahorainicio'
                 end: 'fechahorafin'
                 color: 'conductor.color'
-                url: 'id'
+                url:
+                    id: 'id'
+                    show:
+                        route: 'admin_gopro_transporte_servicio_show'
+                        role: 'ROLE_TRANSPORTES_GUEST'
+                    edit:
+                        route: 'admin_gopro_transporte_servicio_edit'
+                        role: 'ROLE_TRANSPORTES_EDITOR'
+
         transporte_servicio_unidad:
             entity: 'GoproTransporteBundle:Servicio'
             repositorymethod: 'findCalendarUnidadColored'
-            show:
-                route: 'admin_gopro_transporte_servicio_show'
-                role: 'ROLE_TRANSPORTES_GUEST'
-            edit:
-                route: 'admin_gopro_transporte_servicio_edit'
-                role: 'ROLE_TRANSPORTES_EDITOR'
+            resource:
+                id: 'unidad.id'
+                title: 'unidad.nombre'
             parameters:
                 title: 'resumen'
                 start: 'fechahorainicio'
                 end: 'fechahorafin'
                 color: 'unidad.color'
-                url: 'id'
+                url:
+                    id: 'id'
+                    show:
+                        route: 'admin_gopro_transporte_servicio_show'
+                        role: 'ROLE_TRANSPORTES_GUEST'
+                    edit:
+                        route: 'admin_gopro_transporte_servicio_edit'
+                        role: 'ROLE_TRANSPORTES_EDITOR'
 
 framework:
     #esi:             ~

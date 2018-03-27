@@ -5,11 +5,18 @@ namespace Gopro\TransporteBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Gopro\UserBundle\Entity\User;
+use Symfony\Component\HttpKernel\Exception\HttpException as HttpException;
 
 class ServicioRepository extends EntityRepository
 {
-    public function findCalendarConductorColored($dataFrom, $dataTo, User $user)
+    public function findCalendarConductorColored($data)
     {
+        if (!$data['user'] instanceof User){
+            throw new HttpException(500, 'El dato de usuario no es instancia de la clase GoproUserbundle:Entity:User.');
+        }else{
+            $user = $data['user'];
+        }
+
         $qb = $this->getEntityManager()->createQueryBuilder()
             ->select('s')
             ->from('GoproTransporteBundle:Servicio', 's')
@@ -20,8 +27,8 @@ class ServicioRepository extends EntityRepository
                 ->setParameter('dependencia', $user->getDependencia()->getId());
         }
 
-        $qb->setParameter('firstDate', $dataFrom)
-            ->setParameter('lastDate', $dataTo)
+        $qb->setParameter('firstDate', $data['from'])
+            ->setParameter('lastDate', $data['to'])
         ;
 
         return $qb->getQuery()->getResult();
@@ -29,8 +36,15 @@ class ServicioRepository extends EntityRepository
     }
 
 
-    public function findCalendarUnidadColored($dataFrom, $dataTo, User $user)
+    public function findCalendarUnidadColored($data)
     {
+
+        if (!$data['user'] instanceof User){
+            throw new HttpException(500, 'El dato de usuario no es instancia de la clase GoproUserbundle:Entity:User.');
+        }else{
+            $user = $data['user'];
+        }
+
 
         $qb = $this->getEntityManager()->createQueryBuilder()
             ->select('s')
@@ -42,8 +56,8 @@ class ServicioRepository extends EntityRepository
                 ->setParameter('dependencia', $user->getDependencia()->getId());
         }
 
-        $qb->setParameter('firstDate', $dataFrom)
-            ->setParameter('lastDate', $dataTo)
+        $qb->setParameter('firstDate', $data['from'])
+            ->setParameter('lastDate', $data['to'])
         ;
         return $qb->getQuery()->getResult();
     }

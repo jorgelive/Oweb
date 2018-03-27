@@ -10,7 +10,7 @@ services:
         class: Gopro\ServicioBundle\Admin\ItinerarioAdmin
         arguments: [~, Gopro\ServicioBundle\Entity\Itinerario, SonataAdminBundle:CRUD]
         tags:
-            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false, group: Servicio, label: Itinerario }
+            - { name: sonata.admin, manager_type: orm, group: Servicio, label: Itinerario }
         public: true
 
     gopro_servicio.admin.componente:
