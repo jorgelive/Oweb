@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\CoreBundle\Form\Type\DatePickerType;
 
 class FilepasajeroAdmin extends AbstractAdmin
 {
@@ -91,7 +92,7 @@ class FilepasajeroAdmin extends AbstractAdmin
             ->add('numerodocumento', null, [
                 'label' => 'Número de Documento'
             ])
-            ->add('fechanacimiento', 'sonata_type_date_picker', [
+            ->add('fechanacimiento', DatePickerType::class, [
                 'label' => 'Fecha de nacimieto',
                 'dp_use_current' => true,
                 'dp_show_today' => true,

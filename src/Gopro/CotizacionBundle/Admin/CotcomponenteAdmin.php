@@ -8,9 +8,11 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\CoreBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Show\ShowMapper;
 
+use Sonata\CoreBundle\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
@@ -100,7 +102,7 @@ class CotcomponenteAdmin extends AbstractAdmin
                     'attr' => ['class' => 'readonly']
                 ]
             )
-            ->add('fechahorainicio', 'sonata_type_datetime_picker', [
+            ->add('fechahorainicio', DateTimePickerType::class, [
                 'label' => 'Inicio',
                 'dp_show_today' => true,
                 'format'=> 'yyyy/MM/dd HH:mm',
@@ -109,7 +111,7 @@ class CotcomponenteAdmin extends AbstractAdmin
                     'horariodependiente' => false
                 ]
             ])
-            ->add('fechahorafin', 'sonata_type_datetime_picker', [
+            ->add('fechahorafin', DateTimePickerType::class, [
                 'label' => 'Fin',
                 'dp_show_today' => true,
                 'format'=> 'yyyy/MM/dd HH:mm',
@@ -118,7 +120,7 @@ class CotcomponenteAdmin extends AbstractAdmin
                     'horariodependiente' => false
                 ]
             ])
-            ->add('cottarifas', 'sonata_type_collection', [
+            ->add('cottarifas', CollectionType::class , [
                 'by_reference' => false,
                 'label' => 'Tarifas'
             ], [
@@ -142,7 +144,7 @@ class CotcomponenteAdmin extends AbstractAdmin
 
         $horarioModifier = function (FormInterface $form, $duracion, $horarioDependiente) {
 
-            $form->add('fechahorainicio', 'sonata_type_datetime_picker', [
+            $form->add('fechahorainicio', DateTimePickerType::class, [
                     'label' => 'Inicio',
                     'dp_show_today' => true,
                     'format'=> 'yyyy/MM/dd HH:mm',
@@ -152,7 +154,7 @@ class CotcomponenteAdmin extends AbstractAdmin
                         'class' => 'fechahora componenteinicio'
                     ]
                 ])
-                ->add('fechahorafin', 'sonata_type_datetime_picker', [
+                ->add('fechahorafin', DateTimePickerType::class, [
                     'label' => 'Fin',
                     'dp_show_today' => true,
                     'format'=> 'yyyy/MM/dd HH:mm',

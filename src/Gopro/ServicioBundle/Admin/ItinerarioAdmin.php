@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\CoreBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 class ItinerarioAdmin extends AbstractAdmin
@@ -80,7 +81,7 @@ class ItinerarioAdmin extends AbstractAdmin
             ->add('duracion', null, [
                 'label' => 'Duración'
             ])
-            ->add('itinerariodias', 'sonata_type_collection', [
+            ->add('itinerariodias', CollectionType::class, [
                 'by_reference' => false,
                 'label' => 'Dias'
             ], [

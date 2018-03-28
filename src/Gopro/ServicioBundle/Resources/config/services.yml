@@ -45,7 +45,7 @@ services:
         class: Gopro\ServicioBundle\Admin\ItidiaarchivoAdmin
         arguments: [~, Gopro\ServicioBundle\Entity\Itidiaarchivo, SonataAdminBundle:CRUD]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Servicio, label: Archivos del itinerario }
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false, group: Servicio, label: Archivos del itinerario }
         public: true
 
 

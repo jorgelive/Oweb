@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\CoreBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\TranslationBundle\Filter\TranslationFieldFilter;
 
@@ -74,7 +75,7 @@ class ItinerariodiaAdmin extends AbstractAdmin
                 'required' => false,
                 'attr' => ['class' => 'ckeditor']
             ])
-            ->add('itidiaarchivos', 'sonata_type_collection', [
+            ->add('itidiaarchivos', CollectionType::class, [
                 'by_reference' => false,
                 'label' => 'Archivos'
             ], [

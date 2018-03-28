@@ -269,9 +269,87 @@ sonata_admin:
         blocks:
             # display a dashboard block
             - { position: left, type: sonata.admin.block.admin_list }
+        groups:
+
+            goprosonata.admin.group.transporte:
+                label: 'Transportes'
+                icon: '<i class="fa fa-bus"></i>'
+                items:
+                    - gopro_transporte.admin.servicio
+                    - gopro_transporte.admin.serviciocontable
+                    - gopro_transporte.admin.conductor
+                    - gopro_transporte.admin.unidad
+                    - gopro_transporte.admin.unidadbitacora
+                    - gopro_transporte.admin.tiposercontable
+                    - gopro_transporte.admin.estadocontable
+                    - gopro_transporte.admin.tiposeroperativo
+                    - gopro_transporte.admin.tipounibit
+                    - {route: gopro_transporte_cargador_genericoprograma, label: 'Cargador de servicios', roles: [ROLE_CARGA]}
+
+
+            goprosonata.admin.group.cotizacion:
+                label: 'Cotizaciones'
+                icon: '<i class="fa fa-calendar"></i>'
+                items:
+                    - gopro_cotizacion.admin.file
+                    - gopro_cotizacion.admin.cotizacion
+                    - gopro_cotizacion.admin.filedocumento
+                    - gopro_cotizacion.admin.estadocotizacion
+                    - gopro_cotizacion.admin.tipofiledocumento
+                    - gopro_cotizacion.admin.cotpolitica
+                    - gopro_cotizacion.admin.cotnota
+
+            goprosonata.admin.group.servicio:
+                label: 'Servicios'
+                icon: '<i class="fa fa-map"></i>'
+                items:
+                    - gopro_servicio.admin.servicio
+                    - gopro_servicio.admin.itinerario
+                    - gopro_servicio.admin.componente
+                    - gopro_servicio.admin.tarifa
+                    - gopro_servicio.admin.tipocomponente
+                    - gopro_servicio.admin.tipotarifa
+
+            goprosonata.admin.group.maestro:
+                label: 'Maestros'
+                icon: '<i class="fa fa-puzzle-piece"></i>'
+                items:
+                    - gopro_maestro.admin.tipocambio
+                    - gopro_maestro.admin.medio
+                    - gopro_maestro.admin.clasemedio
+                    - gopro_maestro.admin.categoriatour
+                    - gopro_maestro.admin.tipopax
+                    - gopro_maestro.admin.idioma
+                    - gopro_maestro.admin.pais
+                    - gopro_maestro.admin.moneda
+                    - gopro_maestro.admin.tipodocumento
+                    - gopro_maestro.admin.sexo
+
+            goprosonata.admin.group.usuario:
+                label: 'Usuario'
+                icon: '<i class="fa fa-user-circle"></i>'
+                items:
+                    - sonata.user.admin.user
+                    - sonata.user.admin.group
+                    - gopro_user.admin.cuenta
+                    - gopro_user.admin.cuentatipo
+            goprosonata.admin.group.organizacion:
+                label: 'Empresa'
+                icon: '<i class="fa fa-institution"></i>'
+                items:
+                    - gopro_user.admin.organizacion
+                    - gopro_user.admin.dependencia
+                    - gopro_user.admin.area
+
+
     security:
         handler: sonata.admin.security.handler.role
     persist_filters: true
+
+sonata_core:
+    form:
+        mapping:
+            enabled: false
 
 sonata_doctrine_orm_admin:
     # default value is null, so doctrine uses the value defined in the configuration

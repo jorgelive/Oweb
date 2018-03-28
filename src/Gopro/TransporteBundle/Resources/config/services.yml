@@ -79,13 +79,13 @@ services:
         class: Gopro\TransporteBundle\Admin\TipounibitAdmin
         arguments: [~, Gopro\TransporteBundle\Entity\Tipounibit, SonataAdminBundle:CRUD]
         tags:
-            - {name: sonata.admin, manager_type: orm, group: Transporte, label: Tipo de bitacora}
+            - {name: sonata.admin, manager_type: orm, group: Transporte, label: Tipo de bitácora}
         public: true
 
     gopro_transporte.admin.unidadbitacora:
         class: Gopro\TransporteBundle\Admin\UnidadbitacoraAdmin
         arguments: [~, Gopro\TransporteBundle\Entity\Unidadbitacora, SonataAdminBundle:CRUD]
         tags:
-            - {name: sonata.admin, manager_type: orm, group: Transporte, label: Bitacoras}
+            - {name: sonata.admin, manager_type: orm, group: Transporte, label: Bitácoras}
         public: true
 

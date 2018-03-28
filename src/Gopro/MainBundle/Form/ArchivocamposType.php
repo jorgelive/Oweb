@@ -3,6 +3,7 @@
 namespace Gopro\MainBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class ArchivocamposType extends AbstractType
@@ -14,7 +15,7 @@ class ArchivocamposType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('operacion','hidden')
+            ->add('operacion',HiddenType::class)
         ;
     }
     

@@ -25,7 +25,6 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('relatedproperty')->end()
                             ->arrayNode('parameters')
                                 ->isRequired()
-                                ->cannotBeEmpty()
                                 ->children()
                                     ->scalarNode('title')
                                         ->isRequired()

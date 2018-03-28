@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\CoreBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\TranslationBundle\Filter\TranslationFieldFilter;
 
@@ -78,11 +79,11 @@ class ComponenteAdmin extends AbstractAdmin
             ->add('duracion', null, [
                 'label' => 'Duración'
             ])
-            ->add('servicios', 'sonata_type_model',[
+            ->add('servicios', CollectionType::class,[
                 'multiple' => true,
                 'by_reference' => false
             ])
-            ->add('tarifas', 'sonata_type_collection', [
+            ->add('tarifas', CollectionType::class, [
                 'by_reference' => false,
                 'label' => 'Tarifas'
             ], [

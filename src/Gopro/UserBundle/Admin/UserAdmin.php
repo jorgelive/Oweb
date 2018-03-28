@@ -1,6 +1,7 @@
 <?php
 namespace Gopro\UserBundle\Admin;
 
+use Sonata\CoreBundle\Form\Type\CollectionType;
 use Sonata\UserBundle\Admin\Model\UserAdmin as SonataUserAdmin;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -19,16 +20,12 @@ class UserAdmin extends SonataUserAdmin
         $formMapper
             ->tab('Varios')
                 ->with('Organización')
-                    ->add('dependencia', 'sonata_type_model', [
+                    ->add('dependencia', null, [
                         'required' => false,
-                        'expanded' => false,
-                        'multiple' => false,
                         'label' => 'Dependencia'
                     ])
-                    ->add('area', 'sonata_type_model', [
+                    ->add('area', null, [
                         'required' => false,
-                        'expanded' => false,
-                        'multiple' => false,
                         'label' => 'Area'
                     ])
                 ->end()

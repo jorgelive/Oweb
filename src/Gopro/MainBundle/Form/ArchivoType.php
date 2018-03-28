@@ -16,9 +16,9 @@ class ArchivoType extends AbstractType
     {
         $builder
             ->add('operacion')
-            ->add('archivo',null,array(
+            ->add('archivo',null, [
                 'required' => true,
-            ))
+            ])
         ;
     }
     
@@ -27,8 +27,8 @@ class ArchivoType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'Gopro\MainBundle\Entity\Archivo'
-        ));
+        ]);
     }
 }

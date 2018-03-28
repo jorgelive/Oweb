@@ -46,14 +46,14 @@ services:
         class: Gopro\MaestroBundle\Admin\TipopaxAdmin
         arguments: [~, Gopro\MaestroBundle\Entity\Tipopax, SonataAdminBundle:CRUD]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Cotizacion Maestro, label: Tipo pax }
+            - { name: sonata.admin, manager_type: orm, group: Maestros, label: Tipo pax }
         public: true
 
     gopro_maestro.admin.categoriatour:
         class: Gopro\MaestroBundle\Admin\CategoriatourAdmin
         arguments: [~, Gopro\MaestroBundle\Entity\Categoriatour, SonataAdminBundle:CRUD]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Cotizacion Maestro, label: Categoria de tour }
+            - { name: sonata.admin, manager_type: orm, group: Maestros, label: Categoria de tour }
         public: true
 
     gopro_maestro.admin.medio:

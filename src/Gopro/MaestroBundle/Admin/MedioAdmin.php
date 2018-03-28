@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\TranslationBundle\Filter\TranslationFieldFilter;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class MedioAdmin extends AbstractAdmin
 {
@@ -78,7 +79,7 @@ class MedioAdmin extends AbstractAdmin
             ->add('titulo', null, [
                 'label' => 'Título'
             ])
-            ->add('archivo', 'file', [
+            ->add('archivo', FileType::class, [
                 'required' => false
             ])
         ;

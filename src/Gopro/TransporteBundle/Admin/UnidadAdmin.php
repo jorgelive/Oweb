@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\CoreBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 class UnidadAdmin extends AbstractAdmin
@@ -56,7 +57,7 @@ class UnidadAdmin extends AbstractAdmin
             ->add('placa')
             ->add('abreviatura')
             ->add('color')
-            ->add('unidadbitacoras', 'sonata_type_collection', [
+            ->add('unidadbitacoras', CollectionType::class, [
                 'by_reference' => false,
                 'label' => 'Bitacoras'
             ], [

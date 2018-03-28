@@ -6,6 +6,10 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\CoreBundle\Form\Type\CollectionType;
+use Sonata\CoreBundle\Form\Type\DatePickerType;
+use Sonata\CoreBundle\Form\Type\DateTimePickerType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\EqualType;
 use Sonata\CoreBundle\Form\Type\BooleanType;
@@ -53,7 +57,7 @@ class ServicioAdmin extends AbstractAdmin
                 'callback' => function($queryBuilder, $alias, $field, $value) {
 
                     if (!$value['value'] || !($value['value'] instanceof \DateTime)) {
-                        return;
+                        return false;
                     }
                     $fechaMasUno = clone ($value['value']);
                     $fechaMasUno->add(new \DateInterval('P1D'));
@@ -82,16 +86,16 @@ class ServicioAdmin extends AbstractAdmin
                         return true;
                     }
 
-                    return;
+                    return true;
 
                 },
-                'field_type'=>'sonata_type_date_picker',
-                'field_options'=> [
+                'field_type' => DatePickerType::class,
+                'field_options' => [
                     'dp_use_current' => true,
                     'dp_show_today' => true,
                     'format'=> 'yyyy/MM/dd'
                 ],
-                'operator_type' => 'choice',
+                'operator_type' => ChoiceType::class,
                 'operator_options' => array(
                     'choices' => array(
                         'Igual a' => 0,
@@ -195,56 +199,54 @@ class ServicioAdmin extends AbstractAdmin
     {
         $formMapper
             ->tab('General')
-            ->with('Info')
-            ->add('fechahorainicio', 'sonata_type_datetime_picker', [
-                'label' => 'Inicio',
-                'dp_use_current' => true,
-                'dp_show_today' => true,
-                'format'=> 'yyyy/MM/dd HH:mm'
-            ])
-            ->add('fechahorafin', 'sonata_type_datetime_picker', [
-                'label' => 'Fin',
-                'dp_use_current' => true,
-                'dp_show_today' => true,
-                'format'=> 'yyyy/MM/dd HH:mm'
-            ])
-            ->add('nombre')
-            ->add('dependencia', null, [
-                'choice_label' => 'organizaciondependencia',
-                'label' => 'Cliente'
-            ])
-            ->add('unidad')
-            ->add('conductor')
-            ->end()
-            ->with('Información Operativa')
-            ->add('serviciooperativos', 'sonata_type_collection',[
-                'by_reference' => false,
-                'label' => 'Operativo'
-            ], [
-                'edit' => 'inline',
-                'inline' => 'table',
-            ])
-            ->end()
-            ->end()
-            ->tab('Referencias del cliente')
-            ->with('Files')
-            ->add('serviciofiles', 'sonata_type_collection', [
-                'by_reference' => false,
-                'label' => 'File'
-            ], [
-                'edit' => 'inline',
-                'inline' => 'table'
-            ])
-            ->end()
+                ->with('Info')
+                    ->add('fechahorainicio', DateTimePickerType::class, [
+                        'label' => 'Inicio',
+                        'dp_use_current' => true,
+                        'dp_show_today' => true,
+                        'format'=> 'yyyy/MM/dd HH:mm'
+                    ])
+                    ->add('fechahorafin', DateTimePickerType::class, [
+                        'label' => 'Fin',
+                        'dp_use_current' => true,
+                        'dp_show_today' => true,
+                        'format'=> 'yyyy/MM/dd HH:mm'
+                    ])
+                    ->add('nombre')
+                    ->add('dependencia', null, [
+                        'choice_label' => 'organizaciondependencia',
+                        'label' => 'Cliente'
+                    ])
+                    ->add('unidad')
+                    ->add('conductor')
+                ->end()
+                ->with('Información Operativa')
+                    ->add('serviciooperativos', CollectionType::class,[
+                        'by_reference' => false,
+                        'label' => 'Operativo'
+                    ], [
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                    ])
+                ->end()
+                ->with('Files')
+                    ->add('serviciofiles', CollectionType::class, [
+                        'by_reference' => false,
+                        'label' => 'File'
+                    ], [
+                        'edit' => 'inline',
+                        'inline' => 'table'
+                    ])
+                ->end()
             ->end()
             ->tab('Contable')
-            ->add('serviciocontables', 'sonata_type_collection', [
-                'by_reference' => false,
-                'label' => 'Facturación'
-            ], [
-                'edit' => 'inline',
-                'inline' => 'table'
-            ])
+                ->add('serviciocontables', CollectionType::class, [
+                    'by_reference' => false,
+                    'label' => 'Facturación'
+                ], [
+                    'edit' => 'inline',
+                    'inline' => 'table'
+                ])
             ->end()
         ;
     }

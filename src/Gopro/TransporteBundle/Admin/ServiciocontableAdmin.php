@@ -8,6 +8,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\CoreBundle\Form\Type\DatePickerType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class ServiciocontableAdmin extends AbstractAdmin
@@ -67,13 +69,13 @@ class ServiciocontableAdmin extends AbstractAdmin
                     return;
 
                 },
-                'field_type'=>'sonata_type_date_picker',
-                'field_options'=> [
+                'field_type' => DatePickerType::class,
+                'field_options' => [
                     'dp_use_current' => true,
                     'dp_show_today' => true,
                     'format'=> 'yyyy/MM/dd'
                 ],
-                'operator_type' => 'choice',
+                'operator_type' => ChoiceType::class,
                 'operator_options' => array(
                     'choices' => array(
                         'Igual a' => 0,
@@ -132,13 +134,13 @@ class ServiciocontableAdmin extends AbstractAdmin
                     return;
 
                 },
-                'field_type'=>'sonata_type_date_picker',
-                'field_options'=> [
+                'field_type' => DatePickerType::class,
+                'field_options '=> [
                     'dp_use_current' => true,
                     'dp_show_today' => true,
                     'format'=> 'yyyy/MM/dd'
                 ],
-                'operator_type' => 'choice',
+                'operator_type' => ChoiceType::class,
                 'operator_options' => array(
                     'choices' => array(
                         'Igual a' => 0,

@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\CoreBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 class OrganizacionAdmin extends AbstractAdmin
@@ -59,7 +60,7 @@ class OrganizacionAdmin extends AbstractAdmin
             ->add('numerodocumento')
             ->add('email')
             ->add('direccion')
-            ->add('dependencias', 'sonata_type_model', [
+            ->add('dependencias', CollectionType::class, [
                 'required' => false,
                 'expanded' => true,
                 'multiple' => true

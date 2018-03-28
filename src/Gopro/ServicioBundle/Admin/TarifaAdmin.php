@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\CoreBundle\Form\Type\DatePickerType;
 use Sonata\TranslationBundle\Filter\TranslationFieldFilter;
 
 class TarifaAdmin extends AbstractAdmin
@@ -146,13 +147,13 @@ class TarifaAdmin extends AbstractAdmin
             ->add('edadmax', null, [
                 'label' => 'Edad max'
             ])
-            ->add('validezinicio', 'sonata_type_date_picker', [
+            ->add('validezinicio', DatePickerType::class, [
                 'label' => 'Inicio',
                 'dp_use_current' => true,
                 'dp_show_today' => true,
                 'format'=> 'yyyy/MM/dd'
             ])
-            ->add('validezfin', 'sonata_type_date_picker', [
+            ->add('validezfin', DatePickerType::class, [
                 'label' => 'Fin',
                 'dp_use_current' => true,
                 'dp_show_today' => true,

@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class FiledocumentoAdmin extends AbstractAdmin
 {
@@ -66,7 +67,7 @@ class FiledocumentoAdmin extends AbstractAdmin
                 'label' => 'Tipo de documento'
             ])
             ->add('prioridad')
-            ->add('archivo', 'file', [
+            ->add('archivo', FileType::class, [
                 'required' => false
             ])
         ;

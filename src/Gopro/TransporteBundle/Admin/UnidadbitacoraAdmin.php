@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\CoreBundle\Form\Type\DatePickerType;
 
 class UnidadbitacoraAdmin extends AbstractAdmin
 {
@@ -68,7 +69,7 @@ class UnidadbitacoraAdmin extends AbstractAdmin
             ])
             ->add('contenido')
             ->add('kilometraje')
-            ->add('fecha', 'sonata_type_date_picker', [
+            ->add('fecha', DatePickerType::class, [
                 'label' => 'Fecha',
                 'dp_use_current' => true,
                 'dp_show_today' => true,

@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\CoreBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 
@@ -152,7 +153,7 @@ class CotizacionAdmin extends AbstractAdmin
             ->add('cotnotas',  null, [
                 'label' => 'Notas'
             ])
-            ->add('cotservicios', 'sonata_type_collection', [
+            ->add('cotservicios', CollectionType::class, [
                 'by_reference' => false,
                 'label' => 'Servicios'
             ], [

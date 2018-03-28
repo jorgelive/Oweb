@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\CoreBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 class FileAdmin extends AbstractAdmin
@@ -83,21 +84,21 @@ class FileAdmin extends AbstractAdmin
             ->add('pais')
             ->add('idioma')
             ->add('pauta')
-            ->add('filepasajeros', 'sonata_type_collection', [
+            ->add('filepasajeros', CollectionType::class, [
                 'by_reference' => false,
                 'label' => 'Name List'
             ], [
                 'edit' => 'inline',
                 'inline' => 'table'
             ])
-            ->add('filedocumentos', 'sonata_type_collection', [
+            ->add('filedocumentos', CollectionType::class, [
                 'by_reference' => false,
                 'label' => 'Documentos'
             ], [
                 'edit' => 'inline',
                 'inline' => 'table'
             ])
-            ->add('cotizaciones', 'sonata_type_collection', [
+            ->add('cotizaciones', CollectionType::class, [
                 'by_reference' => false,
                 'label' => 'Cotizaciones'
             ], [

@@ -2,6 +2,9 @@
 
 namespace Gopro\MaestroBundle\Controller;
 
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -88,7 +91,7 @@ class MonedaController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Crear'));
+        $form->add('submit', SubmitType::class, array('label' => 'Crear'));
 
         return $form;
     }
@@ -177,7 +180,7 @@ class MonedaController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Actualizar'));
+        $form->add('submit', SubmitType::class, array('label' => 'Actualizar'));
 
         return $form;
     }
@@ -257,14 +260,14 @@ class MonedaController extends Controller
     {
         return $this->get('form.factory')->createNamedBuilder(
             'deleteForm',
-            'form',
+            FormType::class,
             null,
             [
                 'action'=>$this->generateUrl('gopro_maestro_moneda_delete', ['id' => $id]),
                 'method'=>'DELETE',
                 'attr'=>['id'=>'deleteForm']
             ])
-            ->add('submit', 'submit', array('label' => 'Borrar'))
+            ->add('submit', SubmitType::class, array('label' => 'Borrar'))
             ->getForm();
     }
 }
