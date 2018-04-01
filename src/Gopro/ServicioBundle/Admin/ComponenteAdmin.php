@@ -79,7 +79,9 @@ class ComponenteAdmin extends AbstractAdmin
             ->add('duracion', null, [
                 'label' => 'Duración'
             ])
-            ->add('servicios')
+            ->add('servicios', null,[
+                'by_reference' => false
+            ])
             ->add('tarifas', CollectionType::class, [
                 'by_reference' => false,
                 'label' => 'Tarifas'

@@ -17,6 +17,7 @@ class CentroAdmin extends AbstractAdmin
             ->add('codigo', null, [
                 'label' => 'Código'
             ])
+            ->add('unidad')
         ;
     }
 
@@ -28,6 +29,7 @@ class CentroAdmin extends AbstractAdmin
             ->add('codigo', null, [
                 'label' => 'Código'
             ])
+            ->add('unidad')
             ->add('_action', null, [
                 'label' => 'Acciones',
                 'actions' => [
@@ -46,6 +48,7 @@ class CentroAdmin extends AbstractAdmin
             ->add('codigo', null, [
                 'label' => 'Código'
             ])
+            ->add('unidad')
         ;
     }
 
@@ -57,6 +60,7 @@ class CentroAdmin extends AbstractAdmin
             ->add('codigo', null, [
                 'label' => 'Código'
             ])
+            ->add('unidad')
         ;
     }
 }

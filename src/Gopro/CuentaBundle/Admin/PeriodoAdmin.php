@@ -61,6 +61,7 @@ class PeriodoAdmin extends AbstractAdmin
                 'format'=> 'yyyy/MM/dd'
             ])
             ->add('fechafin', DatePickerType::class, [
+                'required' => false,
                 'label' => 'Fin',
                 'dp_use_current' => true,
                 'dp_show_today' => true,

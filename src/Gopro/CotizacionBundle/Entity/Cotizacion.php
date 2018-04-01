@@ -147,6 +147,10 @@ class Cotizacion implements TranslatableInterface
      */
     public function __toString()
     {
+        if(empty($this->getFile())){
+            return $this->getTitulo() ?? sprintf("Id: %s.", $this->getId()) ?? '';
+        }
+
         //como es publico retorno el titulo
         return sprintf("%s : %s.", $this->getFile()->getNombre(), $this->getTitulo()) ?? sprintf("Id: %s.", $this->getId()) ?? '';
     }
