@@ -4,6 +4,7 @@ imports:
     - { resource: services.yml }
     - { resource: "@GoproCotizacionBundle/Resources/config/services.yml" }
     - { resource: "@GoproServicioBundle/Resources/config/services.yml" }
+    - { resource: "@GoproCuentaBundle/Resources/config/services.yml" }
 
 sonata_translation:
     locales: [es, en]
@@ -286,6 +287,16 @@ sonata_admin:
                     - gopro_transporte.admin.tipounibit
                     - {route: gopro_transporte_cargador_genericoprograma, label: 'Cargador de servicios', roles: [ROLE_CARGA]}
 
+            goprosonata.admin.group.cuenta:
+                label: 'Cuentas'
+                icon: '<i class="fa fa-line-chart"></i>'
+                items:
+                    - gopro_cuenta.admin.cuenta
+                    - gopro_cuenta.admin.periodo
+                    - gopro_cuenta.admin.movimiento
+                    - gopro_cuenta.admin.centro
+                    - gopro_cuenta.admin.clase
+                    - gopro_cuenta.admin.tipo
 
             goprosonata.admin.group.cotizacion:
                 label: 'Cotizaciones'

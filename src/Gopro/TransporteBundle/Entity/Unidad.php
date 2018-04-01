@@ -70,6 +70,13 @@ class Unidad
     private $unidadbitacoras;
 
     /**
+     * @var \Gopro\CuentaBundle\Entity\Centro
+     *
+     * @ORM\OneToOne(targetEntity="Gopro\CuentaBundle\Entity\Centro", mappedBy="unidad")
+     */
+    private $centro;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -312,5 +319,29 @@ class Unidad
     public function getUnidadbitacoras()
     {
         return $this->unidadbitacoras;
+    }
+
+    /**
+     * Set centro.
+     *
+     * @param \Gopro\CuentaBundle\Entity\Centro|null $centro
+     *
+     * @return Unidad
+     */
+    public function setCentro(\Gopro\CuentaBundle\Entity\Centro $centro = null)
+    {
+        $this->centro = $centro;
+    
+        return $this;
+    }
+
+    /**
+     * Get centro.
+     *
+     * @return \Gopro\CuentaBundle\Entity\Centro|null
+     */
+    public function getCentro()
+    {
+        return $this->centro;
     }
 }

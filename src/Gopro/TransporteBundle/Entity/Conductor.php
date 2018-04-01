@@ -5,6 +5,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
+
 /**
  * @ORM\Table(name="tra_conductor")
  * @ORM\Entity
@@ -60,6 +61,7 @@ class Conductor
      * @var \Gopro\UserBundle\Entity\User
      *
      * @ORM\OneToOne(targetEntity="Gopro\UserBundle\Entity\User", inversedBy="conductor")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
 

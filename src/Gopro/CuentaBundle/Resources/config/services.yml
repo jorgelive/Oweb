@@ -1,0 +1,45 @@
+services:
+#    gopro_cuenta.example:
+#        class: Gopro\CuentaBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    gopro_cuenta.admin.cuenta:
+        class: Gopro\CuentaBundle\Admin\CuentaAdmin
+        arguments: [~, Gopro\CuentaBundle\Entity\Cuenta, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Cuenta }
+        public: true
+
+    gopro_cuenta.admin.movimiento:
+        class: Gopro\CuentaBundle\Admin\MovimientoAdmin
+        arguments: [~, Gopro\CuentaBundle\Entity\Movimiento, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Movimiento }
+        public: true
+
+    gopro_cuenta.admin.clase:
+        class: Gopro\CuentaBundle\Admin\ClaseAdmin
+        arguments: [~, Gopro\CuentaBundle\Entity\Clase, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Clase }
+        public: true
+
+    gopro_cuenta.admin.centro:
+        class: Gopro\CuentaBundle\Admin\CentroAdmin
+        arguments: [~, Gopro\CuentaBundle\Entity\Centro, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Centro }
+        public: true
+
+    gopro_cuenta.admin.periodo:
+        class: Gopro\CuentaBundle\Admin\PeriodoAdmin
+        arguments: [~, Gopro\CuentaBundle\Entity\Periodo, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Periodo }
+        public: true
+
+    gopro_cuenta.admin.tipo:
+        class: Gopro\CuentaBundle\Admin\TipoAdmin
+        arguments: [~, Gopro\CuentaBundle\Entity\Tipo, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: admin, label: Tipo }
+        public: true

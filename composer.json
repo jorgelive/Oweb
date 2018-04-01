@@ -13,7 +13,8 @@
             "Gopro\\TransporteBundle\\": "src/Gopro/TransporteBundle",
             "Gopro\\CotizacionBundle\\": "src/Gopro/CotizacionBundle",
             "Gopro\\ServicioBundle\\": "src/Gopro/ServicioBundle",
-            "Gopro\\FullcalendarBundle\\": "src/Gopro/FullcalendarBundle"
+            "Gopro\\FullcalendarBundle\\": "src/Gopro/FullcalendarBundle",
+            "Gopro\\CuentaBundle\\": "src/Gopro/CuentaBundle"
 
         },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]

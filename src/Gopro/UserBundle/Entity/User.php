@@ -46,6 +46,13 @@ class User extends BaseUser
     private $cuentas;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Gopro\CuentaBundle\Entity\Movimiento", mappedBy="user", cascade={"persist","remove"}, orphanRemoval=true)
+     */
+    private $movimientos;
+
+    /**
      * @var \Gopro\TransporteBundle\Entity\Conductor
      *
      * @ORM\OneToOne(targetEntity="Gopro\TransporteBundle\Entity\Conductor", mappedBy="user")
@@ -187,5 +194,43 @@ class User extends BaseUser
     public function getConductor()
     {
         return $this->conductor;
+    }
+
+    /**
+     * Add movimiento.
+     *
+     * @param \Gopro\CuentaBundle\Entity\Movimiento $movimiento
+     *
+     * @return User
+     */
+    public function addMovimiento(\Gopro\CuentaBundle\Entity\Movimiento $movimiento)
+    {
+        $movimiento->setUser($this);
+
+        $this->movimientos[] = $movimiento;
+    
+        return $this;
+    }
+
+    /**
+     * Remove movimiento.
+     *
+     * @param \Gopro\CuentaBundle\Entity\Movimiento $movimiento
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeMovimiento(\Gopro\CuentaBundle\Entity\Movimiento $movimiento)
+    {
+        return $this->movimientos->removeElement($movimiento);
+    }
+
+    /**
+     * Get movimientos.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMovimientos()
+    {
+        return $this->movimientos;
     }
 }

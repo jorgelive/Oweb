@@ -1,3 +1,8 @@
+gopro_cuenta:
+    resource: "@GoproCuentaBundle/Controller/"
+    type:     annotation
+    prefix:   /cuenta
+
 gopro_servicio:
     resource: "@GoproServicioBundle/Controller/"
     type:     annotation
