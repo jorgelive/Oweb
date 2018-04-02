@@ -135,7 +135,7 @@ class ServiciocontableAdmin extends AbstractAdmin
 
                 },
                 'field_type' => DatePickerType::class,
-                'field_options '=> [
+                'field_options' => [
                     'dp_use_current' => true,
                     'dp_show_today' => true,
                     'format'=> 'yyyy/MM/dd'

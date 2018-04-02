@@ -43,7 +43,7 @@ class Movimiento
      * @var \Gopro\CuentaBundle\Entity\Centro
      *
      * @ORM\ManyToOne(targetEntity="Gopro\CuentaBundle\Entity\Centro", inversedBy="movimientos")
-     * @ORM\JoinColumn(name="centro_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="centro_id", referencedColumnName="id", nullable=true)
      */
     protected $centro;
 
@@ -58,9 +58,9 @@ class Movimiento
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha", type="date")
+     * @ORM\Column(name="fechahora", type="datetime")
      */
-    private $fecha;
+    private $fechahora;
 
     /**
      * @var string
@@ -72,14 +72,21 @@ class Movimiento
     /**
      * @var string
      *
-     * @ORM\Column(name="debe", type="decimal", precision=10, scale=2)
+     * @ORM\Column(name="cobradorpagador", type="string", length=255, nullable=true)
+     */
+    private $cobradorpagador;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="debe", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $debe;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="haber", type="decimal", precision=10, scale=2)
+     * @ORM\Column(name="haber", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $haber;
 
@@ -104,8 +111,6 @@ class Movimiento
         return $this->getDescripcion() ?? sprintf("Id: %s.", $this->getId()) ?? '';
     }
 
-
-
     /**
      * Get id.
      *
@@ -117,27 +122,27 @@ class Movimiento
     }
 
     /**
-     * Set fecha.
+     * Set fechahora.
      *
-     * @param \DateTime $fecha
+     * @param \DateTime $fechahora
      *
      * @return Movimiento
      */
-    public function setFecha($fecha)
+    public function setFechahora($fechahora)
     {
-        $this->fecha = $fecha;
+        $this->fechahora = $fechahora;
     
         return $this;
     }
 
     /**
-     * Get fecha.
+     * Get fechahora.
      *
      * @return \DateTime
      */
-    public function getFecha()
+    public function getFechahora()
     {
-        return $this->fecha;
+        return $this->fechahora;
     }
 
     /**
@@ -162,6 +167,30 @@ class Movimiento
     public function getDescripcion()
     {
         return $this->descripcion;
+    }
+
+    /**
+     * Set cobradorpagador.
+     *
+     * @param string $cobradorpagador
+     *
+     * @return Movimiento
+     */
+    public function setCobradorpagador($cobradorpagador = null)
+    {
+        $this->cobradorpagador = $cobradorpagador;
+
+        return $this;
+    }
+
+    /**
+     * Get cobradorpagador.
+     *
+     * @return string
+     */
+    public function getCobradorpagador()
+    {
+        return $this->cobradorpagador;
     }
 
     /**
@@ -339,7 +368,7 @@ class Movimiento
      *
      * @return Movimiento
      */
-    public function setCentro(\Gopro\CuentaBundle\Entity\Centro $centro)
+    public function setCentro(\Gopro\CuentaBundle\Entity\Centro $centro = null)
     {
         $this->centro = $centro;
     

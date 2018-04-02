@@ -7,7 +7,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\CoreBundle\Form\Type\DatePickerType;
+use Sonata\CoreBundle\Form\Type\DateTimePickerType;
 
 class MovimientoAdmin extends AbstractAdmin
 {
@@ -15,12 +15,15 @@ class MovimientoAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('periodo')
-            ->add('fecha')
+            ->add('fechahora')
             ->add('descripcion', null, [
                 'label' => 'Descripción'
             ])
             ->add('clase', null, [
                 'label' => 'Clase'
+            ])
+            ->add('centro', null, [
+                'label' => 'Centro de costo'
             ])
             ->add('debe', null, [
                 'label' => 'Ingreso'
@@ -28,11 +31,11 @@ class MovimientoAdmin extends AbstractAdmin
             ->add('haber', null, [
                 'label' => 'Egreso'
             ])
+            ->add('cobradorpagador', null, [
+                'label' => 'Cobrador / Pagador'
+            ])
             ->add('user', null, [
                 'label' => 'Encargado'
-            ])
-            ->add('centro', null, [
-                'label' => 'Centro de costo'
             ])
         ;
     }
@@ -42,12 +45,15 @@ class MovimientoAdmin extends AbstractAdmin
         $listMapper
             ->add('id')
             ->add('periodo')
-            ->add('fecha')
+            ->add('fechahora')
             ->add('descripcion', null, [
                 'label' => 'Descripción'
             ])
             ->add('clase', null, [
                 'label' => 'Clase'
+            ])
+            ->add('centro', null, [
+                'label' => 'Centro de costo'
             ])
             ->add('debe', null, [
                 'label' => 'Ingreso'
@@ -55,11 +61,11 @@ class MovimientoAdmin extends AbstractAdmin
             ->add('haber', null, [
                 'label' => 'Egreso'
             ])
+            ->add('cobradorpagador', null, [
+                'label' => 'Cobrador / Pagador'
+            ])
             ->add('user', null, [
                 'label' => 'Encargado'
-            ])
-            ->add('centro', null, [
-                'label' => 'Centro de costo'
             ])
             ->add('_action', null, [
                 'label' => 'Acciones',
@@ -80,14 +86,17 @@ class MovimientoAdmin extends AbstractAdmin
         }
 
         $formMapper
-            ->add('fecha', DatePickerType::class, [
+            ->add('fechahora', DateTimePickerType::class, [
                 'label' => 'Fecha',
                 'dp_use_current' => true,
                 'dp_show_today' => true,
-                'format'=> 'yyyy/MM/dd'
+                'format'=> 'yyyy/MM/dd HH:mm'
             ])
             ->add('clase', null, [
                 'label' => 'Clase'
+            ])
+            ->add('centro', null, [
+                'label' => 'Centro de costo'
             ])
             ->add('descripcion', null, [
                 'label' => 'Descripción'
@@ -98,11 +107,11 @@ class MovimientoAdmin extends AbstractAdmin
             ->add('haber', null, [
                 'label' => 'Egreso'
             ])
+            ->add('cobradorpagador', null, [
+                'label' => 'Cobrador / Pagador'
+            ])
             ->add('user', null, [
                 'label' => 'Encargado'
-            ])
-            ->add('centro', null, [
-                'label' => 'Centro de costo'
             ])
         ;
     }
@@ -112,12 +121,15 @@ class MovimientoAdmin extends AbstractAdmin
         $showMapper
             ->add('id')
             ->add('periodo')
-            ->add('fecha')
+            ->add('fechahora')
             ->add('descripcion', null, [
                 'label' => 'Descripción'
             ])
             ->add('clase', null, [
                 'label' => 'Clase'
+            ])
+            ->add('centro', null, [
+                'label' => 'Centro de costo'
             ])
             ->add('debe', null, [
                 'label' => 'Ingreso'
@@ -125,11 +137,11 @@ class MovimientoAdmin extends AbstractAdmin
             ->add('haber', null, [
                 'label' => 'Egreso'
             ])
+            ->add('cobradorpagador', null, [
+                'label' => 'Cobrador / Pagador'
+            ])
             ->add('user', null, [
                 'label' => 'Encargado'
-            ])
-            ->add('centro', null, [
-                'label' => 'Centro de costo'
             ])
         ;
     }

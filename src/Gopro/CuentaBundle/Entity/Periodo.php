@@ -36,6 +36,7 @@ class Periodo
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Gopro\CuentaBundle\Entity\Movimiento", mappedBy="periodo", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"fechahora" = "ASC"})
      */
     private $movimientos;
 
@@ -84,20 +85,20 @@ class Periodo
      * @return string
      */
     public function getNombre(){
+
+        if(empty($this->fechainicio) || empty($this->getCuenta()) || empty($this->getCuenta()->getNombre())){
+            return sprintf("Id: %s.", $this->getId()) ?? '';
+        }else{
+            $parteInicio = sprintf('del %s', $this->fechainicio->format('Y-m-d'));
+        }
+
         $parteFin = '';
+
         if(!empty($this->fechafin)){
             $parteFin = sprintf(' al %s', $this->fechafin->format('Y-m-d'));
         }
-        $parteInicio = '';
-        if(!empty($this->fechainicio)){
-            $parteInicio = sprintf('Del %s', $this->fechainicio->format('Y-m-d'));
-        }
 
-        if(empty($parteInicio)){
-            return sprintf("Id: %s.", $this->getId()) ?? '';
-        }
-
-        return sprintf('%s%s', $parteInicio, $parteFin);
+        return sprintf('%s: %s%s', $this->getCuenta()->getNombre(), $parteInicio, $parteFin);
     }
 
 
