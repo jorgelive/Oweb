@@ -7,15 +7,76 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\CoreBundle\Form\Type\DatePickerType;
 use Sonata\CoreBundle\Form\Type\DateTimePickerType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class MovimientoAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'fechahora',
+    ];
+
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
             ->add('periodo')
-            ->add('fechahora')
+            ->add('fechahora', 'doctrine_orm_callback',[
+                'label' => 'Fecha',
+                'callback' => function($queryBuilder, $alias, $field, $value) {
+
+                    if (!$value['value'] || !($value['value'] instanceof \DateTime)) {
+                        return false;
+                    }
+                    $fechaMasUno = clone ($value['value']);
+                    $fechaMasUno->add(new \DateInterval('P1D'));
+
+                    if(empty($value['type'])){
+                        $queryBuilder->andWhere("DATE($alias.$field) >= :fechahora");
+                        $queryBuilder->andWhere("DATE($alias.$field) < :fechahoraMasUno");
+                        $queryBuilder->setParameter('fechahora', $value['value']);
+                        $queryBuilder->setParameter('fechahoraMasUno', $fechaMasUno);
+                        return true;
+                    } elseif($value['type'] == 1){
+                        $queryBuilder->andWhere("DATE($alias.$field) >= :fechahora");
+                        $queryBuilder->setParameter('fechahora', $value['value']);
+                        return true;
+                    } elseif($value['type'] == 2){
+                        $queryBuilder->andWhere("DATE($alias.$field) < :fechahoraMasUno");
+                        $queryBuilder->setParameter('fechahoraMasUno', $fechaMasUno);
+                        return true;
+                    } elseif($value['type'] == 3){
+                        $queryBuilder->andWhere("DATE($alias.$field) >= :fechahoraMasUno");
+                        $queryBuilder->setParameter('fechahoraMasUno', $fechaMasUno);
+                        return true;
+                    } elseif($value['type'] == 4){
+                        $queryBuilder->andWhere("DATE($alias.$field) < :fechahora");
+                        $queryBuilder->setParameter('fechahora', $value['value']);
+                        return true;
+                    }
+
+                    return true;
+
+                },
+                'field_type' => DatePickerType::class,
+                'field_options' => [
+                    'dp_use_current' => true,
+                    'dp_show_today' => true,
+                    'format'=> 'yyyy/MM/dd'
+                ],
+                'operator_type' => ChoiceType::class,
+                'operator_options' => array(
+                    'choices' => array(
+                        'Igual a' => 0,
+                        'Mayor o igual a' => 1,
+                        'Menor o igual a' => 2,
+                        'Mayor a' => 3,
+                        'Menor a' => 4
+                    )
+                )
+            ])
             ->add('descripcion', null, [
                 'label' => 'Descripción'
             ])
@@ -33,9 +94,6 @@ class MovimientoAdmin extends AbstractAdmin
             ])
             ->add('cobradorpagador', null, [
                 'label' => 'Cobrador / Pagador'
-            ])
-            ->add('user', null, [
-                'label' => 'Encargado'
             ])
         ;
     }
@@ -45,7 +103,11 @@ class MovimientoAdmin extends AbstractAdmin
         $listMapper
             ->add('id')
             ->add('periodo')
-            ->add('fechahora')
+            ->add('fechahora',  null, [
+                'label' => 'Fecha',
+                'format' => 'Y/m/d H:i'
+
+            ])
             ->add('descripcion', null, [
                 'label' => 'Descripción'
             ])
@@ -64,8 +126,10 @@ class MovimientoAdmin extends AbstractAdmin
             ->add('cobradorpagador', null, [
                 'label' => 'Cobrador / Pagador'
             ])
-            ->add('user', null, [
-                'label' => 'Encargado'
+            ->add('modificado',  null, [
+                'label' => 'Modificación',
+                'format' => 'Y/m/d H:i'
+
             ])
             ->add('_action', null, [
                 'label' => 'Acciones',
@@ -112,9 +176,6 @@ class MovimientoAdmin extends AbstractAdmin
             ->add('cobradorpagador', null, [
                 'label' => 'Cobrador / Pagador'
             ])
-            ->add('user', null, [
-                'label' => 'Encargado'
-            ])
         ;
     }
 
@@ -141,9 +202,6 @@ class MovimientoAdmin extends AbstractAdmin
             ])
             ->add('cobradorpagador', null, [
                 'label' => 'Cobrador / Pagador'
-            ])
-            ->add('user', null, [
-                'label' => 'Encargado'
             ])
         ;
     }

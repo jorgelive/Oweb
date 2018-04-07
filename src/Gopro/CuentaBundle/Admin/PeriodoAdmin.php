@@ -12,6 +12,14 @@ use Sonata\CoreBundle\Form\Type\DatePickerType;
 
 class PeriodoAdmin extends AbstractAdmin
 {
+
+    protected $datagridValues = [
+        '_page' => 1,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'modificado',
+    ];
+
+
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
@@ -35,6 +43,11 @@ class PeriodoAdmin extends AbstractAdmin
             ])
             ->add('fechafin', null, [
                 'label' => 'Fin'
+            ])
+            ->add('modificado',  null, [
+                'label' => 'Modificación',
+                'format' => 'Y/m/d H:i'
+
             ])
             ->add('_action', null, [
                 'label' => 'Acciones',

@@ -169,9 +169,6 @@ class User extends BaseUser
         return $this->cuentas;
     }
 
-
-
-
     /**
      * Set conductor
      *
