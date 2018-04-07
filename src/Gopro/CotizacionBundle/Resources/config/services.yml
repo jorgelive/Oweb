@@ -81,8 +81,8 @@ services:
         public: true
 
     gopro_cotizacion.admin.cotnota:
-            class: Gopro\CotizacionBundle\Admin\CotnotaAdmin
-            arguments: [~, Gopro\CotizacionBundle\Entity\Cotnota, SonataAdminBundle:CRUD]
-            tags:
-                - { name: sonata.admin, manager_type: orm, group: Cotizacion Maestro, label: Notas }
-            public: true
+        class: Gopro\CotizacionBundle\Admin\CotnotaAdmin
+        arguments: [~, Gopro\CotizacionBundle\Entity\Cotnota, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Cotizacion Maestro, label: Notas }
+        public: true

@@ -29,7 +29,7 @@ class PeriodoAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('cuenta')
+            ->addIdentifier('cuenta')
             ->add('fechainicio', null, [
                 'label' => 'Inicio'
             ])

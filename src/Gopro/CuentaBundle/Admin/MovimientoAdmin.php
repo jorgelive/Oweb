@@ -102,10 +102,12 @@ class MovimientoAdmin extends AbstractAdmin
                 'label' => 'Descripción'
             ])
             ->add('debe', null, [
-                'label' => 'Ingreso'
+                'label' => 'Ingreso',
+                'attr' => ['class' => 'ingresoinput']
             ])
             ->add('haber', null, [
-                'label' => 'Egreso'
+                'label' => 'Egreso',
+                'attr' => ['class' => 'egresoinput']
             ])
             ->add('cobradorpagador', null, [
                 'label' => 'Cobrador / Pagador'

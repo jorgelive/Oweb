@@ -35,6 +35,8 @@ services:
         arguments: [~, Gopro\CuentaBundle\Entity\Periodo, SonataAdminBundle:CRUD]
         tags:
             - { name: sonata.admin, manager_type: orm, group: admin, label: Periodo }
+        calls:
+            - [ setTemplate, [edit, GoproCuentaBundle:PeriodoAdmin:edit.html.twig]]
         public: true
 
     gopro_cuenta.admin.tipo:

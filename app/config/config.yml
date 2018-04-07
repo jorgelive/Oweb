@@ -291,9 +291,9 @@ sonata_admin:
                 label: 'Cuentas'
                 icon: '<i class="fa fa-line-chart"></i>'
                 items:
-                    - gopro_cuenta.admin.cuenta
                     - gopro_cuenta.admin.periodo
                     - gopro_cuenta.admin.movimiento
+                    - gopro_cuenta.admin.cuenta
                     - gopro_cuenta.admin.centro
                     - gopro_cuenta.admin.clase
                     - gopro_cuenta.admin.tipo
