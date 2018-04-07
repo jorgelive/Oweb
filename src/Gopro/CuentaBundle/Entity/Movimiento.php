@@ -32,6 +32,15 @@ class Movimiento
     protected $periodo;
 
     /**
+     * @var \Gopro\CuentaBundle\Entity\Periodo
+     *
+     * @ORM\ManyToOne(targetEntity="Periodo")
+     * @ORM\JoinColumn(name="periodotransferencia_id", referencedColumnName="id", nullable=true)
+     * @ORM\OrderBy({"modificado" = "ASC"})
+     */
+    protected $periodotransferencia;
+
+    /**
      * @var \Gopro\UserBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="Gopro\UserBundle\Entity\User", inversedBy="movimientos")
@@ -383,5 +392,29 @@ class Movimiento
     public function getCentro()
     {
         return $this->centro;
+    }
+
+    /**
+     * Set periodotransferencia.
+     *
+     * @param \Gopro\CuentaBundle\Entity\Periodo|null $periodotransferencia
+     *
+     * @return Movimiento
+     */
+    public function setPeriodotransferencia(\Gopro\CuentaBundle\Entity\Periodo $periodotransferencia = null)
+    {
+        $this->periodotransferencia = $periodotransferencia;
+    
+        return $this;
+    }
+
+    /**
+     * Get periodotransferencia.
+     *
+     * @return \Gopro\CuentaBundle\Entity\Periodo|null
+     */
+    public function getPeriodotransferencia()
+    {
+        return $this->periodotransferencia;
     }
 }

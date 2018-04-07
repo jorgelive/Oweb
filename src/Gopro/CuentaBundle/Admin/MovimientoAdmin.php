@@ -56,7 +56,6 @@ class MovimientoAdmin extends AbstractAdmin
                         $queryBuilder->setParameter('fechahora', $value['value']);
                         return true;
                     }
-
                     return true;
 
                 },
@@ -79,6 +78,9 @@ class MovimientoAdmin extends AbstractAdmin
             ])
             ->add('descripcion', null, [
                 'label' => 'Descripción'
+            ])
+            ->add('periodotransferencia', null, [
+                'label' => 'Trans O / D'
             ])
             ->add('clase', null, [
                 'label' => 'Clase'
@@ -106,10 +108,12 @@ class MovimientoAdmin extends AbstractAdmin
             ->add('fechahora',  null, [
                 'label' => 'Fecha',
                 'format' => 'Y/m/d H:i'
-
             ])
             ->add('descripcion', null, [
                 'label' => 'Descripción'
+            ])
+            ->add('periodotransferencia', null, [
+                'label' => 'Trans O / D'
             ])
             ->add('clase', null, [
                 'label' => 'Clase'
@@ -165,6 +169,9 @@ class MovimientoAdmin extends AbstractAdmin
             ->add('descripcion', null, [
                 'label' => 'Descripción'
             ])
+            ->add('periodotransferencia', null, [
+                'label' => 'Trans O / D'
+            ])
             ->add('debe', null, [
                 'label' => 'Ingreso',
                 'attr' => ['class' => 'ingresoinput']
@@ -184,9 +191,15 @@ class MovimientoAdmin extends AbstractAdmin
         $showMapper
             ->add('id')
             ->add('periodo')
-            ->add('fechahora')
+            ->add('fechahora',  null, [
+                'label' => 'Fecha',
+                'format' => 'Y/m/d H:i'
+            ])
             ->add('descripcion', null, [
                 'label' => 'Descripción'
+            ])
+            ->add('periodotransferencia', null, [
+                'label' => 'Trans O / D'
             ])
             ->add('clase', null, [
                 'label' => 'Clase'
