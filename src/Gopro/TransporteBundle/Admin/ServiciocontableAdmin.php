@@ -12,6 +12,10 @@ use Sonata\CoreBundle\Form\Type\DatePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+
 class ServiciocontableAdmin extends AbstractAdmin
 {
     protected $datagridValues = [
@@ -232,6 +236,48 @@ class ServiciocontableAdmin extends AbstractAdmin
                 'required' => false
             ])
         ;
+
+        $widthModifier = function (FormInterface $form) {
+
+            $form
+                ->add('descripcion', null, [
+                    'label' => 'Descripción',
+                    'attr' => [
+                        'style' => 'width: 200px;'
+                    ]
+                ])
+                ->add('neto', null, [
+                    'label' => 'Neto',
+                    'attr' => [
+                        'style' => 'width: 80px; text-align: right;'
+                    ]
+                ])
+                ->add('impuesto', null, [
+                    'label' => 'Impuesto',
+                    'attr' => [
+                        'style' => 'width: 80px; text-align: right;'
+                    ]
+                ])
+                ->add('total', null, [
+                    'label' => 'Total',
+                    'attr' => [
+                        'style' => 'width: 80px; text-align: right;'
+                    ]
+                ])
+            ;
+        };
+
+        $formBuilder = $formMapper->getFormBuilder();
+        $formBuilder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($widthModifier) {
+                if($event->getData()
+                    && $this->getRoot()->getClass() == 'Gopro\TransporteBundle\Entity\Servicio'
+                ){
+                    $widthModifier($event->getForm());
+                }
+            }
+        );
     }
 
     /**

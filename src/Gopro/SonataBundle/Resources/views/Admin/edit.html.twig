@@ -5,7 +5,6 @@
 
     <style type="text/css">
         .field-container {overflow-x: auto; padding-bottom: 20px;}
-        input.form-control {min-width: 80px;}
         .input-group .fecha {width: 95px;}
         .input-group .fechahora {width: 130px;}
         .nav-tabs-custom{ margin-top: 30px; padding-top: 8px; margin-bottom: 10px; border-top: #3c8dbc solid 2px;}
@@ -38,7 +37,7 @@
                         var $this = $(this);
 
                         $this.off("input", methods.fit).on("input", methods.fit);
-                        methods.fit.call(this, null);
+                        //methods.fit.call(this, null);
                         return $this;
                     },
                     initdatetime: function () {
@@ -127,7 +126,7 @@
         })( jQuery );
 
         $(document).on('sonata.add_element', function() {
-            $('table input.form-control').not('.fechahora, .fecha').autoFit();
+            //$('table input.form-control').not('.fechahora, .fecha').autoFit();
             //$('table textarea.form-control').autoFit();
             $('input.readonly').attr('readonly', 'readonly');
             $('input.disabled').attr('disabled', 'disabled');
@@ -148,7 +147,7 @@
         $(document).ready(function() {
 
             $("[id$='_delete']").checkDelete();
-            $('table input.form-control').not('.fechahora, .fecha').autoFit();
+            //$('table input.form-control').not('.fechahora, .fecha').autoFit();
             //$('table textarea.form-control').autoFit();
             $('input.readonly').attr('readonly', 'readonly');
             $('input.disabled').attr('disabled', 'disabled');

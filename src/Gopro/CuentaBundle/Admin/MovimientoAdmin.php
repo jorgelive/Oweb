@@ -11,6 +11,10 @@ use Sonata\CoreBundle\Form\Type\DatePickerType;
 use Sonata\CoreBundle\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+
 class MovimientoAdmin extends AbstractAdmin
 {
     protected $datagridValues = [
@@ -158,7 +162,10 @@ class MovimientoAdmin extends AbstractAdmin
                 'label' => 'Fecha',
                 'dp_use_current' => true,
                 'dp_show_today' => true,
-                'format'=> 'yyyy/MM/dd HH:mm'
+                'format'=> 'yyyy/MM/dd HH:mm',
+                'attr' => [
+                    'class' => 'fechahora'
+                ]
             ])
             ->add('clase', null, [
                 'label' => 'Clase'
@@ -184,6 +191,50 @@ class MovimientoAdmin extends AbstractAdmin
                 'label' => 'Cobrador / Pagador'
             ])
         ;
+
+        $widthModifier = function (FormInterface $form) {
+
+            $form
+                ->add('descripcion', null, [
+                    'label' => 'Descripcion',
+                    'attr' => [
+                        'style' => 'width: 200px;'
+                    ]
+                ])
+                ->add('debe', null, [
+                    'label' => 'Ingreso',
+                    'attr' => [
+                        'style' => 'width: 80px; text-align: right;',
+                        'class' => 'ingresoinput'
+                    ]
+                ])
+                ->add('haber', null, [
+                    'label' => 'Egreso',
+                    'attr' => [
+                        'style' => 'width: 80px; text-align: right;',
+                        'class' => 'egresoinput'
+                    ]
+                ])
+                ->add('cobradorpagador', null, [
+                    'label' => 'Cobrador / Pagador',
+                    'attr' => [
+                        'style' => 'width: 200px;'
+                    ]
+                ])
+            ;
+        };
+
+        $formBuilder = $formMapper->getFormBuilder();
+        $formBuilder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($widthModifier) {
+                if($event->getData()
+                    && $this->getRoot()->getClass() == 'Gopro\CuentaBundle\Entity\Periodo'
+                ){
+                    $widthModifier($event->getForm());
+                }
+            }
+        );
     }
 
     protected function configureShowFields(ShowMapper $showMapper)

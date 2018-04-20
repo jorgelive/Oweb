@@ -8,6 +8,10 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+
 class ServiciofileAdmin extends AbstractAdmin
 {
 
@@ -87,6 +91,66 @@ class ServiciofileAdmin extends AbstractAdmin
             ->add('destino')
             ->add('nota')
         ;
+
+        $widthModifier = function (FormInterface $form) {
+
+            $form
+                ->add('nombre', null, [
+                    'label' => 'Nombre',
+                    'attr' => [
+                        'style' => 'width: 200px;'
+                    ]
+                ])
+                ->add('codigo', null, [
+                    'label' => 'Código',
+                    'attr' => [
+                        'style' => 'width: 120px;'
+                    ]
+                ])
+                ->add('numadl', null, [
+                    'label' => 'Adultos',
+                    'attr' => [
+                        'style' => 'width: 60px; text-align: right;'
+                    ]
+                ])
+                ->add('numchd', null, [
+                    'label' => 'Niños',
+                    'attr' => [
+                        'style' => 'width: 60px; text-align: right;'
+                    ]
+                ])
+                ->add('origen', null, [
+                    'label' => 'Origen',
+                    'attr' => [
+                        'style' => 'width: 120px;'
+                    ]
+                ])
+                ->add('destino', null, [
+                    'label' => 'Destino',
+                    'attr' => [
+                        'style' => 'width: 120px;'
+                    ]
+                ])
+                ->add('nota', null, [
+                    'label' => 'Nota',
+                    'attr' => [
+                        'style' => 'width: 160px;'
+                    ]
+                ])
+            ;
+        };
+
+        $formBuilder = $formMapper->getFormBuilder();
+        $formBuilder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($widthModifier) {
+                if($event->getData()
+                    && $this->getRoot()->getClass() == 'Gopro\TransporteBundle\Entity\Servicio'
+                ){
+                    $widthModifier($event->getForm());
+                }
+            }
+        );
     }
 
     /**

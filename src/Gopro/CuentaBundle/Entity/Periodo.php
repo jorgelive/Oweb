@@ -50,7 +50,8 @@ class Periodo
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fechafin", type="date", nullable=true)
+     * @ORM\Column(name="fechafin"
+     * , type="date", nullable=true)
      */
     private $fechafin;
 

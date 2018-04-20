@@ -10,6 +10,10 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\DatePickerType;
 use Sonata\TranslationBundle\Filter\TranslationFieldFilter;
 
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+
 class TarifaAdmin extends AbstractAdmin
 {
     /**
@@ -151,18 +155,85 @@ class TarifaAdmin extends AbstractAdmin
                 'label' => 'Inicio',
                 'dp_use_current' => true,
                 'dp_show_today' => true,
-                'format'=> 'yyyy/MM/dd'
+                'format'=> 'yyyy/MM/dd',
+                'attr' => [
+                    'class' => 'fecha'
+                ]
             ])
             ->add('validezfin', DatePickerType::class, [
                 'label' => 'Fin',
                 'dp_use_current' => true,
                 'dp_show_today' => true,
-                'format'=> 'yyyy/MM/dd'
+                'format'=> 'yyyy/MM/dd',
+                'attr' => [
+                    'class' => 'fecha'
+                ]
             ])
             ->add('categoriatour', null, [
                 'label' => 'Categoria de tour'
             ])
         ;
+
+        $widthModifier = function (FormInterface $form) {
+
+            $form
+                ->add('nombre', null, [
+                    'label' => 'Nombre',
+                    'attr' => [
+                        'style' => 'width: 200px;'
+                    ]
+                ])
+                ->add('titulo', null, [
+                    'label' => 'Título',
+                    'attr' => [
+                        'style' => 'width: 200px;'
+                    ]
+                ])
+                ->add('monto', null, [
+                    'label' => 'Monto',
+                    'attr' => [
+                        'style' => 'width: 80px; text-align: right;'
+                    ]
+                ])
+                ->add('capacidadmin', null, [
+                    'label' => 'Cantidad min',
+                    'attr' => [
+                        'style' => 'width: 80px; text-align: right;'
+                    ]
+                ])
+                ->add('capacidadmax', null, [
+                    'label' => 'Cantidad max',
+                    'attr' => [
+                        'style' => 'width: 80px; text-align: right;'
+                    ]
+                ])
+                ->add('edadmin', null, [
+                    'label' => 'Edad min',
+                    'attr' => [
+                        'style' => 'width: 80px; text-align: right;'
+                    ]
+                ])
+                ->add('edadmax', null, [
+                    'label' => 'Edad max',
+                    'attr' => [
+                        'style' => 'width: 80px; text-align: right;'
+                    ]
+                ])
+            ;
+        };
+
+        $formBuilder = $formMapper->getFormBuilder();
+        $formBuilder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($widthModifier) {
+                if($event->getData()
+                    && $this->getRoot()->getClass() == 'Gopro\ServicioBundle\Entity\Componente'
+                ){
+                    $widthModifier($event->getForm());
+                }
+            }
+        );
+
     }
 
     /**

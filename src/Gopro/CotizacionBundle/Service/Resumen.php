@@ -37,6 +37,27 @@ class Resumen implements ContainerAwareInterface
         return $this;
     }
 
+    function getTituloItinerario(\DateTime $fecha, $itinerarioFechaAux) : string {
+        if(!empty($itinerarioFechaAux)){
+
+            $diaAnterior = clone ($fecha);
+            $diaAnterior->sub(new \DateInterval('P1D')) ;
+            $diaPosterior = clone ($fecha);
+            $diaPosterior->add(new \DateInterval('P1D')) ;
+
+            if(isset($itinerarioFechaAux[$fecha->format('ymd')])){
+                return $itinerarioFechaAux[$fecha->format('ymd')];
+            }elseif((int)$fecha->format('H') > 12 && isset($itinerarioFechaAux[$diaPosterior->format('ymd')])){
+                return $itinerarioFechaAux[$diaPosterior->format('ymd')];
+            }elseif((int)$fecha->format('H') <= 12 && isset($itinerarioFechaAux[$diaAnterior->format('ymd')])){
+                return $itinerarioFechaAux[$diaAnterior->format('ymd')];
+            }else{
+                return reset($itinerarioFechaAux);
+            }
+        }
+
+    }
+
     function procesar($id)
     {
 
@@ -63,8 +84,8 @@ class Resumen implements ContainerAwareInterface
         //para mostrar primero el itinerario
         $datosTabs['itinerario']['nombre'] = 'Itinerarios';
         $datosTabs['agenda']['nombre'] = 'Agenda';
-        $datosTabs['incluye']['nombre'] = 'Detalle';
         $datosTabs['tarifas']['nombre'] = 'Tarifas';
+        $datosTabs['incluye']['nombre'] = 'Detalle';
         $datosTabs['politica']['nombre'] = $cotizacion->getCotpolitica()->getTitulo();
         $datosTabs['politica']['contenido'] = $cotizacion->getCotpolitica()->getContenido();
 
@@ -161,6 +182,15 @@ class Resumen implements ContainerAwareInterface
 
                             $tempArrayComponente = [];
 
+                            if(!empty($itinerarioFechaAux)){
+                                $tempArrayComponente['tituloItinerario'] = $this->getTituloItinerario($componente->getFechahorainicio(), $itinerarioFechaAux);
+                            }
+
+                            $tempArrayComponente['nombre'] = $componente->getComponente()->getNombre();
+                            $tempArrayComponente['titulo'] = $componente->getComponente()->getTitulo();
+                            $tempArrayComponente['fechahorainicio'] = $componente->getFechahorainicio();
+                            $tempArrayComponente['fechahorafin'] = $componente->getFechahorafin();
+
                             foreach ($componente->getCottarifas() as $tarifa):
 
                                 ////////Incluye//////
@@ -209,22 +239,8 @@ class Resumen implements ContainerAwareInterface
                                         $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['fecha'] = $componente->getFechahorainicio()->format('Y-m-d');
                                     }
 
-                                    if(!empty($itinerarioFechaAux)){
-
-                                        $diaAnterior = clone ($componente->getFechahorainicio());
-                                        $diaAnterior->sub(new \DateInterval('P1D')) ;
-                                        $diaPosterior = clone ($componente->getFechahorainicio());
-                                        $diaPosterior->add(new \DateInterval('P1D')) ;
-
-                                        if(isset($itinerarioFechaAux[$componente->getFechahorainicio()->format('ymd')])){
-                                            $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['tituloItinerario'] = $itinerarioFechaAux[$componente->getFechahorainicio()->format('ymd')];
-                                        }elseif((int)$componente->getFechahorainicio()->format('H') > 12 && isset($itinerarioFechaAux[$diaPosterior->format('ymd')])){
-                                            $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['tituloItinerario'] = $itinerarioFechaAux[$diaPosterior->format('ymd')];
-                                        }elseif((int)$componente->getFechahorainicio()->format('H') <= 12 && isset($itinerarioFechaAux[$diaAnterior->format('ymd')])){
-                                            $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['tituloItinerario'] = $itinerarioFechaAux[$diaAnterior->format('ymd')];
-                                        }else{
-                                            $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['tituloItinerario'] = reset($itinerarioFechaAux);
-                                        }
+                                    if(isset($tempArrayComponente['tituloItinerario'])){
+                                        $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['tituloItinerario'] = $tempArrayComponente['tituloItinerario'];
                                     }
 
                                     if(!empty($tempArrayIncluye)){
@@ -238,6 +254,11 @@ class Resumen implements ContainerAwareInterface
                                 $tempArrayTarifa = [];
                                 $tempArrayTarifa['id'] = $tarifa->getId();
                                 $tempArrayTarifa['nombreServicio'] = $servicio->getServicio()->getNombre();
+                                //dentro de la tarifa tambien el titulo del itinerario y la cantidad de componente
+                                if(isset($tempArrayComponente['tituloItinerario'])){
+                                    $tempArrayTarifa['tituloItinerario'] = $tempArrayComponente['tituloItinerario'];
+                                }
+                                $tempArrayTarifa['cantidadComponente'] = $componente->getCantidad();
                                 $tempArrayTarifa['nombreComponente'] = $componente->getComponente()->getNombre();
                                 $tempArrayTarifa['tituloComponente'] = $componente->getComponente()->getTitulo();
 
@@ -264,6 +285,7 @@ class Resumen implements ContainerAwareInterface
 
                                 $tempArrayTarifa['nombre'] = $tarifa->getTarifa()->getNombre();
                                 $tempArrayTarifa['titulo'] = $tarifa->getTarifa()->getTitulo();
+
                                 $tempArrayTarifa['moneda'] = $tarifa->getMoneda()->getId();
 
                                 //dolares = 2
@@ -326,19 +348,8 @@ class Resumen implements ContainerAwareInterface
                                 unset($tempArrayTarifa);
 
                             endforeach;
+                            //dentro del componenete el titulo del itinerario
 
-                            if(!empty($itinerarioFechaAux)){
-                                if(!is_null($componente->getFechahorainicio()) && isset($itinerarioFechaAux[$componente->getFechahorainicio()->format('ymd')])){
-                                    $tempArrayComponente['tituloItinerario'] = $itinerarioFechaAux[$componente->getFechahorainicio()->format('ymd')];
-                                }else{
-                                    $tempArrayComponente['tituloItinerario'] = reset($itinerarioFechaAux);
-                                }
-                            }
-
-                            $tempArrayComponente['nombre'] = $componente->getComponente()->getNombre();
-                            $tempArrayComponente['titulo'] = $componente->getComponente()->getTitulo();
-                            $tempArrayComponente['fechahorainicio'] = $componente->getFechahorainicio();
-                            $tempArrayComponente['fechahorafin'] = $componente->getFechahorafin();
 
                             $this->obtenerTarifasComponente($tempArrayComponente['tarifas'], $datosCotizacion['cotizacion']['numeropasajeros']);
 
@@ -415,25 +426,28 @@ class Resumen implements ContainerAwareInterface
                 if(!isset($this->resumendeClasificado[$tarifa['tipoTarId']]['montosoles'])){
                     $this->resumendeClasificado[$tarifa['tipoTarId']]['montosoles'] = 0;
                 }
+
                 $this->resumendeClasificado[$tarifa['tipoTarId']]['montosoles'] += $tarifa['montosoles'] * $clase['cantidad'];
                 $this->resumendeClasificado[$tarifa['tipoTarId']]['montosoles'] = number_format((float)$this->resumendeClasificado[$tarifa['tipoTarId']]['montosoles'], '2', '.', '');
 
                 if(!isset($this->resumendeClasificado[$tarifa['tipoTarId']]['montodolares'])){
                     $this->resumendeClasificado[$tarifa['tipoTarId']]['montodolares'] = 0;
                 }
+
                 $this->resumendeClasificado[$tarifa['tipoTarId']]['montodolares'] += $tarifa['montodolares'] * $clase['cantidad'];
                 $this->resumendeClasificado[$tarifa['tipoTarId']]['montodolares'] = number_format((float)$this->resumendeClasificado[$tarifa['tipoTarId']]['montodolares'], '2', '.', '');
-
 
                 if(!isset($this->resumendeClasificado[$tarifa['tipoTarId']]['ventasoles'])){
                     $this->resumendeClasificado[$tarifa['tipoTarId']]['ventasoles'] = 0;
                 }
+
                 $this->resumendeClasificado[$tarifa['tipoTarId']]['ventasoles'] += $tarifa['ventasoles'] * $clase['cantidad'];
                 $this->resumendeClasificado[$tarifa['tipoTarId']]['ventasoles'] = number_format((float)$this->resumendeClasificado[$tarifa['tipoTarId']]['ventasoles'], '2', '.', '');
 
                 if(!isset($this->resumendeClasificado[$tarifa['tipoTarId']]['ventadolares'])){
                     $this->resumendeClasificado[$tarifa['tipoTarId']]['ventadolares'] = 0;
                 }
+
                 $this->resumendeClasificado[$tarifa['tipoTarId']]['ventadolares'] += $tarifa['ventadolares'] * $clase['cantidad'];
                 $this->resumendeClasificado[$tarifa['tipoTarId']]['ventadolares'] = number_format((float)$this->resumendeClasificado[$tarifa['tipoTarId']]['ventadolares'], '2', '.', '');
 
@@ -464,8 +478,27 @@ class Resumen implements ContainerAwareInterface
                     $clase['resumen'][$tarifa['tipoTarId']]['ventadolares'] = 0;
                 }
                 $clase['resumen'][$tarifa['tipoTarId']]['ventadolares'] += $tarifa['ventadolares'];
+
+                if(isset($tarifa['tituloComponente']) && !empty($tarifa['tituloComponente'])){
+                    $parteTarifaTitulo = '';
+                    if(isset($tarifa['titulo']) && !empty($tarifa['titulo'])){
+                        $parteTarifaTitulo =  ' (' . $tarifa['titulo'] . ')';
+                    }
+                    $parteItinerarioTitulo = '';
+                    if(isset($tarifa['tituloItinerario'])){
+                        $parteItinerarioTitulo = ' en ' . $tarifa['tituloItinerario'];
+                    }
+                    $parteCantidad = '';
+                    if(isset($tarifa['cantidadComponente']) && $tarifa['cantidadComponente'] > 1 ){
+                        $parteCantidad = ' x' . $tarifa['cantidadComponente'] . ' (Dias/Noches)';
+                    }
+
+                    $clase['resumen'][$tarifa['tipoTarId']]['detallepax'][] = $tarifa['tituloComponente'] . $parteTarifaTitulo . $parteCantidad . $parteItinerarioTitulo;
+                }
+
             endforeach;
         endforeach;
+        //var_dump($this->clasificacionTarifas[0]['resumen']); die;
     }
 
     private function obtenerTarifasComponente($componente, $cantidadTotalPasajeros){

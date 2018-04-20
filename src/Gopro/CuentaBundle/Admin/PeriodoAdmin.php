@@ -71,15 +71,22 @@ class PeriodoAdmin extends AbstractAdmin
                 'label' => 'Inicio',
                 'dp_use_current' => true,
                 'dp_show_today' => true,
-                'format'=> 'yyyy/MM/dd'
+                'format'=> 'yyyy/MM/dd',
+                'attr' => [
+                    'class' => 'fecha'
+                ]
             ])
             ->add('fechafin', DatePickerType::class, [
                 'required' => false,
                 'label' => 'Fin',
                 'dp_use_current' => true,
                 'dp_show_today' => true,
-                'format'=> 'yyyy/MM/dd'
+                'format'=> 'yyyy/MM/dd',
+                'attr' => [
+                    'class' => 'fecha'
+                ]
             ]);
+
         if ($this->getRoot()->getClass() != 'Gopro\CuentaBundle\Entity\Cuenta'){
             $formMapper
                 ->add('movimientos', CollectionType::class, [
