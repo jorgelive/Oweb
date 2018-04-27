@@ -21,6 +21,13 @@ services:
             - { name: sonata.admin, manager_type: orm, group: Cotizacion Maestro, label: Estado de cotización }
         public: true
 
+    gopro_cotizacion.admin.estadocotcomponente:
+        class: Gopro\CotizacionBundle\Admin\EstadocotcomponenteAdmin
+        arguments: [~, Gopro\CotizacionBundle\Entity\Estadocotcomponente, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Cotizacion Maestro, label: Estado de componente }
+        public: true
+
     gopro_cotizacion.admin.filepasajero:
         class: Gopro\CotizacionBundle\Admin\FilepasajeroAdmin
         arguments: [~, Gopro\CotizacionBundle\Entity\Filepasajero, SonataAdminBundle:CRUD]

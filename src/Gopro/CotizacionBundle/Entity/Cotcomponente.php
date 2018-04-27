@@ -40,6 +40,14 @@ class Cotcomponente
     protected $componente;
 
     /**
+     * @var \Gopro\CotizacionBundle\Entity\Estadocotcomponente
+     *
+     * @ORM\ManyToOne(targetEntity="Gopro\CotizacionBundle\Entity\Estadocotcomponente")
+     * @ORM\JoinColumn(name="estadocotcomponente_id", referencedColumnName="id", nullable=false)
+     */
+    protected $estadocotcomponente;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Gopro\CotizacionBundle\Entity\Cottarifa", mappedBy="cotcomponente", cascade={"persist","remove"}, orphanRemoval=true)
@@ -174,6 +182,30 @@ class Cotcomponente
     public function getModificado()
     {
         return $this->modificado;
+    }
+
+    /**
+     * Set estadocotcomponente
+     *
+     * @param \Gopro\CotizacionBundle\Entity\Estadocotcomponente $estadocotcomponente
+     *
+     * @return Cotcomponente
+     */
+    public function setEstadocotcomponente(\Gopro\CotizacionBundle\Entity\Estadocotcomponente $estadocotcomponente)
+    {
+        $this->estadocotcomponente = $estadocotcomponente;
+
+        return $this;
+    }
+
+    /**
+     * Get estadocotcomponente
+     *
+     * @return \Gopro\CotizacionBundle\Entity\Estadocotcomponente
+     */
+    public function getEstadocotcomponente()
+    {
+        return $this->estadocotcomponente;
     }
 
     /**

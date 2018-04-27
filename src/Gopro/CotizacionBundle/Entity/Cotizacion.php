@@ -155,6 +155,18 @@ class Cotizacion implements TranslatableInterface
         return sprintf("%s : %s.", $this->getFile()->getNombre(), $this->getTitulo()) ?? sprintf("Id: %s.", $this->getId()) ?? '';
     }
 
+    /**
+     * @return string
+     */
+    public function getResumen()
+    {
+        if(empty($this->getFile())){
+            return $this->getTitulo() ?? sprintf("Id: %s.", $this->getId()) ?? '';
+        }
+
+        //como es interno retorno el nombre
+        return sprintf("%s : %s.", $this->getFile()->getNombre(), $this->getNombre()) ?? sprintf("Id: %s.", $this->getId()) ?? '';
+    }
 
     /**
      * Get id

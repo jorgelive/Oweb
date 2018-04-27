@@ -19,10 +19,18 @@ class OrganizacionAdmin extends AbstractAdmin
         $datagridMapper
             ->add('id')
             ->add('nombre')
-            ->add('razonsocial')
-            ->add('numerodocumento')
-            ->add('email')
-            ->add('direccion')
+            ->add('razonsocial', null, [
+                'label' => 'Razón social'
+            ])
+            ->add('numerodocumento', null, [
+                'label' => 'Número de documento'
+            ])
+            ->add('email', null, [
+                'label' => 'E-mail'
+            ])
+            ->add('direccion', null, [
+                'label' => 'Dirección'
+            ])
         ;
     }
 
@@ -34,10 +42,18 @@ class OrganizacionAdmin extends AbstractAdmin
         $listMapper
             ->add('id')
             ->add('nombre')
-            ->add('razonsocial')
-            ->add('numerodocumento')
-            ->add('email')
-            ->add('direccion')
+            ->add('razonsocial', null, [
+                'label' => 'Razón social'
+            ])
+            ->add('numerodocumento', null, [
+                'label' => 'Número de documento'
+            ])
+            ->add('email', null, [
+                'label' => 'E-mail'
+            ])
+            ->add('direccion', null, [
+                'label' => 'Dirección'
+            ])
             ->add('_action', 'actions', [
                 'actions' => [
                     'show' => [],
@@ -56,19 +72,24 @@ class OrganizacionAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('nombre')
-            ->add('razonsocial')
-            ->add('numerodocumento')
-            ->add('email')
-            ->add('direccion')
+            ->add('razonsocial', null, [
+                'label' => 'Razón social'
+            ])
+            ->add('numerodocumento', null, [
+                'label' => 'Número de documento'
+            ])
+            ->add('email', null, [
+                'label' => 'E-mail'
+            ])
+            ->add('direccion', null, [
+                'label' => 'Dirección'
+            ])
             ->add('dependencias', CollectionType::class, [
-                'required' => false,
-                'expanded' => true,
-                'multiple' => true
-            ],
-                [
-                    'allow_delete' => true
-                ]
-            )
+                'by_reference' => false
+            ], [
+                'edit' => 'inline',
+                'inline' => 'table',
+            ])
         ;
     }
 
@@ -80,9 +101,18 @@ class OrganizacionAdmin extends AbstractAdmin
         $showMapper
             ->add('id')
             ->add('nombre')
-            ->add('numerodocuento')
-            ->add('email')
-            ->add('direccion')
+            ->add('razonsocial', null, [
+                'label' => 'Razón social'
+            ])
+            ->add('numerodocumento', null, [
+                'label' => 'Número de documento'
+            ])
+            ->add('email', null, [
+                'label' => 'E-mail'
+            ])
+            ->add('direccion', null, [
+                'label' => 'Dirección'
+            ])
         ;
     }
 

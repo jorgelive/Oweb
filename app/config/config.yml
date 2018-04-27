@@ -14,6 +14,28 @@ sonata_translation:
 
 gopro_fullcalendar:
     calendars:
+
+        cotizacion_componente_aceptado:
+            entity: 'GoproCotizacionBundle:Cotcomponente'
+            repositorymethod: 'findCalendarAceptado'
+            resource:
+                id: 'cotservicio.cotizacion.id'
+                title: 'cotservicio.cotizacion.resumen'
+
+            parameters:
+                title: 'componente.nombre'
+                start: 'fechahorainicio'
+                end: 'fechahorafin'
+                color: 'estadocotcomponente.color'
+                url:
+                    id: 'cotservicio.cotizacion.id'
+                    show:
+                        route: 'admin_gopro_cotizacion_cotizacion_show'
+                        role: 'ROLE_RESERVAS_GUEST'
+                    edit:
+                        route: 'admin_gopro_cotizacion_cotizacion_edit'
+                        role: 'ROLE_RESERVAS_EDITOR'
+
         transporte_servicio_conductor:
             entity: 'GoproTransporteBundle:Servicio'
             repositorymethod: 'findCalendarConductorColored'
@@ -306,6 +328,7 @@ sonata_admin:
                     - gopro_cotizacion.admin.cotizacion
                     - gopro_cotizacion.admin.filedocumento
                     - gopro_cotizacion.admin.estadocotizacion
+                    - gopro_cotizacion.admin.estadocotcomponente
                     - gopro_cotizacion.admin.tipofiledocumento
                     - gopro_cotizacion.admin.cotpolitica
                     - gopro_cotizacion.admin.cotnota

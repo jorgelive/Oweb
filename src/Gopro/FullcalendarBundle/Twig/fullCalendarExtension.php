@@ -49,12 +49,25 @@ class fullCalendarExtension extends \Twig_Extension
         return $this->_router->generate('gopro_fullcalendar_load_resource', ['calendar' => $calendar]);
     }
 
-    public function fullCalendar($calendars, $defaultView = 'agendaWeek', $allDaySlot = false)
+    public function fullCalendar($calendars, $defaultView = null, $views = [], $allDaySlot = false)
     {
+        if (empty($views)){
+            $views = ['agendaDay', 'agendaTwoDays', 'agendaWeek', 'month', 'listMonth'];
+        }
 
-        if (!is_array($calendars)){
+        if (empty($defaultView)){
+            $defaultView = 'agendaWeek';
+        }
+
+        if (!is_array($calendars) && is_string($calendars)){
             $calendars = ['Default' => $calendars];
         }
+
+        if(!is_array($views) && is_string($views)) {
+            $views[] = $views;
+        }
+
+        $views = implode(', ', $views);
 
         foreach ($calendars as $key => $calendar){
             $calendarsUrls[] = ['nombre' => $key,
@@ -116,16 +129,19 @@ class fullCalendarExtension extends \Twig_Extension
             header: {
                 left: 'promptResource today prev,next',
                 center: 'title',
-                right: 'agendaDay, agendaTwoDays, agendaWeek, month, listMonth'
+                right: '$views'
             },
             defaultView: '$defaultView',
             refetchResourcesOnNavigate: true,
             views: {
+                timelineThreeDays: {
+                    type: 'timeline',
+                    duration: { days: 3 }
+                },
                 agendaTwoDays: {
                     type: 'agenda',
                     duration: { days: 2 },
                     groupByResource: true
-                    //groupByDateAndResource: true
                 }
             },
             schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',

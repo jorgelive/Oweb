@@ -39,6 +39,9 @@ class CotcomponenteAdmin extends AbstractAdmin
                 'label' => 'Inicio',
                 'format' => 'Y/m/d H:i'
             ])
+            ->add('estadocotcomponente', null, [
+                'label' => 'Estado'
+            ])
         ;
     }
 
@@ -61,6 +64,9 @@ class CotcomponenteAdmin extends AbstractAdmin
             ->add('fechahorafin', null, [
                 'label' => 'Inicio',
                 'format' => 'Y/m/d H:i'
+            ])
+            ->add('estadocotcomponente', null, [
+                'label' => 'Estado'
             ])
             ->add('_action', null, [
                 'label' => 'Acciones',
@@ -119,6 +125,9 @@ class CotcomponenteAdmin extends AbstractAdmin
                     'class' => 'fechahora componentefin',
                     'horariodependiente' => false
                 ]
+            ])
+            ->add('estadocotcomponente', null, [
+                'label' => 'Estado'
             ])
             ->add('cottarifas', CollectionType::class , [
                 'by_reference' => false,
@@ -220,6 +229,9 @@ class CotcomponenteAdmin extends AbstractAdmin
             ->add('fechahorafin', null, [
                 'label' => 'Inicio',
                 'format' => 'Y/m/d H:i'
+            ])
+            ->add('estadocotcomponente', null, [
+                'label' => 'Estado'
             ])
         ;
     }

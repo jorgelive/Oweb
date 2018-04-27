@@ -67,13 +67,15 @@ class DependenciaAdmin extends AbstractAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        if ($this->getRoot()->getClass() != 'Gopro\UserBundle\Entity\Organizacion'){
+            $formMapper
+                ->add('organizacion', null, [
+                    'required' => true,
+                    'label' => 'Organización'
+                ]);
+        }
+
         $formMapper
-            ->add('organizacion', CollectionType::class, [
-                'required' => true,
-                'expanded' => true,
-                'multiple' => false,
-                'label' => 'Organización'
-            ])
             ->add('nombre')
             ->add('email', null, [
                 'label' => 'E-mail'
@@ -93,7 +95,6 @@ class DependenciaAdmin extends AbstractAdmin
         $showMapper
             ->add('id')
             ->add('organizacion', null, [
-                'route' => ['name' => 'show'],
                 'label' => 'Organización'
             ])
             ->add('nombre')

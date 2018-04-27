@@ -226,7 +226,7 @@ class ServicioAdmin extends AbstractAdmin
                         'label' => 'Operativo'
                     ], [
                         'edit' => 'inline',
-                        'inline' => 'table',
+                        'inline' => 'table'
                     ])
                 ->end()
                 ->with('Files')
