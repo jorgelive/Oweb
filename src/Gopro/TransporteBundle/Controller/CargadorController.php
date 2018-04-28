@@ -117,7 +117,6 @@ class CargadorController extends Controller
                     $linea['horafinServicio'] = date('H:i:s', strtotime($linea['horainicioServicio']) + 60 * 60);
                 }
                 $preproceso[$i]['fechahorafin'] = \DateTime::createFromFormat('Y-m-d H:i:s', $linea['fechafinServicio'] . ' ' . $linea['horafinServicio']);
-
                 $preproceso[$i]['nombre'] = $linea['nombreServicio'];
                 if (isset($linea['unidadServicio'])) {
                     $preproceso[$i]['unidad'] = $linea['unidadServicio'];

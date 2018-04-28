@@ -3,6 +3,7 @@ services:
         class:  Gopro\CotizacionBundle\Service\Resumen
         calls:
           - [ setDoctrine,[ "@doctrine" ] ]
+          - [ setContainer,[ "@service_container" ] ]
         public: true
 
     gopro_cotizacion.admin.file:

@@ -18,10 +18,11 @@ services:
         calls:
             - [ setContainer,[ "@service_container" ] ]
 
-    gopro_main.ajax.dropdown:
-        class: Gopro\MainBundle\Form\AjaxDropdownType
-        tags:
-            - { name: form.type, alias: gopro_type_ajax_dropdown }
+    gopro_main.tipocambio:
+        class: Gopro\MainBundle\Service\Tipocambio
+        calls:
+            - [ setDoctrine,[ "@doctrine" ] ]
+            - [ setContainer,[ "@service_container" ] ]
 
     gopro_main_asignacionusuario_listener:
         class: Gopro\MainBundle\EventListener\AsignacionusuarioListener

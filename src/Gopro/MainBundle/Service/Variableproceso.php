@@ -329,7 +329,7 @@ class Variableproceso implements ContainerAwareInterface{
     public function exceltime($variable, $tipo='from')
     {
         if(empty($variable)){
-            return $variable;
+            return '00:00:00';
         }
         if($tipo=='from'){
 
@@ -344,13 +344,11 @@ class Variableproceso implements ContainerAwareInterface{
                     return(date('H:i:s', strtotime(substr($variable, 0, 2) . ':' . substr($variable, 2, 2) . ':' . substr($variable, 4, 2))));
                 }
             }elseif(is_numeric($variable)){
-
                 $variable = $variable * 24;
                 $hora = intval($variable, 0);
                 $variable = ($variable - intval($variable)) * 60;
                 $minuto = intval($variable, 0);
                 $segundo = round(($variable - intval($variable)) * 60, 0);
-
                 return date('H:i:s', strtotime($hora . ':' . $minuto . ':' . $segundo));
             }else{
                 return $variable;
@@ -365,12 +363,12 @@ class Variableproceso implements ContainerAwareInterface{
         }
     }
 
-    public function exceldate($variable,$tipo='from')
+    public function exceldate($variable, $tipo='from')
     {
         if(empty($variable)){
             return $variable;
         }
-        if($tipo=='from'){
+        if($tipo == 'from'){
 
             if(!is_numeric($variable) && (strpos($variable, '-') > 0 || strpos($variable, '/') > 0)){
                 return date('Y-m-d', strtotime(str_replace('/', '-', $variable)));

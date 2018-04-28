@@ -22,7 +22,7 @@
         {% block notice %}
             {% include '@SonataCore/FlashMessage/render.html.twig' %}
         {% endblock notice %}
-        {{ fullCalendar({'Servicios' : 'cotizacion_componente_aceptado', 'Componentes' : 'transporte_servicio_unidad'}, 'month', {1 : 'agendaDay', 2 : 'timelineThreeDays', 3 : 'agendaWeek', 4 : 'month', 5 : 'listMonth'}) }}
+        {{ fullCalendar({'Componentes' : 'cotizacion_componente_aceptado'}, 'month', {1 : 'agendaDay', 2 : 'timelineThreeDays', 3 : 'agendaWeek', 4 : 'month', 5 : 'listMonth'}) }}
     {% else %}
         {{ parent() }}
     {% endif %}

@@ -70,7 +70,8 @@ class fullCalendarExtension extends \Twig_Extension
         $views = implode(', ', $views);
 
         foreach ($calendars as $key => $calendar){
-            $calendarsUrls[] = ['nombre' => $key,
+            $calendarsUrls[] = [
+                'nombre' => $key,
                 'event' => $this->generateUrl($calendar),
                 'resource' =>  $this->generateResourceUrl($calendar)
                 ];
@@ -105,10 +106,18 @@ class fullCalendarExtension extends \Twig_Extension
             $('#calendar').fullCalendar('option','resourceLabelText',data[s.val()]['nombre']);
         })
         
+        var renderDropdown = false;
+        
         for(var val in data) {
             $("<option />", {text: data[val]['nombre'], value: val}).appendTo(s);
+            if (val > 0){
+                renderDropdown = true;
+            } 
         }
-        $("#calendar").before(s);
+        
+        if (renderDropdown === true){
+            $("#calendar").before(s);
+        }
         
         function getResources(start, end, timezone, handleData) {
             var params = { start: start.format("YYYY-MM-DD"), end: end.format("YYYY-MM-DD") };
