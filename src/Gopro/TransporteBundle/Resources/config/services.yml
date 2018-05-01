@@ -33,9 +33,9 @@ services:
             - {name: sonata.admin, manager_type: orm, show_in_dashboard: false, group: Transporte, label: Mensajes de facturacion}
         public: true
 
-    gopro_transporte.admin.serviciofile:
-        class: Gopro\TransporteBundle\Admin\ServiciofileAdmin
-        arguments: [~, Gopro\TransporteBundle\Entity\Serviciofile, SonataAdminBundle:CRUD]
+    gopro_transporte.admin.serviciocomponente:
+        class: Gopro\TransporteBundle\Admin\ServiciocomponenteAdmin
+        arguments: [~, Gopro\TransporteBundle\Entity\Serviciocomponente, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, show_in_dashboard: false, group: Transporte, label: Files}
         public: true

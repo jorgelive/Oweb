@@ -6,10 +6,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table(name="tra_serviciofile")
+ * @ORM\Table(name="tra_serviciocomponente")
  * @ORM\Entity
  */
-class Serviciofile
+class Serviciocomponente
 {
     /**
      * @ORM\Id
@@ -21,7 +21,7 @@ class Serviciofile
     /**
      * @var \Gopro\TransporteBundle\Entity\Servicio
      *
-     * @ORM\ManyToOne(targetEntity="Servicio", inversedBy="serviciofiles")
+     * @ORM\ManyToOne(targetEntity="Servicio", inversedBy="serviciocomponentes")
      * @ORM\JoinColumn(name="servicio_id", referencedColumnName="id", nullable=false)
      */
     private $servicio;
@@ -106,7 +106,7 @@ class Serviciofile
      *
      * @param \DateTime $creado
      *
-     * @return Serviciofile
+     * @return Serviciocomponente
      */
     public function setCreado($creado)
     {
@@ -130,7 +130,7 @@ class Serviciofile
      *
      * @param \DateTime $modificado
      *
-     * @return Serviciofile
+     * @return Serviciocomponente
      */
     public function setModificado($modificado)
     {
@@ -154,7 +154,7 @@ class Serviciofile
      *
      * @param \Gopro\TransporteBundle\Entity\Servicio $servicio
      *
-     * @return Serviciofile
+     * @return Serviciocomponente
      */
     public function setServicio(\Gopro\TransporteBundle\Entity\Servicio $servicio = null)
     {
@@ -178,7 +178,7 @@ class Serviciofile
      *
      * @param \DateTime $hora
      *
-     * @return Serviciofile
+     * @return Serviciocomponente
      */
     public function setHora($hora)
     {
@@ -216,7 +216,7 @@ class Serviciofile
      *
      * @param string $nombre
      *
-     * @return Serviciofile
+     * @return Serviciocomponente
      */
     public function setNombre($nombre)
     {
@@ -240,7 +240,7 @@ class Serviciofile
      *
      * @param string $codigo
      *
-     * @return Serviciofile
+     * @return Serviciocomponente
      */
     public function setCodigo($codigo)
     {
@@ -264,7 +264,7 @@ class Serviciofile
      *
      * @param string $origen
      *
-     * @return Serviciofile
+     * @return Serviciocomponente
      */
     public function setOrigen($origen)
     {
@@ -288,7 +288,7 @@ class Serviciofile
      *
      * @param string $destino
      *
-     * @return Serviciofile
+     * @return Serviciocomponente
      */
     public function setDestino($destino)
     {
@@ -312,7 +312,7 @@ class Serviciofile
      *
      * @param string $nota
      *
-     * @return Serviciofile
+     * @return Serviciocomponente
      */
     public function setNota($nota)
     {
@@ -336,7 +336,7 @@ class Serviciofile
      *
      * @param integer $numadl
      *
-     * @return Serviciofile
+     * @return Serviciocomponente
      */
     public function setNumadl($numadl)
     {
@@ -360,7 +360,7 @@ class Serviciofile
      *
      * @param integer $numchd
      *
-     * @return Serviciofile
+     * @return Serviciocomponente
      */
     public function setNumchd($numchd)
     {

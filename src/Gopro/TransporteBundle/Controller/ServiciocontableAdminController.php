@@ -143,8 +143,8 @@ class ServiciocontableAdminController extends CRUDController
         $solicitud['items'][0]['unidad_de_medida'] = 'ZZ';
         $solicitud['items'][0]['codigo'] = $this->container->get('gopro_main.variableproceso')->sanitizeString($object->getServicio()->getNombre(), '_', '[\s+]' );
         $filesString = '';
-        if($object->getServicio()->getServiciofiles()){
-            $filesArray = $object->getServicio()->getServiciofiles()->toArray();
+        if($object->getServicio()->getServiciocomponentes()){
+            $filesArray = $object->getServicio()->getServiciocomponentes()->toArray();
 
             foreach ($filesArray as $files){
                 $filesString .= sprintf(' F.%s', $files->getCodigo());

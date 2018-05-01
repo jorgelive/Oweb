@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 
-class ServiciofileAdmin extends AbstractAdmin
+class ServiciocomponenteAdmin extends AbstractAdmin
 {
 
     /**

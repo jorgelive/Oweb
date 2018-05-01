@@ -31,31 +31,31 @@
 
             </thead>
             <tbody class="sonata-ba-tbody">
-            {% for serviciofile in value %}
+            {% for serviciocomponente in value %}
                 <tr>
                     <td>
-                        {{ serviciofile.hora|date('H:i') }}
+                        {{ serviciocomponente.hora|date('H:i') }}
                     </td>
                     <td>
-                        {{ serviciofile.origen}}
+                        {{ serviciocomponente.origen}}
                     </td>
                     <td>
-                        {{ serviciofile.destino}}
+                        {{ serviciocomponente.destino}}
                     </td>
                     <td>
-                        {{ serviciofile.nombre}}
+                        {{ serviciocomponente.nombre}}
                     </td>
                     <td>
-                        {{ serviciofile.codigo}}
+                        {{ serviciocomponente.codigo}}
                     </td>
                     <td>
-                        {{ serviciofile.numadl}}
+                        {{ serviciocomponente.numadl}}
                     </td>
                     <td>
-                        {{ serviciofile.numchd}}
+                        {{ serviciocomponente.numchd}}
                     </td>
                     <td>
-                        {{ serviciofile.nota}}
+                        {{ serviciocomponente.nota}}
                     </td>
                 </tr>
             {% else %}

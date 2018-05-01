@@ -152,7 +152,7 @@ class ServicioAdmin extends AbstractAdmin
                 'format' => 'Y/m/d H:i'
             ])
             ->addIdentifier('nombre')
-            ->add('serviciofiles', null, [
+            ->add('serviciocomponentes', null, [
                 'associated_property' => 'resumen',
                 'label' => 'Referencias'
             ])
@@ -223,16 +223,16 @@ class ServicioAdmin extends AbstractAdmin
                 ->with('Información Operativa')
                     ->add('serviciooperativos', CollectionType::class,[
                         'by_reference' => false,
-                        'label' => 'Operativo'
+                        'label' => false
                     ], [
                         'edit' => 'inline',
                         'inline' => 'table'
                     ])
                 ->end()
-                ->with('Files')
-                    ->add('serviciofiles', CollectionType::class, [
+                ->with('Componentes')
+                    ->add('serviciocomponentes', CollectionType::class, [
                         'by_reference' => false,
-                        'label' => 'File'
+                        'label' => false
                     ], [
                         'edit' => 'inline',
                         'inline' => 'table'
@@ -240,13 +240,15 @@ class ServicioAdmin extends AbstractAdmin
                 ->end()
             ->end()
             ->tab('Contable')
-                ->add('serviciocontables', CollectionType::class, [
-                    'by_reference' => false,
-                    'label' => 'Facturación'
-                ], [
-                    'edit' => 'inline',
-                    'inline' => 'table'
-                ])
+                ->with('Documentos')
+                    ->add('serviciocontables', CollectionType::class, [
+                        'by_reference' => false,
+                        'label' => false
+                    ], [
+                        'edit' => 'inline',
+                        'inline' => 'table'
+                    ])
+                ->end()
             ->end()
         ;
     }
@@ -284,14 +286,14 @@ class ServicioAdmin extends AbstractAdmin
                 'format' => 'Y/m/d H:i'
             ])
             ->end()
-            ->with('Informacion Operativa')
+            ->with('Información Operativa')
             ->add('serviciooperativos', 'collection', [
                 'template' => 'GoproTransporteBundle:ServicioAdmin:show_serviciooperativo_collection.html.twig'
             ])
             ->end()
-            ->with('Files')
-            ->add('serviciofiles', 'collection', [
-                'template' => 'GoproTransporteBundle:ServicioAdmin:show_serviciofile_collection.html.twig'
+            ->with('Componentes')
+            ->add('serviciocomponentes', 'collection', [
+                'template' => 'GoproTransporteBundle:ServicioAdmin:show_serviciocomponente_collection.html.twig'
             ])
             ->end()
         ;

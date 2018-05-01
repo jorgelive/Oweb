@@ -2,7 +2,6 @@
 namespace Gopro\TransporteBundle\Controller;
 use Gopro\MainBundle\Form\ArchivocamposType;
 use Gopro\MainBundle\Entity\Archivo;
-use Gopro\MainBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -11,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Gopro\TransporteBundle\Entity\Servicio;
 use Gopro\TransporteBundle\Entity\Serviciooperativo;
-use Gopro\TransporteBundle\Entity\Serviciofile;
+use Gopro\TransporteBundle\Entity\Serviciocomponente;
 use Gopro\TransporteBundle\Entity\Serviciocontable;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -145,20 +144,20 @@ class CargadorController extends Controller
                 return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
             }
 
-            $preproceso[$i]['servicioFile'][$j]['hora'] = $linea['horaFile'];
-            $preproceso[$i]['servicioFile'][$j]['nombre'] = $linea['nombreFile'];
-            $preproceso[$i]['servicioFile'][$j]['codigo'] = $linea['codigoFile'];
-            $preproceso[$i]['servicioFile'][$j]['numadl'] = $linea['numadlFile'];
+            $preproceso[$i]['serviciocomponente'][$j]['hora'] = $linea['horaFile'];
+            $preproceso[$i]['serviciocomponente'][$j]['nombre'] = $linea['nombreFile'];
+            $preproceso[$i]['serviciocomponente'][$j]['codigo'] = $linea['codigoFile'];
+            $preproceso[$i]['serviciocomponente'][$j]['numadl'] = $linea['numadlFile'];
 
             if (isset($linea['numchdFile'])) {
-                $preproceso[$i]['servicioFile'][$j]['numchd'] = $linea['numchdFile'];
+                $preproceso[$i]['serviciocomponente'][$j]['numchd'] = $linea['numchdFile'];
             }
 
-            $preproceso[$i]['servicioFile'][$j]['origen'] = $linea['origenFile'];
-            $preproceso[$i]['servicioFile'][$j]['destino'] = $linea['destinoFile'];
+            $preproceso[$i]['serviciocomponente'][$j]['origen'] = $linea['origenFile'];
+            $preproceso[$i]['serviciocomponente'][$j]['destino'] = $linea['destinoFile'];
 
             if (isset($linea['notaFile'])) {
-                $preproceso[$i]['servicioFile'][$j]['nota'] = $linea['notaFile'];
+                $preproceso[$i]['serviciocomponente'][$j]['nota'] = $linea['notaFile'];
             }
 
             if (isset($linea['transferOperativo'])) {
@@ -226,22 +225,22 @@ class CargadorController extends Controller
                 $servicio->setConductor($em->getReference('Gopro\TransporteBundle\Entity\Conductor', $linea['conductor']));
             }
 
-            if (isset($linea['servicioFile']) && count($linea['servicioFile']) > 0){
-                foreach ($linea['servicioFile'] as $servicioFile){
-                    $servicioFileEntity = new Serviciofile();
-                    $servicioFileEntity->setHora(\DateTime::createFromFormat('H:i:s', $servicioFile['hora']));
-                    $servicioFileEntity->setNombre($servicioFile['nombre']);
-                    $servicioFileEntity->setCodigo($servicioFile['codigo']);
-                    $servicioFileEntity->setNumadl($servicioFile['numadl']);
-                    if(isset($servicioFile['numchd'])){
-                        $servicioFileEntity->setNumchd($servicioFile['numchd']);
+            if (isset($linea['serviciocomponente']) && count($linea['serviciocomponente']) > 0){
+                foreach ($linea['serviciocomponente'] as $serviciocomponente){
+                    $serviciocomponenteEntity = new Serviciocomponente();
+                    $serviciocomponenteEntity->setHora(\DateTime::createFromFormat('H:i:s', $serviciocomponente['hora']));
+                    $serviciocomponenteEntity->setNombre($serviciocomponente['nombre']);
+                    $serviciocomponenteEntity->setCodigo($serviciocomponente['codigo']);
+                    $serviciocomponenteEntity->setNumadl($serviciocomponente['numadl']);
+                    if(isset($serviciocomponente['numchd'])){
+                        $serviciocomponenteEntity->setNumchd($serviciocomponente['numchd']);
                     }
-                    $servicioFileEntity->setOrigen($servicioFile['origen']);
-                    $servicioFileEntity->setDestino($servicioFile['destino']);
-                    if(isset($servicioFile['nota'])){
-                        $servicioFileEntity->setNota($servicioFile['nota']);
+                    $serviciocomponenteEntity->setOrigen($serviciocomponente['origen']);
+                    $serviciocomponenteEntity->setDestino($serviciocomponente['destino']);
+                    if(isset($serviciocomponente['nota'])){
+                        $serviciocomponenteEntity->setNota($serviciocomponente['nota']);
                     }
-                    $servicio->addServiciofile($servicioFileEntity);
+                    $servicio->addServiciocomponente($serviciocomponenteEntity);
                 }
             }else{
                 $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no tiene la informacion de referencia cliente.', 'error');

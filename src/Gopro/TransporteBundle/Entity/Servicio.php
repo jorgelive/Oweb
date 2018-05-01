@@ -68,9 +68,9 @@ class Servicio
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Serviciofile", mappedBy="servicio", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Serviciocomponente", mappedBy="servicio", cascade={"persist","remove"}, orphanRemoval=true)
      */
-    private $serviciofiles;
+    private $serviciocomponentes;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -96,7 +96,7 @@ class Servicio
     private $modificado;
 
     public function __construct() {
-        $this->serviciofiles = new ArrayCollection();
+        $this->serviciocomponentes = new ArrayCollection();
         $this->serviciocontables = new ArrayCollection();
         $this->serviciooperativos = new ArrayCollection();
     }
@@ -290,39 +290,39 @@ class Servicio
     }
 
     /**
-     * Add serviciofile
+     * Add serviciocomponente
      *
-     * @param \Gopro\TransporteBundle\Entity\Serviciofile $serviciofile
+     * @param \Gopro\TransporteBundle\Entity\Serviciocomponente $serviciocomponente
      *
      * @return Servicio
      */
-    public function addServiciofile(\Gopro\TransporteBundle\Entity\Serviciofile $serviciofile)
+    public function addServiciocomponente(\Gopro\TransporteBundle\Entity\Serviciocomponente $serviciocomponente)
     {
-        $serviciofile->setServicio($this);
+        $serviciocomponente->setServicio($this);
 
-        $this->serviciofiles[] = $serviciofile;
+        $this->serviciocomponentes[] = $serviciocomponente;
 
         return $this;
     }
 
     /**
-     * Remove serviciofile
+     * Remove serviciocomponente
      *
-     * @param \Gopro\TransporteBundle\Entity\Serviciofile $serviciofile
+     * @param \Gopro\TransporteBundle\Entity\Serviciocomponente $serviciocomponente
      */
-    public function removeServiciofile(\Gopro\TransporteBundle\Entity\Serviciofile $serviciofile)
+    public function removeServiciocomponente(\Gopro\TransporteBundle\Entity\Serviciocomponente $serviciocomponente)
     {
-        $this->serviciofiles->removeElement($serviciofile);
+        $this->serviciocomponentes->removeElement($serviciocomponente);
     }
 
     /**
-     * Get serviciofiles
+     * Get serviciocomponentes
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getServiciofiles()
+    public function getServiciocomponentes()
     {
-        return $this->serviciofiles;
+        return $this->serviciocomponentes;
     }
 
     /**
