@@ -118,7 +118,15 @@ class ServicioAdmin extends AbstractAdmin
         $datagridMapper
             ->add('unidad')
             ->add('conductor')
-            ->add('nombre')
+            ->add('nombre',  null, [
+                'label' => 'Servicio'
+            ])
+            ->add('serviciocomponentes.nombre',  null, [
+                'label' => 'Nombre File'
+            ])
+            ->add('serviciocomponentes.codigo',  null, [
+                'label' => 'Número File'
+            ])
         ;
     }
 

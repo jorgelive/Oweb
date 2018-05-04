@@ -1,6 +1,6 @@
 <?php
 
-namespace Gopro\TransporteBundle\Admin;
+namespace Gopro\ComprobanteBundle\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class EstadocontableAdmin extends AbstractAdmin
+class MensajeAdmin extends AbstractAdmin
 {
     /**
      * @param DatagridMapper $datagridMapper
@@ -17,8 +17,8 @@ class EstadocontableAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('nombre')
-            ->add('codigo')
+            ->add('clave')
+            ->add('contenido')
         ;
     }
 
@@ -29,8 +29,8 @@ class EstadocontableAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
-            ->add('codigo')
+            ->add('clave')
+            ->add('contenido')
             ->add('_action', 'actions', [
                 'actions' => [
                     'show' => [],
@@ -48,8 +48,8 @@ class EstadocontableAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('nombre')
-            ->add('codigo')
+            ->add('clave')
+            ->add('contenido')
         ;
     }
 
@@ -60,8 +60,8 @@ class EstadocontableAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
-            ->add('nombre')
-            ->add('codigo')
+            ->add('clave')
+            ->add('contenido')
         ;
     }
 

@@ -35,15 +35,15 @@ class Comprobante
     private $serviciocontables;
 
     /**
-     * @ORM\Column(type="string", length=250)
+     * @ORM\Column(type="string", length=250, nullable=true)
      */
-    private $descripcion;
+    private $nota;
 
     /**
      * @var \Gopro\MaestroBundle\Entity\Moneda
      *
      * @ORM\ManyToOne(targetEntity="Gopro\MaestroBundle\Entity\Moneda")
-     * @ORM\JoinColumn(name="moneda_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="moneda_id", referencedColumnName="id", nullable=true)
      */
     private $moneda;
 
@@ -119,8 +119,6 @@ class Comprobante
      */
     private $estado;
 
-
-
     /**
      * @var \DateTime $creado
      *
@@ -151,14 +149,8 @@ class Comprobante
     {
         if(!empty($this->getDocumento()) && !empty($this->getSerie())){
             return sprintf('%s-%s-%s', $this->getTipo()->getCodigo(), $this->getSerie() , str_pad($this->getDocumento(), 5, "0", STR_PAD_LEFT));
-        }elseif(!empty($this->getServicio())
-            && !empty($this->getServicio()->getDependencia())
-            && !empty($this->getServicio()->getDependencia()->getOrganizaciondependencia()
-            )
-        ){
-            return sprintf('%s-%s-%s', $this->getTipo()->getCodigo(), $this->getServicio()->getDependencia()->getOrganizaciondependencia() , $this->getDescripcion());
         }else{
-            return '';
+            return sprintf("Id: %s.", $this->getId()) ?? '';
         }
     }
 
@@ -174,27 +166,27 @@ class Comprobante
     }
 
     /**
-     * Set descripcion
+     * Set nota
      *
-     * @param string $descripcion
+     * @param string $nota
      *
      * @return Comprobante
      */
-    public function setDescripcion($descripcion)
+    public function setNota($nota)
     {
-        $this->descripcion = $descripcion;
+        $this->nota = $nota;
 
         return $this;
     }
 
     /**
-     * Get descripcion
+     * Get nota
      *
      * @return string
      */
-    public function getDescripcion()
+    public function getNota()
     {
-        return $this->descripcion;
+        return $this->nota;
     }
 
     /**

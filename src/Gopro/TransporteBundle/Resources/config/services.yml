@@ -26,13 +26,6 @@ services:
             - [ setTemplate, [edit, GoproTransporteBundle:ServiciocontableAdmin:edit.html.twig]]
         public: true
 
-    gopro_transporte.admin.sercontablemensajeadmin:
-        class: Gopro\TransporteBundle\Admin\SercontablemensajeAdmin
-        arguments: [~, Gopro\TransporteBundle\Entity\Sercontablemensaje, SonataAdminBundle:CRUD]
-        tags:
-            - {name: sonata.admin, manager_type: orm, show_in_dashboard: false, group: Transporte, label: Mensajes de facturacion}
-        public: true
-
     gopro_transporte.admin.serviciocomponente:
         class: Gopro\TransporteBundle\Admin\ServiciocomponenteAdmin
         arguments: [~, Gopro\TransporteBundle\Entity\Serviciocomponente, SonataAdminBundle:CRUD]
@@ -52,20 +45,6 @@ services:
         arguments: [~, Gopro\TransporteBundle\Entity\Unidad, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Transporte, label: Unidades}
-        public: true
-
-    gopro_transporte.admin.tiposercontable:
-        class: Gopro\TransporteBundle\Admin\TiposercontableAdmin
-        arguments: [~, Gopro\TransporteBundle\Entity\Tiposercontable, SonataAdminBundle:CRUD]
-        tags:
-            - {name: sonata.admin, manager_type: orm, group: Transporte, label: Tipo contable}
-        public: true
-
-    gopro_transporte.admin.estadocontable:
-        class: Gopro\TransporteBundle\Admin\EstadocontableAdmin
-        arguments: [~, Gopro\TransporteBundle\Entity\Estadocontable, SonataAdminBundle:CRUD]
-        tags:
-            - {name: sonata.admin, manager_type: orm, group: Transporte, label: Estado contable}
         public: true
 
     gopro_transporte.admin.tiposeroperativo:

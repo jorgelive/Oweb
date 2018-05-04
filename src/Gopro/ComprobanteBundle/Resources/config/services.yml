@@ -1,4 +1,31 @@
 services:
-#    gopro_comprobante.example:
-#        class: Gopro\ComprobanteBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+
+    gopro_comprobante.admin.comprobante:
+        class: Gopro\ComprobanteBundle\Admin\ComprobanteAdmin
+        arguments: [~, Gopro\ComprobanteBundle\Entity\Comprobante, GoproComprobanteBundle:ComprobanteAdmin ]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Comprobante, label: "Documento"}
+        calls:
+            - [ setTemplate, [edit, GoproComprobanteBundle:ComprobanteAdmin:edit.html.twig]]
+        public: true
+
+    gopro_comprobante.admin.mensajeadmin:
+        class: Gopro\ComprobanteBundle\Admin\MensajeAdmin
+        arguments: [~, Gopro\ComprobanteBundle\Entity\Mensaje, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, show_in_dashboard: false, group: Comprobante, label: "Mensajes de emisión"}
+        public: true
+        
+    gopro_comprobante.admin.tipo:
+        class: Gopro\ComprobanteBundle\Admin\TipoAdmin
+        arguments: [~, Gopro\ComprobanteBundle\Entity\Tipo, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Comprobante, label: "Tipo de documento"}
+        public: true
+
+    gopro_comprobante.admin.estado:
+        class: Gopro\ComprobanteBundle\Admin\EstadoAdmin
+        arguments: [~, Gopro\ComprobanteBundle\Entity\Estado, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Comprobante, label: "Estado"}
+        public: true

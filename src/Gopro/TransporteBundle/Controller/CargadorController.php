@@ -1,5 +1,6 @@
 <?php
 namespace Gopro\TransporteBundle\Controller;
+use Gopro\ComprobanteBundle\Entity\Comprobante;
 use Gopro\MainBundle\Form\ArchivocamposType;
 use Gopro\MainBundle\Entity\Archivo;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +47,11 @@ class CargadorController extends Controller
         }
 
         $tablaSpecs = array('filasDescartar' => 1);
-        $columnaspecs[] = array('nombre' => 'dependenciaServicio');
+        $columnaspecs[] = array('nombre' => 'dependencia');
+        $columnaspecs[] = array('nombre' => 'tipoComprobante');
+        $columnaspecs[] = array('nombre' => 'monedaContable');
+        $columnaspecs[] = array('nombre' => 'totalContable');
+        $columnaspecs[] = array('nombre' => 'descripcionContable');
         $columnaspecs[] = array('nombre' => 'fechainicioServicio', 'tipo' => 'exceldate');
         $columnaspecs[] = array('nombre' => 'horainicioServicio', 'tipo' => 'exceltime');
         $columnaspecs[] = array('nombre' => 'horafinServicio', 'tipo' => 'exceltime');
@@ -54,21 +59,19 @@ class CargadorController extends Controller
         $columnaspecs[] = array('nombre' => 'nombreServicio');
         $columnaspecs[] = array('nombre' => 'unidadServicio');
         $columnaspecs[] = array('nombre' => 'conductorServicio');
-        $columnaspecs[] = array('nombre' => 'horaFile', 'tipo' => 'exceltime');
-        $columnaspecs[] = array('nombre' => 'nombreFile');
-        $columnaspecs[] = array('nombre' => 'codigoFile');
-        $columnaspecs[] = array('nombre' => 'numadlFile');
-        $columnaspecs[] = array('nombre' => 'numchdFile');
-        $columnaspecs[] = array('nombre' => 'origenFile');
-        $columnaspecs[] = array('nombre' => 'destinoFile');
-        $columnaspecs[] = array('nombre' => 'notaFile');
         $columnaspecs[] = array('nombre' => 'transferOperativo');
         $columnaspecs[] = array('nombre' => 'guideOperativo');
         $columnaspecs[] = array('nombre' => 'notaOperativo');
-        $columnaspecs[] = array('nombre' => 'tiposercontableContable');
-        $columnaspecs[] = array('nombre' => 'monedaContable');
-        $columnaspecs[] = array('nombre' => 'totalContable');
-        $columnaspecs[] = array('nombre' => 'descripcionContable');
+        $columnaspecs[] = array('nombre' => 'horaComponente', 'tipo' => 'exceltime');
+        $columnaspecs[] = array('nombre' => 'nombreComponente');
+        $columnaspecs[] = array('nombre' => 'codigoComponente');
+        $columnaspecs[] = array('nombre' => 'numadlComponente');
+        $columnaspecs[] = array('nombre' => 'numchdComponente');
+        $columnaspecs[] = array('nombre' => 'origenComponente');
+        $columnaspecs[] = array('nombre' => 'destinoComponente');
+        $columnaspecs[] = array('nombre' => 'notaComponente');
+
+
 
         $archivoInfo = $this->get('gopro_main.archivoexcel')
             ->setArchivoBase($repositorio, $archivoEjecutar, $operacion)
@@ -86,109 +89,149 @@ class CargadorController extends Controller
 
         foreach ($archivoInfo->getExistentesRaw() as $nroLinea => $linea):
 
-            if(!isset($j)){
-                $j = 0;
-            }
-
-            if (
-                (isset($linea['dependenciaServicio']) || !empty($linea['dependeciaServicio']))
-                && (isset($linea['fechainicioServicio']) || !empty($linea['fechainicioServicio']))
-                && (isset($linea['horainicioServicio']) || !empty($linea['horainicioServicio']))
-                && (isset($linea['nombreServicio']) || !empty($linea['nombreServicio']))
-
-            ) {
-
+           if(isset($linea['dependencia']) && !empty(isset($linea['dependencia']))) {
                 if(!isset($i)){
                     $i = 0;
                 }else{
                     $i++;
                 }
 
-                $j = 0;
+                unset($j);
 
-                $preproceso[$i]['excelRowNumber'] = $linea['excelRowNumber'];
-                $preproceso[$i]['dependencia'] = $linea['dependenciaServicio'];
-                $preproceso[$i]['fechahorainicio'] = \DateTime::createFromFormat('Y-m-d H:i:s', $linea['fechainicioServicio'] . ' ' . $linea['horainicioServicio']);
+                if(
+                    !isset($linea['tipoComprobante'])
+                    || empty($linea['tipoComprobante'])
+                ) {
+                    $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' tiene los datos del tipo de comprobante incompletos.', 'error');
+                    $variables->setMensajes('No se ha ejecutado la carga.', 'error');
+                    return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
+                }
+
+                $preproceso[$i]['tipoComprobante'] = (integer)$linea['tipoComprobante'];
+                $preproceso[$i]['estadoComprobante'] = 1;
+                if($preproceso[$i]['tipoComprobante'] < 0){
+                    $preproceso[$i]['estadoComprobante'] = 3;
+                }
+
+                $preproceso[$i]['dependencia'] = (integer)$linea['dependencia'];
+
+            }
+
+            if(isset($linea['fechainicioServicio'])){
+                if(
+                    !isset($linea['horainicioServicio'])
+                    || empty($linea['horainicioServicio'])
+                    || !isset($linea['fechafinServicio'])
+                    || empty($linea['fechafinServicio'])
+                    || !isset($linea['horafinServicio'])
+                    || empty($linea['fechafinServicio'])
+                ) {
+                    $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' tiene los datos del servicio incompletos.', 'error');
+                    $variables->setMensajes('No se ha ejecutado la carga.', 'error');
+                    return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
+                }
+
+                if(
+                    !isset($linea['monedaContable'])
+                    || empty($linea['monedaContable'])
+                    || !isset($linea['totalContable'])
+                    || empty($linea['totalContable'])
+                    || !isset($linea['descripcionContable'])
+                    || empty($linea['descripcionContable'])
+                ) {
+                    $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' tiene los datos contables incompletos.', 'error');
+                    $variables->setMensajes('No se ha ejecutado la carga.', 'error');
+                    return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
+                }
+
+                if(!isset($j)){
+                    $j = 0;
+                }else {
+                    $j++;
+                }
+
+                unset ($k);
+
+                //servicio
+                $preproceso[$i]['servicio'][$j]['fechahorainicio'] = \DateTime::createFromFormat('Y-m-d H:i:s', $linea['fechainicioServicio'] . ' ' . $linea['horainicioServicio']);
                 if (!isset($linea['fechafinServicio']) || empty($linea['fechafinServicio'])) {
                     $linea['fechafinServicio'] = $linea['fechainicioServicio'];
                 }
                 if (!isset($linea['horafinServicio']) || empty($linea['horafinServicio'])) {
                     $linea['horafinServicio'] = date('H:i:s', strtotime($linea['horainicioServicio']) + 60 * 60);
                 }
-                $preproceso[$i]['fechahorafin'] = \DateTime::createFromFormat('Y-m-d H:i:s', $linea['fechafinServicio'] . ' ' . $linea['horafinServicio']);
-                $preproceso[$i]['nombre'] = $linea['nombreServicio'];
+                $preproceso[$i]['servicio'][$j]['fechahorafin'] = \DateTime::createFromFormat('Y-m-d H:i:s', $linea['fechafinServicio'] . ' ' . $linea['horafinServicio']);
+                $preproceso[$i]['servicio'][$j]['nombre'] = $linea['nombreServicio'];
                 if (isset($linea['unidadServicio'])) {
-                    $preproceso[$i]['unidad'] = $linea['unidadServicio'];
+                    $preproceso[$i]['servicio'][$j]['unidad'] = (integer)$linea['unidadServicio'];
                 }
                 if (isset($linea['conductorServicio'])) {
-                    $preproceso[$i]['conductor'] = $linea['conductorServicio'];
+                    $preproceso[$i]['servicio'][$j]['conductor'] = (integer)$linea['conductorServicio'];
                 }
-            } else{
-                if(!isset($i)){
-                    $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no pertenece a ningun servicio.', 'error');
-                    $variables->setMensajes('No se ha ejecutado la carga.', 'error');
-                    return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
+
+                //contable
+                $preproceso[$i]['servicio'][$j]['servicioContable']['moneda'] = (integer)$linea['monedaContable'];
+                $preproceso[$i]['servicio'][$j]['servicioContable']['total'] = $linea['totalContable'];
+                $preproceso[$i]['servicio'][$j]['servicioContable']['descripcion'] = $linea['descripcionContable'];
+
+                if($preproceso[$i]['estadoComprobante'] == 3){
+                    if(!isset($preproceso[$i]['total'])){
+                        $preproceso[$i]['total'] = 0;
+                    }
+
+                    $preproceso[$i]['total'] += $linea['totalContable'];
                 }
-                $j++;
+
+                if (isset($linea['transferOperativo'])) {
+                    $preproceso[$i]['servicio'][$j]['servicioOperativo']['transfer'] = $linea['transferOperativo'];
+                }
+
+                if (isset($linea['guideOperativo'])) {
+                    $preproceso[$i]['servicio'][$j]['servicioOperativo']['guide'] = $linea['guideOperativo'];
+                }
+
+                if (isset($linea['notaOperativo'])) {
+                    $preproceso[$i]['servicio'][$j]['servicioOperativo']['nota'] = $linea['notaOperativo'];
+                }
+
+
             }
 
-            if (!isset($linea['horaFile']) || !isset($linea['nombreFile']) || !isset($linea['codigoFile']) || !isset($linea['numadlFile']) || !isset($linea['origenFile']) || !isset($linea['destinoFile'])){
-                $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no tiene los datos de file completos.', 'error');
-                $variables->setMensajes('No se ha ejecutado la carga.', 'error');
-                return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
+            if(!isset($k)){
+                $k = 0;
+            }else {
+                $k++;
             }
 
-            if(!isset($preproceso[$i]['dependencia'])){
-                $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no tiene asignado el cliente.', 'error');
-                $variables->setMensajes('No se ha ejecutado la carga.', 'error');
-                return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
-            }
-
-            $preproceso[$i]['serviciocomponente'][$j]['hora'] = $linea['horaFile'];
-            $preproceso[$i]['serviciocomponente'][$j]['nombre'] = $linea['nombreFile'];
-            $preproceso[$i]['serviciocomponente'][$j]['codigo'] = $linea['codigoFile'];
-            $preproceso[$i]['serviciocomponente'][$j]['numadl'] = $linea['numadlFile'];
-
-            if (isset($linea['numchdFile'])) {
-                $preproceso[$i]['serviciocomponente'][$j]['numchd'] = $linea['numchdFile'];
-            }
-
-            $preproceso[$i]['serviciocomponente'][$j]['origen'] = $linea['origenFile'];
-            $preproceso[$i]['serviciocomponente'][$j]['destino'] = $linea['destinoFile'];
-
-            if (isset($linea['notaFile'])) {
-                $preproceso[$i]['serviciocomponente'][$j]['nota'] = $linea['notaFile'];
-            }
-
-            if (isset($linea['transferOperativo'])) {
-                $preproceso[$i]['servicioOperativo']['transfer'] = $linea['transferOperativo'];
-            }
-
-            if (isset($linea['guideOperativo'])) {
-                $preproceso[$i]['servicioOperativo']['guide'] = $linea['guideOperativo'];
-            }
-
-            if (isset($linea['notaOperativo'])) {
-                $preproceso[$i]['servicioOperativo']['nota'] = $linea['notaOperativo'];
-            }
-
-            if (isset($linea['tiposercontableContable'])
-                && isset($linea['monedaContable'])
-                && isset($linea['totalContable'])
-                && isset($linea['descripcionContable'])
+            if(
+                !isset($linea['horaComponente'])
+                || empty($linea['horaComponente'])
+                || !isset($linea['nombreComponente'])
+                || empty($linea['nombreComponente'])
+                || !isset($linea['codigoComponente'])
+                || empty($linea['codigoComponente'])
+                || !isset($linea['numadlComponente'])
+                || empty($linea['numadlComponente'])
             ) {
-                $igv = $this->getParameter('facturacion_igv_porcentaje');
-                $preproceso[$i]['servicioContable']['estadosercontable'] = 1;
-                if($linea['tiposercontableContable'] <= 0){
-                    $igv = '0.00';
-                    $preproceso[$i]['servicioContable']['estadosercontable'] = 3;
-                }
-                $preproceso[$i]['servicioContable']['tiposercontable'] = $linea['tiposercontableContable'];
-                $preproceso[$i]['servicioContable']['moneda'] = $linea['monedaContable'];
-                $preproceso[$i]['servicioContable']['neto'] = round($linea['totalContable'] / (1 +  $igv / 100), 2);
-                $preproceso[$i]['servicioContable']['impuesto'] = round($linea['totalContable'] - $preproceso[$i]['servicioContable']['neto'], 2) ;
-                $preproceso[$i]['servicioContable']['total'] = $linea['totalContable'];
-                $preproceso[$i]['servicioContable']['descripcion'] = $linea['descripcionContable'];
+                $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' tiene los datos del componente incompletos.', 'error');
+                $variables->setMensajes('No se ha ejecutado la carga.', 'error');
+                return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
+            }
+
+            $preproceso[$i]['servicio'][$j]['serviciocomponente'][$k]['hora'] = $linea['horaComponente'];
+            $preproceso[$i]['servicio'][$j]['serviciocomponente'][$k]['nombre'] = $linea['nombreComponente'];
+            $preproceso[$i]['servicio'][$j]['serviciocomponente'][$k]['codigo'] = $linea['codigoComponente'];
+            $preproceso[$i]['servicio'][$j]['serviciocomponente'][$k]['numadl'] = (integer)$linea['numadlComponente'];
+
+            if (isset($linea['numchdComponente'])) {
+                $preproceso[$i]['servicio'][$j]['serviciocomponente'][$k]['numchd'] = (integer)$linea['numchdComponente'];
+            }
+
+            $preproceso[$i]['servicio'][$j]['serviciocomponente'][$k]['origen'] = $linea['origenComponente'];
+            $preproceso[$i]['servicio'][$j]['serviciocomponente'][$k]['destino'] = $linea['destinoComponente'];
+
+            if (isset($linea['notaComponente'])) {
+                $preproceso[$i]['servicio'][$j]['serviciocomponente'][$k]['nota'] = $linea['notaComponente'];
             }
 
         endforeach;
@@ -210,82 +253,96 @@ class CargadorController extends Controller
         $variables = $this->get('gopro_main.variableproceso');
         $em = $this->getDoctrine()->getManager();
         $cargar = true;
-        foreach ($preproceso as $linea):
+        foreach ($preproceso as $com):
 
-            $servicio = new Servicio();
+            $comprobante = new Comprobante();
 
-            $servicio->setDependencia($em->getReference('Gopro\UserBundle\Entity\Dependencia', $linea['dependencia']));
-            $servicio->setFechahorainicio($linea['fechahorainicio']);
-            $servicio->setFechahorafin($linea['fechahorafin']);
-            $servicio->setNombre($linea['nombre']);
-            if(isset($linea['unidad'])){
-                $servicio->setUnidad($em->getReference('Gopro\TransporteBundle\Entity\Unidad', $linea['unidad']));
-            }
-            if(isset($linea['conductor'])){
-                $servicio->setConductor($em->getReference('Gopro\TransporteBundle\Entity\Conductor', $linea['conductor']));
+            $comprobante->setDependencia($em->getReference('Gopro\UserBundle\Entity\Dependencia', $com['dependencia']));
+            $comprobante->setEstado($em->getReference('Gopro\ComprobanteBundle\Entity\Estado', $com['estadoComprobante']));
+            $comprobante->setTipo($em->getReference('Gopro\ComprobanteBundle\Entity\Tipo', $com['tipoComprobante']));
+            if (isset($com['total'])) {
+                $comprobante->setNeto($com['total']);
+                $comprobante->setImpuesto('0.00');
+                $comprobante->setTotal($com['total']);
             }
 
-            if (isset($linea['serviciocomponente']) && count($linea['serviciocomponente']) > 0){
-                foreach ($linea['serviciocomponente'] as $serviciocomponente){
-                    $serviciocomponenteEntity = new Serviciocomponente();
-                    $serviciocomponenteEntity->setHora(\DateTime::createFromFormat('H:i:s', $serviciocomponente['hora']));
-                    $serviciocomponenteEntity->setNombre($serviciocomponente['nombre']);
-                    $serviciocomponenteEntity->setCodigo($serviciocomponente['codigo']);
-                    $serviciocomponenteEntity->setNumadl($serviciocomponente['numadl']);
-                    if(isset($serviciocomponente['numchd'])){
-                        $serviciocomponenteEntity->setNumchd($serviciocomponente['numchd']);
+            if (isset($com['servicio']) && count($com['servicio']) > 0) {
+
+                foreach ($com['servicio'] as $serv):
+                    $servicio = new Servicio();
+
+                    $servicio->setDependencia($em->getReference('Gopro\UserBundle\Entity\Dependencia', $com['dependencia']));
+                    $servicio->setFechahorainicio($serv['fechahorainicio']);
+                    $servicio->setFechahorafin($serv['fechahorafin']);
+                    $servicio->setNombre($serv['nombre']);
+                    if (isset($serv['unidad'])) {
+                        $servicio->setUnidad($em->getReference('Gopro\TransporteBundle\Entity\Unidad', $serv['unidad']));
                     }
-                    $serviciocomponenteEntity->setOrigen($serviciocomponente['origen']);
-                    $serviciocomponenteEntity->setDestino($serviciocomponente['destino']);
-                    if(isset($serviciocomponente['nota'])){
-                        $serviciocomponenteEntity->setNota($serviciocomponente['nota']);
+                    if (isset($serv['conductor'])) {
+                        $servicio->setConductor($em->getReference('Gopro\TransporteBundle\Entity\Conductor', $serv['conductor']));
                     }
-                    $servicio->addServiciocomponente($serviciocomponenteEntity);
-                }
+
+                    $servicioContable = new Serviciocontable();
+                    $servicioContable->setMoneda($em->getReference('Gopro\MaestroBundle\Entity\Moneda', $serv['servicioContable']['moneda']));
+                    $servicioContable->setTotal($serv['servicioContable']['total']);
+                    $servicioContable->setDescripcion($serv['servicioContable']['descripcion']);
+                    $servicioContable->setComprobante($comprobante);
+                    $servicio->addServiciocontable($servicioContable);
+
+                    if (isset($serv['serviciocomponente']) && count($serv['serviciocomponente']) > 0) {
+                        foreach ($serv['serviciocomponente'] as $serviciocomponente) {
+                            $serviciocomponenteEntity = new Serviciocomponente();
+                            $serviciocomponenteEntity->setHora(\DateTime::createFromFormat('H:i:s', $serviciocomponente['hora']));
+                            $serviciocomponenteEntity->setNombre($serviciocomponente['nombre']);
+                            $serviciocomponenteEntity->setCodigo($serviciocomponente['codigo']);
+                            $serviciocomponenteEntity->setNumadl($serviciocomponente['numadl']);
+                            if (isset($serviciocomponente['numchd'])) {
+                                $serviciocomponenteEntity->setNumchd($serviciocomponente['numchd']);
+                            }
+                            $serviciocomponenteEntity->setOrigen($serviciocomponente['origen']);
+                            $serviciocomponenteEntity->setDestino($serviciocomponente['destino']);
+                            if (isset($serviciocomponente['nota'])) {
+                                $serviciocomponenteEntity->setNota($serviciocomponente['nota']);
+                            }
+                            $servicio->addServiciocomponente($serviciocomponenteEntity);
+                        }
+                    } else {
+                        $variables->setMensajes('No existen componentes en el servicio.', 'error');
+                        $cargar = false;
+                    }
+
+                    if (isset($serv['servicioOperativo']['transfer'])) {
+                        $servicioOperativoTransfer = new Serviciooperativo();
+                        $servicioOperativoTransfer->setTiposeroperativo($em->getReference('Gopro\TransporteBundle\Entity\Tiposeroperativo', 1));
+                        $servicioOperativoTransfer->setTexto($serv['servicioOperativo']['transfer']);
+                        $servicio->addServiciooperativo($servicioOperativoTransfer);
+                    }
+
+                    if (isset($serv['servicioOperativo']['guide'])) {
+                        $servicioOperativoGuide = new Serviciooperativo();
+                        $servicioOperativoGuide->setTiposeroperativo($em->getReference('Gopro\TransporteBundle\Entity\Tiposeroperativo', 2));
+                        $servicioOperativoGuide->setTexto($serv['servicioOperativo']['guide']);
+                        $servicio->addServiciooperativo($servicioOperativoGuide);
+                    }
+
+                    if (isset($serv['servicioOperativo']['nota'])) {
+                        $servicioOperativoNota = new Serviciooperativo();
+                        $servicioOperativoNota->setTiposeroperativo($em->getReference('Gopro\TransporteBundle\Entity\Tiposeroperativo', 3));
+                        $servicioOperativoNota->setTexto($serv['servicioOperativo']['nota']);
+                        $servicio->addServiciooperativo($servicioOperativoNota);
+                    }
+
+                    $em->persist($comprobante);
+                    $em->persist($servicio);
+
+                endforeach;
+
             }else{
-                $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no tiene la informacion de referencia cliente.', 'error');
+                $variables->setMensajes('No existen servicios en el comprobante.', 'error');
                 $cargar = false;
             }
 
-            if(isset($linea['servicioContable'])){
-                $servicioContable = new Serviciocontable();
-                $servicioContable->setEstadocontable($em->getReference('Gopro\TransporteBundle\Entity\Estadocontable', $linea['servicioContable']['estadosercontable']));
-                $servicioContable->setTiposercontable($em->getReference('Gopro\TransporteBundle\Entity\Tipo', $linea['servicioContable']['tiposercontable']));
-                $servicioContable->setMoneda($em->getReference('Gopro\MaestroBundle\Entity\Moneda', $linea['servicioContable']['moneda']));
-                $servicioContable->setNeto($linea['servicioContable']['neto']);
-                $servicioContable->setImpuesto($linea['servicioContable']['impuesto']);
-                $servicioContable->setTotal($linea['servicioContable']['total']);
-                $servicioContable->setDescripcion($linea['servicioContable']['descripcion']);
-                $servicio->addServiciocontable($servicioContable);
-            }else{
-                $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' no tiene la informacion contable correcta.', 'error');
-                $cargar = false;
-            }
 
-            if(isset($linea['servicioOperativo']['transfer'])){
-                $servicioOperativoTransfer = new Serviciooperativo();
-                $servicioOperativoTransfer->setTiposeroperativo($em->getReference('Gopro\TransporteBundle\Entity\Tiposeroperativo', 1));
-                $servicioOperativoTransfer->setTexto($linea['servicioOperativo']['transfer']);
-                $servicio->addServiciooperativo($servicioOperativoTransfer);
-
-            }
-
-            if(isset($linea['servicioOperativo']['guide'])){
-                $servicioOperativoGuide = new Serviciooperativo();
-                $servicioOperativoGuide->setTiposeroperativo($em->getReference('Gopro\TransporteBundle\Entity\Tiposeroperativo', 2));
-                $servicioOperativoGuide->setTexto($linea['servicioOperativo']['guide']);
-                $servicio->addServiciooperativo($servicioOperativoGuide);
-
-            }
-
-            if(isset($linea['servicioOperativo']['nota'])){
-                $servicioOperativoNota = new Serviciooperativo();
-                $servicioOperativoNota->setTiposeroperativo($em->getReference('Gopro\TransporteBundle\Entity\Tiposeroperativo', 3));
-                $servicioOperativoNota->setTexto($linea['servicioOperativo']['nota']);
-                $servicio->addServiciooperativo($servicioOperativoNota);
-            }
-
-            $em->persist($servicio);
 
         endforeach;
 

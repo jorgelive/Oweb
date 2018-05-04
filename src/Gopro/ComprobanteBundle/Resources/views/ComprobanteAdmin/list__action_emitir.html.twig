@@ -1,10 +1,10 @@
-{% if admin.isGranted('EDIT', object) and admin.hasRoute('facturar') %}
+{% if admin.isGranted('EDIT', object) and admin.hasRoute('emitir') %}
     <a href="#"
        class="btn btn-sm btn-default edit_link"
        data-toggle="modal"
        data-target="#facturarModal-{{ object.id }}">
         <i class="fa fa-send" aria-hidden="true"></i>
-        Facturar
+        Emitir
     </a>
 
     <div class="modal fade" id="facturarModal-{{ object.id }}" tabindex="-1" role="dialog" aria-labelledby="facturarLabel">
@@ -12,19 +12,19 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Facturar</h4>
+                    <h4 class="modal-title" id="myModalLabel">Emitir</h4>
                 </div>
                 <div class="modal-body">
-                    Esta seguro que desea facturar este documento?
+                    Esta seguro que desea emitir este documento?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">
                         No
                     </button>
-                    <a href="{{ admin.generateObjectUrl('facturar', object) }}"
+                    <a href="{{ admin.generateObjectUrl('emitir', object) }}"
                        class="btn btn-danger"
-                       title="Facturar">
-                        Facturar
+                       title="Emitir">
+                        Emitir
                     </a>
                 </div>
             </div>
