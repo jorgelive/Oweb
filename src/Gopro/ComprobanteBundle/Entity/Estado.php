@@ -1,15 +1,15 @@
 <?php
-namespace Gopro\TransporteBundle\Entity;
+namespace Gopro\ComprobanteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table(name="tra_tiposercontable")
+ * @ORM\Table(name="com_estado")
  * @ORM\Entity
  */
-class Tiposercontable
+class Estado
 {
     /**
      * @ORM\Id
@@ -27,26 +27,6 @@ class Tiposercontable
      * @ORM\Column(type="string", length=3)
      */
     private $codigo;
-
-    /**
-     * @ORM\Column(type="string", length=3)
-     */
-    private $codigoexterno;
-
-    /**
-     * @ORM\Column(type="string", length=5)
-     */
-    private $serie;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $correlativo;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $esnotacredito;
 
     /**
      * @var \DateTime $creado
@@ -86,7 +66,7 @@ class Tiposercontable
      * Set nombre
      *
      * @param string $nombre
-     * @return Tipo
+     * @return Estado
      */
     public function setNombre($nombre)
     {
@@ -109,7 +89,7 @@ class Tiposercontable
      * Set codigo
      *
      * @param string $codigo
-     * @return Tipo
+     * @return Estado
      */
     public function setCodigo($codigo)
     {
@@ -132,7 +112,7 @@ class Tiposercontable
      * Set creado
      *
      * @param \DateTime $creado
-     * @return Tipo
+     * @return Estado
      */
     public function setCreado($creado)
     {
@@ -155,7 +135,7 @@ class Tiposercontable
      * Set modificado
      *
      * @param \DateTime $modificado
-     * @return Tipo
+     * @return Estado
      */
     public function setModificado($modificado)
     {
@@ -175,100 +155,4 @@ class Tiposercontable
     }
 
 
-
-    /**
-     * Set serie
-     *
-     * @param string $serie
-     *
-     * @return Tipo
-     */
-    public function setSerie($serie)
-    {
-        $this->serie = $serie;
-
-        return $this;
-    }
-
-    /**
-     * Get serie
-     *
-     * @return string
-     */
-    public function getSerie()
-    {
-        return $this->serie;
-    }
-
-    /**
-     * Set correlativo
-     *
-     * @param integer $correlativo
-     *
-     * @return Tipo
-     */
-    public function setCorrelativo($correlativo)
-    {
-        $this->correlativo = $correlativo;
-
-        return $this;
-    }
-
-    /**
-     * Get correlativo
-     *
-     * @return integer
-     */
-    public function getCorrelativo()
-    {
-        return $this->correlativo;
-    }
-
-    /**
-     * Set codigoexterno
-     *
-     * @param string $codigoexterno
-     *
-     * @return Tipo
-     */
-    public function setCodigoexterno($codigoexterno)
-    {
-        $this->codigoexterno = $codigoexterno;
-
-        return $this;
-    }
-
-    /**
-     * Get codigoexterno
-     *
-     * @return string
-     */
-    public function getCodigoexterno()
-    {
-        return $this->codigoexterno;
-    }
-
-    /**
-     * Set esnotacredito
-     *
-     * @param boolean $esnotacredito
-     *
-     * @return Tipo
-     */
-    public function setEsnotacredito($esnotacredito)
-    {
-        $this->esnotacredito = $esnotacredito;
-
-        return $this;
-    }
-
-    /**
-     * Get ennotacredito
-     *
-     * @return boolean
-     */
-    public function getEsnotacredito()
-    {
-        return $this->esnotacredito;
-    }
 }

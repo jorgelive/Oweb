@@ -1,0 +1,4 @@
+services:
+#    gopro_comprobante.example:
+#        class: Gopro\ComprobanteBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

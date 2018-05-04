@@ -39,6 +39,7 @@ class AppKernel extends Kernel
             new Gopro\CotizacionBundle\GoproCotizacionBundle(),
             new Gopro\ServicioBundle\GoproServicioBundle(),
             new Gopro\CuentaBundle\GoproCuentaBundle(),
+            new Gopro\ComprobanteBundle\GoproComprobanteBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

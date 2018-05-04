@@ -1,5 +1,5 @@
 <?php
-namespace Gopro\TransporteBundle\Entity;
+namespace Gopro\ComprobanteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -7,10 +7,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table(name="tra_serviciocontable")
+ * @ORM\Table(name="com_comprobante")
  * @ORM\Entity
  */
-class Serviciocontable
+class Comprobante
 {
     /**
      * @ORM\Id
@@ -20,20 +20,19 @@ class Serviciocontable
     private $id;
 
     /**
-     * @var \Gopro\TransporteBundle\Entity\Servicio
+     * @var \Gopro\UserBundle\Entity\Dependencia
      *
-     * @ORM\ManyToOne(targetEntity="Servicio", inversedBy="serviciocontables")
-     * @ORM\JoinColumn(name="servicio_id", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Gopro\UserBundle\Entity\Dependencia")
+     * @ORM\JoinColumn(name="dependencia_id", referencedColumnName="id", nullable=false)
      */
-    private $servicio;
+    private $dependencia;
 
     /**
-     * @var \Gopro\ComprobanteBundle\Entity\Comprobante
+     * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToOne(targetEntity="Gopro\ComprobanteBundle\Entity\Comprobante", inversedBy="serviciocontables")
-     * @ORM\JoinColumn(name="comprobante_id", referencedColumnName="id", nullable=false)
+     * @ORM\OneToMany(targetEntity="Gopro\TransporteBundle\Entity\Serviciocontable", mappedBy="comprobante", cascade={"persist","remove"}, orphanRemoval=true)
      */
-    private $comprobante;
+    private $serviciocontables;
 
     /**
      * @ORM\Column(type="string", length=250)
@@ -64,12 +63,12 @@ class Serviciocontable
     private $total;
 
     /**
-     * @var \Gopro\TransporteBundle\Entity\Tiposercontable
+     * @var \Gopro\ComprobanteBundle\Entity\Tipo
      *
-     * @ORM\ManyToOne(targetEntity="Tiposercontable")
-     * @ORM\JoinColumn(name="tiposercontable_id", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Tipo")
+     * @ORM\JoinColumn(name="tipo_id", referencedColumnName="id", nullable=false)
      */
-    private $tiposercontable;
+    private $tipo;
 
     /**
      * @ORM\Column(type="string", length=6, nullable=true)
@@ -94,31 +93,31 @@ class Serviciocontable
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Sercontablemensaje", mappedBy="serviciocontable", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Mensaje", mappedBy="comprobante", cascade={"persist","remove"}, orphanRemoval=true)
      */
-    private $sercontablemensajes;
+    private $mensajes;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Serviciocontable", mappedBy="original", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Comprobante", mappedBy="original", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $dependientes;
 
     /**
-     * @var \Gopro\TransporteBundle\Entity\Serviciocontable
+     * @var \Gopro\ComprobanteBundle\Entity\Comprobante
      *
-     * @ORM\ManyToOne(targetEntity="Serviciocontable", inversedBy="dependientes")
+     * @ORM\ManyToOne(targetEntity="Comprobante", inversedBy="dependientes")
      */
     private $original;
 
     /**
-     * @var \Gopro\TransporteBundle\Entity\Estadocontable
+     * @var \Gopro\ComprobanteBundle\Entity\Estado
      *
-     * @ORM\ManyToOne(targetEntity="Estadocontable")
-     * @ORM\JoinColumn(name="estadocontable_id", referencedColumnName="id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Estado")
+     * @ORM\JoinColumn(name="estado_id", referencedColumnName="id", nullable=false)
      */
-    private $estadocontable;
+    private $estado;
 
 
 
@@ -140,8 +139,9 @@ class Serviciocontable
 
     public function __construct()
     {
+        $this->serviciocontables = new ArrayCollection();
         $this->dependientes = new ArrayCollection();
-        $this->sercontablemensajes = new ArrayCollection();
+        $this->mensajes = new ArrayCollection();
     }
 
     /**
@@ -150,13 +150,13 @@ class Serviciocontable
     public function __toString()
     {
         if(!empty($this->getDocumento()) && !empty($this->getSerie())){
-            return sprintf('%s-%s-%s', $this->getTiposercontable()->getCodigo(), $this->getSerie() , str_pad($this->getDocumento(), 5, "0", STR_PAD_LEFT));
+            return sprintf('%s-%s-%s', $this->getTipo()->getCodigo(), $this->getSerie() , str_pad($this->getDocumento(), 5, "0", STR_PAD_LEFT));
         }elseif(!empty($this->getServicio())
             && !empty($this->getServicio()->getDependencia())
             && !empty($this->getServicio()->getDependencia()->getOrganizaciondependencia()
             )
         ){
-            return sprintf('%s-%s-%s', $this->getTiposercontable()->getCodigo(), $this->getServicio()->getDependencia()->getOrganizaciondependencia() , $this->getDescripcion());
+            return sprintf('%s-%s-%s', $this->getTipo()->getCodigo(), $this->getServicio()->getDependencia()->getOrganizaciondependencia() , $this->getDescripcion());
         }else{
             return '';
         }
@@ -178,7 +178,7 @@ class Serviciocontable
      *
      * @param string $descripcion
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
     public function setDescripcion($descripcion)
     {
@@ -202,7 +202,7 @@ class Serviciocontable
      *
      * @param string $neto
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
     public function setNeto($neto)
     {
@@ -226,7 +226,7 @@ class Serviciocontable
      *
      * @param string $impuesto
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
     public function setImpuesto($impuesto)
     {
@@ -250,7 +250,7 @@ class Serviciocontable
      *
      * @param string $total
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
     public function setTotal($total)
     {
@@ -274,7 +274,7 @@ class Serviciocontable
      *
      * @param string $serie
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
     public function setSerie($serie)
     {
@@ -298,7 +298,7 @@ class Serviciocontable
      *
      * @param string $documento
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
     public function setDocumento($documento)
     {
@@ -332,7 +332,7 @@ class Serviciocontable
      *
      * @param \DateTime $creado
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
     public function setCreado($creado)
     {
@@ -356,7 +356,7 @@ class Serviciocontable
      *
      * @param \DateTime $modificado
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
     public function setModificado($modificado)
     {
@@ -376,51 +376,27 @@ class Serviciocontable
     }
 
     /**
-     * Set servicio
+     * Set dependencia
      *
-     * @param \Gopro\TransporteBundle\Entity\Servicio $servicio
+     * @param \Gopro\UserBundle\Entity\Dependencia $dependencia
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
-    public function setServicio(\Gopro\TransporteBundle\Entity\Servicio $servicio = null)
+    public function setDependencia(\Gopro\UserBundle\Entity\Dependencia $dependencia)
     {
-        $this->servicio = $servicio;
+        $this->dependencia = $dependencia;
 
         return $this;
     }
 
     /**
-     * Get servicio
+     * Get dependencia
      *
-     * @return \Gopro\TransporteBundle\Entity\Servicio
+     * @return \Gopro\UserBundle\Entity\Dependencia
      */
-    public function getServicio()
+    public function getDependencia()
     {
-        return $this->servicio;
-    }
-
-    /**
-     * Set comprobante
-     *
-     * @param \Gopro\ComprobanteBundle\Entity\Comprobante $comprobante
-     *
-     * @return Serviciocontable
-     */
-    public function setComprobante(\Gopro\ComprobanteBundle\Entity\Comprobante $comprobante)
-    {
-        $this->comprobante = $comprobante;
-
-        return $this;
-    }
-
-    /**
-     * Get comprobante
-     *
-     * @return \Gopro\ComprobanteBundle\Entity\Comprobante
-     */
-    public function getComprobante()
-    {
-        return $this->comprobante;
+        return $this->dependencia;
     }
 
     /**
@@ -428,7 +404,7 @@ class Serviciocontable
      *
      * @param \Gopro\MaestroBundle\Entity\Moneda $moneda
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
     public function setMoneda(\Gopro\MaestroBundle\Entity\Moneda $moneda = null)
     {
@@ -448,51 +424,51 @@ class Serviciocontable
     }
 
     /**
-     * Set tiposercontable
+     * Set tipo
      *
-     * @param \Gopro\TransporteBundle\Entity\Tiposercontable $tiposercontable
+     * @param \Gopro\ComprobanteBundle\Entity\Tipo $tipo
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
-    public function setTiposercontable(\Gopro\TransporteBundle\Entity\Tiposercontable $tiposercontable = null)
+    public function setTipo(\Gopro\ComprobanteBundle\Entity\Tipo $tipo = null)
     {
-        $this->tiposercontable = $tiposercontable;
+        $this->tipo = $tipo;
 
         return $this;
     }
 
     /**
-     * Get tiposercontable
+     * Get tipo
      *
-     * @return \Gopro\TransporteBundle\Entity\Tiposercontable
+     * @return \Gopro\ComprobanteBundle\Entity\Tipo
      */
-    public function getTiposercontable()
+    public function getTipo()
     {
-        return $this->tiposercontable;
+        return $this->tipo;
     }
 
     /**
-     * Set estadocontable
+     * Set estado
      *
-     * @param \Gopro\TransporteBundle\Entity\Estadocontable $estadocontable
+     * @param \Gopro\ComprobanteBundle\Entity\Estado $estado
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
-    public function setEstadocontable(\Gopro\TransporteBundle\Entity\Estadocontable $estadocontable = null)
+    public function setEstado(\Gopro\ComprobanteBundle\Entity\Estado $estado = null)
     {
-        $this->estadocontable = $estadocontable;
+        $this->estado = $estado;
 
         return $this;
     }
 
     /**
-     * Get estadocontable
+     * Get estado
      *
-     * @return \Gopro\TransporteBundle\Entity\Estadocontable
+     * @return \Gopro\ComprobanteBundle\Entity\Estado
      */
-    public function getEstadocontable()
+    public function getEstado()
     {
-        return $this->estadocontable;
+        return $this->estado;
     }
 
     /**
@@ -500,7 +476,7 @@ class Serviciocontable
      *
      * @param \DateTime $fechaemision
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
     public function setFechaemision($fechaemision)
     {
@@ -524,7 +500,7 @@ class Serviciocontable
      *
      * @param string $url
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
     public function setUrl($url)
     {
@@ -546,11 +522,11 @@ class Serviciocontable
     /**
      * Add dependiente
      *
-     * @param \Gopro\TransporteBundle\Entity\Serviciocontable $dependiente
+     * @param \Gopro\ComprobanteBundle\Entity\Comprobante $dependiente
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
-    public function addDependiente(\Gopro\TransporteBundle\Entity\Serviciocontable $dependiente)
+    public function addDependiente(\Gopro\ComprobanteBundle\Entity\Comprobante $dependiente)
     {
         $dependiente->setOriginal($this);
 
@@ -562,9 +538,9 @@ class Serviciocontable
     /**
      * Remove dependiente
      *
-     * @param \Gopro\TransporteBundle\Entity\Serviciocontable $dependiente
+     * @param \Gopro\ComprobanteBundle\Entity\Comprobante $dependiente
      */
-    public function removeDependiente(\Gopro\TransporteBundle\Entity\Serviciocontable $dependiente)
+    public function removeDependiente(\Gopro\ComprobanteBundle\Entity\Comprobante $dependiente)
     {
         $this->dependientes->removeElement($dependiente);
     }
@@ -582,11 +558,11 @@ class Serviciocontable
     /**
      * Set original
      *
-     * @param \Gopro\TransporteBundle\Entity\Serviciocontable $original
+     * @param \Gopro\ComprobanteBundle\Entity\Comprobante $original
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
-    public function setOriginal(\Gopro\TransporteBundle\Entity\Serviciocontable $original = null)
+    public function setOriginal(\Gopro\ComprobanteBundle\Entity\Comprobante $original = null)
     {
         $this->original = $original;
 
@@ -596,7 +572,7 @@ class Serviciocontable
     /**
      * Get original
      *
-     * @return \Gopro\TransporteBundle\Entity\Serviciocontable
+     * @return \Gopro\ComprobanteBundle\Entity\Comprobante
      */
     public function getOriginal()
     {
@@ -605,38 +581,76 @@ class Serviciocontable
 
 
     /**
-     * Add sercontablemensaje
+     * Add mensaje
      *
-     * @param \Gopro\TransporteBundle\Entity\Sercontablemensaje $sercontablemensaje
+     * @param \Gopro\ComprobanteBundle\Entity\Mensaje $mensaje
      *
-     * @return Serviciocontable
+     * @return Comprobante
      */
-    public function addSercontablemensaje(\Gopro\TransporteBundle\Entity\Sercontablemensaje $sercontablemensaje)
+    public function addMensaje(\Gopro\ComprobanteBundle\Entity\Mensaje $mensaje)
     {
-        $sercontablemensaje->setServiciocontable($this);
+        $mensaje->setComprobante($this);
 
-        $this->sercontablemensajes[] = $sercontablemensaje;
+        $this->mensajes[] = $mensaje;
 
         return $this;
     }
 
     /**
-     * Remove sercontablemensaje
+     * Remove mensaje
      *
-     * @param \Gopro\TransporteBundle\Entity\Sercontablemensaje $sercontablemensaje
+     * @param \Gopro\ComprobanteBundle\Entity\Mensaje $mensaje
      */
-    public function removeSercontablemensaje(\Gopro\TransporteBundle\Entity\Sercontablemensaje $sercontablemensaje)
+    public function removeMensaje(\Gopro\ComprobanteBundle\Entity\Mensaje $mensaje)
     {
-        $this->sercontablemensajes->removeElement($sercontablemensaje);
+        $this->mensajes->removeElement($mensaje);
     }
 
     /**
-     * Get sercontablemensajes
+     * Get mensajes
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getSercontablemensajes()
+    public function getMensajes()
     {
-        return $this->sercontablemensajes;
+        return $this->mensajes;
+    }
+
+    /**
+     * Add serviciocontable.
+     *
+     * @param \Gopro\TransporteBundle\Entity\Serviciocontable $serviciocontable
+     *
+     * @return Comprobante
+     */
+    public function addServiciocontable(\Gopro\TransporteBundle\Entity\Serviciocontable $serviciocontable)
+    {
+        $serviciocontable->setComprobante($this);
+
+        $this->serviciocontables[] = $serviciocontable;
+    
+        return $this;
+    }
+
+    /**
+     * Remove serviciocontable.
+     *
+     * @param \Gopro\TransporteBundle\Entity\Serviciocontable $serviciocontable
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeServiciocontable(\Gopro\TransporteBundle\Entity\Serviciocontable $serviciocontable)
+    {
+        return $this->serviciocontables->removeElement($serviciocontable);
+    }
+
+    /**
+     * Get serviciocontables.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getServiciocontables()
+    {
+        return $this->serviciocontables;
     }
 }

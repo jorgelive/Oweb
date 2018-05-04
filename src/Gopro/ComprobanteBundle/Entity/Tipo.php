@@ -1,15 +1,15 @@
 <?php
-namespace Gopro\TransporteBundle\Entity;
+namespace Gopro\ComprobanteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Table(name="tra_tiposercontable")
+ * @ORM\Table(name="com_tipo")
  * @ORM\Entity
  */
-class Tiposercontable
+class Tipo
 {
     /**
      * @ORM\Id
