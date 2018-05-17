@@ -8,7 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-class TipoAdmin extends AbstractAdmin
+class ProductoservicioAdmin extends AbstractAdmin
 {
     /**
      * @param DatagridMapper $datagridMapper
@@ -21,13 +21,8 @@ class TipoAdmin extends AbstractAdmin
             ->add('codigo', null, [
                 'label' => 'Código'
             ])
-            ->add('codigoexterno', null, [
-                'label' => 'Código externo'
-            ])
-            ->add('serie')
-            ->add('correlativo')
-            ->add('esnotacredito', null, [
-                'label' => 'Nota de crédito?'
+            ->add('tipoproductoservicio', null, [
+                'label' => 'Tipo'
             ])
         ;
     }
@@ -43,13 +38,8 @@ class TipoAdmin extends AbstractAdmin
             ->add('codigo', null, [
                 'label' => 'Código'
             ])
-            ->add('codigoexterno', null, [
-                'label' => 'Código externo'
-            ])
-            ->add('serie')
-            ->add('correlativo')
-            ->add('esnotacredito', null, [
-                'label' => 'Nota de crédito?'
+            ->add('tipoproductoservicio', null, [
+                'label' => 'Tipo'
             ])
             ->add('_action', 'actions', [
                 'actions' => [
@@ -72,13 +62,8 @@ class TipoAdmin extends AbstractAdmin
             ->add('codigo', null, [
                 'label' => 'Código'
             ])
-            ->add('codigoexterno', null, [
-                'label' => 'Código externo'
-            ])
-            ->add('serie')
-            ->add('correlativo')
-            ->add('esnotacredito', null, [
-                'label' => 'Nota de crédito?'
+            ->add('tipoproductoservicio', null, [
+                'label' => 'Tipo'
             ])
         ;
     }
@@ -94,13 +79,8 @@ class TipoAdmin extends AbstractAdmin
             ->add('codigo', null, [
                 'label' => 'Código'
             ])
-            ->add('codigoexterno', null, [
-                'label' => 'Código externo'
-            ])
-            ->add('serie')
-            ->add('correlativo')
-            ->add('esnotacredito', null, [
-                'label' => 'Nota de crédito?'
+            ->add('tipoproductoservicio', null, [
+                'label' => 'Tipo'
             ])
         ;
     }

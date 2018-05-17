@@ -41,14 +41,6 @@ class Serviciocontable
     private $descripcion;
 
     /**
-     * @var \Gopro\MaestroBundle\Entity\Moneda
-     *
-     * @ORM\ManyToOne(targetEntity="Gopro\MaestroBundle\Entity\Moneda")
-     * @ORM\JoinColumn(name="moneda_id", referencedColumnName="id", nullable=false)
-     */
-    private $moneda;
-
-    /**
      * @ORM\Column(type="decimal", precision=10, scale=2, nullable=true)
      */
     private $total;
@@ -75,7 +67,7 @@ class Serviciocontable
     public function __toString()
     {
         if(!empty($this->getServicio())){
-            return sprintf('%s %s %s (%s %s)', $this->getServicio()->getFechahorainicio()->format('Y-m-d'), $this->getServicio()->getDependencia()->getOrganizacion() , $this->getServicio(), $this->getTotal(), $this->getMoneda());
+            return sprintf('%s %s %s (%s)', $this->getServicio()->getFechahorainicio()->format('Y-m-d'), $this->getServicio()->getDependencia()->getOrganizacion() , $this->getServicio(), $this->getTotal());
         }else{
             return '';
         }
@@ -234,30 +226,6 @@ class Serviciocontable
     public function getComprobante()
     {
         return $this->comprobante;
-    }
-
-    /**
-     * Set moneda
-     *
-     * @param \Gopro\MaestroBundle\Entity\Moneda $moneda
-     *
-     * @return Serviciocontable
-     */
-    public function setMoneda(\Gopro\MaestroBundle\Entity\Moneda $moneda = null)
-    {
-        $this->moneda = $moneda;
-
-        return $this;
-    }
-
-    /**
-     * Get moneda
-     *
-     * @return \Gopro\MaestroBundle\Entity\Moneda
-     */
-    public function getMoneda()
-    {
-        return $this->moneda;
     }
 
 }

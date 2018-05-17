@@ -73,18 +73,10 @@ class Resumen implements ContainerAwareInterface
         }
 
         $tipoCambio = $this->container->get('gopro_main.tipocambio')->getTipodecambio($cotizacion->getCreado());
-        /*    ->getRepository('GoproMaestroBundle:Tipocambio')
-            ->findOneBy(['moneda' => 2, 'fecha' => $cotizacion->getCreado()]);
-
-        */
-        //var_dump($this->container->get('gopro_main.tipocambio')->getTipodecambio($cotizacion->getCreado())); die;
 
         if(!$tipoCambio){
-            //if(false === $this->container->get('gopro_main.tipocambio')->getTipodecambio($cotizacion->getCreado())){
-                $this->mensaje = sprintf('No se puede obtener la el tipo de cambio del dia %s.',  $cotizacion->getCreado()->format('Y-m-d') );
-                return false;
-            //}
-
+            $this->mensaje = sprintf('No se puede obtener la el tipo de cambio del dia %s.',  $cotizacion->getCreado()->format('Y-m-d') );
+            return false;
         }
 
         $datosCotizacion = [];

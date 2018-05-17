@@ -49,7 +49,7 @@ class CargadorController extends Controller
         $tablaSpecs = array('filasDescartar' => 1);
         $columnaspecs[] = array('nombre' => 'dependencia');
         $columnaspecs[] = array('nombre' => 'tipoComprobante');
-        $columnaspecs[] = array('nombre' => 'monedaContable');
+        $columnaspecs[] = array('nombre' => 'monedaComprobante');
         $columnaspecs[] = array('nombre' => 'totalContable');
         $columnaspecs[] = array('nombre' => 'descripcionContable');
         $columnaspecs[] = array('nombre' => 'fechainicioServicio', 'tipo' => 'exceldate');
@@ -99,15 +99,19 @@ class CargadorController extends Controller
                 unset($j);
 
                 if(
-                    !isset($linea['tipoComprobante'])
+                    !isset($linea['monedaComprobante'])
+                    || empty($linea['monedaComprobante'])
+                    || !isset($linea['tipoComprobante'])
                     || empty($linea['tipoComprobante'])
+
                 ) {
-                    $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' tiene los datos del tipo de comprobante incompletos.', 'error');
+                    $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' tiene los datos del tipo o la moneda de comprobante incompletos.', 'error');
                     $variables->setMensajes('No se ha ejecutado la carga.', 'error');
                     return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
                 }
 
                 $preproceso[$i]['tipoComprobante'] = (integer)$linea['tipoComprobante'];
+                $preproceso[$i]['monedaComprobante'] = (integer)$linea['monedaComprobante'];
                 $preproceso[$i]['estadoComprobante'] = 1;
                 if($preproceso[$i]['tipoComprobante'] < 0){
                     $preproceso[$i]['estadoComprobante'] = 3;
@@ -132,9 +136,7 @@ class CargadorController extends Controller
                 }
 
                 if(
-                    !isset($linea['monedaContable'])
-                    || empty($linea['monedaContable'])
-                    || !isset($linea['totalContable'])
+                    !isset($linea['totalContable'])
                     || empty($linea['totalContable'])
                     || !isset($linea['descripcionContable'])
                     || empty($linea['descripcionContable'])
@@ -170,7 +172,7 @@ class CargadorController extends Controller
                 }
 
                 //contable
-                $preproceso[$i]['servicio'][$j]['servicioContable']['moneda'] = (integer)$linea['monedaContable'];
+
                 $preproceso[$i]['servicio'][$j]['servicioContable']['total'] = $linea['totalContable'];
                 $preproceso[$i]['servicio'][$j]['servicioContable']['descripcion'] = $linea['descripcionContable'];
 
@@ -259,6 +261,7 @@ class CargadorController extends Controller
 
             $comprobante->setDependencia($em->getReference('Gopro\UserBundle\Entity\Dependencia', $com['dependencia']));
             $comprobante->setEstado($em->getReference('Gopro\ComprobanteBundle\Entity\Estado', $com['estadoComprobante']));
+            $comprobante->setMoneda($em->getReference('Gopro\MaestroBundle\Entity\Moneda', $com['monedaComprobante']));
             $comprobante->setTipo($em->getReference('Gopro\ComprobanteBundle\Entity\Tipo', $com['tipoComprobante']));
             if (isset($com['total'])) {
                 $comprobante->setNeto($com['total']);
@@ -283,7 +286,6 @@ class CargadorController extends Controller
                     }
 
                     $servicioContable = new Serviciocontable();
-                    $servicioContable->setMoneda($em->getReference('Gopro\MaestroBundle\Entity\Moneda', $serv['servicioContable']['moneda']));
                     $servicioContable->setTotal($serv['servicioContable']['total']);
                     $servicioContable->setDescripcion($serv['servicioContable']['descripcion']);
                     $servicioContable->setComprobante($comprobante);

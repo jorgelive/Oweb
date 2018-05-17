@@ -3,7 +3,7 @@
 namespace Gopro\ComprobanteBundle\Controller;
 
 
-use Gopro\TransporteBundle\Entity\Sercontablemensaje;
+use Gopro\ComprobanteBundle\Entity\Mensaje;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -15,10 +15,14 @@ class ComprobanteAdminController extends CRUDController
     {
         $fechaEmision = new \DateTime();
 
-        //$ruta = $this->getParameter('facturacion_ruta_prueba');
-        //$token = $this->getParameter('facturacion_token_prueba');
-        $ruta = $this->getParameter('facturacion_ruta_produccion');
-        $token = $this->getParameter('facturacion_token_produccion');
+        //solo facturamos en el cas de que se use el servidor de produccion
+        if($this->getRequest()->getHost() == 'oweb.openperu.pe' || $this->getRequest()->getHost() == 'openperu.pe'){
+            $ruta = $this->getParameter('facturacion_ruta_produccion');
+            $token = $this->getParameter('facturacion_token_produccion');
+        }else{
+            $ruta = $this->getParameter('facturacion_ruta_prueba');
+            $token = $this->getParameter('facturacion_token_prueba');
+        }
 
         $em = $this->getDoctrine()->getManager();
 
@@ -28,79 +32,132 @@ class ComprobanteAdminController extends CRUDController
             throw new NotFoundHttpException(sprintf('No se puede encontrar el objeto con el identificador : %s', $this->admin->getIdParameter()));
         }
 
-        if (!$object->getTiposercontable()
-            || $object->getTiposercontable()->getId() <= 0
+        if (!$object->getTipo()
+            || $object->getTipo()->getId() <= 0
         ){
             $this->addFlash('sonata_flash_error', 'Este documento no admite la emision de una factura.');
             return new RedirectResponse($this->admin->generateUrl('list'));
         }
-        $tipoAsociado = '';
-        $documentoAsociado = '';
-        $serieAsociado = '';
-        $tipoNotaCredito = '';
 
-        if( $object->getTiposercontable()->getEsnotacredito() === true){
-            if($object->getOriginal() && !empty($object->getOriginal()->getDocumento()) && $object->getOriginal()->getTiposercontable()->getEsnotacredito() === false) {
-                $tipoAsociado = $object->getOriginal()->getTiposercontable()->getCodigoexterno();
-                $documentoAsociado = $object->getOriginal()->getDocumento();
-                $serieAsociado = $object->getOriginal()->getSerie();
-                if($object->getOriginal()->getNeto() == $object->getNeto() && $object->getOriginal()->getImpuesto() == $object->getImpuesto() && $object->getOriginal()->getTotal() == $object->getTotal()){
-                    $tipoNotaCredito = '1';
-                }elseif($object->getOriginal()->getNeto() > $object->getNeto() && $object->getOriginal()->getImpuesto() > $object->getImpuesto() && $object->getOriginal()->getTotal() > $object->getTotal()){
-                    $tipoNotaCredito = '9';
-                }else{
-                    $this->addFlash('sonata_flash_error', 'el valor de la nota de crédito debe ser menor al del documento.');
-                    return new RedirectResponse($this->admin->generateUrl('list'));
-                }
-            }else{
-                $this->addFlash('sonata_flash_error', 'El tipo de documento debe tener un documento asociado enviado a facturación.');
-                return new RedirectResponse($this->admin->generateUrl('list'));
-            }
-        }
         $solicitud = [];
+        $solicitud['items'] = [];
+        $i = 0;
+        $totalGeneral = 0;
+
+        foreach($object->getServiciocontables() as $serviciocontable):
+
+            $solicitud['items'][$i]['unidad_de_medida'] = 'ZZ';
+            $solicitud['items'][$i]['codigo'] = $this->container->get('gopro_main.variableproceso')->sanitizeString($serviciocontable->getServicio()->getNombre(), '_', '[\s+]' );
+            $filesString = '';
+            if($serviciocontable->getServicio()->getServiciocomponentes()){
+                $filesArray = $serviciocontable->getServicio()->getServiciocomponentes()->toArray();
+
+                foreach ($filesArray as $files){
+                    $filesString .= sprintf(' F.%s', $files->getCodigo());
+                }
+            }
+
+            $cantidad = 1; //los servicios de transporte solo son unitarios
+            $solicitud['items'][$i]['descripcion'] = $serviciocontable->getServicio()->getFechahorainicio()->format('Y-m-d') . ' ' . $serviciocontable->getDescripcion() . $filesString;
+            $solicitud['items'][$i]['cantidad'] = $cantidad;
+            $solicitud['items'][$i]['valor_unitario'] = number_format($serviciocontable->getTotal() / (1 + $this->getParameter('facturacion_igv_porcentaje') / 100), 2);
+            $solicitud['items'][$i]['precio_unitario'] = number_format($serviciocontable->getTotal(), 2);
+            $solicitud['items'][$i]['descuento'] = '';
+            $solicitud['items'][$i]['subtotal'] = number_format($solicitud['items'][$i]['valor_unitario'] * $cantidad, 2); //total de valores unitarios
+            $solicitud['items'][$i]['tipo_de_igv'] = 1;
+            $solicitud['items'][$i]['igv'] = number_format(($solicitud['items'][$i]['precio_unitario'] - $solicitud['items'][$i]['valor_unitario']) * $cantidad, 2);
+            $solicitud['items'][$i]['total'] = number_format($solicitud['items'][$i]['precio_unitario'] * $cantidad, 2);
+            $solicitud['items'][$i]['anticipo_regularizacion'] = false;
+            $solicitud['items'][$i]['anticipo_documento_serie'] = '';
+            $solicitud['items'][$i]['anticipo_documento_numero'] = '';
+
+            $totalGeneral += $solicitud['items'][$i]['total'];
+
+            $i++;
+        endforeach;
+
+        foreach($object->getComprobanteitems() as $comprobanteitem):
+            $solicitud['items'][$i]['unidad_de_medida'] = $comprobanteitem->getProductoservicio()->getTipoproductoservicio()->getCodigoexterno();
+            $solicitud['items'][$i]['codigo'] = $this->container->get('gopro_main.variableproceso')->sanitizeString($comprobanteitem->getProductoservicio()->getCodigo(), '_', '[\s+]' );
+            $solicitud['items'][$i]['descripcion'] = $comprobanteitem->getProductoservicio()->getNombre();
+            $cantidad = $comprobanteitem->getCantidad();
+            $solicitud['items'][$i]['cantidad'] = $cantidad;
+            $solicitud['items'][$i]['valor_unitario'] = number_format($comprobanteitem->getUnitario() / (1 + $this->getParameter('facturacion_igv_porcentaje') / 100), 2);
+            $solicitud['items'][$i]['precio_unitario'] = number_format($comprobanteitem->getUnitario(), 2);
+            $solicitud['items'][$i]['descuento'] = '';
+            $solicitud['items'][$i]['subtotal'] = number_format($solicitud['items'][$i]['valor_unitario'] * $cantidad, 2); //total de valores unitarios
+            $solicitud['items'][$i]['tipo_de_igv'] = 1;
+            $solicitud['items'][$i]['igv'] = number_format(($solicitud['items'][$i]['precio_unitario'] - $solicitud['items'][$i]['valor_unitario']) * $cantidad, 2);
+            $solicitud['items'][$i]['total'] = number_format($solicitud['items'][$i]['precio_unitario'] * $cantidad, 2);
+            $solicitud['items'][$i]['anticipo_regularizacion'] = false;
+            $solicitud['items'][$i]['anticipo_documento_serie'] = '';
+            $solicitud['items'][$i]['anticipo_documento_numero'] = '';
+
+            $totalGeneral += $solicitud['items'][$i]['total'];
+            $i++;
+        endforeach;
+
+        if(empty($solicitud['items'])){
+            $this->addFlash('sonata_flash_error', 'No exixtem items por facturar.');
+            return new RedirectResponse($this->admin->generateUrl('list'));
+        }
+
+        if(!($object->getMoneda())){
+            $this->addFlash('sonata_flash_error', 'No se puede obtener la moneda.');
+            return new RedirectResponse($this->admin->generateUrl('list'));
+        }
+
+        $solicitud['moneda'] = $object->getMoneda()->getCodigoexterno();
+
         $solicitud['operacion'] = "generar_comprobante";
-        if (!($object->getTiposercontable())){
+
+        if (!($object->getTipo())){
             $this->addFlash('sonata_flash_error', 'No se puede obtener el tipo de documento.');
             return new RedirectResponse($this->admin->generateUrl('list'));
         }
-        $solicitud['tipo_de_comprobante'] = $object->getTiposercontable()->getCodigoexterno();
+
+        $solicitud['tipo_de_comprobante'] = $object->getTipo()->getCodigoexterno();
+
         if ($object->getSerie()
             || $object->getDocumento()
         ){
             $this->addFlash('sonata_flash_error', 'El documento ya se ha facturado.');
             return new RedirectResponse($this->admin->generateUrl('list'));
         }
-        if(!$object->getTiposercontable()->getSerie()
-            || !$object->getTiposercontable()->getCorrelativo()
+
+        if(!$object->getTipo()->getSerie()
+            || !$object->getTipo()->getCorrelativo()
         ){
-            $this->addFlash('sonata_flash_error', 'La serie del documento y el numero no pueden estar vacios.');
+            $this->addFlash('sonata_flash_error', 'No se puedo obtener la serie del documento ni el número.');
             return new RedirectResponse($this->admin->generateUrl('list'));
         }
-        $solicitud['serie'] = $object->getTiposercontable()->getSerie();
-        $solicitud['numero'] = (string)$object->getTiposercontable()->getCorrelativo();
+
+
+
+        $solicitud['serie'] = $object->getTipo()->getSerie();
+        $solicitud['numero'] = (string)$object->getTipo()->getCorrelativo();
         $solicitud['sunat_transaction'] = 1; //fijo
         $solicitud['cliente_tipo_de_documento'] = 6; //fijo
-        if (!$object->getServicio()
-            ||  !$object->getServicio()->getDependencia()
-            ||  !$object->getServicio()->getDependencia()->getOrganizacion()
+
+        if (!$object->getDependencia()
+            ||  !$object->getDependencia()->getOrganizacion()
         ){
             $this->addFlash('sonata_flash_error', 'No se puede obtener el cliente.');
             return new RedirectResponse($this->admin->generateUrl('list'));
         }
-        $solicitud['cliente_numero_de_documento'] = $object->getServicio()->getDependencia()->getOrganizacion()->getNumerodocumento();
-        $solicitud['cliente_denominacion'] = $object->getServicio()->getDependencia()->getOrganizacion()->getRazonsocial();
-        $solicitud['cliente_direccion'] = $object->getServicio()->getDependencia()->getDireccion();
-        $solicitud['cliente_email'] = $object->getServicio()->getDependencia()->getEmail();
+
+        $solicitud['cliente_numero_de_documento'] = $object->getDependencia()->getOrganizacion()->getNumerodocumento();
+        $solicitud['cliente_denominacion'] = $object->getDependencia()->getOrganizacion()->getRazonsocial();
+        $solicitud['cliente_direccion'] = $object->getDependencia()->getDireccion();
+        $solicitud['cliente_email'] = $object->getDependencia()->getEmail();
         $solicitud['fecha_de_emision'] = $fechaEmision->format('d-m-Y');
         $solicitud['fecha_de_vencimiento'] = '';
-        if (!($object->getMoneda())){
-            $this->addFlash('sonata_flash_error', 'No se puede obtener la moneda del documento.');
-            return new RedirectResponse($this->admin->generateUrl('list'));
-        }
-        $solicitud['moneda'] = $object->getMoneda()->getCodigoexterno();
+
         $tipoCambioStr = '';
+
         if($object->getMoneda()->getId() != 1){
-            $tipoCambio = $em->getRepository('Gopro\MaestroBundle\Entity\Tipocambio')->findOneBy(['moneda' => $object->getMoneda()->getId(), 'fecha' => $fechaEmision]);
+            $tipoCambio = $this->container->get('gopro_main.tipocambio')->getTipodecambio($fechaEmision);
+
             if(!$tipoCambio){
                 $this->addFlash('sonata_flash_error', sprintf('No se puede obtener la el tipo de cambio para %s del dia %s.', $object->getMoneda()->getNombre(), $fechaEmision->format('Y-m-d') ));
                 return new RedirectResponse($this->admin->generateUrl('list'));
@@ -113,19 +170,46 @@ class ComprobanteAdminController extends CRUDController
         $solicitud['descuento_global'] = '';
         $solicitud['total_descuento'] = '';
         $solicitud['total_anticipo'] = '';
-        $solicitud['total_gravada'] = (string)$object->getNeto();
+        $solicitud['total_gravada'] = number_format($totalGeneral / (1 + $this->getParameter('facturacion_igv_porcentaje') / 100), 2);
         $solicitud['total_inafecta'] = '';
         $solicitud['total_exonerada'] = '';
-        $solicitud['total_igv'] = (string)$object->getImpuesto();
+        $solicitud['total_igv'] = number_format($totalGeneral - $solicitud['total_gravada'], 2);
         $solicitud['total_gratuita'] = '';
         $solicitud['total_otros_cargos'] = '';
-        $solicitud['total'] = (string)$object->getTotal();
+        $solicitud['total'] = number_format($totalGeneral, 2);
         $solicitud['percepcion_tipo'] = '';
         $solicitud['percepcion_base_imponible'] = '';
         $solicitud['total_percepcion'] = '';
         $solicitud['total_incluido_percepcion'] = '';
         $solicitud['detraccion'] = false;
         $solicitud['observaciones'] = '';
+
+
+        $tipoAsociado = '';
+        $documentoAsociado = '';
+        $serieAsociado = '';
+        $tipoNotaCredito = '';
+
+        if( $object->getTipo()->getEsnotacredito() === true){
+
+            if($object->getOriginal() && !empty($object->getOriginal()->getDocumento()) && $object->getOriginal()->getTipo()->getEsnotacredito() === false) {
+                $tipoAsociado = $object->getOriginal()->getTipo()->getCodigoexterno();
+                $documentoAsociado = $object->getOriginal()->getDocumento();
+                $serieAsociado = $object->getOriginal()->getSerie();
+                if($object->getOriginal()->getNeto() == $solicitud['total_gravada'] && $object->getOriginal()->getImpuesto() == $solicitud['total_igv'] && $object->getOriginal()->getTotal() == $solicitud['total']){
+                    $tipoNotaCredito = '1';
+                }elseif($object->getOriginal()->getNeto() > $solicitud['total_gravada'] && $object->getOriginal()->getImpuesto() > $solicitud['total_igv'] && $object->getOriginal()->getTotal() > $solicitud['total']){
+                    $tipoNotaCredito = '9';
+                }else{
+                    $this->addFlash('sonata_flash_error', 'El valor de la nota de crédito debe ser menor al del documento.');
+                    return new RedirectResponse($this->admin->generateUrl('list'));
+                }
+            }else{
+                $this->addFlash('sonata_flash_error', 'El tipo de documento debe tener un documento asociado enviado a facturación.');
+                return new RedirectResponse($this->admin->generateUrl('list'));
+            }
+        }
+
         $solicitud['documento_que_se_modifica_tipo'] = $tipoAsociado;
         $solicitud['documento_que_se_modifica_serie'] = $serieAsociado;
         $solicitud['documento_que_se_modifica_numero'] = $documentoAsociado;
@@ -140,29 +224,6 @@ class ComprobanteAdminController extends CRUDController
         $solicitud['orden_compra_servicio'] = '';
         $solicitud['tabla_personalizada_codigo'] = '';
         $solicitud['formato_de_pdf'] = '';
-        $solicitud['items'][0]['unidad_de_medida'] = 'ZZ';
-        $solicitud['items'][0]['codigo'] = $this->container->get('gopro_main.variableproceso')->sanitizeString($object->getServicio()->getNombre(), '_', '[\s+]' );
-        $filesString = '';
-        if($object->getServicio()->getServiciocomponentes()){
-            $filesArray = $object->getServicio()->getServiciocomponentes()->toArray();
-
-            foreach ($filesArray as $files){
-                $filesString .= sprintf(' F.%s', $files->getCodigo());
-            }
-        }
-        $cantidad = 1;
-        $solicitud['items'][0]['descripcion'] = $object->getServicio()->getFechahorainicio()->format('Y-m-d') . ' ' . $object->getDescripcion() . $filesString;
-        $solicitud['items'][0]['cantidad'] = $cantidad;
-        $solicitud['items'][0]['valor_unitario'] = (string)$object->getNeto();
-        $solicitud['items'][0]['precio_unitario'] = (string)$object->getTotal();
-        $solicitud['items'][0]['descuento'] = '';
-        $solicitud['items'][0]['subtotal'] = (string)($object->getNeto() * $cantidad); //total de valores unitarios
-        $solicitud['items'][0]['tipo_de_igv'] = 1;
-        $solicitud['items'][0]['igv'] = (string)($object->getImpuesto() * $cantidad);
-        $solicitud['items'][0]['total'] = (string)($object->getTotal() * $cantidad);
-        $solicitud['items'][0]['anticipo_regularizacion'] = false;
-        $solicitud['items'][0]['anticipo_documento_serie'] = '';
-        $solicitud['items'][0]['anticipo_documento_numero'] = '';
 
         $solicitudJson = json_encode($solicitud, JSON_PRETTY_PRINT);
 
@@ -203,26 +264,27 @@ class ComprobanteAdminController extends CRUDController
                 $object->setSerie($value);
             }elseif($key == 'numero'){
                 $object->setDocumento($value);
-                $object->getTiposercontable()->setCorrelativo($value + 1);
+                $object->getTipo()->setCorrelativo($value + 1);
             }elseif($key == 'enlace'){
                 $object->setUrl($value);
             }else{
                 if (!(is_array($value) || empty($value))){
-                    $mensaje = new Sercontablemensaje();
+                    $mensaje = new Mensaje();
                     $mensaje->setClave($key);
                     $mensaje->setContenido($value);
-                    $object->addSercontablemensaje($mensaje);
+                    $object->addMensaje($mensaje);
                 }
             }
         }
+        $object->setNeto($solicitud['total_gravada']);
+        $object->setImpuesto($solicitud['total_igv']);
+        $object->setTotal($solicitud['total']);
         $object->setFechaemision($fechaEmision);
-        $object->setEstadocontable($em->getReference('Gopro\TransporteBundle\Entity\Estadocontable', 3));
+        $object->setEstado($em->getReference('Gopro\ComprobanteBundle\Entity\Estado', 3));
 
         $this->admin->update($object);
 
         $this->addFlash('sonata_flash_success', 'Se ha facturado correctamente el item.');
-
-
 
         return new RedirectResponse($this->admin->generateUrl('list'));
 

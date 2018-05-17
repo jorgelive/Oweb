@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\CoreBundle\Form\Type\CollectionType;
 use Sonata\CoreBundle\Form\Type\DatePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -164,6 +165,9 @@ class ComprobanteAdmin extends AbstractAdmin
             ->add('serviciocontables', null, [
                 'label' => 'Items Transporte',
             ])
+            ->add('comprobanteitems', null, [
+                'label' => 'Items',
+            ])
             ->add('dependencia', null, [
                 'label' => 'Cliente',
             ])
@@ -227,8 +231,19 @@ class ComprobanteAdmin extends AbstractAdmin
                 'disabled' => true,
                 'required' => false
             ])
-            ->add('serviciocontables', null, [
-                'label' => 'Items Transporte',
+            ->add('comprobanteitems', CollectionType::class, [
+                'by_reference' => false,
+                'label' => 'Items'
+            ], [
+                'edit' => 'inline',
+                'inline' => 'table'
+            ])
+            ->add('serviciocontables', CollectionType::class, [
+                'by_reference' => false,
+                'label' => 'Items transporte'
+            ], [
+                'edit' => 'inline',
+                'inline' => 'table'
             ])
         ;
 
@@ -284,6 +299,9 @@ class ComprobanteAdmin extends AbstractAdmin
             ->add('id')
             ->add('dependencia', null, [
                 'label' => 'Cliente',
+            ])
+            ->add('comprobanteitems', null, [
+                'label' => 'Items',
             ])
             ->add('serviciocontables', null, [
                 'label' => 'Items Transporte',

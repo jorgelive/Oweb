@@ -9,6 +9,13 @@ services:
             - [ setTemplate, [edit, GoproComprobanteBundle:ComprobanteAdmin:edit.html.twig]]
         public: true
 
+    gopro_comprobante.admin.comprobanteitem:
+        class: Gopro\ComprobanteBundle\Admin\ComprobanteitemAdmin
+        arguments: [~, Gopro\ComprobanteBundle\Entity\Comprobanteitem, GoproComprobanteBundle:ComprobanteitemAdmin ]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Comprobante, label: "Item"}
+        public: true
+
     gopro_comprobante.admin.mensajeadmin:
         class: Gopro\ComprobanteBundle\Admin\MensajeAdmin
         arguments: [~, Gopro\ComprobanteBundle\Entity\Mensaje, SonataAdminBundle:CRUD]
@@ -21,6 +28,20 @@ services:
         arguments: [~, Gopro\ComprobanteBundle\Entity\Tipo, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Comprobante, label: "Tipo de documento"}
+        public: true
+
+    gopro_comprobante.admin.productoservicio:
+        class: Gopro\ComprobanteBundle\Admin\ProductoservicioAdmin
+        arguments: [~, Gopro\ComprobanteBundle\Entity\Productoservicio, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Comprobante, label: "Productos y servicios"}
+        public: true
+
+    gopro_comprobante.admin.tipoproductoservicio:
+        class: Gopro\ComprobanteBundle\Admin\TipoproductoservicioAdmin
+        arguments: [~, Gopro\ComprobanteBundle\Entity\Tipoproductoservicio, SonataAdminBundle:CRUD]
+        tags:
+            - {name: sonata.admin, manager_type: orm, group: Comprobante, label: "Tipo de producto"}
         public: true
 
     gopro_comprobante.admin.estado:

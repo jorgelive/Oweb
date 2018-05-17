@@ -314,6 +314,8 @@ sonata_admin:
                     - gopro_comprobante.admin.comprobante
                     - gopro_comprobante.admin.tipo
                     - gopro_comprobante.admin.estado
+                    - gopro_comprobante.admin.productoservicio
+                    - gopro_comprobante.admin.tipoproductoservicio
 
             goprosonata.admin.group.cuenta:
                 label: 'Cuentas'

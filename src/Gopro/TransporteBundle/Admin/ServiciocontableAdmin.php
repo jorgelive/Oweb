@@ -93,7 +93,6 @@ class ServiciocontableAdmin extends AbstractAdmin
             ->add('descripcion', null, [
                 'label' => 'Descripción'
             ])
-            ->add('moneda')
             ->add('total')
             ->add('comprobante')
         ;
@@ -115,9 +114,6 @@ class ServiciocontableAdmin extends AbstractAdmin
             ])
             ->add('descripcion', null, [
                 'label' => 'Descripción'
-            ])
-            ->add('moneda', null, [
-                'route' => ['name' => 'show']
             ])
             ->add('total')
             ->add('comprobante')
@@ -144,10 +140,12 @@ class ServiciocontableAdmin extends AbstractAdmin
             ->add('descripcion', null, [
                 'label' => 'Descripción'
             ])
-            ->add('moneda')
             ->add('total')
-            ->add('comprobante')
         ;
+
+        if ($this->getRoot()->getClass() != 'Gopro\ComprobanteBundle\Entity\Comprobante'){
+            $formMapper->add('comprobante');
+        }
 
         $widthModifier = function (FormInterface $form) {
 
@@ -197,9 +195,6 @@ class ServiciocontableAdmin extends AbstractAdmin
             ])
             ->add('descripcion', null, [
                 'label' => 'Descripción'
-            ])
-            ->add('moneda', null, [
-                'route' => ['name' => 'show']
             ])
             ->add('total')
             ->add('comprobante')

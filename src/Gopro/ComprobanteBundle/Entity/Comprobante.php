@@ -30,6 +30,13 @@ class Comprobante
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
+     * @ORM\OneToMany(targetEntity="Gopro\ComprobanteBundle\Entity\Comprobanteitem", mappedBy="comprobante", cascade={"persist","remove"}, orphanRemoval=true)
+     */
+    private $comprobanteitems;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
      * @ORM\OneToMany(targetEntity="Gopro\TransporteBundle\Entity\Serviciocontable", mappedBy="comprobante", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $serviciocontables;
@@ -43,7 +50,7 @@ class Comprobante
      * @var \Gopro\MaestroBundle\Entity\Moneda
      *
      * @ORM\ManyToOne(targetEntity="Gopro\MaestroBundle\Entity\Moneda")
-     * @ORM\JoinColumn(name="moneda_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="moneda_id", referencedColumnName="id", nullable=false)
      */
     private $moneda;
 
@@ -137,6 +144,7 @@ class Comprobante
 
     public function __construct()
     {
+        $this->comprobanteitems = new ArrayCollection();
         $this->serviciocontables = new ArrayCollection();
         $this->dependientes = new ArrayCollection();
         $this->mensajes = new ArrayCollection();
@@ -422,7 +430,7 @@ class Comprobante
      *
      * @return Comprobante
      */
-    public function setTipo(\Gopro\ComprobanteBundle\Entity\Tipo $tipo = null)
+    public function setTipo(\Gopro\ComprobanteBundle\Entity\Tipo $tipo)
     {
         $this->tipo = $tipo;
 
@@ -644,5 +652,44 @@ class Comprobante
     public function getServiciocontables()
     {
         return $this->serviciocontables;
+    }
+
+
+    /**
+     * Add comprobanteitem.
+     *
+     * @param \Gopro\ComprobanteBundle\Entity\Comprobanteitem $comprobanteitem
+     *
+     * @return Comprobante
+     */
+    public function addComprobanteitem(\Gopro\ComprobanteBundle\Entity\Comprobanteitem $comprobanteitem)
+    {
+        $comprobanteitem->setComprobante($this);
+
+        $this->comprobanteitems[] = $comprobanteitem;
+
+        return $this;
+    }
+
+    /**
+     * Remove comprobanteitem.
+     *
+     * @param \Gopro\ComprobanteBundle\Entity\Comprobanteitem $comprobanteitem
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeComprobanteitem(\Gopro\ComprobanteBundle\Entity\Comprobanteitem $comprobanteitem)
+    {
+        return $this->comprobanteitems->removeElement($comprobanteitem);
+    }
+
+    /**
+     * Get comprobanteitems.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComprobanteitems()
+    {
+        return $this->comprobanteitems;
     }
 }
