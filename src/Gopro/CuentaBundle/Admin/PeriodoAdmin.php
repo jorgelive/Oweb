@@ -9,6 +9,9 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\CollectionType;
 use Sonata\CoreBundle\Form\Type\DatePickerType;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 
 class PeriodoAdmin extends AbstractAdmin
 {
@@ -97,8 +100,26 @@ class PeriodoAdmin extends AbstractAdmin
                     'inline' => 'table'
                 ]);
             }
-
         ;
+
+
+        $editModifier = function (FormInterface $form) {
+            $form
+                ->add('cuenta', null, [
+                    'disabled' => 'true'
+                ])
+            ;
+        };
+
+        $formBuilder = $formMapper->getFormBuilder();
+        $formBuilder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($editModifier) {
+                if ($this->isCurrentRoute('edit')) {
+                    $editModifier($event->getForm());
+                }
+            }
+        );
     }
 
     protected function configureShowFields(ShowMapper $showMapper)

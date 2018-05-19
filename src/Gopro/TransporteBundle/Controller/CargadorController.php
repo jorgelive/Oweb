@@ -49,6 +49,7 @@ class CargadorController extends Controller
         $tablaSpecs = array('filasDescartar' => 1);
         $columnaspecs[] = array('nombre' => 'dependencia');
         $columnaspecs[] = array('nombre' => 'tipoComprobante');
+        $columnaspecs[] = array('nombre' => 'notaComprobante');
         $columnaspecs[] = array('nombre' => 'monedaComprobante');
         $columnaspecs[] = array('nombre' => 'totalContable');
         $columnaspecs[] = array('nombre' => 'descripcionContable');
@@ -108,6 +109,10 @@ class CargadorController extends Controller
                     $variables->setMensajes('La linea ' . $linea['excelRowNumber'] . ' tiene los datos del tipo o la moneda de comprobante incompletos.', 'error');
                     $variables->setMensajes('No se ha ejecutado la carga.', 'error');
                     return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
+                }
+
+                if(!isset($linea['notaComprobante']) || !empty($linea['notaComprobante'])){
+                   $preproceso[$i]['notaComprobante'] = $linea['notaComprobante'];
                 }
 
                 $preproceso[$i]['tipoComprobante'] = (integer)$linea['tipoComprobante'];
@@ -263,10 +268,8 @@ class CargadorController extends Controller
             $comprobante->setEstado($em->getReference('Gopro\ComprobanteBundle\Entity\Estado', $com['estadoComprobante']));
             $comprobante->setMoneda($em->getReference('Gopro\MaestroBundle\Entity\Moneda', $com['monedaComprobante']));
             $comprobante->setTipo($em->getReference('Gopro\ComprobanteBundle\Entity\Tipo', $com['tipoComprobante']));
-            if (isset($com['total'])) {
-                $comprobante->setNeto($com['total']);
-                $comprobante->setImpuesto('0.00');
-                $comprobante->setTotal($com['total']);
+            if (isset($com['notaComprobante'])) {
+                $comprobante->setNota($com['notaComprobante']);
             }
 
             if (isset($com['servicio']) && count($com['servicio']) > 0) {

@@ -154,6 +154,7 @@ class ComprobanteAdminController extends CRUDController
         $solicitud['fecha_de_vencimiento'] = '';
 
         $tipoCambioStr = '';
+        $tipoCambioFactor = 1;
 
         if($object->getMoneda()->getId() != 1){
             $tipoCambio = $this->container->get('gopro_main.tipocambio')->getTipodecambio($fechaEmision);
@@ -162,7 +163,8 @@ class ComprobanteAdminController extends CRUDController
                 $this->addFlash('sonata_flash_error', sprintf('No se puede obtener la el tipo de cambio para %s del dia %s.', $object->getMoneda()->getNombre(), $fechaEmision->format('Y-m-d') ));
                 return new RedirectResponse($this->admin->generateUrl('list'));
             }
-            $tipoCambioStr = (string)$tipoCambio->getCompra();
+            $tipoCambioStr = number_format($tipoCambio->getCompra(), 3);
+            $tipoCambioFactor = $tipoCambio->getCompra();
         }
 
         $solicitud['tipo_de_cambio'] = $tipoCambioStr;
@@ -184,6 +186,16 @@ class ComprobanteAdminController extends CRUDController
         $solicitud['detraccion'] = false;
         $solicitud['observaciones'] = '';
 
+        if(!empty($object->getNota())){
+            $observaciones[] = $object->getNota();
+        }
+        if($totalGeneral * $tipoCambioFactor > $this->getParameter('facturacion_detraccion_monto')){
+            $observaciones[] = $this->getParameter('facturacion_detraccion_texto');
+            $observaciones[] = sprintf('%s: %s', 'NÚMERO DE CUENTA', $this->getParameter('facturacion_detraccion_cuenta'));
+        }
+        if(isset($observaciones)){
+            $solicitud['observaciones'] = implode('<br>', $observaciones);
+        }
 
         $tipoAsociado = '';
         $documentoAsociado = '';

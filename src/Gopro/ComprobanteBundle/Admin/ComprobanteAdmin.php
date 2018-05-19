@@ -162,12 +162,14 @@ class ComprobanteAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
+            ->add('id')
             ->add('serviciocontables', null, [
                 'label' => 'Items Transporte',
             ])
             ->add('comprobanteitems', null, [
                 'label' => 'Items',
             ])
+            ->add('nota')
             ->add('dependencia', null, [
                 'label' => 'Cliente',
             ])

@@ -66,8 +66,13 @@ class Serviciocontable
      */
     public function __toString()
     {
+
         if(!empty($this->getServicio())){
-            return sprintf('%s %s %s (%s)', $this->getServicio()->getFechahorainicio()->format('Y-m-d'), $this->getServicio()->getDependencia()->getOrganizacion() , $this->getServicio(), $this->getTotal());
+            $comp = [];
+            foreach($this->getServicio()->getServiciocomponentes() as $componente):
+                $comp[] = sprintf('%s', $componente->getNombre());
+            endforeach;
+            return sprintf('%s %s [%s] (%s)', $this->getServicio()->getFechahorainicio()->format('Y-m-d'), $this->getServicio(), implode(', ', $comp), $this->getTotal());
         }else{
             return '';
         }

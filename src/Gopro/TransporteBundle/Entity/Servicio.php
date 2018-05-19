@@ -56,8 +56,8 @@ class Servicio
     private $nombre;
 
     /**
- * @ORM\Column(type="datetime")
- */
+     * @ORM\Column(type="datetime")
+     */
     private $fechahorainicio;
 
     /**
@@ -150,7 +150,13 @@ class Servicio
      */
     public function getResumen()
     {
-        $nombre = $this->getNombre();
+        $comp = [];
+
+        foreach ($this->getServiciocomponentes() as $componente):
+            $comp[] = sprintf('%s x %s', $componente->getNombre(), $componente->getNumadl());
+        endforeach;
+
+        $nombre = sprintf('%s [%s]', $this->getNombre(), implode(', ', $comp));
 
         if(!empty($this->getDependencia()) && !empty($this->getDependencia()->getOrganizacion())){
             $nombre .= sprintf(' (%s)', $this->getDependencia()->getOrganizacion()->getNombre());

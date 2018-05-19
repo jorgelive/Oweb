@@ -66,7 +66,12 @@ class Comprobanteitem
      */
     public function __toString()
     {
-        return $this->getProductoservicio()->getNombre() ?? '';
+        if(!empty($this->getProductoservicio())){
+            return sprintf('%s x %s (%s)', $this->getProductoservicio()->getNombre(), $this->getCantidad(), $this->getUnitario());
+        }else{
+            return '';
+        }
+
     }
 
 
