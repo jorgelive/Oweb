@@ -218,7 +218,7 @@ class Periodo
      *
      * @return Periodo
      */
-    public function setCuenta(\Gopro\CuentaBundle\Entity\Cuenta $cuenta)
+    public function setCuenta(\Gopro\CuentaBundle\Entity\Cuenta $cuenta = null) //para que valide el campo deshabilitado de cuenta
     {
         $this->cuenta = $cuenta;
     

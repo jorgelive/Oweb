@@ -9,11 +9,11 @@ file that was distributed with this source code.
 
 #}
 
-{% extends admin.getTemplate('base_list_field') %}
+{% extends get_admin_template('base_list_field', admin.code) %}
 
 {% block field %}
-    <ul>
     {% set route_name = field_description.options.route.name %}
+    <ul class="listaordenada">
     {% if field_description.hasassociationadmin and field_description.associationadmin.hasRoute(route_name) %}
         {% for element in value %}
             {%- if field_description.associationadmin.hasAccess(route_name, element) -%}
@@ -21,10 +21,12 @@ file that was distributed with this source code.
             {%- else -%}
                 <li>{{ block('relation_value') }}</li>
             {%- endif -%}
+            {# {% if not loop.last %}, {% endif %} #}
         {% endfor %}
     {% else %}
         {% for element in value%}
-            <li>{{ block('relation_value') }}</li>
+            {{ block('relation_value') }}
+            {# {% if not loop.last %}, {% endif %} #}
         {% endfor %}
     {% endif %}
     </ul>
