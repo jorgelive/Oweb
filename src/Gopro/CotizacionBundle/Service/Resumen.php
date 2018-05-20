@@ -99,11 +99,11 @@ class Resumen implements ContainerAwareInterface
             $archivosAux = [];
             foreach ($cotizacion->getFile()->getFiledocumentos() as $documento):
 
-                $archivosAux['imagenes'] = $documento->getWebPath();     //$this->get('request')->getSchemeAndHttpHost();
+                $archivosAux['webPath'] = $documento->getWebPath();     //$this->get('request')->getSchemeAndHttpHost();
                 $archivosAux['nombre'] = $documento->getNombre();
-                $archivosAux['thumbpath'] = $documento->getWebThumbPath();
-                $archivosAux['webpath'] = $documento->getWebPath();
-                $archivosAux['inmodal'] = $documento->getInModal();
+                $archivosAux['webThumbPath'] = $documento->getWebThumbPath();
+                $archivosAux['webPath'] = $documento->getWebPath();
+                $archivosAux['inModal'] = $documento->getInModal();
 
                 $datosCotizacion['archivos'][] = $archivosAux;
             endforeach;
@@ -118,7 +118,7 @@ class Resumen implements ContainerAwareInterface
                 $pasajerosAux['sexo'] = $pasajero->getSexo()->getNombre();
                 $pasajerosAux['tipodocumento'] = $pasajero->getTipodocumento()->getNombre();
                 $pasajerosAux['numerodocumento'] = $pasajero->getNumerodocumento();
-                $pasajerosAux['fechanacimiento'] = $pasajero->getFechanacimiento()->format('Y/m/d');
+                $pasajerosAux['fechanacimiento'] = $pasajero->getFechanacimiento();
                 $pasajerosAux['edad'] = $pasajero->getEdad();
                 $datosCotizacion['pasajeros'][] = $pasajerosAux;
             endforeach;
@@ -157,9 +157,9 @@ class Resumen implements ContainerAwareInterface
                             foreach ($dia->getItidiaarchivos() as $archivo):
                                 $archivoTemp['nombre'] = $archivo->getMedio()->getNombre();
                                 $archivoTemp['titulo'] = $archivo->getMedio()->getTitulo();
-                                $archivoTemp['thumbpath'] = $archivo->getMedio()->getWebThumbPath();
-                                $archivoTemp['webpath'] = $archivo->getMedio()->getWebPath();
-                                $archivoTemp['inmodal'] = $archivo->getMedio()->getInModal();
+                                $archivoTemp['webThumbPath'] = $archivo->getMedio()->getWebThumbPath();
+                                $archivoTemp['webPath'] = $archivo->getMedio()->getWebPath();
+                                $archivoTemp['inModal'] = $archivo->getMedio()->getInModal();
                                 $archivosTempArray[] = $archivoTemp;
                             endforeach;
                         }

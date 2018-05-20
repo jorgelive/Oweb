@@ -119,7 +119,7 @@ file that was distributed with this source code.
                                                     {{ pasajero.numerodocumento }}
                                                 </td>
                                                 <td>
-                                                    {{ pasajero.fechanacimiento }}
+                                                    {{ pasajero.fechanacimiento|date('Y-m-d') }}
                                                 </td>
                                             </tr>
                                         {% endfor %}
@@ -150,8 +150,8 @@ file that was distributed with this source code.
                                             {% endif %}
                                             <div class="col-xs-4 col-sm-2">
                                                 <div class="thumbnail">
-                                                    <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}"{% if archivo.inmodal == true %} data-toggle="lightbox"{% else %} target="_blank" {% endif %}>
-                                                        <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.thumbpath|raw }}" alt="{{ archivo.nombre }}" style="width:100%">
+                                                    <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webPath|raw }}"{% if archivo.inModal == true %} data-toggle="lightbox"{% else %} target="_blank" {% endif %}>
+                                                        <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.webThumbPath|raw }}" alt="{{ archivo.nombre }}" style="width:100%">
                                                         <div class="caption">
                                                             <p style="overflow-wrap: break-word;" class="small text-center">{{ archivo.nombre }}</p>
                                                         </div>
@@ -274,8 +274,8 @@ file that was distributed with this source code.
                                                             {% endif %}
                                                             <div class="col-xs-6 col-sm-3">
                                                                 <div class="thumbnail">
-                                                                    <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webpath|raw }}"{% if archivo.inmodal == true %} data-toggle="lightbox" data-gallery="{{ item.titulo }}"{% else %} target="_blank" {% endif %}>
-                                                                        <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.thumbpath|raw }}" alt="{{ archivo.titulo }}" style="width:100%">
+                                                                    <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webPath|raw }}"{% if archivo.inModal == true %} data-toggle="lightbox" data-gallery="{{ item.titulo }}"{% else %} target="_blank" {% endif %}>
+                                                                        <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.webThumbPath|raw }}" alt="{{ archivo.titulo }}" style="width:100%">
                                                                         <div class="caption">
                                                                             <p style="overflow-wrap: break-word;" class="small text-center">{{ archivo.titulo }}</p>
                                                                         </div>

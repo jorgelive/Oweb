@@ -13,6 +13,7 @@ services:
             - {name: sonata.admin, manager_type: orm, group: Cotizacion, label: Files}
         calls:
             - [ setTemplate, [edit, GoproCotizacionBundle:FileAdmin:edit.html.twig]]
+            - [ setTemplate, [show, GoproCotizacionBundle:FileAdmin:show.html.twig]]
         public: true
 
     gopro_cotizacion.admin.estadocotizacion:
