@@ -77,6 +77,26 @@ gopro_fullcalendar:
                         route: 'admin_gopro_transporte_servicio_edit'
                         role: 'ROLE_TRANSPORTES_EDITOR'
 
+        transporte_servicio_cliente:
+            entity: 'GoproTransporteBundle:Servicio'
+            repositorymethod: 'findCalendarClienteColored'
+            resource:
+                id: 'conductor.id'
+                title: 'conductor.nombre'
+            parameters:
+                title: 'resumen'
+                start: 'fechahorainicio'
+                end: 'fechahorafin'
+                color: 'dependencia.color'
+                url:
+                    id: 'id'
+                    show:
+                        route: 'admin_gopro_transporte_servicio_show'
+                        role: 'ROLE_TRANSPORTES_GUEST'
+                    edit:
+                        route: 'admin_gopro_transporte_servicio_edit'
+                        role: 'ROLE_TRANSPORTES_EDITOR'
+
 framework:
     #esi:             ~
     #translator:      { fallback: %locale% }

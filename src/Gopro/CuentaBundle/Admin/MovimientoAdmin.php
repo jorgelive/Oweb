@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\DatePickerType;
 use Sonata\CoreBundle\Form\Type\DateTimePickerType;
@@ -157,6 +158,7 @@ class MovimientoAdmin extends AbstractAdmin
             $formMapper->add('periodo');
         }
 
+
         $formMapper
             ->add('fechahora', DateTimePickerType::class, [
                 'label' => 'Fecha',
@@ -176,8 +178,21 @@ class MovimientoAdmin extends AbstractAdmin
             ->add('descripcion', null, [
                 'label' => 'Descripción'
             ])
-            ->add('periodotransferencia', null, [
-                'label' => 'Trans O / D'
+            ->add('periodotransferencia', ModelAutocompleteType::class, [
+                'label' => 'Trans O / D',
+                'property' => 'cuenta',
+                'required' => false,
+                'callback' => function ($admin, $property, $value) {
+                    $datagrid = $admin->getDatagrid();
+                    $queryBuilder = $datagrid->getQuery();
+                    $queryBuilder
+                        ->leftJoin($queryBuilder->getRootAlias() .'.cuenta' ,'c')
+                        ->andWhere('c.nombre like :periodoValue')
+                        ->andWhere($queryBuilder->getRootAlias() .'.fechafin IS NULL')
+                        ->setParameter('periodoValue', '%' . $admin->getRequest()->get('q') . '%')
+                    ;
+                    $datagrid->setValue($property, null, $value);
+                },
             ])
             ->add('debe', null, [
                 'label' => 'Ingreso',

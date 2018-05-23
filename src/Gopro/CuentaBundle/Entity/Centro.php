@@ -2,6 +2,7 @@
 
 namespace Gopro\CuentaBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -46,6 +47,15 @@ class Centro
     protected $unidad;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Gopro\CuentaBundle\Entity\Movimiento", mappedBy="centro", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"fechahora" = "DESC"})
+     */
+    private $movimientos;
+
+
+    /**
      * @var \DateTime $creado
      *
      * @Gedmo\Timestampable(on="create")
@@ -60,6 +70,10 @@ class Centro
      * @ORM\Column(type="datetime")
      */
     private $modificado;
+
+    public function __construct() {
+        $this->movimientos = new ArrayCollection();
+    }
 
     public function __toString()
     {
@@ -195,4 +209,44 @@ class Centro
     {
         return $this->unidad;
     }
+
+
+    /**
+     * Add movimiento.
+     *
+     * @param \Gopro\CuentaBundle\Entity\Movimiento $movimiento
+     *
+     * @return Centro
+     */
+    public function addMovimiento(\Gopro\CuentaBundle\Entity\Movimiento $movimiento)
+    {
+        $movimiento->setCentro($this);
+
+        $this->movimientos[] = $movimiento;
+
+        return $this;
+    }
+
+    /**
+     * Remove movimiento.
+     *
+     * @param \Gopro\CuentaBundle\Entity\Movimiento $movimiento
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeMovimiento(\Gopro\CuentaBundle\Entity\Movimiento $movimiento)
+    {
+        return $this->movimientos->removeElement($movimiento);
+    }
+
+    /**
+     * Get movimientos.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMovimientos()
+    {
+        return $this->movimientos;
+    }
+
 }
