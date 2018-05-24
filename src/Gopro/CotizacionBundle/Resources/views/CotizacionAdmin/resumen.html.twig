@@ -192,67 +192,48 @@ file that was distributed with this source code.
                                 <div class="sonata-ba-collapsed-fields">
 
                                     {% if name == 'tarifas' %}
-                                        <h4><strong>Por tipo de pasajero</strong></h4>
+                                        <h5>Por tipo de pasajero:</h5>
+                                        <ul style="list-style-type: none; padding: 0">
+
                                         {% for rango in contenido.rangos %}
-                                            <h4>
-                                                {{ rango.tipoPaxNombre }} <strong>x {{ rango.cantidad }}</strong>
-                                            </h4>
-                                            {% if rango.edadMin is defined or rango.edadMax is defined%}
-                                                <p>
-                                                    {% if rango.edadMin is defined %}
-                                                        desde {{ rango.edadMin }} años
+                                            <li>
+                                                <h4>
+                                                    {{ rango.tipoPaxNombre }}
+                                                    {% if rango.nombrePersistente is defined %}
+                                                        &nbsp;{{ rango.nombrePersistente }}
                                                     {% endif %}
+                                                    <strong>x {{ rango.cantidad }}</strong>
+                                                    <span style="font-size: 0.7em;">
+                                                        {% if rango.edadMin is defined or rango.edadMax is defined%}
+                                                            {% if rango.edadMin is defined %}
+                                                                desde {{ rango.edadMin }} años
+                                                            {% endif %}
 
-                                                    {% if rango.edadMax is defined %}
-                                                        hasta {{ rango.edadMax }} años
-                                                        {% if rango.edadMax > 18 and rango.edadMax <= 23 %}
-                                                            <br />(con carné de estudiante válido y vigente)
+                                                            {% if rango.edadMax is defined %}
+                                                                hasta {{ rango.edadMax }} años
+                                                                {% if rango.edadMax > 18 and rango.edadMax <= 23 %}
+                                                                    &nbsp;(con carné de estudiante válido y vigente)
+                                                                {% endif %}
+                                                            {% endif %}
                                                         {% endif %}
-                                                    {% endif %}
-                                                </p>
-                                            {% endif %}
+                                                    </span>
+                                                </h4>
+                                                <ul style="list-style-type: none; padding-left: 18px;">
+                                                {% for tarifaresumen in rango.resumen if tarifaresumen.ventasoles > 0 %}
+                                                    <li><h5 style="font-weight: bold; font-size: 1.1em">{{ tarifaresumen.tipoTarTitulo }} (US$ {{ tarifaresumen.ventadolares }} {% if cotizacion.file.paisid == 117 %} o S/.{{ tarifaresumen.ventasoles }} {% endif %} por persona)</h5>
+                                                        <ul>
+                                                            {% for detallepaxitem in tarifaresumen.detallepaxitems %}
+                                                                <li>{{ detallepaxitem }}.</li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </li>
 
-                                            {% if rango.nombrePersistente is defined %}
-                                                <h5>{{ rango.nombrePersistente }}</h5>
-                                            {% endif %}
-                                            <div style="margin-left: 10px;" class="box-body table-responsive no-padding">
-                                                <table class="table table-bordered table-striped sonata-ba-list">
-                                                    <thead>
-                                                    <tr class="sonata-ba-list-field-header">
-                                                        <th>
-                                                            Tipo
-                                                        </th>
-                                                        {% if cotizacion.file.paisid == 117 %}
-                                                        <th class="text-right">
-                                                            Tarifa en soles por persona
-                                                        </th>
-                                                        {% endif %}
-                                                        <th class="text-right">
-                                                            Tarifa en dolares por persona
-                                                        </th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    {%  for tarifaresumen in rango.resumen if tarifaresumen.ventasoles > 0 %}
-                                                    <tr>
-                                                        <td>
-                                                            {{ tarifaresumen.tipoTarTitulo }}
-                                                        </td>
-                                                        {% if cotizacion.file.paisid == 117 %}
-                                                        <td class="text-right">
-                                                            {{ tarifaresumen.ventasoles }}
-                                                        </td>
-                                                        {% endif %}
-                                                        <td class="text-right">
-                                                            {{ tarifaresumen.ventadolares }}
-                                                        </td>
-                                                        {% endfor %}
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <br />
+
+                                                {% endfor %}
+                                                </ul>
+                                            </li>
                                         {% endfor %}
+                                        </ul>
 
                                     {% elseif name == 'politica' %}
                                         {{ contenido.contenido|raw }}

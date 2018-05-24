@@ -83,8 +83,8 @@ class Resumen implements ContainerAwareInterface
 
         //para mostrar primero el itinerario
         $datosTabs['itinerario']['nombre'] = 'Itinerarios';
-        $datosTabs['agenda']['nombre'] = 'Agenda';
         $datosTabs['tarifas']['nombre'] = 'Tarifas';
+        $datosTabs['agenda']['nombre'] = 'Agenda';
         $datosTabs['incluye']['nombre'] = 'Detalle';
         $datosTabs['politica']['nombre'] = $cotizacion->getCotpolitica()->getTitulo();
         $datosTabs['politica']['contenido'] = $cotizacion->getCotpolitica()->getContenido();
@@ -350,7 +350,6 @@ class Resumen implements ContainerAwareInterface
                             endforeach;
                             //dentro del componenete el titulo del itinerario
 
-
                             $this->obtenerTarifasComponente($tempArrayComponente['tarifas'], $datosCotizacion['cotizacion']['numeropasajeros']);
 
                             if(!empty($this->mensaje)){
@@ -388,6 +387,7 @@ class Resumen implements ContainerAwareInterface
             $this->orderResumenTarifas();
             $datosTabs['tarifas']['rangos'] = $this->clasificacionTarifas;
             $datosTabs['tarifas']['resumen'] = $this->resumendeClasificado;
+
         }
 
         $this->datosTabs = $datosTabs;
@@ -493,7 +493,7 @@ class Resumen implements ContainerAwareInterface
                         $parteCantidad = ' x' . $tarifa['cantidadComponente'] . ' (Dias/Noches)';
                     }
 
-                    $clase['resumen'][$tarifa['tipoTarId']]['detallepax'][] = $tarifa['tituloComponente'] . $parteTarifaTitulo . $parteCantidad . $parteItinerarioTitulo;
+                    $clase['resumen'][$tarifa['tipoTarId']]['detallepaxitems'][] = $tarifa['tituloComponente'] . $parteTarifaTitulo . $parteCantidad . $parteItinerarioTitulo;
                 }
 
             endforeach;

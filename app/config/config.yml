@@ -36,13 +36,32 @@ gopro_fullcalendar:
                         route: 'admin_gopro_cotizacion_cotizacion_edit'
                         role: 'ROLE_RESERVAS_EDITOR'
 
+        cotizacion_componente_aceptado_efectuado:
+            entity: 'GoproCotizacionBundle:Cotcomponente'
+            repositorymethod: 'findCalendarAceptadoEfectuado'
+            resource:
+                id: 'cotservicio.cotizacion.id'
+                title: 'cotservicio.cotizacion.resumen'
+            parameters:
+                title: 'componente.nombre'
+                start: 'fechahorainicio'
+                end: 'fechahorafin'
+                color: 'estadocotcomponente.color'
+                url:
+                    id: 'cotservicio.cotizacion.id'
+                    show:
+                        route: 'admin_gopro_cotizacion_cotizacion_show'
+                        role: 'ROLE_RESERVAS_GUEST'
+                    edit:
+                        route: 'admin_gopro_cotizacion_cotizacion_edit'
+                        role: 'ROLE_RESERVAS_EDITOR'
+
         transporte_servicio_conductor:
             entity: 'GoproTransporteBundle:Servicio'
             repositorymethod: 'findCalendarConductorColored'
             resource:
                 id: 'conductor.id'
                 title: 'conductor.nombre'
-
             parameters:
                 title: 'resumen'
                 start: 'fechahorainicio'
