@@ -78,6 +78,9 @@ class UnidadAdmin extends AbstractAdmin
             ->add('placa')
             ->add('abreviatura')
             ->add('color')
+            ->add('unidadbitacoras', null, [
+                'label' => 'Bitacoras'
+            ])
         ;
     }
 

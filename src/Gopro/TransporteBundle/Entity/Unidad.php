@@ -66,6 +66,7 @@ class Unidad
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Unidadbitacora", mappedBy="unidad", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"fecha" = "DESC"})
      */
     private $unidadbitacoras;
 

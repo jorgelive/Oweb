@@ -45,6 +45,8 @@ services:
         arguments: [~, Gopro\TransporteBundle\Entity\Unidad, SonataAdminBundle:CRUD]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Transporte, label: Unidades}
+        calls:
+            - [ setTemplate, [show, GoproTransporteBundle:UnidadAdmin:show.html.twig]]
         public: true
 
     gopro_transporte.admin.tiposeroperativo:
