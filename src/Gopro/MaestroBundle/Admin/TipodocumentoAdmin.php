@@ -18,7 +18,9 @@ class TipodocumentoAdmin extends AbstractAdmin
         $datagridMapper
             ->add('id')
             ->add('nombre')
-            ->add('codigo')
+            ->add('codigo', null, [
+                'label' => 'Código'
+            ])
         ;
     }
 
@@ -29,8 +31,13 @@ class TipodocumentoAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
-            ->add('codigo')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
+            ->add('codigo', null, [
+                'label' => 'Código',
+                'editable' => true
+            ])
             ->add('_action', 'actions', [
                 'actions' => [
                     'show' => [],
@@ -49,7 +56,9 @@ class TipodocumentoAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('nombre')
-            ->add('codigo')
+            ->add('codigo', null, [
+                'label' => 'Código'
+            ])
         ;
     }
 
@@ -61,7 +70,9 @@ class TipodocumentoAdmin extends AbstractAdmin
         $showMapper
             ->add('id')
             ->add('nombre')
-            ->add('codigo')
+            ->add('codigo', null, [
+                'label' => 'Código'
+            ])
         ;
     }
 }

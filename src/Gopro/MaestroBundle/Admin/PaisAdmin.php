@@ -29,8 +29,12 @@ class PaisAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
-            ->add('nacionalidad')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
+            ->add('nacionalidad', null, [
+                'editable' => true
+            ])
             ->add('_action', null, array(
                 'actions' => array(
                     'show' => array(),

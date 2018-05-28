@@ -18,7 +18,7 @@ class FilepasajeroAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id')
+            ->add('file')
             ->add('nombre')
             ->add('apellido')
             ->add('sexo')
@@ -44,8 +44,17 @@ class FilepasajeroAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
-            ->add('apellido')
+            ->add('file', null, [
+                'sortable' => true,
+                'sort_field_mapping' => ['fieldName' => 'nombre'],
+                'sort_parent_association_mappings' => [['fieldName' => 'file']]
+            ])
+            ->add('nombre', null, [
+                'editable' => true
+            ])
+            ->add('apellido', null, [
+                'editable' => true
+            ])
             ->add('sexo')
             ->add('pais', null, [
                 'label' => 'País'
@@ -59,6 +68,7 @@ class FilepasajeroAdmin extends AbstractAdmin
             ->add('fechanacimiento', null, [
                 'label' => 'Fecha de nacimiento'
             ])
+            ->add('edad')
             ->add('_action', null, [
                 'label' => 'Acciones',
                 'actions' => [
@@ -108,6 +118,7 @@ class FilepasajeroAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
+            ->add('file')
             ->add('nombre')
             ->add('apellido')
             ->add('sexo')
@@ -123,7 +134,34 @@ class FilepasajeroAdmin extends AbstractAdmin
             ->add('fechanacimiento', null, [
                 'label' => 'Fecha de nacimiento'
             ])
-
+            ->add('edad')
         ;
+    }
+
+    public function getDataSourceIterator()
+    {
+        $datasourceit = parent::getDataSourceIterator();
+        $datasourceit->setDateTimeFormat('Y/m/d');
+        return $datasourceit;
+    }
+
+    public function getExportFields()
+    {
+        $ret['File'] = 'file';
+        $ret['Nombre'] = 'nombre';
+        $ret['Apellido'] = 'apellido';
+        $ret['Tipo de documento'] = 'tipodocumento';
+        $ret['Número de documento'] = 'numerodocumento';
+        $ret['Sexo'] = 'sexo';
+        $ret['Pais'] = 'pais';
+        $ret['Edad'] = 'edad';
+        $ret['Fecha de Nacimiento'] = 'fechanacimiento';
+
+        return $ret;
+    }
+
+    public function getExportFormats()
+    {
+        return ['xlsx', 'txt', 'xls', 'csv', 'json', 'xml'];
     }
 }

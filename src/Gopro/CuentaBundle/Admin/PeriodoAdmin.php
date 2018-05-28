@@ -40,7 +40,11 @@ class PeriodoAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->addIdentifier('cuenta')
+            ->addIdentifier('cuenta', null, [
+                'sortable' => true,
+                'sort_field_mapping' => array('fieldName' => 'nombre'),
+                'sort_parent_association_mappings' => array(array('fieldName' => 'cuenta'))
+            ])
             ->add('fechainicio', null, [
                 'label' => 'Inicio'
             ])

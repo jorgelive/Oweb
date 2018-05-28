@@ -72,12 +72,16 @@ class Servicio
      */
     private $serviciocomponentes;
 
+    private $exportcomponentes;
+
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Serviciooperativo", mappedBy="servicio", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $serviciooperativos;
+
+    private $exportoperativos;
 
     /**
      * @var \DateTime $creado
@@ -100,6 +104,33 @@ class Servicio
         $this->serviciocontables = new ArrayCollection();
         $this->serviciooperativos = new ArrayCollection();
     }
+
+    public function getExportcomponentes()
+    {
+        $exportcomponentes = [];
+        foreach ($this->getServiciocomponentes() as $key => $serviciocomponente):
+            if($serviciocomponente->getNumchd() > 0){
+                $exportcomponentes[] = sprintf('%s %s x %s+%s de %s a %s', $serviciocomponente->getHora()->format('H:i'), $serviciocomponente->getNombre(), (string)$serviciocomponente->getNumadl(), (string)$serviciocomponente->getNumchd(), $serviciocomponente->getOrigen(), $serviciocomponente->getDestino());
+            } else{
+                $exportcomponentes[] = sprintf('%s %s x %s de %s a %s', $serviciocomponente->getHora()->format('H:i'), $serviciocomponente->getNombre(), (string)$serviciocomponente->getNumadl(), $serviciocomponente->getOrigen(), $serviciocomponente->getDestino());
+            }
+        endforeach;
+        return $this->exportcomponentes = implode(', ', $exportcomponentes);
+    }
+
+
+    public function getExportoperativos()
+    {
+
+        $exportoperativos = [];
+        foreach ($this->getServiciooperativos() as $key => $serviciooperativo):
+            $exportoperativos[] =
+                sprintf("%s: %s.", $serviciooperativo->getTiposeroperativo()->getCodigo(), $serviciooperativo->getTexto());
+        endforeach;
+
+        return $this->exportoperativos = implode(', ', $exportoperativos);
+    }
+
 
     /**
      * @return string

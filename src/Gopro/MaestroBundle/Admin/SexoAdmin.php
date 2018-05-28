@@ -28,7 +28,9 @@ class SexoAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
             ->add('_action', null, [
                 'label' => 'Acciones',
                 'actions' => [

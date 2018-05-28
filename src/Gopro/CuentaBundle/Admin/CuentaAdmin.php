@@ -23,7 +23,9 @@ class CuentaAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
             ->add('moneda')
             ->add('_action', null, [
                 'label' => 'Acciones',

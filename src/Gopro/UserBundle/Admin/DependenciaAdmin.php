@@ -40,17 +40,25 @@ class DependenciaAdmin extends AbstractAdmin
         $listMapper
             ->add('id')
             ->add('organizacion', null, [
-                'route' => ['name' => 'show'],
-                'label' => 'Organización'
+                'label' => 'Organización',
+                'sortable' => true,
+                'sort_field_mapping' => ['fieldName' => 'nombre'],
+                'sort_parent_association_mappings' => [['fieldName' => 'organizacion']]
             ])
-            ->add('nombre')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
             ->add('email', null, [
-                'label' => 'E-mail'
+                'label' => 'E-mail',
+                'editable' => true
             ])
             ->add('direccion', null, [
-                'label' => 'Dirección'
+                'label' => 'Dirección',
+                'editable' => true
             ])
-            ->add('color')
+            ->add('color', null, [
+                'editable' => true
+            ])
             ->add('_action', 'actions', [
                 'actions' => [
                     'show' => [],

@@ -138,6 +138,10 @@ class Cotizacion implements TranslatableInterface
      */
     public function getPrimerCotservicioFecha()
     {
+        if($this->getCotservicios()->count() < 1){
+            return null;
+        }
+
         return $this->getCotservicios()->first()->getFechaHoraInicio();
     }
 

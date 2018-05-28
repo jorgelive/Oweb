@@ -12,6 +12,12 @@ use Sonata\AdminBundle\Show\ShowMapper;
 class ItinerarioAdmin extends AbstractAdmin
 {
 
+    protected $datagridValues = [
+        '_page' => 1,
+        '_sort_order' => 'ASC',
+        '_sort_by' => 'servicio',
+    ];
+
     public function getFormTheme()
     {
         return array_merge(
@@ -27,8 +33,8 @@ class ItinerarioAdmin extends AbstractAdmin
     {
         $datagridMapper
             ->add('id')
-            ->add('nombre')
             ->add('servicio')
+            ->add('nombre')
             ->add('hora', null, [
                 'with_seconds' => false
             ])
@@ -46,13 +52,21 @@ class ItinerarioAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
-            ->add('servicio')
+            ->add('servicio', null, [
+                'sortable' => true,
+                'sort_field_mapping' => array('fieldName' => 'nombre'),
+                'sort_parent_association_mappings' => array(array('fieldName' => 'servicio'))
+            ])
+            ->add('nombre', null, [
+                'editable' => true
+            ])
             ->add('hora', 'datetime', [
-                'format' => 'H:i'
+                'format' => 'H:i',
+                'row_align' => 'right'
             ])
             ->add('duracion', null, [
-                'label' => 'Duración'
+                'label' => 'Duración',
+                'row_align' => 'right'
             ])
             ->add('_action', null, [
                 'label' => 'Acciones',

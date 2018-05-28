@@ -205,9 +205,9 @@ class Serviciocomponente
     public function getResumen()
     {
         if($this->getNumchd() > 0){
-            return sprintf('%s %s x %s+%s de %s a %s', $this->hora->format('H:i'), $this->getNombre(), (string)$this->getNumadl(), (string)$this->getNumchd(), $this->origen, $this->destino);
+            return sprintf('%s %s x %s+%s de %s a %s', $this->getHora()->format('H:i'), $this->getNombre(), (string)$this->getNumadl(), (string)$this->getNumchd(), $this->getOrigen(), $this->getDestino());
         } else{
-            return sprintf('%s %s x %s de %s a %s', $this->hora->format('H:i'), $this->getNombre(), (string)$this->getNumadl(), $this->origen, $this->destino);
+            return sprintf('%s %s x %s de %s a %s', $this->getHora()->format('H:i'), $this->getNombre(), (string)$this->getNumadl(), $this->getOrigen(), $this->getDestino());
         }
     }
 

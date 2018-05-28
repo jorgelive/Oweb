@@ -14,6 +14,8 @@ services:
         arguments: [~, Gopro\CuentaBundle\Entity\Movimiento, SonataAdminBundle:CRUD]
         tags:
             - { name: sonata.admin, manager_type: orm, group: admin, label: Movimiento }
+        calls:
+            - [ setTemplate, [list, GoproCuentaBundle:MovimientoAdmin:list.html.twig]]
         public: true
 
     gopro_cuenta.admin.clase:

@@ -24,7 +24,7 @@ class FileAdmin extends AbstractAdmin
     {
         return array_merge(
             parent::getFormTheme(),
-            array('GoproCotizacionBundle:FileAdmin:form_admin_fields.html.twig')
+            ['GoproCotizacionBundle:FileAdmin:form_admin_fields.html.twig']
         );
     }
 
@@ -48,9 +48,19 @@ class FileAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
-            ->add('pais')
-            ->add('idioma')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
+            ->add('pais', null, [
+                'sortable' => true,
+                'sort_field_mapping' => ['fieldName' => 'nombre'],
+                'sort_parent_association_mappings' => [['fieldName' => 'pais']],
+            ])
+            ->add('idioma', null, [
+                'sortable' => true,
+                'sort_field_mapping' => ['fieldName' => 'nombre'],
+                'sort_parent_association_mappings' => [['fieldName' => 'idioma']],
+            ])
             ->add('filedocumentos', null, [
                 'label' => 'Documentos'
             ])

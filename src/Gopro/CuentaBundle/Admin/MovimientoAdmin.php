@@ -9,6 +9,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\DatePickerType;
+use Sonata\CoreBundle\Form\Type\DateRangePickerType;
 use Sonata\CoreBundle\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
@@ -32,52 +33,43 @@ class MovimientoAdmin extends AbstractAdmin
                 'label' => 'Fecha',
                 'callback' => function($queryBuilder, $alias, $field, $value) {
 
-                    if (!$value['value'] || !($value['value'] instanceof \DateTime)) {
+                    if (!$value['value']['start']
+                        || !($value['value']['start'] instanceof \DateTime)
+                        || !$value['value']['end']
+                        || !($value['value']['end'] instanceof \DateTime)
+                    ) {
                         return false;
                     }
-                    $fechaMasUno = clone ($value['value']);
+                    $fechaMasUno = clone ($value['value']['end']);
                     $fechaMasUno->add(new \DateInterval('P1D'));
 
                     if(empty($value['type'])){
                         $queryBuilder->andWhere("DATE($alias.$field) >= :fechahora");
                         $queryBuilder->andWhere("DATE($alias.$field) < :fechahoraMasUno");
-                        $queryBuilder->setParameter('fechahora', $value['value']);
+                        $queryBuilder->setParameter('fechahora', $value['value']['start']);
                         $queryBuilder->setParameter('fechahoraMasUno', $fechaMasUno);
-                        return true;
-                    } elseif($value['type'] == 1){
-                        $queryBuilder->andWhere("DATE($alias.$field) >= :fechahora");
-                        $queryBuilder->setParameter('fechahora', $value['value']);
-                        return true;
-                    } elseif($value['type'] == 2){
-                        $queryBuilder->andWhere("DATE($alias.$field) < :fechahoraMasUno");
-                        $queryBuilder->setParameter('fechahoraMasUno', $fechaMasUno);
-                        return true;
-                    } elseif($value['type'] == 3){
-                        $queryBuilder->andWhere("DATE($alias.$field) >= :fechahoraMasUno");
-                        $queryBuilder->setParameter('fechahoraMasUno', $fechaMasUno);
-                        return true;
-                    } elseif($value['type'] == 4){
-                        $queryBuilder->andWhere("DATE($alias.$field) < :fechahora");
-                        $queryBuilder->setParameter('fechahora', $value['value']);
                         return true;
                     }
                     return true;
 
                 },
-                'field_type' => DatePickerType::class,
+                'field_type' => DateRangePickerType::class,
                 'field_options' => [
-                    'dp_use_current' => true,
-                    'dp_show_today' => true,
-                    'format'=> 'yyyy/MM/dd'
+                    'field_options_start' => [
+                        'dp_use_current' => true,
+                        'dp_show_today' => true,
+                        'format'=> 'yyyy/MM/dd'
+                    ],
+                    'field_options_end' => [
+                        'dp_use_current' => true,
+                        'dp_show_today' => true,
+                        'format'=> 'yyyy/MM/dd'
+                    ]
                 ],
                 'operator_type' => ChoiceType::class,
                 'operator_options' => array(
                     'choices' => array(
-                        'Igual a' => 0,
-                        'Mayor o igual a' => 1,
-                        'Menor o igual a' => 2,
-                        'Mayor a' => 3,
-                        'Menor a' => 4
+                        'Entre' => 0,
                     )
                 )
             ])
@@ -127,10 +119,22 @@ class MovimientoAdmin extends AbstractAdmin
                 'label' => 'Centro de costo'
             ])
             ->add('debe', null, [
-                'label' => 'Ingreso'
+                'label' => 'Ingreso',
+                'row_align' => 'right'
             ])
             ->add('haber', null, [
-                'label' => 'Egreso'
+                'label' => 'Egreso',
+                'row_align' => 'right'
+            ])
+            ->add('debesoles', null, [
+                'template' => 'GoproCuentaBundle:MovimientoAdmin:list_string_debesoles.html.twig',
+                'label' => 'Ingreso Soles',
+                'row_align' => 'right'
+            ])
+            ->add('habersoles', null, [
+                'template' => 'GoproCuentaBundle:MovimientoAdmin:list_string_habersoles.html.twig',
+                'label' => 'Egreso Soles',
+                'row_align' => 'right'
             ])
             ->add('cobradorpagador', null, [
                 'label' => 'Cobrador / Pagador'
@@ -279,9 +283,43 @@ class MovimientoAdmin extends AbstractAdmin
             ->add('haber', null, [
                 'label' => 'Egreso'
             ])
+            ->add('debesoles', null, [
+                'label' => 'Ingreso Soles',
+                'attr' => ['class' => 'ingreso']
+            ])
+            ->add('habersoles', null, [
+                'label' => 'Egreso Soles',
+                'attr' => ['class' => 'egreso']
+            ])
             ->add('cobradorpagador', null, [
                 'label' => 'Cobrador / Pagador'
             ])
         ;
+    }
+
+    public function getDataSourceIterator()
+    {
+        $datasourceit = parent::getDataSourceIterator();
+        $datasourceit->setDateTimeFormat('Y/m/d H:i');
+        return $datasourceit;
+    }
+
+    public function getExportFields()
+    {
+        $ret['Fecha y Hora'] = 'fechahora';
+        $ret['Descripción'] = 'descripcion';
+        $ret['Ingreso en soles'] = 'debesoles';
+        $ret['Egreso en soles'] = 'habersoles';
+        $ret['Clase'] = 'clase';
+        $ret['Centro de costo'] = 'centro';
+        $ret['Periodo'] = 'periodo';
+        $ret['Cobrador / Pagador'] = 'cobradorpagador';
+
+        return $ret;
+    }
+
+    public function getExportFormats()
+    {
+        return ['xlsx', 'txt', 'xls', 'csv', 'json', 'xml'];
     }
 }

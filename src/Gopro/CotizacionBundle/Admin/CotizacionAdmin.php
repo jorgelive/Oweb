@@ -26,7 +26,7 @@ class CotizacionAdmin extends AbstractAdmin
     {
         return array_merge(
             parent::getFormTheme(),
-            array('GoproCotizacionBundle:CotizacionAdmin:form_admin_fields.html.twig')
+            ['GoproCotizacionBundle:CotizacionAdmin:form_admin_fields.html.twig']
         );
     }
 
@@ -80,12 +80,19 @@ class CotizacionAdmin extends AbstractAdmin
             ->add('id')
             ->add('primerCotservicioFecha', 'datetime', [
                 'label' => 'Fecha Inicio',
-                'format' => 'Y/m/d'
+                'format' => 'Y/m/d',
             ])
-            ->add('file')
-            ->add('nombre')
+            ->add('file', null, [
+                'sortable' => true,
+                'sort_field_mapping' => ['fieldName' => 'nombre'],
+                'sort_parent_association_mappings' => [['fieldName' => 'file']]
+            ])
+            ->add('nombre', null, [
+                'editable' => true,
+            ])
             ->add('titulo', null, [
-                'label' => 'Título'
+                'label' => 'Título',
+                'editable' => true
             ])
             ->add('numeropasajeros', null, [
                 'label' => 'Num Pax'
@@ -93,8 +100,19 @@ class CotizacionAdmin extends AbstractAdmin
             ->add('comision', null, [
                 'label' => 'Comisión'
             ])
-            ->add('estadocotizacion', null, [
-                'label' => 'Estado'
+            ->add('estadocotizacion', 'choice', [
+                'sortable' => true,
+                'sort_field_mapping' => ['fieldName' => 'nombre'],
+                'sort_parent_association_mappings' => [['fieldName' => 'estadocotizacion']],
+                'label' => 'Estado',
+                'editable' => true,
+                'class' => 'Gopro\CotizacionBundle\Entity\Estadocotizacion',
+                'choices' => [
+                    1 => 'Pendiente',
+                    2 => 'Enviado',
+                    3 => 'Aceptado',
+                    4 => 'Efectuado'
+                ]
             ])
             ->add('cotpolitica', null, [
                 'label' => 'Política'

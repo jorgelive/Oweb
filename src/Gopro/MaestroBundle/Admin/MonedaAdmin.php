@@ -18,8 +18,12 @@ class MonedaAdmin extends AbstractAdmin
         $datagridMapper
             ->add('id')
             ->add('nombre')
-            ->add('codigo')
-            ->add('codigoexterno')
+            ->add('codigo', null, [
+                'label' => 'Código'
+            ])
+            ->add('codigoexterno', null, [
+                'label' => 'Código Externo'
+            ])
         ;
     }
 
@@ -30,9 +34,17 @@ class MonedaAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
-            ->add('codigo')
-            ->add('codigoexterno')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
+            ->add('codigo', null, [
+                'editable' => true,
+                'label' => 'Código'
+            ])
+            ->add('codigoexterno', null, [
+                'editable' => true,
+                'label' => 'Código Externo'
+            ])
             ->add('_action', 'actions', [
                 'actions' => [
                     'show' => [],
@@ -51,8 +63,12 @@ class MonedaAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('nombre')
-            ->add('codigo')
-            ->add('codigoexterno')
+            ->add('codigo', null, [
+                'label' => 'Código'
+            ])
+            ->add('codigoexterno', null, [
+                'label' => 'Código Externo'
+            ])
         ;
     }
 
@@ -64,7 +80,12 @@ class MonedaAdmin extends AbstractAdmin
         $showMapper
             ->add('id')
             ->add('nombre')
-            ->add('codigo')
+            ->add('codigo', null, [
+                'label' => 'Código'
+            ])
+            ->add('codigoexterno', null, [
+                'label' => 'Código Externo'
+            ])
         ;
     }
 

@@ -1,1 +1,14 @@
 services:
+    sonata.exporter.writer.xlsxwriter:
+        class: Gopro\SonataBundle\Exporter\Writer\XlsxWriter
+        arguments:
+            $filename: 'php://output'
+        tags:
+            - { name: sonata.exporter.writer}
+
+    sonata.exporter.writer.txtwriter:
+        class: Gopro\SonataBundle\Exporter\Writer\TxtWriter
+        arguments:
+            $filename: 'php://output'
+        tags:
+            - { name: sonata.exporter.writer}

@@ -32,9 +32,12 @@ class ClasemedioAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
             ->add('titulo', null, [
-                'label' => 'Título'
+                'label' => 'Título',
+                'editable' => true
             ])
             ->add('_action', null, [
                 'label' => 'Acciones',

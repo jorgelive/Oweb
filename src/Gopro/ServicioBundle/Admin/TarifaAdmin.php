@@ -16,6 +16,13 @@ use Symfony\Component\Form\FormInterface;
 
 class TarifaAdmin extends AbstractAdmin
 {
+
+    protected $datagridValues = [
+        '_page' => 1,
+        '_sort_order' => 'ASC',
+        '_sort_by' => 'componente',
+    ];
+
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -68,37 +75,66 @@ class TarifaAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('componente')
-            ->add('nombre')
-            ->add('titulo', null, [
-                'label' => 'Título'
+            ->add('componente', null, [
+                'sortable' => true,
+                'sort_field_mapping' => ['fieldName' => 'nombre'],
+                'sort_parent_association_mappings' => [['fieldName' => 'componente']]
             ])
-            ->add('moneda')
-            ->add('monto')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
+            ->add('titulo', null, [
+                'label' => 'Título',
+                'editable' => true
+            ])
+            ->add('componente.titulo', null, [
+                'label' => 'Título del Componente',
+                'editable' => true
+            ])
+            ->add('moneda', null, [
+                'sortable' => true,
+                'sort_field_mapping' => ['fieldName' => 'nombre'],
+                'sort_parent_association_mappings' => [['fieldName' => 'moneda']]
+            ])
+            ->add('monto', null, [
+                'editable' => true
+            ])
             ->add('validezinicio', null, [
                 'label' => 'Inicio'
             ])
             ->add('validezfin', null, [
                 'label' => 'Fin'
             ])
-            ->add('prorrateado')
+            ->add('prorrateado', null, [
+                'editable' => true
+            ])
             ->add('tipopax', null, [
-                'label' => 'Tipo de pasajero'
+                'label' => 'Tipo de pasajero',
+                'sortable' => true,
+                'sort_field_mapping' => ['fieldName' => 'nombre'],
+                'sort_parent_association_mappings' => [['fieldName' => 'tipopax']]
             ])
             ->add('tipotarifa', null, [
-                'label' => 'Tipo de tarifa'
+                'label' => 'Tipo de tarifa',
+                'sortable' => true,
+                'sort_field_mapping' => ['fieldName' => 'nombre'],
+                'sort_parent_association_mappings' => [['fieldName' => 'tipotarifa']]
             ])
             ->add('capacidadmin', null, [
-                'label' => 'Cantidad min'
+                'label' => 'Cantidad min',
+                'editable' => true
             ])
             ->add('capacidadmax', null, [
-                'label' => 'Cantidad max'
+                'label' => 'Cantidad max',
+                'editable' => true
             ])
             ->add('edadmin', null, [
-                'label' => 'Edad min'
+                'label' => 'Edad min',
+                'editable' => true
             ])
             ->add('edadmax', null, [
-                'label' => 'Edad max'
+                'label' => 'Edad max',
+                'editable' => true
             ])
             ->add('categoriatour', null, [
                 'label' => 'Categoria de tour'

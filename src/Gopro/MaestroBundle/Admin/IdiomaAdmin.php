@@ -31,9 +31,12 @@ class IdiomaAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
             ->add('codigo', null, [
-                'label' => 'Código'
+                'label' => 'Código',
+                'editable' => true
             ])
             ->add('_action', null, [
                 'label' => 'Acciones',

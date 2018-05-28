@@ -27,19 +27,19 @@ class ServicioAdmin extends AbstractAdmin
 
         $fecha = new \DateTime();
 
-        $this->datagridValues = array_merge(array(
-            'fechahorainicio' => array (
+        $this->datagridValues = array_merge([
+            'fechahorainicio' => [
                 'value' => $fecha->format('Y/m/d')
-            )
-        ), $this->datagridValues);
+            ]
+        ], $this->datagridValues);
 
         $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
         if(!is_null($user) && !is_null($user->getConductor())){
-            $this->datagridValues = array_merge(array(
-                'conductor' => array (
+            $this->datagridValues = array_merge([
+                'conductor' => [
                     'value' => $user->getConductor()->getId()
-                )
-            ), $this->datagridValues);
+                ]
+            ], $this->datagridValues);
         }
 
         return parent::getFilterParameters();
@@ -96,15 +96,15 @@ class ServicioAdmin extends AbstractAdmin
                     'format'=> 'yyyy/MM/dd'
                 ],
                 'operator_type' => ChoiceType::class,
-                'operator_options' => array(
-                    'choices' => array(
+                'operator_options' => [
+                    'choices' => [
                         'Igual a' => 0,
                         'Mayor o igual a' => 1,
                         'Menor o igual a' => 2,
                         'Mayor a' => 3,
                         'Menor a' => 4
-                    )
-                )
+                    ]
+                ]
             ]);
 
         $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
@@ -305,6 +305,31 @@ class ServicioAdmin extends AbstractAdmin
             ])
             ->end()
         ;
+    }
+
+    public function getDataSourceIterator()
+    {
+        $datasourceit = parent::getDataSourceIterator();
+        $datasourceit->setDateTimeFormat('Y/m/d H:i');
+        return $datasourceit;
+    }
+
+    public function getExportFields()
+    {
+        $ret['Inicio'] = 'fechahorainicio';
+        $ret['Servicio'] = 'nombre';
+        $ret['Componentes'] = 'exportcomponentes';
+        $ret['Operativa'] = 'exportoperativos';
+        $ret['Unidad'] = 'unidad';
+        $ret['Conductor'] = 'conductor';
+        $ret['Cliente'] = 'dependencia.organizacion';
+
+        return $ret;
+    }
+
+    public function getExportFormats()
+    {
+        return ['xlsx', 'txt', 'xls', 'csv', 'json', 'xml'];
     }
 
 }

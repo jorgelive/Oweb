@@ -32,10 +32,18 @@ class UnidadAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
-            ->add('placa')
-            ->add('abreviatura')
-            ->add('color')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
+            ->add('placa', null, [
+                'editable' => true
+            ])
+            ->add('abreviatura', null, [
+                'editable' => true
+            ])
+            ->add('color', null, [
+                'editable' => true
+            ])
             ->add('_action', 'actions', [
                 'actions' => [
                     'show' => [],

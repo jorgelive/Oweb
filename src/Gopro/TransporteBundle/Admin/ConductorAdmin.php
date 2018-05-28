@@ -18,7 +18,7 @@ class ConductorAdmin extends AbstractAdmin
         $datagridMapper
             ->add('id')
             ->add('user', null, [
-                'label'=>'Nombre',
+                'label' => 'Nombre'
             ])
             ->add('licencia')
             ->add('abreviatura')
@@ -34,11 +34,17 @@ class ConductorAdmin extends AbstractAdmin
         $listMapper
             ->add('id')
             ->add('user.fullname', null, [
-                'label'=>'Nombre'
+                'label' => 'Nombre'
             ])
-            ->add('licencia')
-            ->add('abreviatura')
-            ->add('color')
+            ->add('licencia', null, [
+                'editable' => true
+            ])
+            ->add('abreviatura', null, [
+                'editable' => true
+            ])
+            ->add('color', null, [
+                'editable' => true
+            ])
             ->add('_action', 'actions', [
                 'actions' => [
                     'show' => [],

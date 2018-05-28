@@ -12,6 +12,12 @@ sonata_translation:
     gedmo:
         enabled: true
 
+sonata_exporter:
+    writers:
+        csv:
+            delimiter: ";"
+
+
 gopro_fullcalendar:
     calendars:
 
@@ -373,6 +379,7 @@ sonata_admin:
                 items:
                     - gopro_cotizacion.admin.file
                     - gopro_cotizacion.admin.cotizacion
+                    - gopro_cotizacion.admin.filepasajero
                     - gopro_cotizacion.admin.filedocumento
                     - gopro_cotizacion.admin.estadocotizacion
                     - gopro_cotizacion.admin.estadocotcomponente

@@ -28,7 +28,9 @@ class AreaAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
             ->add('_action', 'actions', [
                 'actions' => [
                     'show' => [],

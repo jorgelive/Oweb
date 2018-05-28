@@ -36,9 +36,14 @@ class FiledocumentoAdmin extends AbstractAdmin
             ->add('id')
             ->add('nombre')
             ->add('tipofiledocumento', null, [
-                'label' => 'Tipo de documento'
+                'label' => 'Tipo de documento',
+                'sortable' => true,
+                'sort_field_mapping' => ['fieldName' => 'nombre'],
+                'sort_parent_association_mappings' => [['fieldName' => 'tipofiledocumento']],
             ])
-            ->add('prioridad')
+            ->add('prioridad', null, [
+                'editable' => true
+            ])
             ->add('_action', null, [
                 'label' => 'Acciones',
                 'actions' => [

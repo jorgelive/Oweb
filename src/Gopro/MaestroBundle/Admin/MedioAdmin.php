@@ -47,9 +47,12 @@ class MedioAdmin extends AbstractAdmin
                     'template' => 'GoproSonataBundle:Admin:list_image.html.twig'
                 ]
             )
-            ->add('nombre')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
             ->add('titulo', null, [
-                'label' => 'Título'
+                'label' => 'Título',
+                'editable' => true
             ])
             ->add('_action', null, [
                 'label' => 'Acciones',

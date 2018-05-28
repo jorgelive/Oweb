@@ -13,6 +13,12 @@ use Sonata\TranslationBundle\Filter\TranslationFieldFilter;
 class ServicioAdmin extends AbstractAdmin
 {
 
+    protected $datagridValues = [
+        '_page' => 1,
+        '_sort_order' => 'ASC',
+        '_sort_by' => 'cuenta',
+    ];
+
     public function getFormTheme()
     {
         return array_merge(
@@ -44,10 +50,15 @@ class ServicioAdmin extends AbstractAdmin
         $listMapper
             ->add('id')
             ->add('codigo', null, [
-                'label' => 'Código'
+                'label' => 'Código',
+                'editable' => true
             ])
-            ->add('nombre')
-            ->add('paralelo')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
+            ->add('paralelo', null, [
+                'editable' => true
+            ])
             ->add('componentes')
             ->add('itinerarios')
             ->add('_action', null, [

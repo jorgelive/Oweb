@@ -29,6 +29,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Fkr\CssURLRewriteBundle\FkrCssURLRewriteBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(), //requerido por paginacion de ajaxdropdown
+            new Exporter\Bridge\Symfony\Bundle\SonataExporterBundle(), //exportador separado
             new Gopro\UserBundle\GoproUserBundle(),
             new Gopro\ExcelBundle\GoproExcelBundle(),
             new Gopro\MainBundle\GoproMainBundle(),

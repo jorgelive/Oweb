@@ -60,13 +60,13 @@ class ComprobanteAdminController extends CRUDController
             $cantidad = 1; //los servicios de transporte solo son unitarios
             $solicitud['items'][$i]['descripcion'] = $serviciocontable->getServicio()->getFechahorainicio()->format('Y-m-d') . ' ' . $serviciocontable->getDescripcion() . $filesString;
             $solicitud['items'][$i]['cantidad'] = $cantidad;
-            $solicitud['items'][$i]['valor_unitario'] = number_format($serviciocontable->getTotal() / (1 + $this->getParameter('facturacion_igv_porcentaje') / 100), 2);
-            $solicitud['items'][$i]['precio_unitario'] = number_format($serviciocontable->getTotal(), 2);
+            $solicitud['items'][$i]['valor_unitario'] = number_format($serviciocontable->getTotal() / (1 + $this->getParameter('facturacion_igv_porcentaje') / 100), 2, '.', '');
+            $solicitud['items'][$i]['precio_unitario'] = number_format($serviciocontable->getTotal(), 2, '.', '');
             $solicitud['items'][$i]['descuento'] = '';
-            $solicitud['items'][$i]['subtotal'] = number_format($solicitud['items'][$i]['valor_unitario'] * $cantidad, 2); //total de valores unitarios
+            $solicitud['items'][$i]['subtotal'] = number_format($solicitud['items'][$i]['valor_unitario'] * $cantidad, 2, '.', ''); //total de valores unitarios
             $solicitud['items'][$i]['tipo_de_igv'] = 1;
-            $solicitud['items'][$i]['igv'] = number_format(($solicitud['items'][$i]['precio_unitario'] - $solicitud['items'][$i]['valor_unitario']) * $cantidad, 2);
-            $solicitud['items'][$i]['total'] = number_format($solicitud['items'][$i]['precio_unitario'] * $cantidad, 2);
+            $solicitud['items'][$i]['igv'] = number_format(($solicitud['items'][$i]['precio_unitario'] - $solicitud['items'][$i]['valor_unitario']) * $cantidad, 2, '.', '');
+            $solicitud['items'][$i]['total'] = number_format($solicitud['items'][$i]['precio_unitario'] * $cantidad, 2, '.', '');
             $solicitud['items'][$i]['anticipo_regularizacion'] = false;
             $solicitud['items'][$i]['anticipo_documento_serie'] = '';
             $solicitud['items'][$i]['anticipo_documento_numero'] = '';
@@ -82,13 +82,13 @@ class ComprobanteAdminController extends CRUDController
             $solicitud['items'][$i]['descripcion'] = $comprobanteitem->getProductoservicio()->getNombre();
             $cantidad = $comprobanteitem->getCantidad();
             $solicitud['items'][$i]['cantidad'] = $cantidad;
-            $solicitud['items'][$i]['valor_unitario'] = number_format($comprobanteitem->getUnitario() / (1 + $this->getParameter('facturacion_igv_porcentaje') / 100), 2);
-            $solicitud['items'][$i]['precio_unitario'] = number_format($comprobanteitem->getUnitario(), 2);
+            $solicitud['items'][$i]['valor_unitario'] = number_format($comprobanteitem->getUnitario() / (1 + $this->getParameter('facturacion_igv_porcentaje') / 100), 2, '.', '');
+            $solicitud['items'][$i]['precio_unitario'] = number_format($comprobanteitem->getUnitario(), 2, '.', '');
             $solicitud['items'][$i]['descuento'] = '';
-            $solicitud['items'][$i]['subtotal'] = number_format($solicitud['items'][$i]['valor_unitario'] * $cantidad, 2); //total de valores unitarios
+            $solicitud['items'][$i]['subtotal'] = number_format($solicitud['items'][$i]['valor_unitario'] * $cantidad, 2, '.', ''); //total de valores unitarios
             $solicitud['items'][$i]['tipo_de_igv'] = 1;
-            $solicitud['items'][$i]['igv'] = number_format(($solicitud['items'][$i]['precio_unitario'] - $solicitud['items'][$i]['valor_unitario']) * $cantidad, 2);
-            $solicitud['items'][$i]['total'] = number_format($solicitud['items'][$i]['precio_unitario'] * $cantidad, 2);
+            $solicitud['items'][$i]['igv'] = number_format(($solicitud['items'][$i]['precio_unitario'] - $solicitud['items'][$i]['valor_unitario']) * $cantidad, 2, '.', '');
+            $solicitud['items'][$i]['total'] = number_format($solicitud['items'][$i]['precio_unitario'] * $cantidad, 2, '.', '');
             $solicitud['items'][$i]['anticipo_regularizacion'] = false;
             $solicitud['items'][$i]['anticipo_documento_serie'] = '';
             $solicitud['items'][$i]['anticipo_documento_numero'] = '';
@@ -163,7 +163,7 @@ class ComprobanteAdminController extends CRUDController
                 $this->addFlash('sonata_flash_error', sprintf('No se puede obtener la el tipo de cambio para %s del dia %s.', $object->getMoneda()->getNombre(), $fechaEmision->format('Y-m-d') ));
                 return new RedirectResponse($this->admin->generateUrl('list'));
             }
-            $tipoCambioStr = number_format($tipoCambio->getCompra(), 3);
+            $tipoCambioStr = number_format($tipoCambio->getCompra(), 3, '.', '');
             $tipoCambioFactor = $tipoCambio->getCompra();
         }
 
@@ -172,13 +172,13 @@ class ComprobanteAdminController extends CRUDController
         $solicitud['descuento_global'] = '';
         $solicitud['total_descuento'] = '';
         $solicitud['total_anticipo'] = '';
-        $solicitud['total_gravada'] = number_format($totalGeneral / (1 + $this->getParameter('facturacion_igv_porcentaje') / 100), 2);
+        $solicitud['total_gravada'] = number_format($totalGeneral / (1 + $this->getParameter('facturacion_igv_porcentaje') / 100), 2, '.', '');
         $solicitud['total_inafecta'] = '';
         $solicitud['total_exonerada'] = '';
-        $solicitud['total_igv'] = number_format($totalGeneral - $solicitud['total_gravada'], 2);
+        $solicitud['total_igv'] = number_format($totalGeneral - $solicitud['total_gravada'], 2, '.', '');
         $solicitud['total_gratuita'] = '';
         $solicitud['total_otros_cargos'] = '';
-        $solicitud['total'] = number_format($totalGeneral, 2);
+        $solicitud['total'] = number_format($totalGeneral, 2, '.', '');
         $solicitud['percepcion_tipo'] = '';
         $solicitud['percepcion_base_imponible'] = '';
         $solicitud['total_percepcion'] = '';

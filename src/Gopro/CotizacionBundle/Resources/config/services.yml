@@ -34,7 +34,7 @@ services:
         class: Gopro\CotizacionBundle\Admin\FilepasajeroAdmin
         arguments: [~, Gopro\CotizacionBundle\Entity\Filepasajero, SonataAdminBundle:CRUD]
         tags:
-            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false, group: Cotizacion, label: Name List }
+            - { name: sonata.admin, manager_type: orm, group: Cotizacion, label: Name List }
         public: true
 
     gopro_cotizacion.admin.cotizacion:

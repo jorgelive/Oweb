@@ -41,18 +41,24 @@ class OrganizacionAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
             ->add('razonsocial', null, [
-                'label' => 'Razón social'
+                'label' => 'Razón social',
+                'editable' => true
             ])
             ->add('numerodocumento', null, [
-                'label' => 'Número de documento'
+                'label' => 'Número de documento',
+                'editable' => true
             ])
             ->add('email', null, [
-                'label' => 'E-mail'
+                'label' => 'E-mail',
+                'editable' => true
             ])
             ->add('direccion', null, [
-                'label' => 'Dirección'
+                'label' => 'Dirección',
+                'editable' => true
             ])
             ->add('_action', 'actions', [
                 'actions' => [

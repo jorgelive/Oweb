@@ -12,6 +12,12 @@ use Sonata\TranslationBundle\Filter\TranslationFieldFilter;
 
 class ComponenteAdmin extends AbstractAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_sort_order' => 'ASC',
+        '_sort_by' => 'nombre',
+    ];
+
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -40,15 +46,22 @@ class ComponenteAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
             ->add('titulo', null, [
-                'label' => 'Título'
+                'label' => 'Título',
+                'editable' => true
             ])
             ->add('tipocomponente', null, [
-                'label' => 'Tipo'
+                'label' => 'Tipo',
+                'sortable' => true,
+                'sort_field_mapping' => array('fieldName' => 'nombre'),
+                'sort_parent_association_mappings' => array(array('fieldName' => 'tipocomponente'))
             ])
             ->add('duracion', null, [
-                'label' => 'Duración'
+                'label' => 'Duración',
+                'row_align' => 'right'
             ])
             ->add('tarifas')
             ->add('servicios')

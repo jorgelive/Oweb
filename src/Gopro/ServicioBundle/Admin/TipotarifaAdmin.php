@@ -33,11 +33,16 @@ class TipotarifaAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
-            ->add('titulo', null, [
-                'label' => 'Título'
+            ->add('nombre', null, [
+                'editable' => true
             ])
-            ->add('comisionable')
+            ->add('titulo', null, [
+                'label' => 'Título',
+                'editable' => true
+            ])
+            ->add('comisionable', null, [
+                'editable' => true
+            ])
             ->add('_action', null, [
                 'label' => 'Acciones',
                 'actions' => [

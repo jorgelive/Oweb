@@ -111,7 +111,7 @@ class CargadorController extends Controller
                     return array('formulario' => $formulario->createView(), 'archivosAlmacenados' => $archivosAlmacenados, 'mensajes' => $variables->getMensajes());
                 }
 
-                if(!isset($linea['notaComprobante']) || !empty($linea['notaComprobante'])){
+                if(!isset($linea['notaComprobante']) && !empty($linea['notaComprobante'])){
                    $preproceso[$i]['notaComprobante'] = $linea['notaComprobante'];
                 }
 

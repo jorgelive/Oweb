@@ -29,8 +29,12 @@ class EstadocotcomponenteAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
-            ->add('color')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
+            ->add('color', null, [
+                'editable' => true
+            ])
             ->add('_action', null, [
                 'label' => 'Acciones',
                 'actions' => [

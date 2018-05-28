@@ -14,6 +14,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Movimiento
 {
+
+    const TIPO_CAMBIO = 3.2;
     /**
      * @var int
      *
@@ -94,10 +96,20 @@ class Movimiento
 
     /**
      * @var string
+     */
+    private $debesoles;
+
+    /**
+     * @var string
      *
      * @ORM\Column(name="haber", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $haber;
+
+    /**
+     * @var string
+     */
+    private $habersoles;
 
     /**
      * @var \DateTime $creado
@@ -227,6 +239,26 @@ class Movimiento
     }
 
     /**
+     * Get debesoles.
+     *
+     * @return string
+     */
+    public function getDebesoles()
+    {
+
+        if(empty($this->getDebe())){
+            return $this->getDebe();
+        }
+
+        $factor = 1;
+
+        if($this->getPeriodo()->getCuenta()->getMoneda()->getId() != 1){
+            $factor = self::TIPO_CAMBIO;
+        }
+        return $this->debesoles = number_format($this->getDebe() * $factor, 2, '.', '');
+    }
+
+    /**
      * Set haber.
      *
      * @param string $haber
@@ -248,6 +280,25 @@ class Movimiento
     public function getHaber()
     {
         return $this->haber;
+    }
+
+    /**
+     * Get habersoles.
+     *
+     * @return string
+     */
+    public function getHabersoles()
+    {
+        if(empty($this->getHaber())){
+            return $this->getHaber();
+        }
+
+        $factor = 1;
+
+        if($this->getPeriodo()->getCuenta()->getMoneda()->getId() != 1){
+            $factor = self::TIPO_CAMBIO;
+        }
+        return $this->habersoles = number_format($this->getHaber() * $factor, 2, '.', '');
     }
 
     /**

@@ -18,7 +18,9 @@ class TipocomponenteAdmin extends AbstractAdmin
         $datagridMapper
             ->add('id')
             ->add('nombre')
-            ->add('dependeduracion')
+            ->add('dependeduracion', null, [
+                'label' => 'Depende de duración'
+            ])
         ;
     }
 
@@ -29,8 +31,13 @@ class TipocomponenteAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre')
-            ->add('dependeduracion')
+            ->add('nombre', null, [
+                'editable' => true
+            ])
+            ->add('dependeduracion', null, [
+                'editable' => true,
+                'label' => 'Depende de duración'
+            ])
             ->add('_action', null, [
                 'label' => 'Acciones',
                 'actions' => [
@@ -49,7 +56,9 @@ class TipocomponenteAdmin extends AbstractAdmin
     {
         $formMapper
             ->add('nombre')
-            ->add('dependeduracion')
+            ->add('dependeduracion', null, [
+                'label' => 'Depende de duración'
+            ])
         ;
     }
 
@@ -61,7 +70,9 @@ class TipocomponenteAdmin extends AbstractAdmin
         $showMapper
             ->add('id')
             ->add('nombre')
-            ->add('dependeduracion')
+            ->add('dependeduracion', null, [
+                'label' => 'Depende de duración'
+            ])
         ;
     }
 }

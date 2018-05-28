@@ -55,7 +55,8 @@ class CuentaAdmin extends AbstractAdmin
                 'label' => 'Usuario'
             ])
             ->add('cuentatipo', null, [
-                'label' => 'Tipo de cuenta'])
+                'label' => 'Tipo de cuenta'
+            ])
             ->add('nombre', null, [
                 'editable' => true
             ])
