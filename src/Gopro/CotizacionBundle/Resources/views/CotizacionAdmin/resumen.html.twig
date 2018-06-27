@@ -204,17 +204,29 @@ file that was distributed with this source code.
                                                     {% endif %}
                                                     <strong>x {{ rango.cantidad }}</strong>
                                                     <span style="font-size: 0.7em;">
-                                                        {% if rango.edadMin is defined or rango.edadMax is defined%}
-                                                            {% if rango.edadMin is defined %}
-                                                                desde {{ rango.edadMin }} años
-                                                            {% endif %}
+                                                        {% if rango.edadMin is defined or rango.edadMax is defined %}
 
-                                                            {% if rango.edadMax is defined %}
-                                                                hasta {{ rango.edadMax }} años
+                                                            {% if rango.edadMin is defined and rango.edadMax is defined and rango.edadMax == rango.edadMin %}
+                                                                de {{ rango.edadMin }} años
                                                                 {% if rango.edadMax > 18 and rango.edadMax <= 23 %}
                                                                     &nbsp;(con carné de estudiante válido y vigente)
                                                                 {% endif %}
+
+                                                            {% else %}
+
+                                                                {% if rango.edadMin is defined %}
+                                                                    desde {{ rango.edadMin }} años
+                                                                {% endif %}
+
+                                                                {% if rango.edadMax is defined %}
+                                                                    hasta {{ rango.edadMax }} años
+                                                                    {% if rango.edadMax > 18 and rango.edadMax <= 23 %}
+                                                                        &nbsp;(con carné de estudiante válido y vigente)
+                                                                    {% endif %}
+                                                                {% endif %}
+
                                                             {% endif %}
+
                                                         {% endif %}
                                                     </span>
                                                 </h4>

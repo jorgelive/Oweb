@@ -15,6 +15,9 @@ class Resumen implements ContainerAwareInterface
     private $tl = 'es';
     private $doctrine;
 
+    private $edadMin = 0;
+    private $edadMax = 120;
+
     private $datosTabs;
     private $datosCotizacion;
 
@@ -270,6 +273,7 @@ class Resumen implements ContainerAwareInterface
                                         (float)($tarifa->getMonto() * $tarifa->getCantidad() * $componente->getCantidad()
                                         ),2, '.', '');
                                     $tempArrayTarifa['cantidad'] = (int)($datosCotizacion['cotizacion']['numeropasajeros']);
+                                    $tempArrayTarifa['prorrateado'] = true;
 
                                 }else{
                                     $tempArrayTarifa['montounitario'] = number_format(
@@ -281,6 +285,7 @@ class Resumen implements ContainerAwareInterface
                                     $tempArrayTarifa['cantidad'] = $tarifa->getCantidad();
                                     //solo sumo prorrateados
                                     $cantidadComponente += $tempArrayTarifa['cantidad'];
+                                    $tempArrayTarifa['prorrateado'] = false;
                                 };
 
                                 $tempArrayTarifa['nombre'] = $tarifa->getTarifa()->getNombre();
@@ -336,13 +341,14 @@ class Resumen implements ContainerAwareInterface
                                 if(!empty($tarifa->getTarifa()->getTipopax())){
                                     $tempArrayTarifa['tipoPaxId'] = $tarifa->getTarifa()->getTipopax()->getId();
                                     $tempArrayTarifa['tipoPaxNombre'] = $tarifa->getTarifa()->getTipopax()->getNombre();
+                                }else{
+                                    $tempArrayTarifa['tipoPaxId'] = 0;
+                                    $tempArrayTarifa['tipoPaxNombre'] = 'Cualquier nacionalidad';
                                 }
 
                                 $tempArrayTarifa['tipoTarId'] = $tarifa->getTipotarifa()->getId();
                                 $tempArrayTarifa['tipoTarNombre'] = $tarifa->getTipotarifa()->getNombre();
                                 $tempArrayTarifa['tipoTarTitulo'] = $tarifa->getTipotarifa()->getTitulo();
-
-                                $this->completarTipoTarifa($tempArrayTarifa, $tarifa->getTarifa()->getProrrateado());
 
                                 $tempArrayComponente['tarifas'][] = $tempArrayTarifa;
                                 unset($tempArrayTarifa);
@@ -497,8 +503,8 @@ class Resumen implements ContainerAwareInterface
                 }
 
             endforeach;
+
         endforeach;
-        //var_dump($this->clasificacionTarifas[0]['resumen']); die;
     }
 
     private function obtenerTarifasComponente($componente, $cantidadTotalPasajeros){
@@ -527,36 +533,32 @@ class Resumen implements ContainerAwareInterface
                 $nombre[] = $tarifa['nombreComponente'];
             }
 
-            if(empty($tarifa['rangoEdad']) && empty($tarifa['tipoPaxId'])){
-                $tipo = 'r0t0';
-            }elseif(empty($tarifa['rangoEdad'])){
-                $tipo = 't' . $tarifa['tipoPaxId'];
-            }elseif(empty($tarifa['tipoPaxId'])){
-                $tipo = 'r' . $tarifa['rangoEdad'];
-            }else{
-                $tipo = 'r' . $tarifa['rangoEdad']. 't' . $tarifa['tipoPaxId'];
+            $temp['titulo'] = implode(' - ', $titulo);
+            $temp['nombre'] = implode(' - ', $nombre);
+            $temp['cantidad'] = $tarifa['cantidad'];
+            $temp['tipoPaxId'] = $tarifa['tipoPaxId'];
+            $temp['tipoPaxNombre'] = $tarifa['tipoPaxNombre'];
+            $temp['prorrateado'] = $tarifa['prorrateado'];
+
+            $min = $this->edadMin;
+            $max = $this->edadMax;
+
+            if(isset($tarifa['edadMin'])){
+                $temp['edadMin'] = $tarifa['edadMin'];
+                $min = $tarifa['edadMin'];
             }
+
+            if(isset($tarifa['edadMax'])){
+                $temp['edadMax'] = $tarifa['edadMax'];
+                $max = $tarifa['edadMax'];
+            }
+            $tipo = 'r' . $min . '-' . $max . 't' . $tarifa['tipoPaxId'];
 
             $temp['tipo'] = $tipo;
             $temp['generarNuevo'] = false;
 
             if(array_search($temp['tipo'], $tiposAux, true) != false){
                 $temp['generarNuevo'] = true;
-            }
-
-            $temp['titulo'] = implode(' - ', $titulo);
-            $temp['nombre'] = implode(' - ', $nombre);
-            $temp['cantidad'] = $tarifa['cantidad'];
-            $temp['tipoPaxId'] = $tarifa['tipoPaxId'];
-            $temp['tipoPaxNombre'] = $tarifa['tipoPaxNombre'];
-            $temp['rangoEdad'] = $tarifa['rangoEdad'];
-            $temp['rangoEdadNombre'] = $tarifa['rangoEdadNombre'];
-
-            if(isset($tarifa['edadMin'])){
-                $temp['edadMin'] = $tarifa['edadMin'];
-            }
-            if(isset($tarifa['edadMax'])){
-                $temp['edadMax'] = $tarifa['edadMax'];
             }
 
             $temp['tarifa'] = $tarifa;
@@ -606,8 +608,7 @@ class Resumen implements ContainerAwareInterface
                 if(isset($clase['edadMax'])){
                     $auxClase['edadMax'] = $clase['edadMax'];
                 }
-                $auxClase['rangoEdad'] = $clase['rangoEdad'];
-                $auxClase['rangoEdadNombre'] = $clase['rangoEdadNombre'];
+
                 unset($clase['tarifa']['cantidad']);
                 unset($clase['tarifa']['montototal']);
                 if($cantidadTemporal > 0 && $cantidadTotalPasajeros == $clase['cantidad']){
@@ -625,6 +626,7 @@ class Resumen implements ContainerAwareInterface
         }
 
         foreach ($claseTarifas as $keyClase => &$clase):
+
             //los prorrateados no modifican los rangos
             if($clase['cantidad'] <= $cantidadTotalPasajeros) {
                 $voterIndex = $this->voter($clase, $cantidadTotalPasajeros);
@@ -638,11 +640,11 @@ class Resumen implements ContainerAwareInterface
 
         endforeach;
 
-        $cantidadTarifas = count($claseTarifas);
+        //$cantidadTarifas = count($claseTarifas);
         foreach ($claseTarifas as $keyClase => &$clase):
 
             //los prorrateados se distribuyen
-            if($clase['cantidad'] < $cantidadTotalPasajeros){
+            if($clase['prorrateado'] === false){
                 $voterIndex = $this->voter($clase, $cantidadTotalPasajeros);
 
                 if($voterIndex !== false){
@@ -653,16 +655,16 @@ class Resumen implements ContainerAwareInterface
                     }
                 }
             }else{
+
                 foreach ($this->clasificacionTarifas as &$clasificacionTarifa):
 
-                $clasificacionTarifa['tarifa'][] = $clase['tarifa'];
+                    $clasificacionTarifa['tarifa'][] = $clase['tarifa'];
 
                 endforeach;
 
                 unset($claseTarifas[$keyClase]);
 
             }
-
 
         endforeach;
 
@@ -672,7 +674,11 @@ class Resumen implements ContainerAwareInterface
 
         //si despues del proceso hay tarifas muestro error
         if(count($claseTarifas) > 0 && $ejecucion == 10){
-            /*
+
+            /*ini_set('xdebug.var_display_max_depth', 5);
+            ini_set('xdebug.var_display_max_children', 256);
+            ini_set('xdebug.var_display_max_data', 1024);
+
             var_dump($voterIndex);
             var_dump($claseTarifas);
             var_dump($this->clasificacionTarifas);
@@ -687,13 +693,9 @@ class Resumen implements ContainerAwareInterface
     private function modificarClasificacion(&$clase, $voterIndex, $forzarNuevo = false){
 
         $temp = $this->clasificacionTarifas[$voterIndex];
-        if($clase['rangoEdad'] != 0){
-            $temp['rangoEdad'] = $clase['rangoEdad'];
-            $temp['rangoEdad'] = $clase['rangoEdadNombre'];
-        }
 
-        $edadMaxima = 120;
-        $edadMinima = 0;
+        $edadMaxima = $this->edadMax;
+        $edadMinima = $this->edadMin;
 
         if(isset($this->clasificacionTarifas[$voterIndex]['edadMin'])){
             $edadMinima = $this->clasificacionTarifas[$voterIndex]['edadMin'];
@@ -701,7 +703,6 @@ class Resumen implements ContainerAwareInterface
         if(isset($this->clasificacionTarifas[$voterIndex]['edadMax'])){
             $edadMaxima = $this->clasificacionTarifas[$voterIndex]['edadMax'];
         }
-
 
         if(isset($clase['edadMin']) && $clase['edadMin'] > $edadMinima){
             $temp['edadMin'] = $clase['edadMin'];
@@ -828,8 +829,8 @@ class Resumen implements ContainerAwareInterface
                     $clase['tipoPaxId'] == 0 ||
                     $tarifaClasificada['tipoPaxId'] == 0
                 )
-                && $clase['edadMin'] < $tarifaClasificada['edadMax']
-                && $clase['edadMax'] > $tarifaClasificada['edadMin']
+                && $clase['edadMin'] <= $tarifaClasificada['edadMax']
+                && $clase['edadMax'] >= $tarifaClasificada['edadMin']
 
             ){
 
@@ -854,52 +855,12 @@ class Resumen implements ContainerAwareInterface
             }
 
         endforeach;
+
         if(empty($voter) || max($voter) <= 0 ){
             return false;
         }
+
         return array_search(max($voter), $voter);
-    }
-
-    private function completarTipoTarifa(&$tarifa, $prorrateado){
-
-        if(!isset($tarifa['tipoPaxId'])){
-            $tarifa['tipoPaxId'] = 0;
-            $tarifa['tipoPaxNombre'] = 'Cualquier nacionalidad';
-        }
-
-        if($prorrateado === true || (!isset($tarifa['edadMin']) && !isset($tarifa['edadMax']))){
-            $tarifa['rangoEdad'] = 0;
-            $tarifa['rangoEdadNombre'] = 'Cualquier edad';
-            return;
-        }
-
-        $min = 0;
-        $max = 90;
-
-        if(isset($tarifa['edadMin'])){
-            $min = $tarifa['edadMin'];
-        }
-
-        if(isset($tarifa['edadMax'])){
-            $max = $tarifa['edadMax'];
-        }
-        $promedio = ($min + $max) / 2;
-
-        if($promedio < 6){
-            $tarifa['rangoEdad'] = 'n1';
-            $tarifa['rangoEdadNombre'] = 'Niño';
-        }elseif($promedio >= 6 && $promedio < 20 ){
-            $tarifa['rangoEdad'] = 'n2';
-            $tarifa['rangoEdadNombre'] = 'Estudiante';
-        }elseif($promedio >= 21 && $promedio < 59 ){
-            $tarifa['rangoEdad'] = 'a1';
-            $tarifa['rangoEdadNombre'] = 'Adulto';
-        }else{
-            $tarifa['rangoEdad'] = 'a2';
-            $tarifa['rangoEdadNombre'] = 'Adulto Mayor';
-        }
-
-        return;
     }
 
     public function getFormatedDate($FechaStamp)
