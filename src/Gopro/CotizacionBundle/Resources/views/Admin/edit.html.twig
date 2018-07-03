@@ -195,13 +195,13 @@
                     init: function () {
                         var $this = $(this);
 
-                        $this.off("input", methods.actualizar).on("input", methods.actualizar);
+                        $this.off("input.componente").on("input.componente", methods.actualizar);
                         return $this;
                     },
                     initdatetime: function () {
                         var $this = $(this);
 
-                        $this.off("dp.change", methods.actualizardatetime).on("dp.change", methods.actualizardatetime);
+                        $this.off("dp.change.componente").on("dp.change.componente", methods.actualizardatetime);
                         return $this;
                     },
                     actualizardatetime: function (event){
@@ -262,23 +262,23 @@
                     init: function () {
                         var $this = $(this);
 
-                        $this.off("input", methods.actualizar).on("input", methods.actualizar);
+                        $this.off("input.fechahora").on("input.fechahora", methods.actualizar);
                         return $this;
                     },
                     initdatetime: function () {
                         var $this = $(this);
 
-                        $this.off("dp.change", methods.actualizardatetime).on("dp.change", methods.actualizardatetime);
+                        $this.off("dp.change.fechahora").on("dp.change.fechahora", methods.actualizardatetime);
                         return $this;
                     },
                     actualizardatetime: function (event){
 
-                        return methods.seleccion.call($(this).find("input").first());
+                        return methods.seleccion.call($(this).find("input").first(), true);
                     },
                     actualizar: function (event) {
-                        return methods.seleccion.call($(this))
+                        return methods.seleccion.call($(this), false)
                     },
-                    seleccion: function () {
+                    seleccion: function (deBoton) {
                         //s5a43ceaa838b4[cotizaciones][0][cotservicios][0][cotcomponentes][0][cantidad]
                         //s5a43ceaa838b4[cotizaciones][0][cotservicios][0][fechahorainicio]
                         var inicio;
@@ -287,7 +287,7 @@
                             basestr = $(this).attr("name").replace( /\[fechahorainicio\]$/g, '');
                             inicio = $(this).val();
                             methods.cambiarfechafin.call($(this), basestr, inicio)
-                            return methods.cambiarfechacomponente.call($(this), basestr, inicio);
+                            return methods.cambiarfechacomponente.call($(this), basestr, inicio, deBoton);
                         }
                         if (/\[cotservicios\]\[\d*\]\[fechahorafin\]$/g.test($(this).attr("name"))) {
                             basestr = $(this).attr("name").replace( /\[fechahorafin\]$/g, '');
@@ -314,7 +314,9 @@
                             fin.val(newFechaHoraFin).trigger('change');
                         }
                     },
-                    cambiarfechacomponente: function (basestr, inicio) {
+                    cambiarfechacomponente: function (basestr, inicio, deBoton) {
+
+
                         var cadenaInicio = (basestr + '[cotcomponentes][\\d*][fechahorainicio]').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
 
                         var inputFechaInicio = $('input').filter(function () {
@@ -323,14 +325,83 @@
                             }
                         });
 
-                        inputFechaInicio.each(function (index, value){
-                            if (typeof $(this).attr("duracion") !== 'undefined'){
-                                //alert($(this).attr("name"));
-                                var newFechaHoraFin = moment(inicio, 'YYYY/MM/DD HH:mm').add($(this).attr("duracion"), 'hours').format('YYYY/MM/DD HH:mm');
-                                $('input[name=' + $(this).attr("name").replace( /\[fechahorainicio\]/g, '[fechahorafin]').replace(/\[/g, '\\\[').replace(/\]/g, '\\\]') + ']').val(newFechaHoraFin).trigger('change')
-                                $(this).val(inicio).trigger('change');
+                        var cadenaFin = (basestr + '[cotcomponentes][\\d*][fechahorafin]').replace(/\[/g, '\\[').replace(/\]/g, '\\]');
+
+                        var inputFechaFin = $('input').filter(function () {
+                            if($(this).attr('name')){
+                                return $(this).attr('name').match(new RegExp(cadenaFin));
                             }
                         });
+
+                        //prevenir multiple
+
+                        if(deBoton === false){
+                            if (typeof $(this).attr("duracion") !== 'undefined'){
+
+                                $(this).val(inicio).trigger('change');
+                                //var newFechaHoraFin = moment(inicio, 'YYYY/MM/DD HH:mm').add($(this).attr("duracion"), 'hours').format('YYYY/MM/DD HH:mm');
+                                //$('input[name=' + $(this).attr("name").replace( /\[fechahorainicio\]/g, '[fechahorafin]').replace(/\[/g, '\\\[').replace(/\]/g, '\\\]') + ']').val(newFechaHoraFin).trigger('change')
+                            }
+
+                            return
+                        }
+
+                        bootbox.confirm({
+                            message: "Desea mantener las horas de inicio de los componentes?",
+                            buttons: {
+                                confirm: {
+                                    label: 'Si',
+                                    className: 'btn-success'
+                                },
+                                cancel: {
+                                    label: 'No',
+                                    className: 'btn-danger'
+                                }
+                            },
+                            callback: function (result) {
+                                if(result === false){
+
+                                    inputFechaInicio.each(function (index, value){
+
+                                        if (typeof $(this).attr("duracion") !== 'undefined'){
+
+                                            $(this).val(inicio).trigger('change');
+                                            //var newFechaHoraFin = moment(inicio, 'YYYY/MM/DD HH:mm').add($(this).attr("duracion"), 'hours').format('YYYY/MM/DD HH:mm');
+                                            //$('input[name=' + $(this).attr("name").replace( /\[fechahorainicio\]/g, '[fechahorafin]').replace(/\[/g, '\\\[').replace(/\]/g, '\\\]') + ']').val(newFechaHoraFin).trigger('change')
+                                        }
+                                    });
+
+                                } else {
+
+                                    inputFechaInicio.each(function (index, value){
+
+                                        if (typeof $(this).attr("duracion") !== 'undefined'){
+                                            var horaAnterior = $(this).val().substr(-5, 5);
+                                            var nuevaFecha = inicio.substr(0, 11);
+
+                                            $(this).val(nuevaFecha + horaAnterior);//.trigger('change');
+                                            //var newFechaHoraFin = moment(inicio, 'YYYY/MM/DD HH:mm').add($(this).attr("duracion"), 'hours').format('YYYY/MM/DD HH:mm');
+                                            //$('input[name=' + $(this).attr("name").replace( /\[fechahorainicio\]/g, '[fechahorafin]').replace(/\[/g, '\\\[').replace(/\]/g, '\\\]') + ']').val(newFechaHoraFin).trigger('change')
+                                        }
+                                    });
+
+                                    inputFechaFin.each(function (index, value){
+
+                                        if (typeof $(this).attr("duracion") !== 'undefined'){
+                                            var horaAnterior = $(this).val().substr(-5, 5);
+                                            var nuevaFecha = inicio.substr(0, 11);
+
+                                            $(this).val(nuevaFecha + horaAnterior);//.trigger('change');
+                                            //var newFechaHoraFin = moment(inicio, 'YYYY/MM/DD HH:mm').add($(this).attr("duracion"), 'hours').format('YYYY/MM/DD HH:mm');
+                                            //$('input[name=' + $(this).attr("name").replace( /\[fechahorainicio\]/g, '[fechahorafin]').replace(/\[/g, '\\\[').replace(/\]/g, '\\\]') + ']').val(newFechaHoraFin).trigger('change')
+                                        }
+                                    });
+
+                                }
+                            }
+                        });
+
+
                     }
 
                 };
