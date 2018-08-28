@@ -10,7 +10,99 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ComprobanteAdminController extends CRUDController
 {
-    
+
+    function generarcopiaAction()
+    {
+        $object = $this->admin->getSubject();
+        $em = $this->getDoctrine()->getManager();
+
+        if (!$object) {
+            throw new NotFoundHttpException(sprintf('No se puede encontrar el objeto con el identificador : %s', $this->admin->getIdParameter()));
+        }
+
+        if($object->getTipo()->getId() !== 1){
+            $this->addFlash('sonata_flash_error', 'Solo se puede copiar facturas.');
+            return new RedirectResponse($this->admin->generateUrl('list'));
+        }
+
+        if(!($object->getEstado()->getId() == 3 || $object->getEstado()->getId() == 4)){
+            $this->addFlash('sonata_flash_error', 'La factura debe tener estado emitida o pagada para generar una copia.');
+            return new RedirectResponse($this->admin->generateUrl('list'));
+        }
+
+        if(is_null($object->getDocumento())){
+            $this->addFlash('sonata_flash_error', 'La factura debe estar emitida con número correlativo para generar una copia.');
+            return new RedirectResponse($this->admin->generateUrl('list'));
+        }
+
+        $this->admin->checkAccess('edit', $object);
+
+        $newObject = clone $object;
+
+        $newObject->setUrl(null);
+        $newObject->setNeto(null);
+        $newObject->setImpuesto(null);
+        $newObject->setTotal(null);
+        $newObject->setSerie(null);
+        $newObject->setDocumento(null);
+        $newObject->setFechaemision(null);
+
+        $newObject->setEstado($em->getReference('Gopro\ComprobanteBundle\Entity\Estado', 1));
+
+        $this->admin->create($newObject);
+
+        $this->addFlash('sonata_flash_success', 'Copia generada correctamente');
+
+        return new RedirectResponse($this->admin->generateUrl('list'));
+    }
+
+    function generarnotacreditoAction()
+    {
+        $object = $this->admin->getSubject();
+        $em = $this->getDoctrine()->getManager();
+
+        if (!$object) {
+            throw new NotFoundHttpException(sprintf('No se puede encontrar el objeto con el identificador : %s', $this->admin->getIdParameter()));
+        }
+
+        if($object->getTipo()->getId() !== 1){
+            $this->addFlash('sonata_flash_error', 'Solo se puede emitir notas de crédito de facturas.');
+            return new RedirectResponse($this->admin->generateUrl('list'));
+        }
+
+        if(!($object->getEstado()->getId() == 3 || $object->getEstado()->getId() == 4)){
+            $this->addFlash('sonata_flash_error', 'La factura debe tener estado emitida o pagada para poder emitir una nota de crédito.');
+            return new RedirectResponse($this->admin->generateUrl('list'));
+        }
+
+        if(is_null($object->getDocumento())){
+            $this->addFlash('sonata_flash_error', 'La factura debe estar emitida con número correlativo para generar una nota de crédito.');
+            return new RedirectResponse($this->admin->generateUrl('list'));
+        }
+
+        $this->admin->checkAccess('edit', $object);
+
+        $newObject = clone $object;
+
+        $newObject->setOriginal($object);
+        $newObject->setUrl(null);
+        $newObject->setNeto(null);
+        $newObject->setImpuesto(null);
+        $newObject->setTotal(null);
+        $newObject->setSerie(null);
+        $newObject->setDocumento(null);
+        $newObject->setFechaemision(null);
+
+        $newObject->setEstado($em->getReference('Gopro\ComprobanteBundle\Entity\Estado', 1));
+        $newObject->setTipo($em->getReference('Gopro\ComprobanteBundle\Entity\Tipo', 3));
+
+        $this->admin->create($newObject);
+
+        $this->addFlash('sonata_flash_success', 'Nota de crédito generada correctamente');
+
+        return new RedirectResponse($this->admin->generateUrl('list'));
+    }
+
     function emitirAction()
     {
         $fechaEmision = new \DateTime();

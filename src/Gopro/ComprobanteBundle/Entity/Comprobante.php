@@ -150,6 +150,33 @@ class Comprobante
         $this->mensajes = new ArrayCollection();
     }
 
+    public function __clone() {
+
+        if ($this->id) {
+            $this->id = null;
+            $this->setCreado(null);
+            $this->setModificado(null);
+            $newComprobanteitems = new ArrayCollection();
+            foreach ($this->comprobanteitems as $comprobanteitem) {
+                $newComprobanteitem = clone $comprobanteitem;
+                $newComprobanteitem->setComprobante($this);
+                $newComprobanteitems->add($newComprobanteitem);
+            }
+            $this->comprobanteitems = $newComprobanteitems;
+
+            $newServiciocontables = new ArrayCollection();
+            foreach ($this->serviciocontables as $serviciocontable) {
+                $newServiciocontable = clone $serviciocontable;
+                $newServiciocontable->setComprobante($this);
+                $newServiciocontables->add($newServiciocontable);
+            }
+            $this->serviciocontables = $newServiciocontables;
+
+            $this->mensajes = new ArrayCollection();
+            $this->dependientes = new ArrayCollection();
+        }
+    }
+
     /**
      * @return string
      */

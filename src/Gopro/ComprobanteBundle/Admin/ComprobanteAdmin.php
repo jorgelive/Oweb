@@ -200,7 +200,14 @@ class ComprobanteAdmin extends AbstractAdmin
                     'delete' => [],
                     'facturar' => [
                         'template' => 'GoproComprobanteBundle:ComprobanteAdmin:list__action_emitir.html.twig'
+                    ],
+                    'generarnotacredito' => [
+                        'template' => 'GoproComprobanteBundle:ComprobanteAdmin:list__action_generarnotacredito.html.twig'
+                    ],
+                    'generarcopia' => [
+                        'template' => 'GoproComprobanteBundle:ComprobanteAdmin:list__action_generarcopia.html.twig'
                     ]
+
                 ],
                 'label' => 'Acciones'
             ])
@@ -341,6 +348,8 @@ class ComprobanteAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->add('emitir', $this->getRouterIdParameter() . '/emitir');
+        $collection->add('generarnotacredito', $this->getRouterIdParameter() . '/generarnotacredito');
+        $collection->add('generarcopia', $this->getRouterIdParameter() . '/generarcopia');
     }
 
 }

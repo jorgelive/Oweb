@@ -74,6 +74,14 @@ class Comprobanteitem
 
     }
 
+    public function __clone() {
+        if ($this->id) {
+            $this->id = null;
+            $this->setCreado(null);
+            $this->setModificado(null);
+        }
+    }
+
 
     /**
      * Get id
