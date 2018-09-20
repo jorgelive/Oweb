@@ -20,6 +20,9 @@ use Symfony\Component\Form\FormInterface;
 class ComprobanteAdmin extends AbstractAdmin
 {
 
+    protected $perPageOptions = [50, 100, 200, 300, 500];
+    protected $maxPerPage = 200;
+
     /**
      * @param DatagridMapper $datagridMapper
      */
@@ -165,6 +168,14 @@ class ComprobanteAdmin extends AbstractAdmin
             ->add('id')
             ->add('serviciocontables', null, [
                 'label' => 'Items Transporte',
+                'sortable' => true,
+                'sort_field_mapping' => array(
+                    'fieldName' => 'fechahorainicio'
+                ),
+                'sort_parent_association_mappings' => [
+                    ['fieldName' => 'serviciocontables'],
+                    ['fieldName' => 'servicio']
+                ]
             ])
             ->add('comprobanteitems', null, [
                 'label' => 'Items',
