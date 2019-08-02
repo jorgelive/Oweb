@@ -90,6 +90,14 @@ class Serviciocomponente
         return $this->getNombre() ?? sprintf("Id: %s.", $this->getId()) ?? '';
     }
 
+    public function __clone() {
+        if ($this->id) {
+            $this->id = null;
+            $this->setCreado(null);
+            $this->setModificado(null);
+        }
+    }
+
 
     /**
      * Get id

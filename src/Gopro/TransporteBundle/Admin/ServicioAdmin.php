@@ -10,6 +10,7 @@ use Sonata\CoreBundle\Form\Type\CollectionType;
 use Sonata\CoreBundle\Form\Type\DatePickerType;
 use Sonata\CoreBundle\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\CoreBundle\Form\Type\EqualType;
 use Sonata\CoreBundle\Form\Type\BooleanType;
@@ -193,12 +194,15 @@ class ServicioAdmin extends AbstractAdmin
                 'route' => ['name' => 'show']
             ])
              ->add('_action', 'actions', [
-                'actions' => [
+                 'label' => 'Acciones',
+                 'actions' => [
                     'show' => [],
                     'edit' => [],
                     'delete' => [],
-                ],
-                 'label' => 'Acciones'
+                    'clonar' => [
+                        'template' => 'GoproTransporteBundle:ServicioAdmin:list__action_clonar.html.twig'
+                    ]
+                 ]
             ])
         ;
     }
@@ -333,6 +337,11 @@ class ServicioAdmin extends AbstractAdmin
     public function getExportFormats()
     {
         return ['xlsx', 'txt', 'xls', 'csv', 'json', 'xml'];
+    }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('clonar', $this->getRouterIdParameter() . '/clonar');
     }
 
 }

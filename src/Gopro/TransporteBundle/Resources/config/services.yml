@@ -2,7 +2,7 @@ services:
 
     gopro_transporte.admin.servicio:
         class: Gopro\TransporteBundle\Admin\ServicioAdmin
-        arguments: [~, Gopro\TransporteBundle\Entity\Servicio, SonataAdminBundle:CRUD]
+        arguments: [~, Gopro\TransporteBundle\Entity\Servicio, GoproTransporteBundle:ServicioAdmin]
         tags:
             - {name: sonata.admin, manager_type: orm, group: Transporte, label: Servicios}
         calls:

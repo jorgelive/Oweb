@@ -63,6 +63,14 @@ class Serviciooperativo
         return $this->getTexto() ?? sprintf("Id: %s.", $this->getId()) ?? '';
     }
 
+    public function __clone() {
+        if ($this->id) {
+            $this->id = null;
+            $this->setCreado(null);
+            $this->setModificado(null);
+        }
+    }
+
     /**
      * @return string
      */
@@ -71,9 +79,6 @@ class Serviciooperativo
         return sprintf("%s: %s.", $this->getTiposeroperativo()->getCodigo(), $this->getTexto());
 
     }
-
-
-  
 
     /**
      * Get id

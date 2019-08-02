@@ -105,6 +105,37 @@ class Servicio
         $this->serviciooperativos = new ArrayCollection();
     }
 
+    public function __clone() {
+        if ($this->id) {
+            $this->id = null;
+            $this->setCreado(null);
+            $this->setModificado(null);
+            $newServiciocomponentes = new ArrayCollection();
+            foreach ($this->serviciocomponentes as $serviciocomponente) {
+                $newServiciocomponente = clone $serviciocomponente;
+                $newServiciocomponente->setServicio($this);
+                $newServiciocomponentes->add($newServiciocomponente);
+            }
+            $this->serviciocomponentes = $newServiciocomponentes;
+
+            $newServiciooperativos = new ArrayCollection();
+            foreach ($this->serviciooperativos as $serviciooperativo) {
+                $newServiciooperativo = clone $serviciooperativo;
+                $newServiciooperativo->setServicio($this);
+                $newServiciooperativos->add($newServiciooperativo);
+            }
+            $this->serviciooperativos = $newServiciooperativos;
+
+            $newServiciocontables = new ArrayCollection();
+            foreach ($this->serviciocontables as $serviciocontable) {
+                $newServiciocontable = clone $serviciocontable;
+                $newServiciocontable->setServicio($this);
+                $newServiciocontables->add($newServiciocontable);
+            }
+            $this->serviciocontables = $newServiciocontables;
+        }
+    }
+
     public function getExportcomponentes()
     {
         $exportcomponentes = [];
