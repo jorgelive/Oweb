@@ -53,7 +53,7 @@ class ServicioAdmin extends AbstractAdmin
         $datagridMapper
             ->add('id')
             ->add('fechahorainicio', 'doctrine_orm_callback',[
-                'label' => 'Inicio',
+                'label' => 'Fecha de inicio',
                 'callback' => function($queryBuilder, $alias, $field, $value) {
 
                     if (!$value['value'] || !($value['value'] instanceof \DateTime)) {
@@ -119,13 +119,16 @@ class ServicioAdmin extends AbstractAdmin
             ->add('unidad')
             ->add('conductor')
             ->add('nombre',  null, [
-                'label' => 'Servicio'
+                'label' => 'Nombre de servicio'
             ])
             ->add('serviciocomponentes.nombre',  null, [
-                'label' => 'Nombre File'
+                'label' => 'Nombre de file'
             ])
             ->add('serviciocomponentes.codigo',  null, [
-                'label' => 'Número File'
+                'label' => 'Número de file'
+            ])
+            ->add('serviciooperativos.texto',  null, [
+                'label' => 'Info operativa'
             ])
         ;
     }
@@ -162,7 +165,7 @@ class ServicioAdmin extends AbstractAdmin
             ->addIdentifier('nombre')
             ->add('serviciocomponentes', null, [
                 'associated_property' => 'resumen',
-                'label' => 'Referencias'
+                'label' => 'Files'
             ])
             ->add('serviciooperativos', null, [
                 'associated_property' => 'resumen',

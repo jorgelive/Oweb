@@ -23,6 +23,8 @@ class CotizacionAdminController extends CRUDController
 
         $object = $this->admin->getObject($id);
 
+        $em = $this->getDoctrine()->getManager();
+
         if (!$object) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
@@ -32,6 +34,14 @@ class CotizacionAdminController extends CRUDController
         $newObject = clone $object;
 
         $newObject->setNombre($object->getNombre().' (Clone)');
+
+        $newObject->setEstadocotizacion($em->getReference('Gopro\CotizacionBundle\Entity\Estadocotizacion', 1));
+
+        foreach ($newObject->getCotservicios() as $cotservicio):
+            foreach ($cotservicio->getCotcomponentes() as $cotcomponente):
+                $cotcomponente->setEstadocotcomponente($em->getReference('Gopro\CotizacionBundle\Entity\Estadocotcomponente', 1));
+            endforeach;
+        endforeach;
 
         $this->admin->create($newObject);
 
