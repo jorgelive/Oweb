@@ -151,27 +151,27 @@ class Eventsfinder
                     $methods = [$subject];
                 }
 
-                $clonedElement = clone $element; //var_dump($element);
+                $copiedElement = $element; //ya no clono;
                 foreach ($methods as $method){
                     $methodFormated = 'get' . ucfirst($method);
-                    $clonedElement = $clonedElement->$methodFormated();
+                    $copiedElement = $copiedElement->$methodFormated();
                 }
 
                 if($key == 'start' || $key == 'end'){
-                    $result[$i][$key] = $clonedElement->format("Y-m-d\TH:i:sP");
+                    $result[$i][$key] = $copiedElement->format("Y-m-d\TH:i:sP");
                 }elseif($key == 'url'){
                     if(isset($parameter['edit']) && true === $this->container->get('security.authorization_checker')->isGranted($parameter['edit']['role'])){
-                        $result[$i]['url'] = $this->container->get('router')->generate($parameter['edit']['route'], ['id' => $clonedElement]);
+                        $result[$i]['url'] = $this->container->get('router')->generate($parameter['edit']['route'], ['id' => $copiedElement]);
                     }elseif(isset($parameter['show']) && true === $this->container->get('security.authorization_checker')->isGranted($parameter['show']['role'])){
-                        $result[$i]['url'] = $this->container->get('router')->generate($parameter['show']['route'], ['id' => $clonedElement]);
+                        $result[$i]['url'] = $this->container->get('router')->generate($parameter['show']['route'], ['id' => $copiedElement]);
                     }
                 }else{
-                    $result[$i][$key] = $clonedElement;
+                    $result[$i][$key] = $copiedElement;
                 }
 
             }
             if($this->options['resource']){
-                $clonedElement = clone $element;
+                $copiedElement = $element; //ya no clono
 
                 if(strpos($this->options['resource']['id'], '.') > 0){
                     $methods = explode('.', $this->options['resource']['id']);
@@ -181,10 +181,10 @@ class Eventsfinder
 
                 foreach ($methods as $method){
                     $methodFormated = 'get' . ucfirst($method);
-                    $clonedElement = $clonedElement->$methodFormated();
+                    $copiedElement = $copiedElement->$methodFormated();
                 }
 
-                $result[$i]['resourceId'] = $clonedElement;
+                $result[$i]['resourceId'] = $copiedElement;
             }else{
                 $result[$i]['resourceId'] = 'default';
             }
