@@ -18,16 +18,13 @@ class LoadController extends Controller
     private $manager;
 
     /**
-     * @Route("/event/{calendar}/{relatedpropertyid}", defaults={"relatedpropertyid"=null},  name="gopro_fullcalendar_load_event")
+     * @Route("/event/{calendar}",  name="gopro_fullcalendar_load_event")
      */
     function eventAction(Request $request, $calendar) {
 
         $data = [];
         $data['from'] = new \DateTime($request->get('start'));
         $data['to'] = new \DateTime($request->get('end'));
-        if(!empty($request->get('relatedpropertyid'))){
-            $data['relatedPropertyId'] = $request->get('relatedpropertyid');
-        }
 
         $eventsfinder = $this->get('gopro.fullcalendar.eventsfinder');
         $eventsfinder->setCalendar($calendar);
@@ -44,17 +41,13 @@ class LoadController extends Controller
     }
 
     /**
-     * @Route("/resource/{calendar}/{relatedpropertyid}", defaults={"relatedpropertyid"=null},  name="gopro_fullcalendar_load_resource")
+     * @Route("/resource/{calendar}",  name="gopro_fullcalendar_load_resource")
      */
     function resourceAction(Request $request, $calendar) {
 
         $data = [];
         $data['from'] = new \DateTime($request->get('start'));
         $data['to'] = new \DateTime($request->get('end'));
-
-        if(!empty($request->get('relatedpropertyid'))){
-            $data['relatedPropertyId'] = $request->get('relatedpropertyid');
-        }
 
         $eventsfinder = $this->get('gopro.fullcalendar.eventsfinder');
         $eventsfinder->setCalendar($calendar);
@@ -64,12 +57,10 @@ class LoadController extends Controller
 
         $jsonContent = $eventsfinder->serializeResources($events);
 
-
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
         $response->setContent($jsonContent);
         $response->setStatusCode($status);
-
 
         return $response;
     }

@@ -68,6 +68,9 @@ gopro_fullcalendar:
             resource:
                 id: 'conductor.id'
                 title: 'conductor.nombre'
+            filters: #por ahora solo implemetado sobre user
+                - { field: 'conductor', value: 'conductor.id', exception: ~ }
+                - { field: 'dependencia', value: 'dependencia.id', exception: 1 }
             parameters:
                 title: 'resumen'
                 start: 'fechahorainicio'
@@ -362,17 +365,6 @@ sonata_admin:
                     - gopro_comprobante.admin.productoservicio
                     - gopro_comprobante.admin.tipoproductoservicio
 
-            goprosonata.admin.group.cuenta:
-                label: 'Cuentas'
-                icon: '<i class="fa fa-line-chart"></i>'
-                items:
-                    - gopro_cuenta.admin.periodo
-                    - gopro_cuenta.admin.movimiento
-                    - gopro_cuenta.admin.cuenta
-                    - gopro_cuenta.admin.centro
-                    - gopro_cuenta.admin.clase
-                    - gopro_cuenta.admin.tipo
-
             goprosonata.admin.group.cotizacion:
                 label: 'Cotizaciones'
                 icon: '<i class="fa fa-calendar"></i>'
@@ -421,6 +413,7 @@ sonata_admin:
                     - sonata.user.admin.group
                     - gopro_user.admin.cuenta
                     - gopro_user.admin.cuentatipo
+
             goprosonata.admin.group.organizacion:
                 label: 'Empresa'
                 icon: '<i class="fa fa-institution"></i>'
@@ -429,6 +422,16 @@ sonata_admin:
                     - gopro_user.admin.dependencia
                     - gopro_user.admin.area
 
+            goprosonata.admin.group.cuenta:
+                label: 'Cuentas'
+                icon: '<i class="fa fa-line-chart"></i>'
+                items:
+                    - gopro_cuenta.admin.periodo
+                    - gopro_cuenta.admin.movimiento
+                    - gopro_cuenta.admin.cuenta
+                    - gopro_cuenta.admin.centro
+                    - gopro_cuenta.admin.clase
+                    - gopro_cuenta.admin.tipo
 
     security:
         handler: sonata.admin.security.handler.role

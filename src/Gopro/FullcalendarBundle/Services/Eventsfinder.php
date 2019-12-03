@@ -32,20 +32,18 @@ class Eventsfinder
         if(!array_key_exists($calendar, $this->calendars)){
             throw new HttpException(500, sprintf("El calendario %s no esta en los parametros de configuración.", $calendar));
         }
+        //procesamos los parametros de configracion en ylm;
         $this->options['entity'] = $this->calendars[$calendar]['entity'];
         $this->options['parameters'] = $this->calendars[$calendar]['parameters'];
         if(isset($this->calendars[$calendar]['resource'])) {
             $this->options['resource'] = $this->calendars[$calendar]['resource'];
         }
-        if(isset($this->options['repositorymethod']) && isset($this->options['relatedproperty'])){
-            throw new HttpException(500, 'Solo debe de haber uno de los dos parametros: repositorymethod o relatedproperty.');
+        if(isset($this->calendars[$calendar]['filters'])) {
+            $this->options['filters'] = $this->calendars[$calendar]['filters'];
         }
 
         if(isset($this->calendars[$calendar]['repositorymethod'])){
             $this->options['repositorymethod'] = $this->calendars[$calendar]['repositorymethod'];
-        }
-        if(isset($this->calendars[$calendar]['relatedproperty'])){
-            $this->options['relatedproperty'] = $this->calendars[$calendar]['relatedproperty'];
         }
 
         $this->manager = $this->managerRegistry->getManagerForClass($this->options['entity']);
@@ -54,31 +52,62 @@ class Eventsfinder
 
     public function getEvents($data) {
 
-        if(isset($this->options['relatedproperty']) && !isset($data['relatedPropertyId'])){
-            throw new HttpException(500, 'La propiedad relacionada debe estar especificada ya que existe en la configuración.');
-        }
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
 
         if(!empty($this->options['repositorymethod'])){
-            //Para consultas complejas
-            $data['user'] = $this->container->get('security.token_storage')->getToken()->getUser();
 
-            return $this->repository->{$this->options['repositorymethod']}($data);
+            //Para consultas complejas
+            //Me significa main entity
+            $data['user'] = $user;
+            $query = $this->repository->{$this->options['repositorymethod']}($data);
+
         }else{
             //Para consultas simples
-            $qb = $this->manager->createQueryBuilder()
-                ->select('c')
-                ->from($this->options['entity'], 'c')
-                ->where('c.'. $this->options['parameters']['start'] . ' BETWEEN :firstDate AND :lastDate');
+            $query = $this->manager->createQueryBuilder()
+                ->select('me')
+                ->from($this->options['entity'], 'me')
+                ->where('me.'. $this->options['parameters']['start'] . ' BETWEEN :firstDate AND :lastDate');
 
-            if(isset($this->options['relatedproperty'])){
-                $qb->andWhere('c.' . $this->options['relatedproperty'] . ' = :relatedproperty')
-                    ->setParameter('relatedproperty', $data['relatePropertyId']);            }
-
-            $qb->setParameter('firstDate', $data['from'])
+            $query->setParameter('firstDate', $data['from'])
                 ->setParameter('lastDate', $data['to'])
             ;
-            return $qb->getQuery()->getResult();
         }
+
+        if(isset($this->options['filters']) && !empty($this->options['filters'])){
+            foreach ($this->options['filters'] as $i => $filter):
+                $valor = false;
+                if(strpos($filter['value'],".") === false){
+                    $valor = $filter['value'];
+                }else{
+
+                    $partes = explode('.', $filter['value']);
+
+                    $clonedElement = clone $user;
+                    foreach ($partes as $parte){
+                        $methodFormated = 'get' . ucfirst($parte);
+                        //var_dump($methodFormated); die;
+                        if($clonedElement !== null){
+                            $clonedElement = $clonedElement->$methodFormated();
+                        }
+
+                    }
+                    if(!is_object($clonedElement) && $filter['exception'] != $clonedElement){
+                        $valor = $clonedElement;
+                    }
+                }
+
+                //$query->getAllAliases() obtiene la lista de aloas de las entidades usamos la primera
+                //todo averiguar si siepre es la primera
+                if($valor !== false && !empty($query->getAllAliases()) && is_array($query->getAllAliases())) {
+                    $query->andWhere($query->getAllAliases()[0] . '.' . $filter['field'] . ' = :filter' . $i)
+                        ->setParameter('filter' . $i, $valor);
+                }
+
+            endforeach;
+        }
+
+
+        return $query->getQuery()->getResult();
 
     }
 
@@ -137,6 +166,8 @@ class Eventsfinder
         $result = [];
 
         $i=0;
+        //elements son los resultados del query
+        //var_dump($elements); die;
         foreach ($elements as $element) {
             foreach ($this->options['parameters'] as $key => $parameter){
                 if($key == 'url'){ // el parametro url es array porceso el subparametro id

@@ -11,53 +11,43 @@ class ServicioRepository extends EntityRepository
 {
     public function findCalendarConductorColored($data)
     {
-        if (!$data['user'] instanceof User){
+/*        if (!$data['user'] instanceof User){
             throw new HttpException(500, 'El dato de usuario no es instancia de la clase GoproUserbundle:Entity:User.');
         }else{
             $user = $data['user'];
-        }
+        }*/
 
         $qb = $this->getEntityManager()->createQueryBuilder()
-            ->select('s')
-            ->from('GoproTransporteBundle:Servicio', 's')
-            ->where('s.fechahorainicio BETWEEN :firstDate AND :lastDate');
+            ->select('me')
+            ->from('GoproTransporteBundle:Servicio', 'me')
+            ->where('me.fechahorainicio BETWEEN :firstDate AND :lastDate');
 
-        if($user && $user->getDependencia() && $user->getDependencia()->getId() != 1){
-            $qb->andWhere('s.dependencia = :dependencia')
+/*        if ($user && $user->getDependencia() && $user->getDependencia()->getId() != 1) {
+            $qb->andWhere('me.dependencia = :dependencia')
                 ->setParameter('dependencia', $user->getDependencia()->getId());
-        }
+        }*/
 
         $qb->setParameter('firstDate', $data['from'])
             ->setParameter('lastDate', $data['to'])
         ;
 
-        return $qb->getQuery()->getResult();
+        return $qb;
 
     }
 
     public function findCalendarClienteColored($data)
     {
-        if (!$data['user'] instanceof User){
-            throw new HttpException(500, 'El dato de usuario no es instancia de la clase GoproUserbundle:Entity:User.');
-        }else{
-            $user = $data['user'];
-        }
 
         $qb = $this->getEntityManager()->createQueryBuilder()
-            ->select('s')
-            ->from('GoproTransporteBundle:Servicio', 's')
-            ->where('s.fechahorainicio BETWEEN :firstDate AND :lastDate');
-
-        if($user && $user->getDependencia() && $user->getDependencia()->getId() != 1){
-            $qb->andWhere('s.dependencia = :dependencia')
-                ->setParameter('dependencia', $user->getDependencia()->getId());
-        }
+            ->select('me')
+            ->from('GoproTransporteBundle:Servicio', 'me')
+            ->where('me.fechahorainicio BETWEEN :firstDate AND :lastDate');
 
         $qb->setParameter('firstDate', $data['from'])
             ->setParameter('lastDate', $data['to'])
         ;
 
-        return $qb->getQuery()->getResult();
+        return $qb;
 
     }
 
@@ -65,26 +55,15 @@ class ServicioRepository extends EntityRepository
     public function findCalendarUnidadColored($data)
     {
 
-        if (!$data['user'] instanceof User){
-            throw new HttpException(500, 'El dato de usuario no es instancia de la clase GoproUserbundle:Entity:User.');
-        }else{
-            $user = $data['user'];
-        }
-
-
         $qb = $this->getEntityManager()->createQueryBuilder()
-            ->select('s')
+            ->select('me')
             ->from('GoproTransporteBundle:Servicio', 's')
             ->where('s.fechahorainicio BETWEEN :firstDate AND :lastDate');
 
-        if($user && $user->getDependencia() && $user->getDependencia()->getId() != 1){
-            $qb->andWhere('s.dependencia = :dependencia')
-                ->setParameter('dependencia', $user->getDependencia()->getId());
-        }
 
         $qb->setParameter('firstDate', $data['from'])
             ->setParameter('lastDate', $data['to'])
         ;
-        return $qb->getQuery()->getResult();
+        return $qb;
     }
 }

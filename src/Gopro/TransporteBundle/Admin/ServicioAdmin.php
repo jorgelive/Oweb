@@ -34,14 +34,14 @@ class ServicioAdmin extends AbstractAdmin
             ]
         ], $this->datagridValues);
 
-        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        /*$user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
         if(!is_null($user) && !is_null($user->getConductor())){
             $this->datagridValues = array_merge([
                 'conductor' => [
                     'value' => $user->getConductor()->getId()
                 ]
             ], $this->datagridValues);
-        }
+        }*/
 
         return parent::getFilterParameters();
     }
@@ -117,8 +117,14 @@ class ServicioAdmin extends AbstractAdmin
         }
 
         $datagridMapper
-            ->add('unidad')
-            ->add('conductor')
+            ->add('unidad');
+
+        if(is_null($user) || is_null($user->getConductor())){
+            $datagridMapper
+                ->add('conductor');
+        }
+
+        $datagridMapper
             ->add('nombre',  null, [
                 'label' => 'Nombre de servicio'
             ])
@@ -141,12 +147,20 @@ class ServicioAdmin extends AbstractAdmin
 
         $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
         if($user && $user->getDependencia() && $user->getDependencia()->getId() != 1){
-            $user->getDependencia()->getId();
+            //$user->getDependencia()->getId();
             $rootAlias = $query->getRootAliases()[0];
             $query->andWhere(
                 $query->expr()->eq($rootAlias.'.dependencia', ':dependencia')
             );
             $query->setParameter(':dependencia', $user->getDependencia()->getId());
+        }
+
+        if(!is_null($user) && !is_null($user->getConductor())){
+            $rootAlias = $query->getRootAliases()[0];
+            $query->andWhere(
+                $query->expr()->eq($rootAlias.'.conductor', ':conductor')
+            );
+            $query->setParameter(':conductor', $user->getConductor()->getId());
         }
 
         return $query;
@@ -189,10 +203,16 @@ class ServicioAdmin extends AbstractAdmin
             ->add('unidad', null, [
                 'associated_property' => 'abreviatura',
                 'route' => ['name' => 'show']
-            ])
-            ->add('conductor', null, [
-                'route' => ['name' => 'show']
-            ])
+            ]);
+
+        if(is_null($user) || is_null($user->getConductor())){
+            $listMapper
+                ->add('conductor', null, [
+                    'route' => ['name' => 'show']
+                ]);
+        }
+
+        $listMapper
              ->add('_action', 'actions', [
                  'label' => 'Acciones',
                  'actions' => [
@@ -203,8 +223,7 @@ class ServicioAdmin extends AbstractAdmin
                         'template' => 'GoproTransporteBundle:ServicioAdmin:list__action_clonar.html.twig'
                     ]
                  ]
-            ])
-        ;
+            ]);
     }
 
     /**
@@ -292,10 +311,16 @@ class ServicioAdmin extends AbstractAdmin
         $showMapper
             ->add('unidad', null, [
                 'route' => ['name' => 'show']
-            ])
-            ->add('conductor', null, [
-                'route' => ['name' => 'show']
-            ])
+            ]);
+
+        if(is_null($user) || is_null($user->getConductor())){
+            $showMapper
+                ->add('conductor', null, [
+                    'route' => ['name' => 'show']
+                ]);
+        }
+
+        $showMapper
             ->add('fechahorafin',  null, [
                 'label' => 'Fin',
                 'format' => 'Y/m/d H:i'

@@ -32,7 +32,7 @@ class CotcomponenteRepository extends \Doctrine\ORM\EntityRepository
         $qb->setParameter('firstDate', $data['from'])
             ->setParameter('lastDate', $data['to']);
 
-        return $qb->getQuery()->getResult();
+        return $qb;
 
     }
 
@@ -45,11 +45,11 @@ class CotcomponenteRepository extends \Doctrine\ORM\EntityRepository
         }
 
         $qb = $this->getEntityManager()->createQueryBuilder()
-            ->select('c')
-            ->from('GoproCotizacionBundle:Cotcomponente', 'c')
-            ->innerJoin('c.cotservicio', 'cs')
+            ->select('me')
+            ->from('GoproCotizacionBundle:Cotcomponente', 'me')
+            ->innerJoin('me.cotservicio', 'cs')
             ->innerJoin('cs.cotizacion', 'cot')
-            ->where('c.fechahorainicio BETWEEN :firstDate AND :lastDate')
+            ->where('me.fechahorainicio BETWEEN :firstDate AND :lastDate')
             ->andWhere('cot.estadocotizacion IN (:estados)');
 
 
@@ -57,7 +57,7 @@ class CotcomponenteRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('lastDate', $data['to'])
             ->setParameter('estados', [3, 4]);
 
-        return $qb->getQuery()->getResult();
+        return $qb;
 
     }
 }
