@@ -140,6 +140,7 @@ class ComprobanteAdminController extends CRUDController
 
             $solicitud['items'][$i]['unidad_de_medida'] = 'ZZ';
             $solicitud['items'][$i]['codigo'] = $this->container->get('gopro_main.variableproceso')->sanitizeString($serviciocontable->getServicio()->getNombre(), '_', '[\s+]' );
+            $solicitud['items'][$i]['codigo_producto_sunat'] = '78111800';
             $filesString = '';
             if($serviciocontable->getServicio()->getServiciocomponentes()){
                 $filesArray = $serviciocontable->getServicio()->getServiciocomponentes()->toArray();
@@ -171,6 +172,7 @@ class ComprobanteAdminController extends CRUDController
         foreach($object->getComprobanteitems() as $comprobanteitem):
             $solicitud['items'][$i]['unidad_de_medida'] = $comprobanteitem->getProductoservicio()->getTipoproductoservicio()->getCodigoexterno();
             $solicitud['items'][$i]['codigo'] = $this->container->get('gopro_main.variableproceso')->sanitizeString($comprobanteitem->getProductoservicio()->getCodigo(), '_', '[\s+]' );
+            $solicitud['items'][$i]['codigo_producto_sunat'] = $comprobanteitem->getProductoservicio()->getCodigosunat();
             $solicitud['items'][$i]['descripcion'] = $comprobanteitem->getProductoservicio()->getNombre();
             $cantidad = $comprobanteitem->getCantidad();
             $solicitud['items'][$i]['cantidad'] = $cantidad;

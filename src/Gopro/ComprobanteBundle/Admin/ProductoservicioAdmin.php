@@ -21,6 +21,9 @@ class ProductoservicioAdmin extends AbstractAdmin
             ->add('codigo', null, [
                 'label' => 'Código'
             ])
+            ->add('codigosunat', null, [
+                'label' => 'Código Sunat'
+            ])
             ->add('tipoproductoservicio', null, [
                 'label' => 'Tipo'
             ])
@@ -37,6 +40,9 @@ class ProductoservicioAdmin extends AbstractAdmin
             ->add('nombre')
             ->add('codigo', null, [
                 'label' => 'Código'
+            ])
+            ->add('codigosunat', null, [
+                'label' => 'Código Sunat'
             ])
             ->add('tipoproductoservicio', null, [
                 'label' => 'Tipo'
@@ -62,6 +68,9 @@ class ProductoservicioAdmin extends AbstractAdmin
             ->add('codigo', null, [
                 'label' => 'Código'
             ])
+            ->add('codigosunat', null, [
+                'label' => 'Código Sunat'
+            ])
             ->add('tipoproductoservicio', null, [
                 'label' => 'Tipo'
             ])
@@ -78,6 +87,9 @@ class ProductoservicioAdmin extends AbstractAdmin
             ->add('nombre')
             ->add('codigo', null, [
                 'label' => 'Código'
+            ])
+            ->add('codigosunat', null, [
+                'label' => 'Código Sunat'
             ])
             ->add('tipoproductoservicio', null, [
                 'label' => 'Tipo'

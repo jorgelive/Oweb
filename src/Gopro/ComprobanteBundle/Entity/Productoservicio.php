@@ -29,6 +29,11 @@ class Productoservicio
     private $codigo;
 
     /**
+     * @ORM\Column(type="string", length=15)
+     */
+    private $codigosunat;
+
+    /**
      * @var \DateTime $creado
      *
      * @Gedmo\Timestampable(on="create")
@@ -114,6 +119,29 @@ class Productoservicio
     public function getCodigo()
     {
         return $this->codigo;
+    }
+
+    /**
+     * Set codigosunat
+     *
+     * @param string $codigosunat
+     * @return Productoservicio
+     */
+    public function setCodigosunat($codigosunat)
+    {
+        $this->codigosunat = $codigosunat;
+
+        return $this;
+    }
+
+    /**
+     * Get codigosunat
+     *
+     * @return string
+     */
+    public function getCodigosunat()
+    {
+        return $this->codigosunat;
     }
 
     /**
