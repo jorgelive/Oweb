@@ -7,6 +7,7 @@ services:
         calls:
             - [ setTemplate, [edit, GoproFitBundle:DietaAdmin:edit.html.twig]]
             - [ setTemplate, [list, GoproFitBundle:DietaAdmin:list.html.twig]]
+            - [ setTemplate, [show, GoproFitBundle:DietaAdmin:show.html.twig]]
         public: true
 
     gopro_fit.admin.dietacomida:

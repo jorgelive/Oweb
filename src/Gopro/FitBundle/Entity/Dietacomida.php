@@ -98,6 +98,79 @@ class Dietacomida
 
     }
 
+    public function getGrasaCalorias()
+    {
+        $result = 0;
+        foreach ($this->dietaalimentos as $dietaalimento):
+            $result += $dietaalimento->getGrasaCalorias();
+        endforeach;
+
+        return $result;
+    }
+
+    public function getCarbohidratoCalorias()
+    {
+        $result = 0;
+        foreach ($this->dietaalimentos as $dietaalimento):
+            $result += $dietaalimento->getCarbohidratoCalorias();
+        endforeach;
+
+        return $result;
+    }
+
+    public function getProteinaCalorias()
+    {
+        $result = 0;
+        foreach ($this->dietaalimentos as $dietaalimento):
+            $result += $dietaalimento->getProteinaCalorias();
+        endforeach;
+
+        return $result;
+    }
+
+    public function getTotalCalorias()
+    {
+        $result = $this->getGrasaCalorias() + $this->getCarbohidratoCalorias() + $this->getProteinaCalorias();
+
+        return $result;
+    }
+
+    public function getEnergiaCalorias()
+    {
+        $result = $this->getGrasaCalorias() + $this->getCarbohidratoCalorias();
+
+        return $result;
+    }
+
+    public function getGrasaPorcentaje()
+    {
+        if (empty($this->getTotalCalorias())){return 0;}
+
+        $result = $this->getGrasaCalorias() / $this->getTotalCalorias() * 100;
+
+        return round($result, 2);
+    }
+
+    public function getCarbohidratoPorcentaje()
+    {
+        if (empty($this->getTotalCalorias())){return 0;}
+
+        $result = $this->getCarbohidratoCalorias() / $this->getTotalCalorias() * 100;
+
+        return round($result, 2);
+    }
+
+    public function getProteinaPorcentaje()
+    {
+        if (empty($this->getTotalCalorias())){return 0;}
+
+        $result = $this->getProteinaCalorias() / $this->getTotalCalorias() * 100;
+
+        return round($result, 2);
+    }
+
+
+
     /**
      * Get id
      *

@@ -125,6 +125,78 @@ class Dieta
         return sprintf("%s : %s.", $this->getUser()->getFullname(), $this->getNombre()) ?? sprintf("Id: %s.", $this->getId()) ?? '';
     }
 
+    public function getGrasaCalorias()
+    {
+        $result = 0;
+        foreach ($this->dietacomidas as $dietacomida):
+            $result += $dietacomida->getGrasaCalorias();
+        endforeach;
+
+        return $result;
+    }
+
+    public function getCarbohidratoCalorias()
+    {
+        $result = 0;
+        foreach ($this->dietacomidas as $dietacomida):
+            $result += $dietacomida->getCarbohidratoCalorias();
+        endforeach;
+
+        return $result;
+    }
+
+    public function getProteinaCalorias()
+    {
+        $result = 0;
+        foreach ($this->dietacomidas as $dietacomida):
+            $result += $dietacomida->getProteinaCalorias();
+        endforeach;
+
+        return $result;
+    }
+
+    public function getTotalCalorias()
+    {
+        $result = $this->getGrasaCalorias() + $this->getCarbohidratoCalorias() + $this->getProteinaCalorias();
+
+        return $result;
+    }
+
+    public function getEnergiaCalorias()
+    {
+        $result = $this->getGrasaCalorias() + $this->getCarbohidratoCalorias();
+
+        return $result;
+    }
+
+    public function getGrasaPorcentaje()
+    {
+        if (empty($this->getTotalCalorias())){return 0;}
+
+        $result = $this->getGrasaCalorias() / $this->getTotalCalorias() * 100;
+
+        return round($result, 2);
+    }
+
+    public function getCarbohidratoPorcentaje()
+    {
+        if (empty($this->getTotalCalorias())){return 0;}
+
+        $result = $this->getCarbohidratoCalorias() / $this->getTotalCalorias() * 100;
+
+        return round($result, 2);
+    }
+
+    public function getProteinaPorcentaje()
+    {
+        if (empty($this->getTotalCalorias())){return 0;}
+
+        $result = $this->getProteinaCalorias() / $this->getTotalCalorias() * 100;
+
+        return round($result, 2);
+    }
+
+
     /**
      * Get id
      *
