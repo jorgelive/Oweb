@@ -39,6 +39,7 @@ class AppKernel extends Kernel
             new Gopro\FullcalendarBundle\GoproFullcalendarBundle(),
             new Gopro\CotizacionBundle\GoproCotizacionBundle(),
             new Gopro\ServicioBundle\GoproServicioBundle(),
+            new Gopro\FitBundle\GoproFitBundle(),
             new Gopro\CuentaBundle\GoproCuentaBundle(),
             new Gopro\ComprobanteBundle\GoproComprobanteBundle(),
         ];

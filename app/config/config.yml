@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@GoproCotizacionBundle/Resources/config/services.yml" }
+    - { resource: "@GoproFitBundle/Resources/config/services.yml" }
     - { resource: "@GoproServicioBundle/Resources/config/services.yml" }
     - { resource: "@GoproCuentaBundle/Resources/config/services.yml" }
 
@@ -389,6 +390,16 @@ sonata_admin:
                     - gopro_servicio.admin.tarifa
                     - gopro_servicio.admin.tipocomponente
                     - gopro_servicio.admin.tipotarifa
+
+            goprosonata.admin.group.fit:
+                label: 'Fit'
+                icon: '<i class="fa fa-bar-chart"></i>'
+                items:
+                    - gopro_fit.admin.dieta
+                    - gopro_fit.admin.tipodieta
+                    - gopro_fit.admin.alimento
+                    - gopro_fit.admin.medidaalimento
+                    - gopro_fit.admin.tipoalimento
 
             goprosonata.admin.group.maestro:
                 label: 'Maestros'

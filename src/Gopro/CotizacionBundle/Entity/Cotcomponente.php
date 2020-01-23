@@ -28,6 +28,7 @@ class Cotcomponente
      * @var \Gopro\CotizacionBundle\Entity\Cotservicio
      *
      * @ORM\ManyToOne(targetEntity="Gopro\CotizacionBundle\Entity\Cotservicio", inversedBy="cotcomponentes")
+     * @ORM\JoinColumn(name="cotservicio_id", referencedColumnName="id", nullable=false)
      */
     protected $cotservicio;
 

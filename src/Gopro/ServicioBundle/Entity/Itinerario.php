@@ -5,6 +5,8 @@ namespace Gopro\ServicioBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Sonata\TranslationBundle\Model\Gedmo\TranslatableInterface;
+use Sonata\TranslationBundle\Traits\Gedmo\PersonalTranslatableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -12,9 +14,12 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="ser_itinerario")
  * @ORM\Entity(repositoryClass="Gopro\ServicioBundle\Repository\ItinerarioRepository")
+ * @Gedmo\TranslationEntity(class="Gopro\ServicioBundle\Entity\ItinerarioTranslation")
  */
-class Itinerario
+class Itinerario implements TranslatableInterface
 {
+    use PersonalTranslatableTrait;
+
     /**
      * @var int
      *

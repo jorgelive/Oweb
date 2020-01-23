@@ -1,0 +1,53 @@
+services:
+    gopro_fit.admin.dieta:
+        class: Gopro\FitBundle\Admin\DietaAdmin
+        arguments: [~, Gopro\FitBundle\Entity\Dieta, GoproFitBundle:DietaAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Fit, label: Dieta }
+        calls:
+            - [ setTemplate, [edit, GoproFitBundle:DietaAdmin:edit.html.twig]]
+            - [ setTemplate, [list, GoproFitBundle:DietaAdmin:list.html.twig]]
+        public: true
+
+    gopro_fit.admin.dietacomida:
+        class: Gopro\FitBundle\Admin\DietacomidaAdmin
+        arguments: [~, Gopro\FitBundle\Entity\Dietacomida, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false, group: Fit, label: Componentes }
+        public: true
+
+    gopro_fit.admin.dietaalimento:
+        class: Gopro\FitBundle\Admin\DietaalimentoAdmin
+        arguments: [~, Gopro\FitBundle\Entity\Dietaalimento, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, show_in_dashboard: false, group: Fit, label: Tarifa }
+        public: true
+
+    gopro_fit.admin.tipodieta:
+        class: Gopro\FitBundle\Admin\TipodietaAdmin
+        arguments: [~, Gopro\FitBundle\Entity\Tipodieta, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Fit, label: Tipo de dieta }
+        public: true
+
+    gopro_fit.admin.alimento:
+        class: Gopro\FitBundle\Admin\AlimentoAdmin
+        arguments: [~, Gopro\FitBundle\Entity\Alimento, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Fit, label: Alimento }
+        public: true
+
+    gopro_fit.admin.tipoalimento:
+        class: Gopro\FitBundle\Admin\TipoalimentoAdmin
+        arguments: [~, Gopro\FitBundle\Entity\Tipoalimento, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Fit, label: Tipo de alimento }
+        public: true
+
+    gopro_fit.admin.medidaalimento:
+        class: Gopro\FitBundle\Admin\MedidaalimentoAdmin
+        arguments: [~, Gopro\FitBundle\Entity\Medidaalimento, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Fit, label: Medida de alimento }
+        public: true
+

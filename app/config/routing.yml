@@ -8,6 +8,11 @@ gopro_cuenta:
     type:     annotation
     prefix:   /cuenta
 
+gopro_fit:
+    resource: "@GoproFitBundle/Controller/"
+    type:     annotation
+    prefix:   /fit
+
 gopro_servicio:
     resource: "@GoproServicioBundle/Controller/"
     type:     annotation

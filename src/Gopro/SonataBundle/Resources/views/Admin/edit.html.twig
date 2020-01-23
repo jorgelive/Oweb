@@ -106,6 +106,8 @@
                                         siguienteFila.remove();
                                     }
                                     fila.remove();
+                                    tbody.closest('table').trigger('table:rowdeleted');
+
                                     if(tbody.children('tr').length === 0){
                                         tbody.closest('table').remove();
                                     }
@@ -114,7 +116,7 @@
                                 }
                             }
                         });
-                        return $this;
+                        return $(this);
                     }
                 };
 
