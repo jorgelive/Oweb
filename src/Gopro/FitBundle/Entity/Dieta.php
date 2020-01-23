@@ -38,7 +38,7 @@ class Dieta
      *
      * @ORM\Column(name="peso", type="decimal", precision=5, scale=2, nullable=false)
      */
-    private $peso = '20.00';
+    private $peso = '60.00';
 
     /**
      * @var string
@@ -65,7 +65,7 @@ class Dieta
     /**
      * @var \Gopro\UserBundle\Entity\User
      *
-     * @ORM\OneToOne(targetEntity="Gopro\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Gopro\UserBundle\Entity\User" )
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
@@ -108,7 +108,7 @@ class Dieta
                 $newDietacomida->setDieta($this);
                 $newDietacomidas->add($newDietacomida);
             }
-            $this->cotservicios = $newDietacomidas;
+            $this->dietacomidas = $newDietacomidas;
         }
     }
 
