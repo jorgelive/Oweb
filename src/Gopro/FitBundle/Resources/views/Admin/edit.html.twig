@@ -182,7 +182,7 @@
                             cantidad = cantidad + parseFloat($(this).val());
                         });
 
-                        $('#' + baseIdDietaalimentos + '_resumen_' + value ).val(cantidad);
+                        $('#' + baseIdDietaalimentos + '_resumen_' + value ).val(cantidad.toFixed(2));
 
                     });
 
@@ -191,11 +191,18 @@
                         $('#' + baseIdDietaalimentos + '_resumen_' + value + 'porcentaje' ).val(resultado.toFixed(2));
                     });
 
+
                 });
             },
             resumenDietacomidas: function () {
 
                 var baseIdDietacomidas = $('.field-container-dietacomidas').attr('id').replace('field_container_','');
+                var idPeso = baseIdDietacomidas.replace('dietacomidas', 'peso');
+                var idIndicedegrasa = baseIdDietacomidas.replace('dietacomidas', 'indicedegrasa');
+
+                var peso = parseFloat($('#' + idPeso).val());
+                var indicedegrasa = parseFloat($('#' + idIndicedegrasa).val());
+                var pesomagro = peso - (peso * indicedegrasa / 100);
 
                 $.each(['grasatotal', 'carbohidratototal', 'proteinatotal', 'proteinatotalalto', 'grasacalorias', 'carbohidratocalorias', 'proteinacalorias', 'totalcalorias', 'energiacalorias'], function( index, value ) {
 
@@ -204,13 +211,18 @@
                         cantidad = cantidad + parseFloat($(this).val());
                     });
 
-                    $('#' + baseIdDietacomidas + '_total_' + value ).val(cantidad);
+                    $('#' + baseIdDietacomidas + '_total_' + value ).val(cantidad.toFixed(2));
 
                 });
 
                 $.each(['grasacalorias', 'carbohidratocalorias', 'proteinacalorias'], function( index, value ) {
                     var resultado = parseFloat($('#' + baseIdDietacomidas + '_total_' + value).val()) / parseFloat($('#' + baseIdDietacomidas + '_total_totalcalorias').val()) * 100;
                     $('#' + baseIdDietacomidas + '_total_' + value + 'porcentaje' ).val(resultado.toFixed(2));
+                });
+
+                $.each(['grasatotal', 'carbohidratototal', 'proteinatotal', 'proteinatotalalto'], function( index, value ) {
+                    var resultado = parseFloat($('#' + baseIdDietacomidas + '_total_' + value).val()) / pesomagro;
+                    $('#' + baseIdDietacomidas + '_total_' + value + 'porkilogramo' ).val(resultado.toFixed(2));
                 });
             }
 
@@ -223,7 +235,13 @@
             hacerresumen.resumenDietaalimentos();
             hacerresumen.resumenDietacomidas();
 
-            $('.table').off('table:rowdeleted').on('table:rowdeleted', function() {
+            $('.campo-peso, .campo-indicedegrasa').on('input', function() {
+                hacerresumen.resumenDietaalimentos();
+                hacerresumen.resumenDietacomidas();
+            });
+
+
+            $('.campo-cantidad input').off('table:rowdeleted').on('table:rowdeleted', function() {
                 hacerresumen.resumenDietaalimentos();
                 hacerresumen.resumenDietacomidas();
             });

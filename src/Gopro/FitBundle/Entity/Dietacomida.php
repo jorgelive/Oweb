@@ -98,6 +98,47 @@ class Dietacomida
 
     }
 
+    public function getGrasaTotal()
+    {
+        $result = 0;
+        foreach ($this->dietaalimentos as $dietaalimento):
+            $result += $dietaalimento->getGrasaTotal();
+        endforeach;
+
+        return round($result, 2);
+    }
+
+    public function getCarbohidratoTotal()
+    {
+        $result = 0;
+        foreach ($this->dietaalimentos as $dietaalimento):
+            $result += $dietaalimento->getCarbohidratoTotal();
+        endforeach;
+
+        return round($result, 2);
+    }
+
+    public function getProteinaTotal()
+    {
+        $result = 0;
+        foreach ($this->dietaalimentos as $dietaalimento):
+            $result += $dietaalimento->getProteinaTotal();
+        endforeach;
+
+        return round($result, 2);
+    }
+
+    public function getProteinaTotalAlto()
+    {
+        $result = 0;
+        foreach ($this->dietaalimentos as $dietaalimento):
+            $result += $dietaalimento->getProteinaTotalAlto();
+        endforeach;
+
+        return round($result, 2);
+    }
+
+
     public function getGrasaCalorias()
     {
         $result = 0;

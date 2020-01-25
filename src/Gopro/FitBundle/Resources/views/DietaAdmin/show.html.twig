@@ -59,6 +59,8 @@ file that was distributed with this source code.
 
             {% if object.dietacomidas is defined and object.dietacomidas|length > 0%}
 
+                {% set grasacolor, carbocolor, protcolor = '#FF6B4B', '#C5C200', '#00B3A0' %}
+
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h5 class="panel-title">
@@ -99,6 +101,16 @@ file that was distributed with this source code.
                                     <thead>
                                     <tr class="sonata-ba-list-field-header">
                                         <th>
+                                            Grasa
+                                        </th>
+                                        <th>
+                                            Carbo
+                                        </th>
+                                        <th>
+                                            Prot
+                                        </th>
+                                        <th>
+                                            Prot Alto
                                         </th>
                                         <th>
                                             Cal Grasa
@@ -120,36 +132,54 @@ file that was distributed with this source code.
                                     <tbody>
                                     <tr>
                                         <td>
-                                            <strong>Valores</strong>
+                                            <strong style="color: {{ grasacolor }};">{{ object.grasaTotal }} g</strong>
                                         </td>
                                         <td>
-                                            <strong>{{ object.grasaCalorias }}</strong>
+                                            <strong style="color: {{ carbocolor }};">{{ object.carbohidratoTotal }} g</strong>
                                         </td>
                                         <td>
-                                            <strong>{{ object.carbohidratoCalorias }}</strong>
+                                            <strong style="color: {{ protcolor }};">{{ object.proteinaTotal }} g</strong>
                                         </td>
                                         <td>
-                                            <strong>{{ object.proteinaCalorias }}</strong>
+                                            <strong style="color: {{ protcolor }};">{{ object.proteinaTotalAlto }} g</strong>
                                         </td>
                                         <td>
-                                            <strong>{{ object.totalCalorias }}</strong>
+                                            <strong style="color: {{ grasacolor }};">{{ object.grasaCalorias }}</strong>
                                         </td>
                                         <td>
-                                            <strong>{{ object.energiaCalorias }}</strong>
+                                            <strong style="color: {{ carbocolor }};">{{ object.carbohidratoCalorias }}</strong>
+                                        </td>
+                                        <td>
+                                            <strong style="color: {{ protcolor }};">{{ object.proteinaCalorias }}</strong>
+                                        </td>
+                                        <td>
+                                            <strong style="font-size: larger;">{{ object.totalCalorias }}</strong>
+                                        </td>
+                                        <td>
+                                            <strong style="font-size: larger;">{{ object.energiaCalorias }}</strong>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <strong>Porcentaje</strong>
+                                            <strong style="color: {{ grasacolor }};">{{ object.grasaTotalPorKilogramo }} g</strong>
                                         </td>
                                         <td>
-                                            <strong>{{ object.grasaPorcentaje }}</strong>
+                                            <strong style="color: {{ carbocolor }};">{{ object.carbohidratoTotalPorKilogramo }} g</strong>
                                         </td>
                                         <td>
-                                            <strong>{{ object.carbohidratoPorcentaje }}</strong>
+                                            <strong style="color: {{ protcolor }};">{{ object.proteinaTotalPorKilogramo }} g</strong>
                                         </td>
                                         <td>
-                                            <strong>{{ object.proteinaPorcentaje }}</strong>
+                                            <strong style="color: {{ protcolor }};">{{ object.proteinaTotalAltoPorKilogramo }} g</strong>
+                                        </td>
+                                        <td>
+                                            <strong style="color: {{ grasacolor }};">{{ object.grasaPorcentaje }} %</strong>
+                                        </td>
+                                        <td>
+                                            <strong style="color: {{ carbocolor }};">{{ object.carbohidratoPorcentaje }} %</strong>
+                                        </td>
+                                        <td>
+                                            <strong style="color: {{ protcolor }};">{{ object.proteinaPorcentaje }} %</strong>
                                         </td>
                                         <td>
                                         </td>
@@ -209,19 +239,19 @@ file that was distributed with this source code.
                                         <td>
                                         </td>
                                         <td>
-                                            <strong>{{ dietacomida.grasaCalorias }}</strong>
+                                            <strong style="color: {{ grasacolor }};">{{ dietacomida.grasaCalorias }}</strong>
                                         </td>
                                         <td>
-                                            <strong>{{ dietacomida.carbohidratoCalorias }}</strong>
+                                            <strong style="color: {{ carbocolor }};">{{ dietacomida.carbohidratoCalorias }}</strong>
                                         </td>
                                         <td>
-                                            <strong>{{ dietacomida.proteinaCalorias }}</strong>
+                                            <strong style="color: {{ protcolor }};">{{ dietacomida.proteinaCalorias }}</strong>
                                         </td>
                                         <td>
-                                            <strong>{{ dietacomida.totalCalorias }}</strong>
+                                            <strong style="font-size: larger;">{{ dietacomida.totalCalorias }}</strong>
                                         </td>
                                         <td>
-                                            <strong>{{ dietacomida.energiaCalorias }}</strong>
+                                            <strong style="font-size: larger;">{{ dietacomida.energiaCalorias }}</strong>
                                         </td>
                                     </tr>
                                     <tr>
@@ -231,13 +261,13 @@ file that was distributed with this source code.
                                         <td>
                                         </td>
                                         <td>
-                                            <strong>{{ dietacomida.grasaPorcentaje }}</strong>
+                                            <strong style="color: {{ grasacolor }};">{{ dietacomida.grasaPorcentaje }} %</strong>
                                         </td>
                                         <td>
-                                            <strong>{{ dietacomida.carbohidratoPorcentaje }}</strong>
+                                            <strong style="color: {{ carbocolor }};">{{ dietacomida.carbohidratoPorcentaje }} %</strong>
                                         </td>
                                         <td>
-                                            <strong>{{ dietacomida.proteinaPorcentaje }}</strong>
+                                            <strong style="color: {{ protcolor }};">{{ dietacomida.proteinaPorcentaje }} %</strong>
                                         </td>
                                         <td>
                                             <strong></strong>

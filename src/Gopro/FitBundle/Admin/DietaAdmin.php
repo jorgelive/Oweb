@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\CoreBundle\Form\Type\CollectionType;
+use Sonata\CoreBundle\Form\Type\DatePickerType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 
@@ -30,7 +31,12 @@ class DietaAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id')
+            ->add('user', null, [
+                'label' => 'Usuario'
+            ])
+            ->add('tipodieta', null, [
+                'label' => 'Tipo de dieta'
+            ])
             ->add('nombre')
             ->add('peso', null, [
                 'label' => 'Peso'
@@ -38,15 +44,10 @@ class DietaAdmin extends AbstractAdmin
             ->add('indicedegrasa', null, [
                 'label' => 'Indice de grasa'
             ])
-            ->add('tipodieta', null, [
-                'label' => 'Tipo de dieta'
-            ])
             ->add('fecha', null, [
                 'label' => 'Fecha'
             ])
-            ->add('user', null, [
-                'label' => 'Usuario'
-            ])
+
         ;
     }
 
@@ -57,30 +58,35 @@ class DietaAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
-            ->add('nombre', null, [
-                'editable' => true,
-            ])
-            ->add('peso', null, [
-                'label' => 'Peso',
-                'editable' => true
-            ])
-            ->add('indicedegrasa', null, [
-                'label' => 'Indice de grasa',
-                'editable' => true
+            ->add('user', null, [
+                'label' => 'Usuario'
             ])
             ->add('tipodieta', null, [
                 'label' => 'Tipo de dieta'
+            ])
+            ->add('nombre', null, [
+                'editable' => true,
+            ])
+            ->add('totalCalorias', null, [
+                'label' => 'Tot cal',
+                'row_align' => 'right'
+            ])
+            ->add('proteinaTotalPorKilogramo', null, [
+                'label' => 'Prot por kg',
+                'row_align' => 'right'
+            ])
+            ->add('peso', null, [
+                'label' => 'Peso',
+                'row_align' => 'right'
+            ])
+            ->add('indicedegrasa', null, [
+                'label' => 'Indice de grasa',
+                'row_align' => 'right'
             ])
             ->add('fecha', null, [
                 'label' => 'Fecha',
                 'format' => 'Y/m/d'
             ])
-            ->add('user', null, [
-                'label' => 'Usuario'
-            ])
-
-
-
             ->add('_action', null, [
                 'label' => 'Acciones',
                 'actions' => [
@@ -101,21 +107,26 @@ class DietaAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('nombre')
-            ->add('peso', null, [
-                'label' => 'Peso'
-            ])
-            ->add('indicedegrasa', null, [
-                'label' => 'Indice de grasa'
+            ->add('user', null, [
+                'label' => 'Usuario'
             ])
             ->add('tipodieta', null, [
                 'label' => 'Tipo de dieta'
             ])
-            ->add('fecha', null, [
-                'label' => 'Fecha'
+            ->add('nombre')
+            ->add('peso', null, [
+                'label' => 'Peso',
+                'attr' => ['class' =>'campo-peso']
             ])
-            ->add('user', null, [
-                'label' => 'Usuario'
+            ->add('indicedegrasa', null, [
+                'label' => 'Indice de grasa',
+                'attr' => ['class' =>'campo-indicedegrasa']
+            ])
+            ->add('fecha', DatePickerType::class, [
+                'label' => 'Fecha',
+                'dp_use_current' => true,
+                'dp_show_today' => true,
+                'format'=> 'yyyy/MM/dd'
             ])
             ->add('dietacomidas', CollectionType::class , [
                 'by_reference' => false,
@@ -136,6 +147,12 @@ class DietaAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
+            ->add('user', null, [
+                'label' => 'Usuario'
+            ])
+            ->add('tipodieta', null, [
+                'label' => 'Tipo de dieta'
+            ])
             ->add('nombre')
             ->add('peso', null, [
                 'label' => 'Peso'
@@ -143,15 +160,10 @@ class DietaAdmin extends AbstractAdmin
             ->add('indicedegrasa', null, [
                 'label' => 'Indice de grasa'
             ])
-            ->add('tipodieta', null, [
-                'label' => 'Tipo de dieta'
-            ])
             ->add('fecha', null, [
                 'label' => 'Fecha'
             ])
-            ->add('user', null, [
-                'label' => 'Usuario'
-            ])
+
 
         ;
     }
