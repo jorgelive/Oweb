@@ -56,8 +56,8 @@ class ComponenteAdmin extends AbstractAdmin
             ->add('tipocomponente', null, [
                 'label' => 'Tipo',
                 'sortable' => true,
-                'sort_field_mapping' => array('fieldName' => 'nombre'),
-                'sort_parent_association_mappings' => array(array('fieldName' => 'tipocomponente'))
+                'sort_field_mapping' => ['fieldName' => 'nombre'],
+                'sort_parent_association_mappings' => [['fieldName' => 'tipocomponente']]
             ])
             ->add('duracion', null, [
                 'label' => 'Duración',

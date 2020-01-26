@@ -47,6 +47,13 @@ class Dietacomida
     private $numerocomida;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="nota", type="string", length=255, nullable=true)
+     */
+    private $nota;
+
+    /**
      * @var \DateTime $creado
      *
      * @Gedmo\Timestampable(on="create")
@@ -305,6 +312,30 @@ class Dietacomida
     public function getNumerocomida()
     {
         return $this->numerocomida;
+    }
+
+    /**
+     * Set nota
+     *
+     * @param string $nota
+     *
+     * @return Dietacomida
+     */
+    public function setNota($nota)
+    {
+        $this->nota = $nota;
+
+        return $this;
+    }
+
+    /**
+     * Get nota
+     *
+     * @return integer
+     */
+    public function getNota()
+    {
+        return $this->nota;
     }
 
     /**

@@ -54,8 +54,8 @@ class ItinerarioAdmin extends AbstractAdmin
             ->add('id')
             ->add('servicio', null, [
                 'sortable' => true,
-                'sort_field_mapping' => array('fieldName' => 'nombre'),
-                'sort_parent_association_mappings' => array(array('fieldName' => 'servicio'))
+                'sort_field_mapping' => ['fieldName' => 'nombre'],
+                'sort_parent_association_mappings' => [['fieldName' => 'servicio']]
             ])
             ->add('nombre', null, [
                 'editable' => true

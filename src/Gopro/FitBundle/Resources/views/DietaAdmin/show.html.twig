@@ -70,15 +70,17 @@ file that was distributed with this source code.
                         </h5>
                     </div>
                     <div class="panel box-body">
-                        <div class="panel-body table-responsive no-padding">
+                        <br / class="panel-body table-responsive no-padding">
 
                             {% for dietacomida in object.dietacomidas %}
-                            <h4>Comida: <strong>{{ dietacomida.numerocomida }}</strong></h4>
-                            <p>
-                                {% for dietaalimento in dietacomida.dietaalimentos %}
-                                    {{ dietaalimento.alimento.nombre }} ({{ dietaalimento.medidaCantidadAlimento }}){% if loop.last %}.{% else %}, {% endif %}
-                                {% endfor %}
-                            </p>
+                                <div style="margin-bottom: 25px; display: block; width: 100%">
+                                <h4>Comida: <strong>{{ dietacomida.numerocomida }}</strong>{% if dietacomida.nota is not empty %} ({{ dietacomida.nota }}){% endif %}</h4>
+                                <p>
+                                    {% for dietaalimento in dietacomida.dietaalimentos %}
+                                        {% if loop.first %}{% elseif loop.last %} y {% else %}, {% endif %}{{ dietaalimento.alimento.nombre }} ({{ dietaalimento.medidaCantidadAlimento }})
+                                    {% endfor %}
+                                </p>
+                                </div>
 
                             {% endfor %}
 
@@ -203,7 +205,7 @@ file that was distributed with this source code.
                     </div>
                     <div class="panel box-body">
                         {% for dietacomida in object.dietacomidas %}
-                            <h4>Comida: <strong>{{ dietacomida.numerocomida }}</strong></h4>
+                            <h4>Comida: <strong>{{ dietacomida.numerocomida }}</strong>{% if dietacomida.nota is not empty %} ({{ dietacomida.nota }}){% endif %}</h4>
                             <div class="panel-body table-responsive no-padding">
                                 <table class="table table-bordered table-striped sonata-ba-list">
                                     <thead>

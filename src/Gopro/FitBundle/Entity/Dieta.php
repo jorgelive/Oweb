@@ -59,6 +59,7 @@ class Dieta
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Gopro\FitBundle\Entity\Dietacomida", mappedBy="dieta", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\OrderBy({"numerocomida" = "ASC"})
      */
     private $dietacomidas;
 

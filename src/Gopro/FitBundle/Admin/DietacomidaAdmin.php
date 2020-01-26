@@ -29,6 +29,9 @@ class DietacomidaAdmin extends AbstractAdmin
             ->add('numerocomida', null, [
                 'label' => 'Número de comida'
             ])
+            ->add('nota', null, [
+                'label' => 'Nota'
+            ])
         ;
     }
 
@@ -41,6 +44,9 @@ class DietacomidaAdmin extends AbstractAdmin
             ->add('id')
             ->add('numerocomida', null, [
                 'label' => 'Número de comida'
+            ])
+            ->add('nota', null, [
+                'label' => 'Nota'
             ])
             ->add('_action', null, [
                 'label' => 'Acciones',
@@ -69,7 +75,9 @@ class DietacomidaAdmin extends AbstractAdmin
             ->add('numerocomida', null, [
                     'label' => 'Número de comida'
             ])
-
+            ->add('nota', null, [
+                'label' => 'Nota'
+            ])
             ->add('dietaalimentos', CollectionType::class , [
                 'by_reference' => false,
                 'label' => 'Alimentos'
@@ -86,22 +94,21 @@ class DietacomidaAdmin extends AbstractAdmin
      */
     protected function configureShowFields(ShowMapper $showMapper)
     {
-        $showMapper
-            ->add('id')
-            ->add('cotservicio')
-            ->add('componente')
-            ->add('cantidad')
-            ->add('fechahorainicio', null, [
-                'label' => 'Inicio',
-                'format' => 'Y/m/d H:i'
+
+
+        $showMapper->add('dieta', null, [
+            'label' => 'Dieta'
             ])
-            ->add('fechahorafin', null, [
-                'label' => 'Inicio',
-                'format' => 'Y/m/d H:i'
+            ->add('numerocomida', null, [
+                'label' => 'Número de comida'
             ])
-            ->add('estadocotcomponente', null, [
-                'label' => 'Estado'
+            ->add('nota', null, [
+                'label' => 'Nota'
+            ])
+            ->add('dietaalimentos', null , [
+                'label' => 'Alimentos'
             ])
         ;
+
     }
 }
