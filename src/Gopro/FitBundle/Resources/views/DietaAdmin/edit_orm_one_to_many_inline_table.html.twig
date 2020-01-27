@@ -90,43 +90,43 @@ file that was distributed with this source code.
 
                     {% if field_name == 'alimento' and nested_field.vars.sonata_admin_code == 'gopro_fit.admin.dietaalimento' %}
                         <td>
-                            <input readonly style="width: {{ anchomedida }}px" type="text" class="campo_medidacantidad form-control" id="{{ nested_field.parent.vars.id }}_medidacantidad" value="{{ nested_field.parent.vars.value.MedidaCantidadAlimento }}">
+                            <input readonly style="text-align: right; width: {{ anchomedida }}px" type="text" class="campo_medidacantidad form-control" id="{{ nested_field.parent.vars.id }}_medidacantidad" value="{{ nested_field.parent.vars.value.MedidaCantidadAlimento }}">
                         </td>
                         <td>
-                            <input readonly style="width: {{ anchovalor }}px; background-color: {{ grasacolor1 }}" type="text" class="campo_grasa form-control" id="{{ nested_field.parent.vars.id }}_grasa" value="{{ nested_field.parent.vars.value.Grasa }}">
+                            <input readonly style="text-align: right; width: {{ anchovalor }}px; background-color: {{ grasacolor1 }}" type="text" class="campo_grasa form-control" id="{{ nested_field.parent.vars.id }}_grasa" value="{{ nested_field.parent.vars.value.Grasa }}">
                         </td>
                         <td>
-                            <input readonly style="width: {{ anchovalor }}px; background-color: {{ carbocolor1 }}" type="text" class="campo_carbohidrato form-control" id="{{ nested_field.parent.vars.id }}_carbohidrato" value="{{ nested_field.parent.vars.value.Carbohidrato }}">
+                            <input readonly style="text-align: right; width: {{ anchovalor }}px; background-color: {{ carbocolor1 }}" type="text" class="campo_carbohidrato form-control" id="{{ nested_field.parent.vars.id }}_carbohidrato" value="{{ nested_field.parent.vars.value.Carbohidrato }}">
                         </td>
                         <td>
-                            <input readonly style="width: {{ anchovalor }}px; background-color: {{ protcolor1 }}" type="text" class="campo_proteina form-control" id="{{ nested_field.parent.vars.id }}_proteina" value="{{ nested_field.parent.vars.value.Proteina }}">
+                            <input readonly style="text-align: right; width: {{ anchovalor }}px; background-color: {{ protcolor1 }}" type="text" class="campo_proteina form-control" id="{{ nested_field.parent.vars.id }}_proteina" value="{{ nested_field.parent.vars.value.Proteina }}">
                         </td>
                         <td>
-                            <input readonly style="width: {{ anchovalor }}px; background-color: {{ grasacolor2 }}" type="text" class="campo_grasatotal form-control" id="{{ nested_field.parent.vars.id }}_grasatotal" value="{{ nested_field.parent.vars.value.GrasaTotal }}">
+                            <input readonly style="text-align: right; width: {{ anchovalor }}px; background-color: {{ grasacolor2 }}" type="text" class="campo_grasatotal form-control" id="{{ nested_field.parent.vars.id }}_grasatotal" value="{{ nested_field.parent.vars.value.GrasaTotal }}">
                         </td>
                         <td>
-                            <input readonly style="width: {{ anchovalor }}px; background-color: {{ carbocolor2 }}" type="text" class="campo_carbohidratototal form-control" id="{{ nested_field.parent.vars.id }}_carbohidratototal" value="{{ nested_field.parent.vars.value.CarbohidratoTotal }}">
+                            <input readonly style="text-align: right; width: {{ anchovalor }}px; background-color: {{ carbocolor2 }}" type="text" class="campo_carbohidratototal form-control" id="{{ nested_field.parent.vars.id }}_carbohidratototal" value="{{ nested_field.parent.vars.value.CarbohidratoTotal }}">
                         </td>
                         <td>
-                            <input readonly style="width: {{ anchovalor }}px; background-color: {{ protcolor2 }}" type="text" class="campo_proteinatotal form-control" id="{{ nested_field.parent.vars.id }}_proteinatotal" value="{{ nested_field.parent.vars.value.ProteinaTotal }}">
+                            <input readonly style="text-align: right; width: {{ anchovalor }}px; background-color: {{ protcolor2 }}" type="text" class="campo_proteinatotal form-control" id="{{ nested_field.parent.vars.id }}_proteinatotal" value="{{ nested_field.parent.vars.value.ProteinaTotal }}">
                         </td>
                         <td>
-                            <input readonly style="width: {{ anchovalor }}px; background-color: {{ protcolor2 }}" type="text" class="campo_proteinatotalalto form-control" id="{{ nested_field.parent.vars.id }}_proteinatotalalto" value="{{ nested_field.parent.vars.value.ProteinaTotalAlto }}">
+                            <input readonly style="text-align: right; width: {{ anchovalor }}px; background-color: {{ protcolor2 }}" type="text" class="campo_proteinatotalalto form-control" id="{{ nested_field.parent.vars.id }}_proteinatotalalto" value="{{ nested_field.parent.vars.value.ProteinaTotalAlto }}">
                         </td>
                         <td>
-                            <input readonly style="width: {{ anchovalor }}px; background-color: {{ grasacolor3 }}" type="text" class="campo_grasacalorias form-control" id="{{ nested_field.parent.vars.id }}_grasacalorias" value="{{ nested_field.parent.vars.value.GrasaCalorias }}">
+                            <input readonly style="text-align: right; width: {{ anchovalor }}px; background-color: {{ grasacolor3 }}" type="text" class="campo_grasacalorias form-control" id="{{ nested_field.parent.vars.id }}_grasacalorias" value="{{ nested_field.parent.vars.value.GrasaCalorias }}">
                         </td>
                         <td>
-                            <input readonly style="width: {{ anchovalor }}px; background-color: {{ carbocolor3 }}" type="text" class="campo_carbohidratocalorias form-control" id="{{ nested_field.parent.vars.id }}_carbohidratocalorias" value="{{ nested_field.parent.vars.value.CarbohidratoCalorias }}">
+                            <input readonly style="text-align: right; width: {{ anchovalor }}px; background-color: {{ carbocolor3 }}" type="text" class="campo_carbohidratocalorias form-control" id="{{ nested_field.parent.vars.id }}_carbohidratocalorias" value="{{ nested_field.parent.vars.value.CarbohidratoCalorias }}">
                         </td>
                         <td>
-                            <input readonly style="width: {{ anchovalor }}px; background-color: {{ protcolor3 }}" type="text" class="campo_proteinacalorias form-control" id="{{ nested_field.parent.vars.id }}_proteinacalorias" value="{{ nested_field.parent.vars.value.ProteinaCalorias }}">
+                            <input readonly style="text-align: right; width: {{ anchovalor }}px; background-color: {{ protcolor3 }}" type="text" class="campo_proteinacalorias form-control" id="{{ nested_field.parent.vars.id }}_proteinacalorias" value="{{ nested_field.parent.vars.value.ProteinaCalorias }}">
                         </td>
                         <td>
-                            <input readonly style="width: {{ anchovalor }}px;" type="text" class="campo_totalcalorias form-control" id="{{ nested_field.parent.vars.id }}_totalcalorias" value="{{ nested_field.parent.vars.value.TotalCalorias }}">
+                            <input readonly style="text-align: right; width: {{ anchovalor }}px;" type="text" class="campo_totalcalorias form-control" id="{{ nested_field.parent.vars.id }}_totalcalorias" value="{{ nested_field.parent.vars.value.TotalCalorias }}">
                         </td>
                         <td>
-                            <input readonly style="width: {{ anchovalor }}px;" type="text" class="campo_energiacalorias form-control" id="{{ nested_field.parent.vars.id }}_energiacalorias" value="{{ nested_field.parent.vars.value.EnergiaCalorias }}">
+                            <input readonly style="text-align: right; width: {{ anchovalor }}px;" type="text" class="campo_energiacalorias form-control" id="{{ nested_field.parent.vars.id }}_energiacalorias" value="{{ nested_field.parent.vars.value.EnergiaCalorias }}">
                         </td>
 
                     {% endif %}

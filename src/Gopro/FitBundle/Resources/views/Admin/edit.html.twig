@@ -182,13 +182,19 @@
                             cantidad = cantidad + parseFloat($(this).val());
                         });
 
-                        $('#' + baseIdDietaalimentos + '_resumen_' + value ).val(cantidad.toFixed(2));
+                        var unidades = '';
+
+                        if (value.indexOf("calorias") < 1){
+                            unidades = ' g';
+                        }
+
+                        $('#' + baseIdDietaalimentos + '_resumen_' + value ).val(cantidad.toFixed(2) + unidades);
 
                     });
 
                     $.each(['grasacalorias', 'carbohidratocalorias', 'proteinacalorias'], function( index, value ) {
                         var resultado = parseFloat($('#' + baseIdDietaalimentos + '_resumen_' + value).val()) / parseFloat($('#' + baseIdDietaalimentos + '_resumen_totalcalorias').val()) * 100;
-                        $('#' + baseIdDietaalimentos + '_resumen_' + value + 'porcentaje' ).val(resultado.toFixed(2));
+                        $('#' + baseIdDietaalimentos + '_resumen_' + value + 'porcentaje' ).val(resultado.toFixed(2) + ' %');
                     });
 
 
@@ -211,18 +217,24 @@
                         cantidad = cantidad + parseFloat($(this).val());
                     });
 
-                    $('#' + baseIdDietacomidas + '_total_' + value ).val(cantidad.toFixed(2));
+                    var unidades = '';
+
+                    if (value.indexOf("calorias") < 1){
+                        unidades = ' g';
+                    }
+
+                    $('#' + baseIdDietacomidas + '_total_' + value ).val(cantidad.toFixed(2) + unidades);
 
                 });
 
                 $.each(['grasacalorias', 'carbohidratocalorias', 'proteinacalorias'], function( index, value ) {
                     var resultado = parseFloat($('#' + baseIdDietacomidas + '_total_' + value).val()) / parseFloat($('#' + baseIdDietacomidas + '_total_totalcalorias').val()) * 100;
-                    $('#' + baseIdDietacomidas + '_total_' + value + 'porcentaje' ).val(resultado.toFixed(2));
+                    $('#' + baseIdDietacomidas + '_total_' + value + 'porcentaje' ).val(resultado.toFixed(2) + ' %');
                 });
 
                 $.each(['grasatotal', 'carbohidratototal', 'proteinatotal', 'proteinatotalalto'], function( index, value ) {
                     var resultado = parseFloat($('#' + baseIdDietacomidas + '_total_' + value).val()) / pesomagro;
-                    $('#' + baseIdDietacomidas + '_total_' + value + 'porkilogramo' ).val(resultado.toFixed(2));
+                    $('#' + baseIdDietacomidas + '_total_' + value + 'porkilogramo' ).val(resultado.toFixed(2) + ' g');
                 });
             }
 
