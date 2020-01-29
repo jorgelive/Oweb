@@ -16,6 +16,12 @@ class DietaAdmin extends AbstractAdmin
 
     public $vars;
 
+    protected $datagridValues = [
+        '_page' => 1,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'modificado'
+    ];
+
     public function getFormTheme()
     {
         return array_merge(
@@ -85,6 +91,10 @@ class DietaAdmin extends AbstractAdmin
             ])
             ->add('fecha', null, [
                 'label' => 'Fecha',
+                'format' => 'Y/m/d'
+            ])
+            ->add('modificado', null, [
+                'label' => 'Modificación',
                 'format' => 'Y/m/d'
             ])
             ->add('_action', null, [

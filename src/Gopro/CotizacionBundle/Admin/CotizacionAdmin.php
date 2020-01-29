@@ -18,7 +18,7 @@ class CotizacionAdmin extends AbstractAdmin
     protected $datagridValues = [
         '_page' => 1,
         '_sort_order' => 'DESC',
-        '_sort_by' => 'modificado',
+        '_sort_by' => 'modificado'
     ];
 
 

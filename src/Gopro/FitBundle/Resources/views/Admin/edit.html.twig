@@ -19,11 +19,21 @@
 
                 var methods = {
                     init: function () {
-                        var $this = $(this);
-                        $this.off("change", methods.seleccionar).on("change", methods.seleccionar);
-                        $this.off("input", methods.seleccionar).on("input", methods.seleccionar);
 
-                        return $this;
+                        console.log('Llamado a cambiovalor.methods.init en: ' + $(this).attr("id"));
+                        var $this = $(this);
+                        //colocando attributo para no duplicar el metodo
+                        if($this.attr('methodCambiovalorSeleccionar') === 'true'){
+                            console.log('On change no necesario: ' + $(this).attr("id"));
+                            return $this;
+                        }else{
+                            console.log('Seteando valor, methodCambiovalorSeleccionar variable: ' + $this.attr('methodCambiovalorSeleccionar') + ' en :' + $(this).attr("id"));
+                            $this.attr('methodcambiovalorseleccionar', 'true');
+                            $this.off("change", methods.seleccionar).on("change", methods.seleccionar);
+                            $this.off("input", methods.seleccionar).on("input", methods.seleccionar);
+                            return $this;
+                        }
+
                     },
                     seleccionar: function (event) {
 
@@ -241,31 +251,46 @@
         };
 
         $(document).ready(function(){
+            console.log('Documento cargado.');
+            console.log('Ejecutando cambiovalor para select.');
             $('select').cambiovalor();
+            console.log('Ejecutando cambiovalor para input.');
             $('.campo-cantidad input').cambiovalor();
 
+            console.log('Haciendo resumen.');
             hacerresumen.resumenDietaalimentos();
             hacerresumen.resumenDietacomidas();
 
+            console.log('Configurando on input para campo peso, o campo indice de grasa.');
             $('.campo-peso, .campo-indicedegrasa').on('input', function() {
+                console.log('Modificado campo peso, o campo indice de grasa, haciendo resumen.');
                 hacerresumen.resumenDietaalimentos();
                 hacerresumen.resumenDietacomidas();
             });
 
-
-            $('.campo-cantidad input').off('table:rowdeleted').on('table:rowdeleted', function() {
+            console.log('Configurando on rowdeleted para table.');
+            $('.table').on('table:rowdeleted', function() {
+                console.log('Eliminada fila de table, haciendo resumen.');
                 hacerresumen.resumenDietaalimentos();
                 hacerresumen.resumenDietacomidas();
+                $(this).attr('rowdeletedmethod', 'true');
             });
 
             $('body').on('sonata.add_element', function() {
+                console.log('Agregadas filas.');
+                console.log('Ejecutando cambiovalor para select.');
                 $('select').cambiovalor();
+                console.log('Ejecutando cambiovalor para select.');
                 $('.campo-cantidad input').cambiovalor();
-
-                $('.table').off('table:rowdeleted').on('table:rowdeleted', function() {
-                    hacerresumen.resumenDietaalimentos();
-                    hacerresumen.resumenDietacomidas();
-                });
+                if($('.table').attr('rowdeletedmethod') === 'true'){
+                    console.log('No necesaria la configuracion de rowdeleted para la tabla: ' + $('.table').attr('id'));
+                }else{
+                    console.log('Configurando on rowdeleted para table.');
+                    $('.table').on('table:rowdeleted', function() {
+                        hacerresumen.resumenDietaalimentos();
+                        hacerresumen.resumenDietacomidas();
+                    });
+                }
 
             });
 
