@@ -71,7 +71,7 @@ class DietaAdmin extends AbstractAdmin
                 'label' => 'Tipo de dieta'
             ])
             ->add('nombre', null, [
-                'editable' => true,
+                'editable' => true
             ])
             ->add('totalCalorias', null, [
                 'label' => 'Tot cal',
@@ -81,16 +81,20 @@ class DietaAdmin extends AbstractAdmin
                 'label' => 'Prot por kg',
                 'row_align' => 'right'
             ])
-            ->add('peso', null, [
+            ->add('peso', 'decimal', [
+                'editable' => true,
                 'label' => 'Peso',
                 'row_align' => 'right'
             ])
-            ->add('indicedegrasa', null, [
+            ->add('indicedegrasa', 'decimal', [
+                'editable' => true,
                 'label' => 'Indice de grasa',
                 'row_align' => 'right'
             ])
-            ->add('fecha', null, [
+            ->add('fecha', 'date', [
                 'label' => 'Fecha',
+                'editable' => true,
+                'row_align' => 'right',
                 'format' => 'Y/m/d'
             ])
             ->add('modificado', null, [

@@ -63,10 +63,15 @@ class FilepasajeroAdmin extends AbstractAdmin
                 'label' => 'Tipo de documento'
             ])
             ->add('numerodocumento', null, [
-                'label' => 'Número de Documento'
+                'label' => 'Número de Documento',
+                'row_align' => 'right',
+                'editable' => true
             ])
-            ->add('fechanacimiento', null, [
-                'label' => 'Fecha de nacimiento'
+            ->add('fechanacimiento', 'date', [
+                'label' => 'Fecha de nacimiento',
+                'editable' => true,
+                'row_align' => 'right',
+                'format' => 'Y/m/d'
             ])
             ->add('edad')
             ->add('_action', null, [

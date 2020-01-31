@@ -53,15 +53,27 @@ class AlimentoAdmin extends AbstractAdmin
             ->add('nombre', null, [
                 'editable' => true
             ])
-            ->add('grasa')
-            ->add('carbohidrato')
-            ->add('proteina', null, [
-                'editable' => true
+            ->add('grasa', 'decimal', [
+                'editable' => true,
+                'row_align' => 'right'
+            ])
+            ->add('carbohidrato', 'decimal', [
+                'editable' => true,
+                'row_align' => 'right'
+            ])
+            ->add('proteina', 'decimal', [
+                'editable' => true,
+                'row_align' => 'right'
             ])
             ->add('proteinaaltovalor', null, [
+                'editable' => true,
+                'row_align' => 'center',
                 'label' => 'Proteina de alto valor'
             ])
-            ->add('cantidad')
+            ->add('cantidad', 'decimal', [
+                'editable' => true,
+                'row_align' => 'right'
+            ])
             ->add('medidaalimento', null, [
                 'label' => 'Medida de alimento'
             ])

@@ -107,7 +107,12 @@ class Resumen implements ContainerAwareInterface
                 $archivosAux['webThumbPath'] = $documento->getWebThumbPath();
                 $archivosAux['webPath'] = $documento->getWebPath();
                 $archivosAux['inModal'] = $documento->getInModal();
-
+                $archivosAux['tipo'] = $documento->getTipofiledocumento()->getNombre();
+                if($documento->getTipofiledocumento()->getInterno() === true){
+                    $archivosAux['interno'] = true;
+                }else{
+                    $archivosAux['interno'] = false;
+                }
                 $datosCotizacion['archivos'][] = $archivosAux;
             endforeach;
         }

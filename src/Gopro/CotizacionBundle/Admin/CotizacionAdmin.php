@@ -97,7 +97,9 @@ class CotizacionAdmin extends AbstractAdmin
             ->add('numeropasajeros', null, [
                 'label' => 'Num Pax'
             ])
-            ->add('comision', null, [
+            ->add('comision', 'decimal', [
+                'editable' => true,
+                'row_align' => 'right',
                 'label' => 'Comisión'
             ])
             ->add('estadocotizacion', 'choice', [
@@ -111,8 +113,12 @@ class CotizacionAdmin extends AbstractAdmin
                     1 => 'Pendiente',
                     2 => 'Enviado',
                     3 => 'Aceptado',
-                    4 => 'Efectuado'
+                    4 => 'Operado',
+                    5 => 'Cancelado'
                 ]
+            ])
+            ->add('file.filedocumentos', null, [
+                'label' => 'Documentos'
             ])
             ->add('cotpolitica', null, [
                 'label' => 'Política'

@@ -141,24 +141,26 @@ file that was distributed with this source code.
                                 <div class="panel-body">
                                     <div class="container-fluid">
                                         {% for archivo in cotizacion.archivos %}
-                                            {% if loop.index0 % 6 == 0 %}
-                                                <div class="row">
-                                            {% endif %}
-                                            {% if loop.index0 % 3 == 0 and loop.index0 % 6 != 0 %}
-                                                <div class="clearfix visible-xs"></div>
-                                            {% endif %}
-                                            <div class="col-xs-4 col-sm-2">
-                                                <div class="thumbnail">
-                                                    <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webPath|raw }}"{% if archivo.inModal == true %} data-toggle="lightbox"{% else %} target="_blank" {% endif %}>
-                                                        <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.webThumbPath|raw }}" alt="{{ archivo.nombre }}" style="width:100%">
-                                                        <div class="caption">
-                                                            <p style="overflow-wrap: break-word;" class="small text-center">{{ archivo.nombre }}</p>
-                                                        </div>
-                                                    </a>
+                                            {% if archivo.interno == false %}
+                                                {% if loop.index0 % 6 == 0 %}
+                                                    <div class="row">
+                                                {% endif %}
+                                                {% if loop.index0 % 3 == 0 and loop.index0 % 6 != 0 %}
+                                                    <div class="clearfix visible-xs"></div>
+                                                {% endif %}
+                                                <div class="col-xs-4 col-sm-2">
+                                                    <div class="thumbnail">
+                                                        <a href="{{ app.request.getSchemeAndHttpHost() ~ archivo.webPath|raw }}"{% if archivo.inModal == true %} data-toggle="lightbox"{% else %} target="_blank" {% endif %}>
+                                                            <img src="{{ app.request.getSchemeAndHttpHost() ~ archivo.webThumbPath|raw }}" alt="{{ archivo.nombre }}" style="width:100%">
+                                                            <div class="caption">
+                                                                <p style="overflow-wrap: break-word;" class="small text-center">{{ archivo.nombre }}</p>
+                                                            </div>
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            {% if loop.index % 6 == 0 or loop.last %}
-                                                </div>
+                                                {% if loop.index % 6 == 0 or loop.last %}
+                                                    </div>
+                                                {% endif %}
                                             {% endif %}
                                         {% endfor %}
                                     </div>

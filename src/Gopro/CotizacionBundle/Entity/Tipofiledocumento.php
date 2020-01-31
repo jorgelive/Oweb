@@ -29,6 +29,13 @@ class Tipofiledocumento
     private $nombre;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="interno", type="boolean", options={"default": 0})
+     */
+    private $interno;
+
+    /**
      * @var \DateTime $creado
      *
      * @Gedmo\Timestampable(on="create")
@@ -84,6 +91,30 @@ class Tipofiledocumento
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set interno
+     *
+     * @param boolean $interno
+     *
+     * @return Tipofiledocumento
+     */
+    public function setInterno($interno)
+    {
+        $this->interno = $interno;
+
+        return $this;
+    }
+
+    /**
+     * Get interno
+     *
+     * @return boolean
+     */
+    public function getInterno()
+    {
+        return $this->interno;
     }
 
     /**
