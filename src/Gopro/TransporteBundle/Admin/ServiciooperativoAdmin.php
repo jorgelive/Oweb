@@ -33,11 +33,20 @@ class ServiciooperativoAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id')
+            ->add('servicio')
+            ->add('servicio.fechahorainicio', null, [
+                'format' => 'Y/m/d H:i',
+                'label' => 'Inicio'
+            ])
+            ->add('servicio.serviciocomponentes', null, [
+                'label' => 'Componentes'
+            ])
             ->add('tiposeroperativo', null, [
                 'label' => 'Tipo'
             ])
             ->add('texto', null, [
-                'label' => 'Contenido'
+                'label' => 'Contenido',
+                'editable' => true
             ])
             ->add('_action', 'actions', [
                 'actions' => [
@@ -75,6 +84,14 @@ class ServiciooperativoAdmin extends AbstractAdmin
     {
         $showMapper
             ->add('id')
+            ->add('servicio')
+            ->add('servicio.fechahorainicio', null, [
+                'format' => 'Y/m/d H:i',
+                'label' => 'Inicio'
+            ])
+            ->add('servicio.serviciocomponentes', null, [
+                'label' => 'Componentes'
+            ])
             ->add('tiposeroperativo', null, [
                 'label' => 'Tipo'
             ])

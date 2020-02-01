@@ -14,7 +14,7 @@ services:
         class: Gopro\TransporteBundle\Admin\ServiciooperativoAdmin
         arguments: [~, Gopro\TransporteBundle\Entity\Serviciooperativo, SonataAdminBundle:CRUD]
         tags:
-            - {name: sonata.admin, manager_type: orm, show_in_dashboard: false, group: Transporte, label: Operativos}
+            - {name: sonata.admin, manager_type: orm, group: Transporte, label: Innformacion operativa}
         public: true
 
     gopro_transporte.admin.serviciocontable:

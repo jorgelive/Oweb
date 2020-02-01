@@ -352,6 +352,7 @@ sonata_admin:
                     - gopro_transporte.admin.conductor
                     - gopro_transporte.admin.unidad
                     - gopro_transporte.admin.unidadbitacora
+                    - gopro_transporte.admin.serviciooperativo
                     - gopro_transporte.admin.tiposeroperativo
                     - gopro_transporte.admin.tipounibit
                     - {route: gopro_transporte_cargador_genericoprograma, label: 'Cargador de servicios', roles: [ROLE_CARGA]}

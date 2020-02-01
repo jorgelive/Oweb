@@ -75,11 +75,7 @@ file that was distributed with this source code.
                             {% for dietacomida in object.dietacomidas %}
                                 <div style="margin-bottom: 25px; display: block; width: 100%">
                                 <h4>Comida: <strong>{{ dietacomida.numerocomida }}</strong>{% if dietacomida.nota is not empty %} ({{ dietacomida.nota }}){% endif %}</h4>
-                                <p>
-                                    {% for dietaalimento in dietacomida.dietaalimentos %}
-                                        {% if loop.first %}{% elseif loop.last %} y {% else %}, {% endif %}{{ dietaalimento.alimento.nombre }} ({{ dietaalimento.medidaCantidadAlimento }})
-                                    {% endfor %}
-                                </p>
+                                <p>{% for dietaalimento in dietacomida.dietaalimentos %}{% if loop.first %}{% elseif loop.last %} y {% else %}, {% endif %}{{ dietaalimento.alimento.nombre }} ({{ dietaalimento.medidaCantidadAlimento }}){% endfor %}.</p>
                                 </div>
 
                             {% endfor %}
@@ -315,10 +311,7 @@ file that was distributed with this source code.
                 </div>
             {% endif %}
 
-
-
-
-        </div>#}
+        </div>
     </div>
 
 </div>
