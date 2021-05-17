@@ -20,13 +20,13 @@ class FileAdmin extends AbstractAdmin
         '_sort_by' => 'modificado',
     ];
 
-    public function getFormTheme()
+    /*public function getFormTheme()
     {
         return array_merge(
             parent::getFormTheme(),
             ['GoproCotizacionBundle:FileAdmin:form_admin_fields.html.twig']
         );
-    }
+    }*/
 
     /**
      * @param DatagridMapper $datagridMapper
@@ -108,13 +108,13 @@ class FileAdmin extends AbstractAdmin
                 'edit' => 'inline',
                 'inline' => 'table'
             ])
-            ->add('cotizaciones', CollectionType::class, [
+            /*->add('cotizaciones', CollectionType::class, [
                 'by_reference' => false,
                 'label' => 'Cotizaciones'
             ], [
                 'edit' => 'inline',
                 'inline' => 'table'
-            ])
+            ])*/
         ;
 
         $this->vars['cotservicios']{'serviciopath'} = 'gopro_servicio_servicio_ajaxinfo';

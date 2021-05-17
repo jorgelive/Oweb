@@ -33,7 +33,7 @@ class DefaultController extends Controller
 
             ['nombre' => 'Servicios', 'route' => 'admin_gopro_transporte_servicio_list'],
             ['nombre' => 'Cargador', 'route' => 'gopro_transporte_cargador_genericoprograma'],
-            ['nombre' => 'Documentos', 'route' => 'admin_gopro_cotizacion_file_list']
+            ['nombre' => 'Documentos contables', 'route' => 'admin_gopro_comprobante_comprobante_list']
         ]
         ];
 
