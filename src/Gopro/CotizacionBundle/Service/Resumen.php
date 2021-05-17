@@ -85,7 +85,7 @@ class Resumen implements ContainerAwareInterface
         $datosCotizacion = [];
 
         //para mostrar primero el itinerario
-        $datosTabs['itinerario']['nombre'] = 'Itinerarios';
+        $datosTabs['itinerario']['nombre'] = 'Itinerario';
         $datosTabs['tarifas']['nombre'] = 'Tarifas';
         $datosTabs['agenda']['nombre'] = 'Agenda';
         $datosTabs['incluye']['nombre'] = 'Detalle';
