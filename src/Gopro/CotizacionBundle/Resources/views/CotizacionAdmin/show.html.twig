@@ -54,7 +54,7 @@ file that was distributed with this source code.
 
 
             {% if cotizacion.pasajeros is defined or cotizacion.archivos is defined %}
-                <div class="panel-group box box-primary" id="accordion">
+                <div class="panel-group box box-primary hidden-print" id="accordion">
                     {% if cotizacion.pasajeros is defined and cotizacion.pasajeros|length > 0 %}
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -131,7 +131,7 @@ file that was distributed with this source code.
                         </div>
                     {% endif %}
                     {% if cotizacion.archivos is defined and cotizacion.archivos|length > 0 %}
-                        <div class="panel panel-default">
+                        <div class="panel panel-default hidden-print">
                             <div class="panel-heading">
                                 <h5 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
