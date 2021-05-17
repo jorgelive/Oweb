@@ -85,7 +85,7 @@ class Resumen implements ContainerAwareInterface
         $datosCotizacion = [];
 
         //para mostrar primero el itinerario
-        $datosTabs['itinerario']['nombre'] = 'Itinerarios';
+        $datosTabs['itinerario']['nombre'] = 'Itinerario';
         $datosTabs['tarifas']['nombre'] = 'Tarifas';
         $datosTabs['agenda']['nombre'] = 'Agenda';
         $datosTabs['incluye']['nombre'] = 'Detalle';
@@ -300,11 +300,11 @@ class Resumen implements ContainerAwareInterface
 
                                 //dolares = 2
                                 if($tarifa->getMoneda()->getId() == 2){
-                                    $tempArrayTarifa['montosoles'] = number_format((float)($tempArrayTarifa['montounitario'] * $tipoCambio->getCompra()), 2, '.', '');
+                                    $tempArrayTarifa['montosoles'] = number_format((float)($tempArrayTarifa['montounitario'] * $tipoCambio->getVenta()), 2, '.', '');
                                     $tempArrayTarifa['montodolares'] = $tempArrayTarifa['montounitario'];
                                 }elseif ($tarifa->getMoneda()->getId() == 1){
                                     $tempArrayTarifa['montosoles'] = $tempArrayTarifa['montounitario'];
-                                    $tempArrayTarifa['montodolares'] = number_format((float)($tempArrayTarifa['montounitario'] / $tipoCambio->getVenta()), 2, '.', '');
+                                    $tempArrayTarifa['montodolares'] = number_format((float)($tempArrayTarifa['montounitario'] / $tipoCambio->getCompra()), 2, '.', '');
                                 }else{
                                     $this->mensaje = 'La aplicación solo puede utilizar Soles y dólares en las tarifas.';
                                     return false;

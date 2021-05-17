@@ -11,6 +11,25 @@ file that was distributed with this source code.
 
 {% extends 'SonataAdminBundle:CRUD:base_show.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+
+    <style type="text/css">
+        @media print
+        {
+            .locale_switcher
+            {
+                display: none !important;
+            }
+            .tab-content > .tab-pane {
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+        }
+    </style>
+{% endblock %}
+
 {% block show %}
 
 
@@ -54,9 +73,9 @@ file that was distributed with this source code.
 
 
             {% if cotizacion.pasajeros is defined or cotizacion.archivos is defined %}
-                <div class="panel-group box box-primary hidden-print" id="accordion">
+                <div class="panel-group box box-primary" id="accordion">
                     {% if cotizacion.pasajeros is defined and cotizacion.pasajeros|length > 0 %}
-                        <div class="panel panel-default">
+                        <div class="panel panel-default hidden-print">
                             <div class="panel-heading">
                                 <h5 class="panel-title">
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
@@ -172,7 +191,7 @@ file that was distributed with this source code.
             {% endif %}
 
             <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs" role="tablist">
+                <ul class="nav nav-tabs hidden-print" role="tablist">
                     {% for name, contenido in tabs %}
                         <li{% if loop.first %} class="active"{% endif %}>
                             <a href="#tab_{{ admin.uniqid }}_{{ loop.index }}" data-toggle="tab">
@@ -193,6 +212,7 @@ file that was distributed with this source code.
                                 <div class="sonata-ba-collapsed-fields">
 
                                     {% if name == 'tarifas' %}
+                                        <h3 class="visible-print">{{ contenido.nombre}}</h3>
                                         <h4><strong>Resumen General</strong></h4>
                                         <div class="box-body table-responsive no-padding">
                                             <table class="table table-bordered table-striped sonata-ba-list">
@@ -407,16 +427,17 @@ file that was distributed with this source code.
                                         {% endfor %}
 
                                     {% elseif name == 'politica' %}
+                                        <h3 class="visible-print">{{ contenido.nombre}}</h3>
                                         {{ contenido.contenido|raw }}
-
                                     {% elseif name == 'itinerario' %}
+                                        <h3 class="visible-print">{{ contenido.nombre}}</h3>
                                         {% if contenido.itinerarios is defined and contenido.itinerarios|length > 0 %}
                                             {% for itinerario in contenido.itinerarios %}
                                                 <h4><strong>{{ itinerario.fecha }}</strong></h4>
                                                 {% for item in itinerario.fechaitems %}
                                                     <h4>{{ item.titulo }}</h4>
                                                     {{ item.descripcion|raw }}
-                                                    <div class="container-fluid">
+                                                    <div class="container-fluid hidden-print">
                                                         {% for archivo in item.archivos %}
                                                             {% if loop.index0 % 4 == 0 %}
                                                                 <div class="row">
@@ -451,6 +472,7 @@ file that was distributed with this source code.
                                         {% endif %}
 
                                     {% elseif name == 'incluye' %}
+                                        <h3 class="visible-print">{{ contenido.nombre}}</h3>
                                         {% if contenido.tipos is defined %}
                                             {% for tipo in contenido.tipos %}
                                                 <h4>{{ tipo.titulo }}:</h4>
@@ -472,7 +494,9 @@ file that was distributed with this source code.
                                         {% endif %}
 
                                     {% elseif name == 'agenda' %}
+
                                         <div class="box-body table-responsive no-padding">
+                                            <h3 class="visible-print">{{ contenido.nombre}}</h3>
                                             <table class="table table-bordered table-striped sonata-ba-list">
                                                 <thead>
                                                 <tr class="sonata-ba-list-field-header">

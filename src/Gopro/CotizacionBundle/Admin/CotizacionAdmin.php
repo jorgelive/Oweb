@@ -111,7 +111,7 @@ class CotizacionAdmin extends AbstractAdmin
                 'class' => 'Gopro\CotizacionBundle\Entity\Estadocotizacion',
                 'choices' => [
                     1 => 'Pendiente',
-                    2 => 'Enviado',
+                    2 => 'Archivado',
                     3 => 'Aceptado',
                     4 => 'Operado',
                     5 => 'Cancelado'
