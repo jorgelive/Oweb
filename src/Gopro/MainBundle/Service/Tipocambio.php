@@ -5,6 +5,7 @@ namespace Gopro\MainBundle\Service;
 use \Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use \Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use \Symfony\Component\DomCrawler\Crawler;
+use Exception;
 
 
 class Tipocambio implements ContainerAwareInterface{
@@ -40,7 +41,9 @@ class Tipocambio implements ContainerAwareInterface{
         $mes = str_pad($fecha->format('m'), 2, '0', STR_PAD_LEFT);;
         $ano = $fecha->format('Y');
 
-        $tds = $this->crawl($fecha);
+        $valores = $this->leerPagina($fecha);
+
+        /*$tds = $this->crawl($fecha);
 
         if(empty($tds) || count($tds) < 13){
             error_log('La información es incompleta');
@@ -56,6 +59,10 @@ class Tipocambio implements ContainerAwareInterface{
         }
 
         $tiposDelMes = $this->ordenarValores($tds, $mes, $ano);
+
+        */
+
+        $tiposDelMes = $this->ordenarValoresJson($valores, $mes, $ano);
 
         for ($i = (int)$dia; $i > 0; --$i) {
             if(isset($tiposDelMes[$ano . '-' . $mes .  '-' . str_pad($i, 2, '0', STR_PAD_LEFT)])) {
@@ -86,13 +93,63 @@ class Tipocambio implements ContainerAwareInterface{
 
     }
 
+    private function leerPagina(\DateTime $fecha){
 
-    private function crawl(\DateTime $fecha){
+        $token = 'apis-token-1.aTSI1U7KEuT-6bbbCguH-4Y8TI6KS73N';
+
+        try {
+            $ch = curl_init();
+
+            // Check if initialization had gone wrong*
+            if ($ch === false) {
+                throw new Exception('failed to initialize');
+            }
+
+            curl_setopt_array($ch, array(
+                CURLOPT_URL => 'https://api.apis.net.pe/v1/tipo-cambio-sunat?month=' . $fecha->format('m') . '&year=' .  $fecha->format('Y'),
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 2,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_HTTPHEADER => array(
+                    'Referer: https://apis.net.pe/tipo-de-cambio-sunat-api',
+                    'Authorization: Bearer ' . $token
+                ),
+            ));
+
+            $content = curl_exec($ch);
+
+            // Check the return value of curl_exec(), too
+            if ($content === false) {
+                throw new Exception(curl_error($ch), curl_errno($ch));
+            }
+
+            $data = json_decode($content,true);
+
+            curl_close($ch);
+
+            return $data;
+
+        } catch(Exception $e) {
+
+            trigger_error(sprintf(
+                'Curl failed with error #%d: %s',
+                $e->getCode(), $e->getMessage()),
+                E_USER_ERROR);
+
+        }
+
+    }
+
+/*    private function crawl(\DateTime $fecha){
         $dom = new \DOMDocument;
 
         try{
             libxml_use_internal_errors(true);  //hides errors from invalid tags
-            $dom->loadHTMLFile('http://www.sunat.gob.pe/cl-at-ittipcam/tcS01Alias?mes=' . $fecha->format('m') .'&anho=' .  $fecha->format('Y'));
+            $dom->loadHTMLFile('http://www.sunat.gob.pe/cl-at-ittipcam/tcS01Alias?mes=' . $fecha->format('m') . '&anho=' .  $fecha->format('Y'));
 
         }
         catch(\Exception $e){
@@ -123,9 +180,22 @@ class Tipocambio implements ContainerAwareInterface{
         return $tds;
 
     }
+*/
+
+    private function ordenarValoresJson($json, $mes, $ano){
+        $result = [];
+
+        foreach ($json as $index => $valor) {
+            $fecha = $valor['fecha'];
+            $result[$fecha]['date'] = new \DateTime($fecha);
+            $result[$fecha]['compra'] = $valor['compra'];
+            $result[$fecha]['venta'] = $valor['venta'];
+        }
+        return $result;
+    }
 
 
-    private function ordenarValores($raw, $mes, $ano){
+/*    private function ordenarValores($raw, $mes, $ano){
         $result = [];
         $itinerante = 0;
         $fecha = '';
@@ -143,5 +213,6 @@ class Tipocambio implements ContainerAwareInterface{
         }
         return $result;
     }
+*/
 
 }

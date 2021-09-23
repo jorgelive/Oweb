@@ -151,6 +151,8 @@ class Resumen implements ContainerAwareInterface
                     unset($auxNotas);
                 endforeach;
             }
+
+            //Itinerarios
             foreach ($cotizacion->getCotservicios() as $servicio):
                 $itinerarioFechaAux = [];
                 if($servicio->getItinerario()->getItinerariodias()->count() > 0){
@@ -182,7 +184,7 @@ class Resumen implements ContainerAwareInterface
                 }
 
                 if($servicio->getCotcomponentes()->count() > 0){
-                    foreach( $servicio->getCotcomponentes() as $componente):
+                    foreach($servicio->getCotcomponentes() as $componente):
 
                         if($componente->getCottarifas()->count() > 0){
 
@@ -239,6 +241,8 @@ class Resumen implements ContainerAwareInterface
                                             $tempArrayIncluye['tipoPaxNombre'] = $tarifa->getTarifa()->getTipopax()->getNombre();
                                         }
                                     }
+
+                                    //TODO ordenar tarifas primero incluye
 
                                     $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['titulo'] = $tarifa->getTipotarifa()->getTitulo();
                                     $datosTabs['incluye']['tipos'][$tarifa->getTipotarifa()->getId()]['componentes'][$componente->getId()]['cantidadcomponente'] = $componente->getCantidad();
@@ -490,6 +494,7 @@ class Resumen implements ContainerAwareInterface
                 }
                 $clase['resumen'][$tarifa['tipoTarId']]['ventadolares'] += $tarifa['ventadolares'];
 
+                //si no tiene titulo el componente no se muestra
                 if(isset($tarifa['tituloComponente']) && !empty($tarifa['tituloComponente'])){
                     $parteTarifaTitulo = '';
                     if(isset($tarifa['titulo']) && !empty($tarifa['titulo'])){
@@ -501,8 +506,11 @@ class Resumen implements ContainerAwareInterface
                     }
                     $parteCantidad = '';
                     if(isset($tarifa['cantidadComponente']) && $tarifa['cantidadComponente'] > 1 ){
-                        $parteCantidad = ' x' . $tarifa['cantidadComponente'] . ' (Dias/Noches)';
+                        $parteCantidad = ' x' . $tarifa['cantidadComponente'] . ' (Dias o Noches en caso de alojamiento)';
                     }
+
+
+
 
                     $clase['resumen'][$tarifa['tipoTarId']]['detallepaxitems'][] = $tarifa['tituloComponente'] . $parteTarifaTitulo . $parteCantidad . $parteItinerarioTitulo;
                 }
