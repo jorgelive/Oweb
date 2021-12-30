@@ -17,6 +17,10 @@ file that was distributed with this source code.
     <style type="text/css">
         .main-sidebar, .sidebar-toggle {display: none; }
         .content-wrapper {margin-left: 0;}
+
+        div.encabezado td {white-space: normal !important;}
+
+
         @media print
         {
             .locale_switcher
@@ -46,7 +50,7 @@ file that was distributed with this source code.
 
         <div class="col-md-12 ">
 
-            <div class="box box-primary">
+            <div class="encabezado box box-primary">
 
                 <div class="box-header">
                     <h4 class="box-title">
@@ -57,8 +61,7 @@ file that was distributed with this source code.
                     <table class="table">
                         <tbody>
                         <tr class="sonata-ba-view-container">
-                            <th>Cotización</th>
-                            <td>{{ cotizacion.cotizacion.titulo }}</td>
+                            <td colspan="2" style="font-size: larger;">{{ cotizacion.cotizacion.titulo }}</td>
                         </tr>
                         <tr class="sonata-ba-view-container">
                             <th>Número de pasajeros</th>
@@ -246,7 +249,13 @@ file that was distributed with this source code.
                                                 </h4>
                                                 <ul style="list-style-type: none; padding-left: 18px;">
                                                 {% for tarifaresumen in rango.resumen if tarifaresumen.ventasoles > 0 %}
-                                                    <li><h5 style="font-weight: bold; font-size: 1.1em">{{ tarifaresumen.tipoTarTitulo }} (US$ {{ tarifaresumen.ventadolares }} {% if cotizacion.file.paisid == 117 %} o S/.{{ tarifaresumen.ventasoles }} {% endif %} por persona)</h5>
+                                                    <li><h5 style="font-weight: bold; font-size: 1.1em">{{ tarifaresumen.tipoTarTitulo }}
+                                                            {% if tarifaresumen.tipoTarOculto == false %}
+                                                                (US$ {{ tarifaresumen.ventadolares }}
+                                                                {% if cotizacion.file.paisid == 117 %} o S/.{{ tarifaresumen.ventasoles }} {% endif %}
+                                                                por persona)
+                                                            {% endif %}
+                                                        </h5>
                                                         <ul>
                                                             {% for detallepaxitem in tarifaresumen.detallepaxitems %}
                                                                 <li>{{ detallepaxitem }}.</li>

@@ -52,6 +52,13 @@ class Tipotarifa implements TranslatableInterface
     private $comisionable = true;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="oculto", type="boolean", options={"default": 0})
+     */
+    private $oculto = false;
+
+    /**
      * @var \DateTime $creado
      *
      * @Gedmo\Timestampable(on="create")
@@ -204,5 +211,29 @@ class Tipotarifa implements TranslatableInterface
     public function getComisionable()
     {
         return $this->comisionable;
+    }
+
+    /**
+     * Set oculto.
+     *
+     * @param bool $oculto
+     *
+     * @return Tipotarifa
+     */
+    public function seOculto($oculto)
+    {
+        $this->oculto = $oculto;
+
+        return $this;
+    }
+
+    /**
+     * Get oculto.
+     *
+     * @return bool
+     */
+    public function getOculto()
+    {
+        return $this->oculto;
     }
 }

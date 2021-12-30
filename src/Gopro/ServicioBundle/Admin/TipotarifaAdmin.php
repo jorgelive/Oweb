@@ -23,6 +23,7 @@ class TipotarifaAdmin extends AbstractAdmin
                 'label' => 'Título'
             ])
             ->add('comisionable')
+            ->add('oculto')
         ;
     }
 
@@ -41,6 +42,9 @@ class TipotarifaAdmin extends AbstractAdmin
                 'editable' => true
             ])
             ->add('comisionable', null, [
+                'editable' => true
+            ])
+            ->add('oculto', null, [
                 'editable' => true
             ])
             ->add('_action', null, [
@@ -65,6 +69,7 @@ class TipotarifaAdmin extends AbstractAdmin
                 'label' => 'Título'
             ])
             ->add('comisionable')
+            ->add('oculto')
         ;
     }
 
@@ -80,6 +85,7 @@ class TipotarifaAdmin extends AbstractAdmin
                 'label' => 'Título'
             ])
             ->add('comisionable')
+            ->add('oculto')
         ;
     }
 }

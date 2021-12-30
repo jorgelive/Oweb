@@ -358,6 +358,7 @@ class Resumen implements ContainerAwareInterface
                                 $tempArrayTarifa['tipoTarId'] = $tarifa->getTipotarifa()->getId();
                                 $tempArrayTarifa['tipoTarNombre'] = $tarifa->getTipotarifa()->getNombre();
                                 $tempArrayTarifa['tipoTarTitulo'] = $tarifa->getTipotarifa()->getTitulo();
+                                $tempArrayTarifa['tipoTarOculto'] = $tarifa->getTipotarifa()->getOculto();
 
                                 $tempArrayComponente['tarifas'][] = $tempArrayTarifa;
                                 unset($tempArrayTarifa);
@@ -434,9 +435,11 @@ class Resumen implements ContainerAwareInterface
             foreach ($clase['tarifa'] as $tarifa):
                 $clase['resumen'][$tarifa['tipoTarId']]['tipoTarNombre'] = $tarifa['tipoTarNombre'];
                 $clase['resumen'][$tarifa['tipoTarId']]['tipoTarTitulo'] = $tarifa['tipoTarTitulo'];
+                $clase['resumen'][$tarifa['tipoTarId']]['tipoTarOculto'] = $tarifa['tipoTarOculto'];
 
                 $this->resumendeClasificado[$tarifa['tipoTarId']]['nombre'] = $tarifa['tipoTarNombre'];
                 $this->resumendeClasificado[$tarifa['tipoTarId']]['titulo'] = $tarifa['tipoTarTitulo'];
+                $this->resumendeClasificado[$tarifa['tipoTarId']]['oculto'] = $tarifa['tipoTarOculto'];
 
                 if(!isset($this->resumendeClasificado[$tarifa['tipoTarId']]['montosoles'])){
                     $this->resumendeClasificado[$tarifa['tipoTarId']]['montosoles'] = 0;
@@ -517,7 +520,11 @@ class Resumen implements ContainerAwareInterface
 
             endforeach;
 
+            ksort($clase['resumen']);
+
         endforeach;
+
+        ksort($this->resumendeClasificado);
     }
 
     private function obtenerTarifasComponente($componente, $cantidadTotalPasajeros){
