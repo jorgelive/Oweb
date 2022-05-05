@@ -29,13 +29,13 @@ class DefaultController extends Controller
     public function navigationAction()
     {
 
-        $menu[] = [ 'nombre' => 'Transportes', 'items' => [
+/*        $menu[] = [ 'nombre' => 'Transportes', 'items' => [
 
             ['nombre' => 'Servicios', 'route' => 'admin_gopro_transporte_servicio_list'],
             ['nombre' => 'Cargador', 'route' => 'gopro_transporte_cargador_genericoprograma'],
             ['nombre' => 'Documentos contables', 'route' => 'admin_gopro_comprobante_comprobante_list']
         ]
-        ];
+        ];*/
 
         $menu[] = [ 'nombre' => 'Reservas', 'items' => [
             ['nombre' => 'Files', 'route' => 'admin_gopro_cotizacion_file_list'],

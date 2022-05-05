@@ -343,30 +343,6 @@ sonata_admin:
             - { position: left, type: sonata.admin.block.admin_list }
         groups:
 
-            goprosonata.admin.group.transporte:
-                label: 'Transportes'
-                icon: '<i class="fa fa-bus"></i>'
-                items:
-                    - gopro_transporte.admin.servicio
-                    - gopro_transporte.admin.serviciocontable
-                    - gopro_transporte.admin.conductor
-                    - gopro_transporte.admin.unidad
-                    - gopro_transporte.admin.unidadbitacora
-                    - gopro_transporte.admin.serviciooperativo
-                    - gopro_transporte.admin.tiposeroperativo
-                    - gopro_transporte.admin.tipounibit
-                    - {route: gopro_transporte_cargador_genericoprograma, label: 'Cargador de servicios', roles: [ROLE_CARGA]}
-
-            goprosonata.admin.group.comprobante:
-                label: 'Comprobantes de venta'
-                icon: '<i class="fa fa-bus"></i>'
-                items:
-                    - gopro_comprobante.admin.comprobante
-                    - gopro_comprobante.admin.tipo
-                    - gopro_comprobante.admin.estado
-                    - gopro_comprobante.admin.productoservicio
-                    - gopro_comprobante.admin.tipoproductoservicio
-
             goprosonata.admin.group.cotizacion:
                 label: 'Cotizaciones'
                 icon: '<i class="fa fa-calendar"></i>'
@@ -401,6 +377,30 @@ sonata_admin:
                     - gopro_fit.admin.alimento
                     - gopro_fit.admin.medidaalimento
                     - gopro_fit.admin.tipoalimento
+
+#            goprosonata.admin.group.transporte:
+#                label: 'Transportes'
+#                icon: '<i class="fa fa-bus"></i>'
+#                items:
+#                    - gopro_transporte.admin.servicio
+#                    - gopro_transporte.admin.serviciocontable
+#                    - gopro_transporte.admin.conductor
+#                    - gopro_transporte.admin.unidad
+#                    - gopro_transporte.admin.unidadbitacora
+#                    - gopro_transporte.admin.serviciooperativo
+#                    - gopro_transporte.admin.tiposeroperativo
+#                    - gopro_transporte.admin.tipounibit
+#                    - {route: gopro_transporte_cargador_genericoprograma, label: 'Cargador de servicios', roles: [ROLE_CARGA]}
+#
+#            goprosonata.admin.group.comprobante:
+#                label: 'Comprobantes de venta'
+#                icon: '<i class="fa fa-bus"></i>'
+#                items:
+#                    - gopro_comprobante.admin.comprobante
+#                    - gopro_comprobante.admin.tipo
+#                    - gopro_comprobante.admin.estado
+#                    - gopro_comprobante.admin.productoservicio
+#                    - gopro_comprobante.admin.tipoproductoservicio
 
             goprosonata.admin.group.maestro:
                 label: 'Maestros'

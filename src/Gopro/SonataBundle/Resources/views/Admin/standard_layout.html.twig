@@ -13,7 +13,31 @@
     {% endstylesheets %}
 
     <style type="text/css">
-        .logo img {max-width: unset;}
+        @media (max-width: 767px) {
+            .skin-black .main-header > .logo {
+                background-color: #ffffff;
+                color: #222222;
+                border-bottom: 1px solid #222222;
+
+            }
+            .skin-black .main-header > .logo:hover {
+                background-color: #ffffff;
+                color: #222222;
+                border-bottom: 1px solid #222222;
+            }
+
+            .skin-black .main-header > .logo span {
+                color: #222222;
+                font-size: 80%;
+                margin-top: 10px;
+                font-weight: bold;
+
+            }
+        }
+        .main-header {height: 100px;}
+        .main-header .logo {height: 100px;}
+        .main-header .logo img {max-width: unset;}
+        .main-sidebar, .left-side {padding-top: 100px;}
         .fc-toolbar h2 {font-size: 20px; padding-top: 10px;}
         .select2-results__option.loading-results,
         .select2-results__option.select2-results__option--load-more { display: none; }
